@@ -9,7 +9,6 @@ from local_settings import USER, PASSWORD, API_ROOT_URL
 
 class KamerVraag(object):
     def __init__(self, vraag_json):
-        # tkapi.util.print_pretty(vraag_json)
         self.vraag_json = vraag_json
         self.document = document.ParlementairDocument(vraag_json)
         if vraag_json['Zaak']:
@@ -18,17 +17,9 @@ class KamerVraag(object):
             self.zaak = None
         self.document_url = self.get_document_url()
 
-    def print_info(self):
-        print('=============')
-        print('document nummer: ' + self.document.nummer)
-        print('document titel: ' + self.document.onderwerp)
-        print('kamervraag url: ' + self.document_url)
-        if self.zaak:
-            print('zaak nummer: ' + self.zaak['Nummer'])
-
     @staticmethod
     def create_from_id(id):
-        vraag_json = get_schriftelijke_vraag(id)
+        vraag_json = get_schriftelijke_vraag_json(id)
         return KamerVraag(vraag_json)
 
     def get_document_url(self):
@@ -47,41 +38,56 @@ class KamerVraag(object):
         return url
 
 
-class KamerVragen(object):
-    def __init__(self, start_datetime, end_datetime):
-        print('KamerVragen::__init__()')
-        self.start_datetime = start_datetime
-        self.end_datetime = end_datetime
-        self.vragen = self.create()
+class Antwoord(object):
+    def __init__(self, antwoord_json):
+        self.antwoord_json = antwoord_json
+        self.document = document.ParlementairDocument(antwoord_json)
+        if antwoord_json['Zaak']:
+            self.zaak = antwoord_json['Zaak'][0]
+        else:
+            self.zaak = None
+        self.document_url = self.get_document_url()
 
-    def create(self):
-        print('KamerVragen::get_all()')
-        vragen = []
-        vragen_metadata = get_schriftelijke_vragen(self.start_datetime, self.end_datetime)
+    def get_document_url(self):
+        try:
+            url_id = self.document.vergaderjaar.replace('-', '') + '-' + self.document.aanhangselnummer[-4:].lstrip('0')  #20162017-11
+        except Exception as error:
+            tkapi.util.print_pretty(self.document.document_json)
+            raise
+        url = 'https://zoek.officielebekendmakingen.nl/ah-tk-' + url_id
+        response = requests.get(url)
+        # print(response.url)
+        # print(response.content)
+        assert response.status_code == 200
+        if 'Errors/404.htm' in response.url:
+            tkapi.util.print_pretty(self.document.document_json)
+            url = ''
+        return url
+
+
+def get_kamervragen(start_datetime, end_datetime):
+    vragen = []
+    vragen_metadata = get_schriftelijke_vragen_first_page_json(start_datetime, end_datetime)
+    for item in vragen_metadata['value']:
+        vragen.append(KamerVraag(item))
+    while 'odata.nextLink' in vragen_metadata:
+        params = {
+            '$format': 'json',
+        }
+        r = requests.get(API_ROOT_URL + vragen_metadata['odata.nextLink'], params=params, auth=(USER, PASSWORD))
+        assert r.status_code == 200
+        vragen_metadata = r.json()
         for item in vragen_metadata['value']:
             vragen.append(KamerVraag(item))
-        # print_pretty(vragen_metadata)
-        while 'odata.nextLink' in vragen_metadata:
-            print('KamerVragen::get_all() - next page')
-            params = {
-                '$format': 'json',
-            }
-            r = requests.get(API_ROOT_URL + vragen_metadata['odata.nextLink'], params=params, auth=(USER, PASSWORD))
-            print(r.url)
-            assert r.status_code == 200
-            vragen_metadata = r.json()
-            for item in vragen_metadata['value']:
-                vragen.append(KamerVraag(item))
-                print(item['Datum'])
-        return vragen
+    return vragen
 
 
-def get_schriftelijke_vragen(start_datetime, end_datetime):
+def get_schriftelijke_vragen_first_page_json(start_datetime, end_datetime):
     # TODO: does only get one page of results
     url = 'ParlementairDocument'
     filter_str = "Soort eq 'Schriftelijke vragen'"
     filter_str += ' and '
-    filter_str += "Datum gt " + tkapi.util.datetime_to_odata(start_datetime)
+    filter_str += "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)
     filter_str += ' and '
     filter_str += "Datum lt " + tkapi.util.datetime_to_odata(end_datetime)
     params = {
@@ -95,7 +101,7 @@ def get_schriftelijke_vragen(start_datetime, end_datetime):
     return r.json()
 
 
-def get_schriftelijke_vraag(id):
+def get_schriftelijke_vraag_json(id):
     url = 'ParlementairDocument(guid\'' + id + '\')'
     params = {
         '$expand': 'Zaak',
@@ -107,40 +113,35 @@ def get_schriftelijke_vraag(id):
     return r.json()
 
 
-def get_verslag(id):
-    url = "Verslag(guid'" + id + "')"
-    return get_json(url)
+def get_antwoorden(start_datetime, end_datetime):
+    antwoorden = []
+    antwoorden_json = get_antwoorden_first_page_json(start_datetime, end_datetime)
+    for item in antwoorden_json["value"]:
+        antwoorden.append(Antwoord(item))
+    while 'odata.nextLink' in antwoorden_json:
+        params = {
+            '$format': 'json',
+        }
+        r = requests.get(API_ROOT_URL + antwoorden_json['odata.nextLink'], params=params, auth=(USER, PASSWORD))
+        assert r.status_code == 200
+        vragen_metadata = r.json()
+        for item in vragen_metadata['value']:
+            antwoorden.append(Antwoord(item))
+    return antwoorden
 
 
-def get_verslag_handeling():
-    url = "VerslagHandeling"
-    return get_json(url)
-
-
-def get_parlementaire_documenten():
-    url = "ParlementairDocument"
-    return get_json(url)
-
-
-def get_antwoorden():
+def get_antwoorden_first_page_json(start_datetime, end_datetime):
     url = 'ParlementairDocument'
+    filter_str = "Soort eq 'Antwoord'"
+    filter_str += ' and '
+    filter_str += "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)
+    filter_str += ' and '
+    filter_str += "Datum lt " + tkapi.util.datetime_to_odata(end_datetime)
     params = {
-        '$filter': "Soort eq 'Antwoord'",
+        '$filter': filter_str,
         '$expand': 'Zaak',
         '$format': 'json',
     }
     r = requests.get(API_ROOT_URL + url, params=params, auth=(USER, PASSWORD))
-    assert r.status_code == 200
-    return r.json()
-
-
-def get_json(url):
-    params = {
-        '$format': 'json',
-    }
-    r = requests.get(API_ROOT_URL + url, params=params, auth=(USER, PASSWORD))
-    print(r.url)
-    if r.status_code != 200:
-        print(r.text)
     assert r.status_code == 200
     return r.json()
