@@ -7,7 +7,7 @@ class ParlementairDocument():
         self.document_json = document_json
         self.aanhangselnummer = document_json['Aanhangselnummer']
         self.onderwerp = document_json['Onderwerp']
-        self.datum = document_json['Datum']
+        self.datum = tkapi.util.odatedatetime_to_datetime(document_json['Datum'])
         self.id = document_json['Id']
         self.nummer = document_json['Nummer']
         self.soort = document_json['Soort']

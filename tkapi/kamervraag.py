@@ -30,7 +30,7 @@ class KamerVraag(object):
             url = 'https://zoek.officielebekendmakingen.nl/kv-tk-' + self.zaak['Nummer']
             response = requests.get(url)
             assert response.status_code == 200
-            if 'Errors/404.htm' in response.url:
+            if 'Errors/404.htm' in response.url and 'Alias' in self.zaak and self.zaak['Alias']:
                 url = 'https://zoek.officielebekendmakingen.nl/kv-' + self.zaak['Alias']
                 response = requests.get(url)
             if 'Errors/404.htm' in response.url:
@@ -70,6 +70,7 @@ def get_kamervragen(start_datetime, end_datetime):
     vragen_metadata = get_schriftelijke_vragen_first_page_json(start_datetime, end_datetime)
     for item in vragen_metadata['value']:
         vragen.append(KamerVraag(item))
+        print(item['Datum'])
     while 'odata.nextLink' in vragen_metadata:
         params = {
             '$format': 'json',
@@ -79,6 +80,7 @@ def get_kamervragen(start_datetime, end_datetime):
         vragen_metadata = r.json()
         for item in vragen_metadata['value']:
             vragen.append(KamerVraag(item))
+            print(item['Datum'])
     return vragen
 
 
@@ -118,15 +120,17 @@ def get_antwoorden(start_datetime, end_datetime):
     antwoorden_json = get_antwoorden_first_page_json(start_datetime, end_datetime)
     for item in antwoorden_json["value"]:
         antwoorden.append(Antwoord(item))
+        print(item['Datum'])
     while 'odata.nextLink' in antwoorden_json:
         params = {
             '$format': 'json',
         }
         r = requests.get(API_ROOT_URL + antwoorden_json['odata.nextLink'], params=params, auth=(USER, PASSWORD))
         assert r.status_code == 200
-        vragen_metadata = r.json()
-        for item in vragen_metadata['value']:
+        antwoorden_json = r.json()
+        for item in antwoorden_json['value']:
             antwoorden.append(Antwoord(item))
+            print(item['Datum'])
     return antwoorden
 
 
@@ -139,6 +143,7 @@ def get_antwoorden_first_page_json(start_datetime, end_datetime):
     filter_str += "Datum lt " + tkapi.util.datetime_to_odata(end_datetime)
     params = {
         '$filter': filter_str,
+        '$orderby': 'Datum',
         '$expand': 'Zaak',
         '$format': 'json',
     }
