@@ -49,17 +49,18 @@ class Antwoord(object):
         self.document_url = self.get_document_url()
 
     def get_document_url(self):
-        try:
-            url_id = self.document.vergaderjaar.replace('-', '') + '-' + self.document.aanhangselnummer[-4:].lstrip('0')  #20162017-11
-        except Exception as error:
-            tkapi.util.print_pretty(self.document.document_json)
-            raise
+        if not self.document.vergaderjaar:
+            print('document.vergaderjaar is empty, early return')
+            return ''
+        if not self.document.aanhangselnummer:
+            print('document.aanhangselnummer is empty, early return')
+            return ''
+        url_id = self.document.vergaderjaar.replace('-', '') + '-' + self.document.aanhangselnummer[-4:].lstrip('0')  #20162017-11
         url = 'https://zoek.officielebekendmakingen.nl/ah-tk-' + url_id
         response = requests.get(url)
-        # print(response.url)
-        # print(response.content)
         assert response.status_code == 200
         if 'Errors/404.htm' in response.url:
+            print('WARNING: no antwoord document url found')
             tkapi.util.print_pretty(self.document.document_json)
             url = ''
         return url

@@ -1,6 +1,9 @@
 # Secret settings
 local_settings.py
 
+# Generated data
+*.csv
+
 # Development database
 *.sqlite3
 *.sqlite
