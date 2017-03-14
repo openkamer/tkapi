@@ -35,6 +35,9 @@ class KamerVraag(object):
                 response = requests.get(url)
             if 'Errors/404.htm' in response.url:
                 url = ''
+        else:
+            print('no zaak found in metadata')
+            tkapi.util.print_pretty(self.vraag_json)
         return url
 
 
