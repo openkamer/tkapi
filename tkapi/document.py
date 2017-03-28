@@ -2,6 +2,8 @@ import tkapi
 
 
 class ParlementairDocument(tkapi.TKItem):
+    url = 'ParlementairDocument'
+
     def __init__(self, document_json):
         super().__init__(document_json)
         # tkapi.util.print_pretty(document_json)
@@ -34,7 +36,3 @@ class ParlementairDocument(tkapi.TKItem):
     def vergaderjaar(self):
         return self.get_property_or_empty_string('Vergaderjaar')
 
-
-def get_parlementaire_documenten():
-    url = "ParlementairDocument"
-    return tkapi.request_json(url)

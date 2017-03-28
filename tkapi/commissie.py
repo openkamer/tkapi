@@ -3,6 +3,11 @@ from tkapi.persoon import Persoon
 
 
 class Commissie(tkapi.TKItem):
+    url = 'Commissie'
+    params_default = {
+        '$expand': 'Organisatie, Lid/VastPersoon',
+    }
+
     def __init__(self, commissie_json):
         super().__init__(commissie_json)
         self.leden = []
@@ -65,21 +70,3 @@ class CommissieLid(tkapi.TKItem):
             pretty_print += ' - ' + str(self.vast_tot_en_met)
         return pretty_print
 
-
-def get_commissies(max_items=None):
-    commissies = []
-    page = get_commissies_first_page_json()
-    commissie_items = tkapi.get_all_items(page, max_items=max_items)
-    for item in commissie_items:
-        commissies.append(Commissie(item))
-    return commissies
-
-
-def get_commissies_first_page_json():
-    url = 'Commissie'
-    params = {
-        # '$filter': filter_str,
-        # '$orderby': 'Datum',
-        '$expand': 'Organisatie, Lid/VastPersoon',
-    }
-    return tkapi.request_json(url, params)

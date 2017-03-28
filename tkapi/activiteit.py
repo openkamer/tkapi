@@ -2,6 +2,7 @@ import tkapi
 
 
 class Activiteit(tkapi.TKItem):
+
     def __init__(self, activiteit_json):
         super().__init__(activiteit_json)
 

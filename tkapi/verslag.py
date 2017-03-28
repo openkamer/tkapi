@@ -2,15 +2,30 @@ import requests
 
 import tkapi.util
 
-import tkapi.document
+from tkapi.document import ParlementairDocument
 import tkapi.activiteit
 
 
-class VerslagAlgemeenOverleg(tkapi.TKItem):
+class VerslagAlgemeenOverleg(ParlementairDocument):
+    url = 'ParlementairDocument'
+
     def __init__(self, document_json):
         super().__init__(document_json)
-        self.document = tkapi.document.ParlementairDocument(document_json)
         self.document_url = self.get_document_url()
+
+    @staticmethod
+    def params(start_datetime, end_datetime):
+        filter_str = "Soort eq 'Verslag van een algemeen overleg'"
+        filter_str += ' and '
+        filter_str += "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)
+        filter_str += ' and '
+        filter_str += "Datum lt " + tkapi.util.datetime_to_odata(end_datetime)
+        params = {
+            '$filter': filter_str,
+            '$orderby': 'Datum',
+            '$expand': 'Zaak, Activiteit/Voortouwcommissie, Kamerstuk/Kamerstukdossier',  # Activiteit/Vergadering, Activiteit/Voortouwcommissie/Commissie
+        }
+        return params
 
     @property
     def datum(self):
@@ -48,35 +63,9 @@ class VerslagAlgemeenOverleg(tkapi.TKItem):
             assert response.status_code == 200
             if 'Errors/404.htm' in response.url:
                 print('WARNING: no verslag document url found')
-                # tkapi.util.print_pretty(self.document.json)
+                # self.print_json()
                 url = ''
         else:
             print('no dossier or kamerstuk found')
-            # tkapi.util.print_pretty(self.json)
+            # self.print_json()
         return url
-
-
-def get_verslagen_van_algemeen_overleg(start_datetime, end_datetime):
-    verslagen = []
-    first_page = get_verslag_algemeen_overleg_first_page_json(start_datetime, end_datetime)
-    items = tkapi.get_all_items(first_page)
-    for item in items:
-        verslag = VerslagAlgemeenOverleg(item)
-        verslagen.append(verslag)
-        print(verslag.datum)
-    return verslagen
-
-
-def get_verslag_algemeen_overleg_first_page_json(start_datetime, end_datetime):
-    url = 'ParlementairDocument'
-    filter_str = "Soort eq 'Verslag van een algemeen overleg'"
-    filter_str += ' and '
-    filter_str += "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)
-    filter_str += ' and '
-    filter_str += "Datum lt " + tkapi.util.datetime_to_odata(end_datetime)
-    params = {
-        '$filter': filter_str,
-        '$orderby': 'Datum',
-        '$expand': 'Zaak, Activiteit/Voortouwcommissie, Kamerstuk/Kamerstukdossier',  # Activiteit/Vergadering, Activiteit/Voortouwcommissie/Commissie
-    }
-    return tkapi.request_json(url, params)

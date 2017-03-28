@@ -2,8 +2,20 @@ import tkapi
 
 
 class Persoon(tkapi.TKItem):
+    url = 'Persoon'
+
     def __init__(self, persoon_json):
         super().__init__(persoon_json)
+
+    @staticmethod
+    def params(require_surname=True):
+        params = {
+            '$orderby': 'Achternaam',
+            '$expand': 'Fractielid, Functie, Afbeelding',
+        }
+        if require_surname:
+            params['$filter'] = "Achternaam ne null",
+        return params
 
     @property
     def achternaam(self):
@@ -33,23 +45,3 @@ class Persoon(tkapi.TKItem):
         if self.initialen:
             pretty_print += '(' + str(self.initialen) + ')'
         return pretty_print
-
-
-def get_personen(require_surname=True, max_items=None):
-    personen = []
-    page = get_personen_first_page_json(require_surname)
-    commissie_items = tkapi.get_all_items(page, max_items=max_items)
-    for item in commissie_items:
-        personen.append(Persoon(item))
-    return personen
-
-
-def get_personen_first_page_json(require_surname=True):
-    url = 'Persoon'
-    params = {
-        '$orderby': 'Achternaam',
-        '$expand': 'Fractielid, Functie, Afbeelding',
-    }
-    if require_surname:
-        params['$filter'] = "Achternaam ne null",
-    return tkapi.request_json(url, params)
