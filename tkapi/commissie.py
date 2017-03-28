@@ -44,15 +44,11 @@ class CommissieLid(tkapi.TKItem):
 
     @property
     def vast_van(self):
-        if self.json['VastVan']:
-            return tkapi.util.odatedatetime_to_datetime(self.json['VastVan']).date()
-        return None
+        return self.get_date_or_none('VastVan')
 
     @property
     def vast_tot_en_met(self):
-        if self.json['VastTotEnMet']:
-            return tkapi.util.odatedatetime_to_datetime(self.json['VastVan']).date()
-        return None
+        return self.get_date_or_none('VastTotEnMet')
 
     @property
     def persoon(self):
