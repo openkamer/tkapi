@@ -11,4 +11,5 @@ class TestPersoon(unittest.TestCase):
         personen = tkapi.persoon.get_personen(max_items=max_items)
         for persoon in personen:
             print(persoon)
+            print(persoon['Achternaam'])
         self.assertEqual(len(personen), 100)

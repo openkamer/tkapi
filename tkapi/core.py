@@ -5,8 +5,17 @@ import tkapi.util
 
 
 class TKItem(object):
-    def __init__(self, item_json):
+    def __init__(self, item_json, *args, **kwargs):
         self.json = item_json
+
+    def __dict__(self):
+        return self.json
+
+    def __getitem__(self, key):
+        return self.__dict__()[key]
+
+    def __setitem__(self, key, item):
+        self.__dict__()[key] = item
 
     @property
     def id(self):
