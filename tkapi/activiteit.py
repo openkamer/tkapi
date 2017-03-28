@@ -1,9 +1,22 @@
-import tkapi.util
+import tkapi
 
 
-class Activiteit():
+class Activiteit(tkapi.TKItem):
     def __init__(self, activiteit_json):
-        self.begin = tkapi.util.odatedatetime_to_datetime(activiteit_json['Begin'])
-        self.end = tkapi.util.odatedatetime_to_datetime(activiteit_json['Einde'])
-        self.soort = activiteit_json['Soort']
-        self.nummer = activiteit_json['Nummer']
+        super().__init__(activiteit_json)
+
+    @property
+    def begin(self):
+        return self.get_date_or_none('Begin')
+
+    @property
+    def einde(self):
+        return self.get_date_or_none('Einde')
+
+    @property
+    def soort(self):
+        return self.get_property_or_empty_string('Soort')
+
+    @property
+    def soort(self):
+        return self.get_property_or_empty_string('Nummer')

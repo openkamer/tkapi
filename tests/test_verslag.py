@@ -20,4 +20,4 @@ class TestRawApiVerslagAlgemeenOverleg(unittest.TestCase):
         for verslag in verslagen:
             if verslag.activiteit:
                 print(verslag.activiteit.begin.isoformat())
-                print(verslag.activiteit.end.isoformat())
+                print(verslag.activiteit.einde.isoformat())

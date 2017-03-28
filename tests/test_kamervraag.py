@@ -26,7 +26,7 @@ class TestRawApiKamerVraag(unittest.TestCase):
         json = get_schriftelijke_vragen_first_page_json(start_datetime, end_datetime)
         vragen_metdata = json["value"]
         # print(vragen_metdata)
-        self.assertEqual(len(vragen_metdata), 5)
+        self.assertEqual(len(vragen_metdata), 50)
         # print(util.print_pretty(vragen_metdata[1]))
 
 
@@ -40,21 +40,15 @@ class TestObjectKamerVraag(unittest.TestCase):
 
     def test_get_kamervragen_new(self):
         start_datetime = datetime.datetime(year=2015, month=1, day=1)
-        end_datetime = datetime.datetime(year=2015, month=3, day=1)
+        end_datetime = datetime.datetime(year=2015, month=1, day=7)
         kamervragen = get_kamervragen(start_datetime, end_datetime)
-        self.assertEqual(len(kamervragen), 5)
-        self.assertEqual(kamervragen[0].document_url, 'https://zoek.officielebekendmakingen.nl/kv-tk-2015Z01562')
-        self.assertEqual(kamervragen[1].document_url, 'https://zoek.officielebekendmakingen.nl/kv-tk-2015Z01627')
-        self.assertEqual(kamervragen[2].document_url, 'https://zoek.officielebekendmakingen.nl/kv-tk-2015Z01904')
+        self.assertEqual(len(kamervragen), 11)
 
     def test_get_kamervragen_old(self):
         start_datetime = datetime.datetime(year=2008, month=7, day=4)
         end_datetime = datetime.datetime(year=2008, month=7, day=5)
         kamervragen = get_kamervragen(start_datetime, end_datetime)
         self.assertEqual(len(kamervragen), 3)
-        self.assertEqual(kamervragen[0].document_url, 'https://zoek.officielebekendmakingen.nl/kv-2070824590')
-        self.assertEqual(kamervragen[1].document_url, 'https://zoek.officielebekendmakingen.nl/kv-2070824570')
-        self.assertEqual(kamervragen[2].document_url, 'https://zoek.officielebekendmakingen.nl/kv-2070824650')
 
 
 class TestRawApiAntwoord(unittest.TestCase):
@@ -69,20 +63,15 @@ class TestObjectAntwoord(unittest.TestCase):
 
     def test_get_antwoorden_new(self):
         start_datetime = datetime.datetime(year=2015, month=1, day=1)
-        end_datetime = datetime.datetime(year=2015, month=2, day=1)
+        end_datetime = datetime.datetime(year=2015, month=1, day=10)
         antwoorden = get_antwoorden(start_datetime, end_datetime)
-        self.assertEqual(len(antwoorden), 3)
-        self.assertEqual(antwoorden[0].document_url, 'https://zoek.officielebekendmakingen.nl/ah-tk-20142015-991')
-        self.assertEqual(antwoorden[1].document_url, 'https://zoek.officielebekendmakingen.nl/ah-tk-20142015-987')
-        self.assertEqual(antwoorden[2].document_url, 'https://zoek.officielebekendmakingen.nl/ah-tk-20142015-1012')
+        self.assertEqual(len(antwoorden), 10)
 
     def test_get_antwoorden_2010(self):
         start_datetime = datetime.datetime(year=2010, month=1, day=1)
-        end_datetime = datetime.datetime(year=2010, month=3, day=1)
+        end_datetime = datetime.datetime(year=2010, month=1, day=10)
         antwoorden = get_antwoorden(start_datetime, end_datetime)
         self.assertEqual(len(antwoorden), 2)
-        self.assertEqual(antwoorden[0].document_url, 'https://zoek.officielebekendmakingen.nl/ah-tk-20092010-1513')
-        self.assertEqual(antwoorden[1].document_url, 'https://zoek.officielebekendmakingen.nl/ah-tk-20092010-1550')
 
     # NOTE: this test fails because there is no 'Aanhanselnummer' in the document to create the url
     # def test_get_antwoorden_2008(self):

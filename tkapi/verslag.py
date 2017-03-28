@@ -5,28 +5,36 @@ import tkapi.util
 import tkapi.document
 import tkapi.activiteit
 
-from local_settings import USER, PASSWORD, API_ROOT_URL
 
-
-class VerslagAlgemeenOverleg(object):
-    def __init__(self, metadata):
-        self.metadata = metadata
-        self.document = tkapi.document.ParlementairDocument(metadata)
-        self.zaak = None
-        self.activiteit = None
-        self.kamerstuk = None
-        self.dossier = None
-        if metadata['Zaak']:
-            self.zaak = metadata['Zaak'][0]
-        if metadata['Activiteit']:
-            self.activiteit = tkapi.activiteit.Activiteit(metadata['Activiteit'][0])
-        else:
-            print('Geen activiteit gevonden!')
-        if metadata['Kamerstuk']:
-            self.kamerstuk = metadata['Kamerstuk']
-            if self.kamerstuk['Kamerstukdossier']:
-                self.dossier = self.kamerstuk['Kamerstukdossier']
+class VerslagAlgemeenOverleg(tkapi.TKItem):
+    def __init__(self, document_json):
+        super().__init__(document_json)
+        self.document = tkapi.document.ParlementairDocument(document_json)
         self.document_url = self.get_document_url()
+
+    @property
+    def datum(self):
+        return self.get_date_or_none('Datum')
+
+    @property
+    def zaak(self):
+        if self.json['Zaak']:
+            return self.json['Zaak'][0]
+        return None
+
+    @property
+    def activiteit(self):
+        if self.json['Activiteit']:
+            return tkapi.activiteit.Activiteit(self.json['Activiteit'][0])
+        return None
+
+    @property
+    def kamerstuk(self):
+        return self.get_property_or_empty_string('Kamerstuk')
+
+    @property
+    def dossier(self):
+        return self.get_property_or_empty_string('Kamerstukdossier')
 
     def get_document_url(self):
         url = ''
@@ -40,35 +48,26 @@ class VerslagAlgemeenOverleg(object):
             assert response.status_code == 200
             if 'Errors/404.htm' in response.url:
                 print('WARNING: no verslag document url found')
-                tkapi.util.print_pretty(self.document.document_json)
+                # tkapi.util.print_pretty(self.document.json)
                 url = ''
         else:
-            print('no dossier or kamerstuk found in metadata')
-            tkapi.util.print_pretty(self.metadata)
+            print('no dossier or kamerstuk found')
+            # tkapi.util.print_pretty(self.json)
         return url
 
 
 def get_verslagen_van_algemeen_overleg(start_datetime, end_datetime):
     verslagen = []
-    verslagen_metadata = get_verslag_algemeen_overleg_first_page_json(start_datetime, end_datetime)
-    for item in verslagen_metadata['value']:
-        verslagen.append(VerslagAlgemeenOverleg(item))
-        print(item['Datum'])
-    while 'odata.nextLink' in verslagen_metadata:
-        params = {
-            '$format': 'json',
-        }
-        r = requests.get(API_ROOT_URL + verslagen_metadata['odata.nextLink'], params=params, auth=(USER, PASSWORD))
-        assert r.status_code == 200
-        verslagen_metadata = r.json()
-        for item in verslagen_metadata['value']:
-            verslagen.append(VerslagAlgemeenOverleg(item))
-            print(item['Datum'])
+    first_page = get_verslag_algemeen_overleg_first_page_json(start_datetime, end_datetime)
+    items = tkapi.get_all_items(first_page)
+    for item in items:
+        verslag = VerslagAlgemeenOverleg(item)
+        verslagen.append(verslag)
+        print(verslag.datum)
     return verslagen
 
 
 def get_verslag_algemeen_overleg_first_page_json(start_datetime, end_datetime):
-    # TODO: does only get one page of results
     url = 'ParlementairDocument'
     filter_str = "Soort eq 'Verslag van een algemeen overleg'"
     filter_str += ' and '
@@ -78,9 +77,6 @@ def get_verslag_algemeen_overleg_first_page_json(start_datetime, end_datetime):
     params = {
         '$filter': filter_str,
         '$orderby': 'Datum',
-        '$expand': 'Zaak, Activiteit, Kamerstuk/Kamerstukdossier',  # Activiteit/Vergadering, Activiteit/Voortouwcommissie/Commissie
-        '$format': 'json',
+        '$expand': 'Zaak, Activiteit/Voortouwcommissie, Kamerstuk/Kamerstukdossier',  # Activiteit/Vergadering, Activiteit/Voortouwcommissie/Commissie
     }
-    r = requests.get(API_ROOT_URL + url, params=params, auth=(USER, PASSWORD))
-    assert r.status_code == 200
-    return r.json()
+    return tkapi.request_json(url, params)

@@ -1,20 +1,40 @@
-import tkapi.util
+import tkapi
 
 
-class ParlementairDocument():
+class ParlementairDocument(tkapi.TKItem):
     def __init__(self, document_json):
+        super().__init__(document_json)
         # tkapi.util.print_pretty(document_json)
-        self.document_json = document_json
-        self.aanhangselnummer = document_json['Aanhangselnummer']
-        self.onderwerp = document_json['Onderwerp']
-        self.datum = tkapi.util.odatedatetime_to_datetime(document_json['Datum'])
-        self.id = document_json['Id']
-        self.nummer = document_json['Nummer']
-        self.soort = document_json['Soort']
-        self.titel = document_json['Titel']
-        self.vergaderjaar = document_json['Vergaderjaar']
+
+    @property
+    def aanhangselnummer(self):
+        return self.get_property_or_empty_string('Aanhangselnummer')
+
+    @property
+    def onderwerp(self):
+        return self.get_property_or_empty_string('Onderwerp')
+
+    @property
+    def datum(self):
+        return self.get_date_or_none('Datum')
+
+    @property
+    def nummer(self):
+        return self.get_property_or_empty_string('Nummer')
+
+    @property
+    def soort(self):
+        return self.get_property_or_empty_string('Soort')
+
+    @property
+    def title(self):
+        return self.get_property_or_empty_string('Titel')
+
+    @property
+    def vergaderjaar(self):
+        return self.get_property_or_empty_string('Vergaderjaar')
 
 
 def get_parlementaire_documenten():
     url = "ParlementairDocument"
-    return tkapi.util.get_json(url)
+    return tkapi.request_json(url)

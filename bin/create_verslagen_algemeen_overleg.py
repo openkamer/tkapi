@@ -7,7 +7,7 @@ from tkapi.verslag import get_verslagen_van_algemeen_overleg
 
 def main():
     print('BEGIN')
-    year = 2015
+    year = 2011
     start_datetime = datetime.datetime(year=year, month=1, day=1)
     end_datetime = datetime.datetime(year=year+1, month=1, day=1)
     verslagen = get_verslagen_van_algemeen_overleg(start_datetime, end_datetime)
@@ -23,9 +23,9 @@ def main():
             end = ''
             if verslag.dossier['Toevoeging']:
                 toevoeging = verslag.dossier['Toevoeging']
-            if verslag.activiteit:
+            if verslag.activiteit and verslag.activiteit.begin and verslag.activiteit.einde:
                 begin = verslag.activiteit.begin.isoformat()
-                end = verslag.activiteit.end.isoformat()
+                end = verslag.activiteit.einde.isoformat()
             row = ','.join([
                 verslag.document.datum.strftime('%Y-%m-%d'),
                 begin,
