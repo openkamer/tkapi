@@ -8,7 +8,7 @@ class Persoon(tkapi.TKItem):
         super().__init__(persoon_json)
 
     @staticmethod
-    def params(require_surname=True):
+    def get_params_default(require_surname=True):
         params = {
             '$orderby': 'Achternaam',
             '$expand': 'Fractielid, Functie, Afbeelding',

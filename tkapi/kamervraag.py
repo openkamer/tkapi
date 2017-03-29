@@ -11,7 +11,7 @@ class KamerVraag(ParlementairDocument):
         self.document_url = self.get_document_url()
 
     @staticmethod
-    def params(start_datetime, end_datetime):
+    def get_params_default(start_datetime, end_datetime):
         filter_str = "Soort eq 'Schriftelijke vragen'"
         filter_str += ' and '
         filter_str += "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)
@@ -59,7 +59,7 @@ class Antwoord(ParlementairDocument):
         super().__init__(antwoord_json)
 
     @staticmethod
-    def params(start_datetime, end_datetime):
+    def get_params_default(start_datetime, end_datetime):
         filter_str = "Soort eq 'Antwoord'"
         filter_str += ' and '
         filter_str += "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)

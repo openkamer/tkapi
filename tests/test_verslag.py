@@ -2,10 +2,11 @@ import datetime
 import unittest
 
 import tkapi
+from tkapi.verslag import VerslagAlgemeenOverleg
 
 from local_settings import USER, PASSWORD
 
-api = tkapi.Api(user=USER, password=PASSWORD)
+api = tkapi.Api(user=USER, password=PASSWORD, verbose=True)
 
 
 class TestRawApiVerslagAlgemeenOverleg(unittest.TestCase):

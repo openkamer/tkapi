@@ -14,6 +14,10 @@ class TKItem(object):
     def __setitem__(self, key, item):
         self.__dict__()[key] = item
 
+    @staticmethod
+    def get_params_default():
+        raise NotImplementedError
+
     @property
     def id(self):
         return self.get_property_or_empty_string('Id')

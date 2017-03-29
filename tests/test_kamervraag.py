@@ -2,6 +2,7 @@ import unittest
 import datetime
 
 import tkapi
+from tkapi.kamervraag import KamerVraag
 
 from local_settings import USER, PASSWORD
 
@@ -15,8 +16,9 @@ class TestRawApiKamerVraag(unittest.TestCase):
 
     def test_raw_get_kamervraag_by_id(self):
         id = "fb6d90db-e4a3-44e1-97fb-6c7832504fe7"
-        json = api.get_schriftelijke_vraag_json(id)
-        self.assertEqual(json['Nummer'], '2007D05003')
+        kamervraag = api.get_item(KamerVraag, id, params={'$expand': 'Zaak',})
+        kamervraag.print_json()
+        self.assertEqual(kamervraag['Nummer'], '2007D05003')
 
 
 class TestObjectKamerVraag(unittest.TestCase):

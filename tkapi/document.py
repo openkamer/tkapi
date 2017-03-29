@@ -8,6 +8,10 @@ class ParlementairDocument(tkapi.TKItem):
         super().__init__(document_json)
         # tkapi.util.print_pretty(document_json)
 
+    @staticmethod
+    def get_params_default():
+        return {}
+
     @property
     def aanhangselnummer(self):
         return self.get_property_or_empty_string('Aanhangselnummer')

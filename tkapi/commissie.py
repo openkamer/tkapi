@@ -4,15 +4,19 @@ from tkapi.persoon import Persoon
 
 class Commissie(tkapi.TKItem):
     url = 'Commissie'
-    params_default = {
-        '$expand': 'Organisatie, Lid/VastPersoon',
-    }
 
     def __init__(self, commissie_json):
         super().__init__(commissie_json)
         self.leden = []
         for lid in self.json['Lid']:
             self.leden.append(CommissieLid(lid))
+
+    @staticmethod
+    def get_params_default():
+        params_default = {
+            '$expand': 'Organisatie, Lid/VastPersoon',
+        }
+        return params_default
 
     @property
     def afkorting(self):
@@ -41,6 +45,10 @@ class Commissie(tkapi.TKItem):
 class CommissieLid(tkapi.TKItem):
     def __init__(self, lid_json):
         super().__init__(lid_json)
+
+    @staticmethod
+    def get_params_default():
+        return {}
 
     @property
     def vast_van(self):

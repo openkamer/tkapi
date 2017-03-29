@@ -14,7 +14,7 @@ class VerslagAlgemeenOverleg(ParlementairDocument):
         self.document_url = self.get_document_url()
 
     @staticmethod
-    def params(start_datetime, end_datetime):
+    def get_params_default(start_datetime, end_datetime):
         filter_str = "Soort eq 'Verslag van een algemeen overleg'"
         filter_str += ' and '
         filter_str += "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)
@@ -23,7 +23,7 @@ class VerslagAlgemeenOverleg(ParlementairDocument):
         params = {
             '$filter': filter_str,
             '$orderby': 'Datum',
-            '$expand': 'Zaak, Activiteit/Voortouwcommissie, Kamerstuk/Kamerstukdossier',  # Activiteit/Vergadering, Activiteit/Voortouwcommissie/Commissie
+            '$expand': 'Zaak/Voortouwcommissie/Commissie, Activiteit/Voortouwcommissie/Commissie, Activiteit/Volgcommissie/Commissie, Kamerstuk/Kamerstukdossier',  # Activiteit/Vergadering, Activiteit/Voortouwcommissie/Commissie
         }
         return params
 
@@ -42,6 +42,20 @@ class VerslagAlgemeenOverleg(ParlementairDocument):
         if self.json['Activiteit']:
             return tkapi.activiteit.Activiteit(self.json['Activiteit'][0])
         return None
+
+    # @property
+    # def commissie(self):
+    #     if self.zaak and self.zaak['Voortouwcommissie']:
+    #         for commissie in self.zaak['Voortouwcommissie']:
+    #             print(commissie['Commissie'])
+    #         return self.zaak['Voortouwcommissie'][0]['Commissie']
+    #     return None
+    #
+    # @property
+    # def volgcommissie(self):
+    #     if self.activiteit and self.activiteit['Volgcommissie']:
+    #         return self.activiteit['Volgcommissie'][0]['Commissie']
+    #     return None
 
     @property
     def kamerstuk(self):
