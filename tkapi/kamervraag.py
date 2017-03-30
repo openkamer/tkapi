@@ -57,6 +57,7 @@ class Antwoord(ParlementairDocument):
 
     def __init__(self, antwoord_json):
         super().__init__(antwoord_json)
+        self.document_url = self.get_document_url()
 
     @staticmethod
     def get_params_default(start_datetime, end_datetime):
