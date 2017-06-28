@@ -9,8 +9,16 @@ class ParlementairDocument(tkapi.TKItem):
         # tkapi.util.print_pretty(document_json)
 
     @staticmethod
-    def get_params_default():
-        return {}
+    def get_params_default(start_datetime, end_datetime):
+        filter_str = "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)
+        filter_str += ' and '
+        filter_str += "Datum lt " + tkapi.util.datetime_to_odata(end_datetime)
+        params = {
+            '$filter': filter_str,
+            '$orderby': 'Datum',
+            '$expand': 'Zaak',
+        }
+        return params
 
     @property
     def aanhangselnummer(self):
@@ -40,3 +48,8 @@ class ParlementairDocument(tkapi.TKItem):
     def vergaderjaar(self):
         return self.get_property_or_empty_string('Vergaderjaar')
 
+
+""" mogelijk soorten
+
+
+"""

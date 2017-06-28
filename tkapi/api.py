@@ -1,9 +1,12 @@
 import requests
 
 from .commissie import Commissie
+from .document import ParlementairDocument
+from .dossier import Dossier
 from .kamervraag import KamerVraag, Antwoord
 from .persoon import Persoon
 from .verslag import VerslagAlgemeenOverleg
+from .zaak import Zaak
 
 
 class Api(object):
@@ -78,6 +81,15 @@ class Api(object):
             personen.append(Persoon(item))
         return personen
 
+    def get_parlementaire_documenten(self, start_datetime, end_datetime):
+        documenten = []
+        first_page = self.request_json(ParlementairDocument.url, ParlementairDocument.get_params_default(start_datetime, end_datetime))
+        items = self.get_all_items(first_page)
+        for item in items:
+            document = ParlementairDocument(item)
+            documenten.append(document)
+        return documenten
+
     def get_verslagen_van_algemeen_overleg(self, start_datetime, end_datetime):
         verslagen = []
         first_page = self.request_json(VerslagAlgemeenOverleg.url, VerslagAlgemeenOverleg.get_params_default(start_datetime, end_datetime))
@@ -87,3 +99,19 @@ class Api(object):
             verslagen.append(verslag)
             print(verslag.datum)
         return verslagen
+
+    def get_dossiers(self, max_items=None):
+        dossiers = []
+        first_page = self.request_json(Dossier.url, Dossier.get_params_default())
+        items = self.get_all_items(first_page, max_items=max_items)
+        for item in items:
+            dossier = Dossier(item)
+            dossiers.append(dossier)
+        return dossiers
+
+    def get_zaak(self, onderwerp):
+        first_page = self.request_json(Zaak.url, Zaak.filter_onderwerp(onderwerp))
+        items = self.get_all_items(first_page)
+        if items:
+            return Zaak(items[0])
+        return None

@@ -1,7 +1,10 @@
 import datetime
 import sys
+import os
 
-sys.path.append("..")
+parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parentdir)
+
 import tkapi
 
 from local_settings import USER, PASSWORD

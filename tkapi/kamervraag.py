@@ -27,12 +27,28 @@ class KamerVraag(ParlementairDocument):
     @property
     def zaak(self):
         if self.json['Zaak']:
+            assert len(self.json['Zaak']) == 1
             return self.json['Zaak'][0]
+        # Try to find a Zaak by Onderwerp, this is needed because Zaak is missing for old Kamervragen.
+        # TODO: Remove this ugly workaround if TK fixes this data
+        if hasattr(self, 'zaak_found'):
+            return self.zaak_found.json
+        from local_settings import USER, PASSWORD
+        api = tkapi.Api(user=USER, password=PASSWORD)
+        zaak = api.get_zaak(self.onderwerp)
+        if zaak:
+            print('WARNING: no Zaak found, trying to find Zaak by onderwerp')
+            self.zaak_found = zaak
+            return zaak.json
         return None
 
     @property
     def datum(self):
         return self.get_date_or_none('Datum')
+
+    @property
+    def onderwerp(self):
+        return self.json['Onderwerp']
 
     def get_document_url(self):
         url = ''

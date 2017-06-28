@@ -59,11 +59,15 @@ class VerslagAlgemeenOverleg(ParlementairDocument):
 
     @property
     def kamerstuk(self):
-        return self.get_property_or_empty_string('Kamerstuk')
+        if 'Kamerstuk' in self.json:
+            return self.json['Kamerstuk']
+        return None
 
     @property
     def dossier(self):
-        return self.get_property_or_empty_string('Kamerstukdossier')
+        if self.kamerstuk and 'Kamerstukdossier' in self.kamerstuk:
+            return self.kamerstuk['Kamerstukdossier']
+        return None
 
     def get_document_url(self):
         url = ''
