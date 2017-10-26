@@ -25,6 +25,11 @@ class TKItem(object):
     def print_json(self):
         tkapi.util.print_pretty(self.json)
 
+    def get_property_or_none(self, property_key):
+        if property_key in self.json and self.json[property_key]:
+            return self.json[property_key]
+        return None
+
     def get_property_or_empty_string(self, property_key):
         if property_key in self.json and self.json[property_key]:
             return str(self.json[property_key])

@@ -3,6 +3,7 @@ import requests
 from .commissie import Commissie
 from .document import ParlementairDocument
 from .dossier import Dossier
+from .activiteit import Activiteit
 from .kamervraag import KamerVraag, Antwoord
 from .persoon import Persoon
 from .verslag import VerslagAlgemeenOverleg
@@ -16,6 +17,13 @@ class Api(object):
         self._user = user
         self._password = password
         self._verbose = verbose
+
+    @staticmethod
+    def add_filter_to_params(filter, params):
+        if not filter:
+            return
+        params['$filter'] = filter.filter_str
+        return params
 
     def get_all_items(self, page, max_items=None):
         items = []
@@ -33,6 +41,7 @@ class Api(object):
         if not params:
             params = {}
         params['$format'] = 'json',
+        # params['$format'] = 'application/json;odata=fullmetadata',
         r = requests.get(Api.API_ROOT_URL + url, params=params, auth=(self._user, self._password))
         if self._verbose:
             print('url: ' + str(r.url))
@@ -40,6 +49,10 @@ class Api(object):
             print(r.text)
         assert r.status_code == 200
         return r.json()
+
+    def get_item(self, tkitem, id, params):
+        url = tkitem.url + '(guid\'' + id + '\')'
+        return tkitem(self.request_json(url, params))
 
     def get_commissies(self, max_items=None):
         commissies = []
@@ -59,10 +72,6 @@ class Api(object):
             print('create vraag for date: ' + str(vraag.datum))
         return vragen
 
-    def get_item(self, tkitem, id, params):
-        url = tkitem.url + '(guid\'' + id + '\')'
-        return tkitem(self.request_json(url, params))
-
     def get_antwoorden(self, start_datetime, end_datetime):
         first_page = self.request_json(Antwoord.url, Antwoord.get_params_default(start_datetime, end_datetime))
         items = self.get_all_items(first_page)
@@ -81,9 +90,11 @@ class Api(object):
             personen.append(Persoon(item))
         return personen
 
-    def get_parlementaire_documenten(self, start_datetime, end_datetime):
+    def get_parlementaire_documenten(self, filter=None):
         documenten = []
-        first_page = self.request_json(ParlementairDocument.url, ParlementairDocument.get_params_default(start_datetime, end_datetime))
+        params = ParlementairDocument.get_params_default()
+        params = Api.add_filter_to_params(filter, params)
+        first_page = self.request_json(ParlementairDocument.url, params)
         items = self.get_all_items(first_page)
         for item in items:
             document = ParlementairDocument(item)
@@ -100,14 +111,27 @@ class Api(object):
             print(verslag.datum)
         return verslagen
 
-    def get_dossiers(self, max_items=None):
+    def get_dossiers(self, filter=None, max_items=None):
         dossiers = []
-        first_page = self.request_json(Dossier.url, Dossier.get_params_default())
+        params = Dossier.get_params_default()
+        params = Api.add_filter_to_params(filter, params)
+        first_page = self.request_json(Dossier.url, params)
         items = self.get_all_items(first_page, max_items=max_items)
         for item in items:
             dossier = Dossier(item)
             dossiers.append(dossier)
         return dossiers
+
+    def get_zaken(self, filter=None):
+        zaken = []
+        params = Zaak.get_params_default()
+        params = Api.add_filter_to_params(filter, params)
+        first_page = self.request_json(Zaak.url, params)
+        items = self.get_all_items(first_page)
+        for item in items:
+            zaak = Zaak(item)
+            zaken.append(zaak)
+        return zaken
 
     def get_zaak(self, onderwerp):
         first_page = self.request_json(Zaak.url, Zaak.filter_onderwerp(onderwerp))
@@ -115,3 +139,14 @@ class Api(object):
         if items:
             return Zaak(items[0])
         return None
+
+    def get_activiteiten(self, max_items=None):
+        activiteiten = []
+        params = Activiteit.get_params_default()
+        # params['$filter'] = filter.filter_str
+        first_page = self.request_json(Activiteit.url, params)
+        items = self.get_all_items(first_page, max_items=max_items)
+        for item in items:
+            activiteit = Activiteit(item)
+            activiteiten.append(activiteit)
+        return activiteiten

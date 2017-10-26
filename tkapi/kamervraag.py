@@ -1,6 +1,7 @@
 import requests
 
 import tkapi
+from tkapi import api
 from tkapi.document import ParlementairDocument
 
 
@@ -33,8 +34,6 @@ class KamerVraag(ParlementairDocument):
         # TODO: Remove this ugly workaround if TK fixes this data
         if hasattr(self, 'zaak_found'):
             return self.zaak_found.json
-        from local_settings import USER, PASSWORD
-        api = tkapi.Api(user=USER, password=PASSWORD)
         zaak = api.get_zaak(self.onderwerp)
         if zaak:
             print('WARNING: no Zaak found, trying to find Zaak by onderwerp')
