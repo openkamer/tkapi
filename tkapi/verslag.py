@@ -7,25 +7,12 @@ import tkapi.activiteit
 
 
 class VerslagAlgemeenOverleg(ParlementairDocument):
-    url = 'ParlementairDocument'
+    filter_param = "Soort eq 'Verslag van een algemeen overleg'"
+    expand_param = 'Zaak/Voortouwcommissie/Commissie, Activiteit/Voortouwcommissie/Commissie, Activiteit/Volgcommissie/Commissie, Kamerstuk/Kamerstukdossier'
 
     def __init__(self, document_json):
         super().__init__(document_json)
         self.document_url = self.get_document_url()
-
-    @staticmethod
-    def get_params_default(start_datetime, end_datetime):
-        filter_str = "Soort eq 'Verslag van een algemeen overleg'"
-        filter_str += ' and '
-        filter_str += "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)
-        filter_str += ' and '
-        filter_str += "Datum lt " + tkapi.util.datetime_to_odata(end_datetime)
-        params = {
-            '$filter': filter_str,
-            '$orderby': 'Datum',
-            '$expand': 'Zaak/Voortouwcommissie/Commissie, Activiteit/Voortouwcommissie/Commissie, Activiteit/Volgcommissie/Commissie, Kamerstuk/Kamerstukdossier',  # Activiteit/Vergadering, Activiteit/Voortouwcommissie/Commissie
-        }
-        return params
 
     @property
     def datum(self):

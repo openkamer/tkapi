@@ -37,8 +37,12 @@ class TestZaak(unittest.TestCase):
 
     def test_zaak_for_onderwerp(self):
         onderwerp = "Selectie aan de poort bij steeds meer universitaire studies"
-        zaak = api.get_zaak(onderwerp)
-        zaak.print_json()
+        zaak_filter = ZaakFilter()
+        zaak_filter.filter_onderwerp(onderwerp)
+        zaken = api.get_zaken(zaak_filter)
+        self.assertEqual(len(zaken), 1)
+        self.assertEqual(zaken[0].onderwerp, onderwerp)
+        zaken[0].print_json()
 
     def test_zaken_for_date_range(self):
         zaak_filter = ZaakFilter()

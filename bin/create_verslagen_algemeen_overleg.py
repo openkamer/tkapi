@@ -8,6 +8,7 @@ sys.path.append(parentdir)
 from local_settings import USER, PASSWORD
 
 import tkapi
+from tkapi.document import ParlementairDocumentFilter
 
 api = tkapi.Api(user=USER, password=PASSWORD, verbose=True)
 
@@ -17,7 +18,9 @@ def main():
     year = 2011
     start_datetime = datetime.datetime(year=year, month=1, day=1)
     end_datetime = datetime.datetime(year=year+1, month=1, day=1)
-    verslagen = api.get_verslagen_van_algemeen_overleg(start_datetime, end_datetime)
+    pd_filter = ParlementairDocumentFilter()
+    pd_filter.filter_date_range(start_datetime, end_datetime)
+    verslagen = api.get_verslagen_van_algemeen_overleg(pd_filter)
     with open('verslagen_algemeen_overleg_' + str(year) + '.csv', 'w') as fileout:
         header = ','.join(['datum gepubliceerd', 'begin', 'einde', 'dossier nr', 'dossier toevoeging', 'kamerstuk ondernummer', 'url'])
         fileout.write(header + '\n')

@@ -1,5 +1,4 @@
 import tkapi
-
 from tkapi.zaak import Zaak
 
 
@@ -17,17 +16,11 @@ class ParlementairDocumentFilter(tkapi.SoortFilter):
 
 class ParlementairDocument(tkapi.TKItem):
     url = 'ParlementairDocument'
+    expand_param = 'Zaak, Activiteit, Kamerstuk/Kamerstukdossier'
+    orderby_param = 'Datum'
 
     def __init__(self, document_json):
         super().__init__(document_json)
-
-    @staticmethod
-    def get_params_default():
-        params = {
-            '$orderby': 'Datum',
-            '$expand': 'Zaak, Activiteit, Kamerstuk/Kamerstukdossier',
-        }
-        return params
 
     @property
     def aanhangselnummer(self):

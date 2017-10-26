@@ -10,7 +10,6 @@ from tkapi.dossier import DossierFilter
 class TestDossier(unittest.TestCase):
 
     def test_get_dossiers(self):
-        dossier_filter = DossierFilter()
         dossiers = api.get_dossiers(filter=None, max_items=10)
         for dossier in dossiers:
             dossier.print_json()

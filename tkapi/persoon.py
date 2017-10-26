@@ -3,19 +3,12 @@ import tkapi
 
 class Persoon(tkapi.TKItem):
     url = 'Persoon'
+    expand_param = 'Fractielid, Functie, Afbeelding'
+    orderby_param = 'Achternaam'
+    filter_param = 'Achternaam ne null'
 
     def __init__(self, persoon_json):
         super().__init__(persoon_json)
-
-    @staticmethod
-    def get_params_default(require_surname=True):
-        params = {
-            '$orderby': 'Achternaam',
-            '$expand': 'Fractielid, Functie, Afbeelding',
-        }
-        if require_surname:
-            params['$filter'] = "Achternaam ne null",
-        return params
 
     @property
     def achternaam(self):

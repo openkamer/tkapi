@@ -2,6 +2,11 @@ import tkapi.util
 
 
 class TKItem(object):
+    url = ''
+    expand_param = ''
+    orderby_param = ''
+    filter_param = ''
+
     def __init__(self, item_json, *args, **kwargs):
         self.json = item_json
 
@@ -14,9 +19,18 @@ class TKItem(object):
     def __setitem__(self, key, item):
         self.__dict__()[key] = item
 
-    @staticmethod
-    def get_params_default():
-        raise NotImplementedError
+    @classmethod
+    def get_params_default(cls):
+        return {
+            '$expand': cls.expand_param,
+            '$orderby': cls.orderby_param,
+        }
+
+    @classmethod
+    def get_param_expand(cls):
+        return {
+            '$expand': cls.expand_param,
+        }
 
     @property
     def id(self):

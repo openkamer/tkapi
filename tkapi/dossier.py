@@ -36,16 +36,10 @@ class DossierFilter(tkapi.Filter):
 
 class Dossier(tkapi.TKItem):
     url = 'Kamerstukdossier'
+    expand_param = 'Kamerstuk, Kamerstuk/ParlementairDocument/Zaak'
 
     def __init__(self, dossier_json):
         super().__init__(dossier_json)
-
-    @staticmethod
-    def get_params_default():
-        params = {
-            '$expand': 'Kamerstuk, Kamerstuk/ParlementairDocument/Zaak',
-        }
-        return params
 
     @property
     def vetnummer(self):

@@ -2,27 +2,15 @@ import requests
 
 import tkapi
 from tkapi.document import ParlementairDocument
+from tkapi.zaak import ZaakFilter
 
 
-class KamerVraag(ParlementairDocument):
+class Kamervraag(ParlementairDocument):
+    filter_param = "Soort eq 'Schriftelijke vragen'"
 
     def __init__(self, vraag_json):
         super().__init__(vraag_json)
         self.document_url = self.get_document_url()
-
-    @staticmethod
-    def get_params_default(start_datetime, end_datetime):
-        filter_str = "Soort eq 'Schriftelijke vragen'"
-        filter_str += ' and '
-        filter_str += "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)
-        filter_str += ' and '
-        filter_str += "Datum lt " + tkapi.util.datetime_to_odata(end_datetime)
-        params = {
-            '$filter': filter_str,
-            '$orderby': 'Datum',
-            '$expand': 'Zaak',
-        }
-        return params
 
     @property
     def zaak(self):
@@ -33,11 +21,14 @@ class KamerVraag(ParlementairDocument):
         # TODO: Remove this ugly workaround if TK fixes this data
         if hasattr(self, 'zaak_found'):
             return self.zaak_found.json
-        zaak = tkapi.api.get_zaak(self.onderwerp)
-        if zaak:
-            print('WARNING: no Zaak found, trying to find Zaak by onderwerp')
-            self.zaak_found = zaak
-            return zaak.json
+        print('WARNING: no Zaak found, trying to find Zaak by onderwerp')
+        zaak_filter = ZaakFilter()
+        zaak_filter.filter_onderwerp(self.onderwerp)
+        zaken = tkapi.api.get_zaken(zaak_filter)
+        if zaken:
+            print('Info: Zaak found by onderwerp')
+            self.zaak_found = zaken[0]
+            return zaken[0].json
         return None
 
     @property
@@ -68,24 +59,11 @@ class KamerVraag(ParlementairDocument):
 
 
 class Antwoord(ParlementairDocument):
+    filter_param = "Soort eq 'Antwoord'"
 
     def __init__(self, antwoord_json):
         super().__init__(antwoord_json)
         self.document_url = self.get_document_url()
-
-    @staticmethod
-    def get_params_default(start_datetime, end_datetime):
-        filter_str = "Soort eq 'Antwoord'"
-        filter_str += ' and '
-        filter_str += "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)
-        filter_str += ' and '
-        filter_str += "Datum lt " + tkapi.util.datetime_to_odata(end_datetime)
-        params = {
-            '$filter': filter_str,
-            '$orderby': 'Datum',
-            '$expand': 'Zaak',
-        }
-        return params
 
     @property
     def zaak(self):

@@ -25,24 +25,18 @@ class ZaakFilter(tkapi.SoortFilter):
         self.filters.remove(filter_remove_str)
         self.filters.append(filter_new_str)
 
-    def add_onderwerp(self, onderwerp):
+    def filter_onderwerp(self, onderwerp):
         filter_str = "Onderwerp eq " + "'" + onderwerp.replace("'", "''") + "'"
         self.filters.append(filter_str)
 
 
 class Zaak(tkapi.TKItem):
     url = 'Zaak'
+    orderby_param = 'GestartOp'
 
     def __init__(self, zaak_json):
         super().__init__(zaak_json)
         self.filters = []
-
-    @staticmethod
-    def get_params_default():
-        params = {
-            '$orderby': 'GestartOp'
-        }
-        return params
 
     @staticmethod
     def filter_onderwerp(onderwerp):

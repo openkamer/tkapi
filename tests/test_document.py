@@ -21,6 +21,7 @@ class TestParlementairDocument(unittest.TestCase):
         for pd in pds:
             print(pd.title)
             print(pd.activiteit)
+            # pd.print_json()
             # print('\t' + str(pd.dossier.vetnummer))
             # print('\t dossier afgesloten: ' + str(pd.dossier.afgesloten))
             # pd.dossier.print_json()

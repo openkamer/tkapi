@@ -3,15 +3,10 @@ import tkapi
 
 class Activiteit(tkapi.TKItem):
     url = 'Activiteit'
+    expand_param = 'Zaak'
 
     def __init__(self, activiteit_json):
         super().__init__(activiteit_json)
-
-    @staticmethod
-    def get_params_default():
-        return {
-            '$expand': 'Zaak',
-        }
 
     @property
     def begin(self):
