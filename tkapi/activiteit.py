@@ -2,12 +2,16 @@ import tkapi
 
 
 class Activiteit(tkapi.TKItem):
+    url = 'Activiteit'
 
     def __init__(self, activiteit_json):
         super().__init__(activiteit_json)
 
-    def get_params_default(self):
-        return {}
+    @staticmethod
+    def get_params_default():
+        return {
+            '$expand': 'Zaak',
+        }
 
     @property
     def begin(self):
@@ -22,9 +26,55 @@ class Activiteit(tkapi.TKItem):
         return self.get_property_or_empty_string('Soort')
 
     @property
-    def soort(self):
+    def nummer(self):
         return self.get_property_or_empty_string('Nummer')
+
+    @property
+    def zaak(self):
+        from tkapi.zaak import Zaak
+        return Zaak(self.json['Zaak'])
 
     # @property
     # def voortouwcommissie(self):
     #     return self.get_property_or_empty_string('Voortouwcommissie')
+
+
+## Soorten Activiteiten
+# Aanbieding
+# Afscheid
+# Algemeen overleg
+# Beëdiging
+# Begrotingsoverleg
+# Bijzondere procedure
+# Constituerende vergadering
+# Delegatievergadering
+# E-mailprocedure
+# Gesprek
+# Hamerstukken
+# Herdenking
+# Hoorzitting
+# Hoorzitting / rondetafelgesprek
+# Inbreng feitelijke vragen
+# Inbreng schriftelijk overleg
+# Inbreng verslag (wetsvoorstel)
+# Interpellatiedebat
+# Mededelingen
+# Notaoverleg
+# Ontbijtbijeenkomst Parlement en Wetenschap
+# Opening
+# Overig
+# Petitie
+# Plenair debat
+# Procedurevergadering
+# Regeling van werkzaamheden
+# Rondetafelgesprek
+# Schriftelijk commentaar algemeen
+# Schriftelijk commentaar gericht
+# Sluiting
+# Stemmingen
+# Technische briefing
+# Vergadering
+# Verklaring
+# Vragenuur
+# Werkbezoek
+# Wetgevingsoverleg
