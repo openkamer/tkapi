@@ -19,7 +19,7 @@ class TestParlementairDocument(unittest.TestCase):
         # print(pd_filter.filter_str)
         pds = api.get_parlementaire_documenten(pd_filter)
         for pd in pds:
-            print(pd.title)
+            print(pd.titel)
             print(pd.activiteit)
             # pd.print_json()
             # print('\t' + str(pd.dossier.vetnummer))

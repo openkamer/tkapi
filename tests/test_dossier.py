@@ -37,6 +37,32 @@ class TestDossier(unittest.TestCase):
         self.assertEqual(dossiers[0].vetnummer, expected_dossier_vetnummer)
 
 
+class TestDossierKamerstukken(unittest.TestCase):
+
+    def test_dossier_kamerstukken(self):
+        vetnummer = 34693
+        dossier_filter = DossierFilter()
+        dossier_filter.filter_vetnummer(vetnummer)
+        dossiers = api.get_dossiers(filter=dossier_filter)
+        self.assertEqual(len(dossiers), 1)
+        dossier = dossiers[0]
+        kamerstukken = dossier.kamerstukken
+        for kamerstuk in kamerstukken:
+            print('\n============')
+            # kamerstuk.print_json()
+            print(kamerstuk.ondernummer)
+            document = kamerstuk.parlementair_document
+            # document.print_json()
+            print(document.soort)
+            print(document.titel)
+            [print(zaak) for zaak in document.zaken]
+            for zaak in document.zaken:
+                for activiteit in zaak.activiteiten:
+                    activiteit.print_json()
+            for activiteit in document.activiteiten:
+                activiteit.print_json()
+
+
 class TestDossiersForZaken(unittest.TestCase):
     start_datetime = datetime.datetime(year=2016, month=1, day=1)
     end_datetime = datetime.datetime(year=2016, month=4, day=1)
@@ -83,3 +109,16 @@ class TestDossierAfgesloten(unittest.TestCase):
         dossier_filter.filter_afgesloten(True)
         dossiers = api.get_dossiers(filter=dossier_filter)
         self.assertEqual(len(dossiers), 0)  # There are currently no afgesloten dossiers, this will hopefully change in the future
+
+
+class TestWetsvoorstelDossier(unittest.TestCase):
+
+    def test_get_dossiers(self):
+        dossiers = api.get_dossiers(filter=None, max_items=100)
+        for dossier in dossiers:
+            print('\n=======')
+            print(dossier.vetnummer)
+            print(dossier.afgesloten)
+            print(dossier.organisatie)
+            print(dossier.titel)
+            # dossier.print_json()

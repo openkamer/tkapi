@@ -32,11 +32,15 @@ class ZaakFilter(tkapi.SoortFilter):
 
 class Zaak(tkapi.TKItem):
     url = 'Zaak'
+    expand_param = 'Activiteit'
     orderby_param = 'GestartOp'
 
     def __init__(self, zaak_json):
         super().__init__(zaak_json)
-        self.filters = []
+        self.activiteiten_cache = []
+
+    def __str__(self):
+        return 'Zaak: ' + str(self.nummer) + ', soort: ' + self.soort + ', onderwerp: ' + self.onderwerp + ', afgedaan: ' + str(self.afgedaan)
 
     @staticmethod
     def filter_onderwerp(onderwerp):
@@ -70,6 +74,16 @@ class Zaak(tkapi.TKItem):
     def afgedaan(self):
         return self.get_property_or_empty_string('Afgedaan')
 
+    @property
+    def activiteiten(self):
+        if self.activiteiten_cache:
+            return self.activiteiten_cache
+        from tkapi.activiteit import Activiteit
+        activiteiten = []
+        for activiteit_json in self.json['Activiteit']:
+            activiteiten.append(tkapi.api.get_item(Activiteit, activiteit_json['Id']))
+        self.activiteiten_cache = activiteiten
+        return activiteiten
 
 ## Mogelijke Zaak-Soorten zoals gevonden in Zaken van 2016:
 # Amendement

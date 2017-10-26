@@ -5,4 +5,4 @@ from .api import Api
 from . import util
 
 from local_settings import USER, PASSWORD
-api = Api(user=USER, password=PASSWORD, verbose=True)
+api = Api(user=USER, password=PASSWORD, verbose=False)

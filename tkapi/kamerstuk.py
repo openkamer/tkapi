@@ -29,9 +29,7 @@ class Kamerstuk(tkapi.TKItem):
 
     @property
     def parlementair_document(self):
-        self.print_json()
         pd_uid = self.get_property_or_none('ParlementairDocument')['Id']
-        print(pd_uid)
         return tkapi.api.get_item(ParlementairDocument, pd_uid)
 
     @property

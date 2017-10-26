@@ -21,6 +21,8 @@ class ParlementairDocument(tkapi.TKItem):
 
     def __init__(self, document_json):
         super().__init__(document_json)
+        self.activiteiten_cache = []
+        self.zaken_cache = []
 
     @property
     def aanhangselnummer(self):
@@ -43,7 +45,7 @@ class ParlementairDocument(tkapi.TKItem):
         return self.get_property_or_empty_string('Soort')
 
     @property
-    def title(self):
+    def titel(self):
         return self.get_property_or_empty_string('Titel')
 
     @property
@@ -55,8 +57,15 @@ class ParlementairDocument(tkapi.TKItem):
         return self.json['Kamerstuk']
 
     @property
-    def activiteit(self):
-        return self.json['Activiteit']
+    def activiteiten(self):
+        if self.activiteiten_cache:
+            return self.activiteiten_cache
+        from tkapi.activiteit import Activiteit
+        activiteiten = []
+        for activiteit_json in self.json['Activiteit']:
+            activiteiten.append(tkapi.api.get_item(Activiteit, activiteit_json['Id']))
+        self.activiteiten_cache = activiteiten
+        return activiteiten
 
     @property
     def dossier(self):
@@ -69,7 +78,10 @@ class ParlementairDocument(tkapi.TKItem):
 
     @property
     def zaken(self):
+        if self.zaken_cache:
+            return self.zaken_cache
         zaken = []
         for zaak_json in self.json['Zaak']:
-            zaken.append(Zaak(zaak_json))
+            zaken.append(tkapi.api.get_item(Zaak, zaak_json['Id']))
+        self.zaken_cache = zaken
         return zaken

@@ -40,6 +40,7 @@ class Dossier(tkapi.TKItem):
 
     def __init__(self, dossier_json):
         super().__init__(dossier_json)
+        self.zaken_cache = []
 
     @property
     def vetnummer(self):
@@ -50,20 +51,35 @@ class Dossier(tkapi.TKItem):
         return self.json['Afgesloten']
 
     @property
+    def titel(self):
+        return self.get_property_or_empty_string('Titel')
+
+    @property
+    def organisatie(self):
+        return self.get_property_or_empty_string('Organisatie')
+
+    @property
     def kamerstukken(self):
-        return self.json['Kamerstuk']
+        from tkapi.kamerstuk import Kamerstuk
+        kamerstukken = []
+        for kamerstuk in self.json['Kamerstuk']:
+            kamerstukken.append(tkapi.api.get_item(Kamerstuk, kamerstuk['Id']))
+        return kamerstukken
 
     @property
     def zaken(self):
+        if self.zaken_cache:
+            return self.zaken_cache
         zaken = []
         for pd in self.parlementaire_documenten:
             zaken += pd.zaken
+        self.zaken_cache = zaken
         return zaken
 
     @property
     def parlementaire_documenten(self):
         parlementair_documenten = []
-        for kamerstuk in self.kamerstukken:
+        for kamerstuk in self.json['Kamerstuk']:
             if kamerstuk == '':
                 continue
             pds = kamerstuk['ParlementairDocument']
