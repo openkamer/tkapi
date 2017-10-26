@@ -18,9 +18,7 @@ class Commissie(tkapi.TKItem):
 
     def __init__(self, commissie_json):
         super().__init__(commissie_json)
-        self.leden = []
-        for lid in self.json['Lid']:
-            self.leden.append(CommissieLid(lid))
+        self.leden_cache = []
 
     @property
     def afkorting(self):
@@ -37,6 +35,18 @@ class Commissie(tkapi.TKItem):
     @property
     def soort(self):
         return self.get_property_or_empty_string('Soort')
+
+    @property
+    def leden(self):
+        if self.leden_cache:
+            return self.leden_cache
+        if 'Lid' not in self.json:
+            return []
+        leden = []
+        for lid in self.json['Lid']:
+            leden.append(CommissieLid(lid))
+        self.leden_cache = leden
+        return leden
 
     def __str__(self):
         pretty_print = self.id + ': '
