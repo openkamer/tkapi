@@ -2,6 +2,16 @@ import tkapi
 from tkapi.persoon import Persoon
 
 
+class CommissieFilter(tkapi.SoortFilter):
+
+    def __init__(self):
+        super().__init__()
+
+    def filter_naam(self, naam):
+        filter_str = "NaamNL eq " + "'" + naam.replace("'", "''") + "'"
+        self.filters.append(filter_str)
+
+
 class Commissie(tkapi.TKItem):
     url = 'Commissie'
     expand_param = 'Organisatie, Lid/VastPersoon'

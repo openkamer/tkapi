@@ -73,8 +73,8 @@ class Api(object):
             items.append(item)
         return items
 
-    def get_commissies(self, max_items=None):
-        return self.get_items(Commissie, None, max_items)
+    def get_commissies(self, filter=None, max_items=None):
+        return self.get_items(Commissie, filter, max_items)
 
     def get_personen(self, max_items=None):
         return self.get_items(Persoon, filter=None, max_items=max_items)
