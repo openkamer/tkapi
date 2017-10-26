@@ -1,10 +1,6 @@
 import unittest
 
-import tkapi
-
-from local_settings import USER, PASSWORD
-
-api = tkapi.Api(user=USER, password=PASSWORD)
+from tkapi import api
 
 
 class TestPersoon(unittest.TestCase):

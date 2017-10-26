@@ -1,12 +1,8 @@
 import unittest
 import datetime
 
-import tkapi
+from tkapi import api
 from tkapi.kamervraag import KamerVraag
-
-from local_settings import USER, PASSWORD
-
-api = tkapi.Api(user=USER, password=PASSWORD)
 
 
 class TestRawApiKamerVraag(unittest.TestCase):
@@ -34,6 +30,11 @@ class TestObjectKamerVraag(unittest.TestCase):
         end_datetime = datetime.datetime(year=2008, month=7, day=5)
         kamervragen = api.get_kamervragen(start_datetime, end_datetime)
         self.assertEqual(len(kamervragen), 3)
+
+    def test_get_kamervragen_2013(self):
+        start_datetime = datetime.datetime(year=2013, month=1, day=31)
+        end_datetime = datetime.datetime(year=2013, month=2, day=1)
+        kamervragen = api.get_kamervragen(start_datetime, end_datetime)
 
 
 class TestObjectAntwoord(unittest.TestCase):
