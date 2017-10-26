@@ -27,7 +27,6 @@ class TestCommissie(unittest.TestCase):
         com_filter = CommissieFilter()
         com_filter.filter_soort(soort)
         commissies_algemeen = api.get_commissies(com_filter)
-        print(len(commissies_algemeen))
         self.assertTrue(len(commissies_algemeen) > 4)
         for commissie in commissies_algemeen:
             self.assertEqual(commissie.soort, soort)
@@ -37,7 +36,7 @@ class TestCommissie(unittest.TestCase):
         com_filter = CommissieFilter()
         com_filter.filter_naam(naam)
         commissies_algemeen = api.get_commissies(com_filter)
-        print(len(commissies_algemeen))
+        commissies_algemeen[0].print_json()
         self.assertTrue(len(commissies_algemeen), 1)
         for commissie in commissies_algemeen:
             self.assertEqual(commissie.naam, naam)

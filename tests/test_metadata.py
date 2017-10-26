@@ -2,16 +2,20 @@ import unittest
 import datetime
 
 from tkapi import api
-from tkapi.zaak import Zaak
 from tkapi.activiteit import Activiteit
-from tkapi.document import ParlementairDocument
+from tkapi.commissie import Commissie
 from tkapi.dossier import Dossier
+from tkapi.document import ParlementairDocument
+from tkapi.kamerstuk import Kamerstuk
+from tkapi.persoon import Persoon
+from tkapi.zaak import Zaak
 
 
 class TestMetaData(unittest.TestCase):
 
     @staticmethod
     def print_entity_example(item_class, uid):
+        item_class.expand_param = ''
         item = api.get_item(item_class, uid)
         print('\n=== ' + item.url + ' ===')
         item.print_json()
@@ -39,4 +43,22 @@ class TestMetaData(unittest.TestCase):
         TestMetaData.print_entity_example(
             item_class=ParlementairDocument,
             uid='a1ab86b1-a681-4849-b7c8-fe5481fc654d'
+        )
+
+    def test_commissie_metadata(self):
+        TestMetaData.print_entity_example(
+            item_class=Commissie,
+            uid='1349488c-8474-4704-bdad-26fa54ea9789'
+        )
+
+    def test_kamerstuk_metadata(self):
+        TestMetaData.print_entity_example(
+            item_class=Kamerstuk,
+            uid='8d5481b7-d6b9-4452-921d-003819845c48'
+        )
+
+    def test_persoon_metadata(self):
+        TestMetaData.print_entity_example(
+            item_class=Persoon,
+            uid='96a61016-76f0-4e73-80f0-0f554d919a93'
         )

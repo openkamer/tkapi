@@ -82,5 +82,7 @@ class CommissieLid(tkapi.TKItem):
             pretty_print += ': ' + str(self.vast_van)
         if self.vast_tot_en_met:
             pretty_print += ' - ' + str(self.vast_tot_en_met)
+        else:
+            pretty_print += ' - heden'
         return pretty_print
 
