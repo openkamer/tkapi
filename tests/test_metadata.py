@@ -3,11 +3,13 @@ import datetime
 
 from tkapi import api
 from tkapi.activiteit import Activiteit
+from tkapi.besluit import Besluit
 from tkapi.commissie import Commissie
 from tkapi.dossier import Dossier
 from tkapi.document import ParlementairDocument
 from tkapi.kamerstuk import Kamerstuk
 from tkapi.persoon import Persoon
+from tkapi.stemming import Stemming
 from tkapi.zaak import Zaak
 
 
@@ -61,4 +63,16 @@ class TestMetaData(unittest.TestCase):
         TestMetaData.print_entity_example(
             item_class=Persoon,
             uid='96a61016-76f0-4e73-80f0-0f554d919a93'
+        )
+
+    def test_stemming_metadata(self):
+        TestMetaData.print_entity_example(
+            item_class=Stemming,
+            uid='91ce3690-34c7-4834-9982-00a76ec14eed'
+        )
+
+    def test_besluit_metadata(self):
+        TestMetaData.print_entity_example(
+            item_class=Besluit,
+            uid='e2a08641-6ed7-4a96-9353-001663f136ba'
         )

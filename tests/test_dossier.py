@@ -1,10 +1,13 @@
 import datetime
 import unittest
 
+from orderedset import OrderedSet
+
 from tkapi import api
 from tkapi.zaak import ZaakFilter
 from tkapi.dossier import Dossier
 from tkapi.dossier import DossierFilter
+from tkapi.document import ParlementairDocumentFilter
 
 
 class TestDossier(unittest.TestCase):
@@ -40,7 +43,10 @@ class TestDossier(unittest.TestCase):
 class TestDossierKamerstukken(unittest.TestCase):
 
     def test_dossier_kamerstukken(self):
-        vetnummer = 34693
+        # vetnummer = 34693
+        # vetnummer = 34374
+        # vetnummer = 34051
+        vetnummer = 22139
         dossier_filter = DossierFilter()
         dossier_filter.filter_vetnummer(vetnummer)
         dossiers = api.get_dossiers(filter=dossier_filter)
@@ -56,11 +62,22 @@ class TestDossierKamerstukken(unittest.TestCase):
             print(document.soort)
             print(document.titel)
             [print(zaak) for zaak in document.zaken]
+            # [zaak.print_json() for zaak in document.zaken]
             for zaak in document.zaken:
-                for activiteit in zaak.activiteiten:
-                    activiteit.print_json()
-            for activiteit in document.activiteiten:
-                activiteit.print_json()
+                if not zaak.afgedaan:
+                    print('NIET GESLOTEN')
+            for agendapunt in document.agendapunten:
+                agendapunt.print_json()
+            for zaak in document.zaken:
+                if zaak['Besluit']:
+                    zaak.print_json()
+                # for activiteit in zaak.activiteiten:
+                #     activiteit.print_json()
+                for besluit in zaak.besluiten:
+                    # besluit.print_json()
+                    besluit.stemming.print_json()
+            # for activiteit in document.activiteiten:
+            #     activiteit.print_json()
 
 
 class TestDossiersForZaken(unittest.TestCase):
@@ -114,11 +131,59 @@ class TestDossierAfgesloten(unittest.TestCase):
 class TestWetsvoorstelDossier(unittest.TestCase):
 
     def test_get_dossiers(self):
-        dossiers = api.get_dossiers(filter=None, max_items=100)
-        for dossier in dossiers:
-            print('\n=======')
-            print(dossier.vetnummer)
-            print(dossier.afgesloten)
-            print(dossier.organisatie)
-            print(dossier.titel)
-            # dossier.print_json()
+        pd_filter = ParlementairDocumentFilter()
+        # start_datetime = datetime.datetime(year=2016, month=1, day=1)
+        # end_datetime = datetime.datetime(year=2017, month=6, day=1)
+        # pd_filter.filter_date_range(start_datetime, end_datetime)
+        pd_filter.filter_soort('Voorstel van wet', is_or=True)
+        pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
+        pds = api.get_parlementaire_documenten(pd_filter)
+
+        dossier_nrs = []
+        for pd in pds:
+            print(pd.dossier_vetnummer)
+            if pd.dossier_vetnummer:
+                dossier_nrs.append(pd.dossier_vetnummer)
+        dossier_nrs = OrderedSet(sorted(dossier_nrs))
+        print(dossier_nrs)
+        for dossier_nr in dossier_nrs:
+            print(dossier_nr)
+        print(len(dossier_nrs))
+
+    # def test_get_dossiers(self):
+    #     zaak_filter = ZaakFilter()
+    #     start_datetime = datetime.datetime(year=2005, month=1, day=1)
+    #     end_datetime = datetime.datetime.now()
+    #     zaak_filter.filter_date_range(start_datetime, end_datetime)
+    #     zaak_filter.filter_soort('Wetgeving')
+    #     zaken = api.get_zaken(zaak_filter)
+    #     print('Wetgeving zaken found: ' + str(len(zaken)))
+    #     zaak_nummers = [zaak.nummer for zaak in zaken]
+    #     print(zaak_nummers)
+    #     dossiers = []
+    #     nrs_batch = set()
+    #     for zaak_nr in zaak_nummers:
+    #         nrs_batch.add(zaak_nr)
+    #         if len(nrs_batch) < 10:
+    #             continue
+    #         dossier_filter = DossierFilter()
+    #         dossier_filter.filter_zaken(nrs_batch)
+    #         nrs_batch = set()
+    #         dossiers_for_zaak = api.get_dossiers(filter=dossier_filter)
+    #         if dossiers_for_zaak:
+    #             dossiers += dossiers_for_zaak
+    #             print('Dossier found for zaak: ' + str(zaak_nr))
+    #         else:
+    #             print('WARNING: No dossier found for zaak: ' + str(zaak_nr))
+    #     dossier_vetnummers = []
+    #     for dossier in dossiers:
+    #         print('\n=======')
+    #         print(dossier.vetnummer)
+    #         print(dossier.afgesloten)
+    #         print(dossier.organisatie)
+    #         print(dossier.titel)
+    #         dossier_vetnummers.append(dossier.vetnummer)
+    #         # dossier.print_json()
+    #     dossier_nrs = OrderedSet(sorted(dossier_vetnummers))
+    #     print(dossier_nrs)
+    #     print(len(dossier_nrs))
