@@ -1,5 +1,7 @@
 import requests
 
+from .agendapunt import Agendapunt
+from .besluit import Besluit
 from .commissie import Commissie
 from .document import ParlementairDocument
 from .dossier import Dossier
@@ -7,6 +9,7 @@ from .kamerstuk import Kamerstuk
 from .activiteit import Activiteit
 from .kamervraag import Kamervraag, Antwoord
 from .persoon import Persoon
+from .stemming import Stemming
 from .verslag import VerslagAlgemeenOverleg
 from .zaak import Zaak
 
@@ -43,6 +46,7 @@ class Api(object):
             params = {}
         # params['$format'] = 'json',
         params['$format'] = 'application/json;odata=fullmetadata',
+        # print(params)
         r = requests.get(Api.API_ROOT_URL + url, params=params, auth=(self._user, self._password))
         if self._verbose:
             print('url: ' + str(r.url))
@@ -102,3 +106,12 @@ class Api(object):
 
     def get_kamerstukken(self, filter=None, max_items=None):
         return self.get_items(Kamerstuk, filter, max_items)
+
+    def get_stemmingen(self, filter=None, max_items=None):
+        return self.get_items(Stemming, filter, max_items)
+
+    def get_agendapunten(self, filter=None, max_items=None):
+        return self.get_items(Agendapunt, filter, max_items)
+
+    def get_besluiten(self, filter=None, max_items=None):
+        return self.get_items(Besluit, filter, max_items)
