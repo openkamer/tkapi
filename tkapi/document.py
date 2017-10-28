@@ -13,16 +13,25 @@ class ParlementairDocumentFilter(tkapi.SoortFilter):
         filter_str = "Datum lt " + tkapi.util.datetime_to_odata(end_datetime)
         self.filters.append(filter_str)
 
+    def filter_empty_zaak(self):
+        filter_str = 'Zaak/any(z: true)'
+        self.filters.append(filter_str)
+
+    def filter_empty_agendapunt(self):
+        filter_str = 'Agendapunt/any(a: true)'
+        self.filters.append(filter_str)
+
 
 class ParlementairDocument(tkapi.TKItem):
     url = 'ParlementairDocument'
-    expand_param = 'Zaak, Activiteit, Kamerstuk/Kamerstukdossier'
+    expand_param = 'Zaak, Activiteit, Agendapunt, Kamerstuk/Kamerstukdossier'
     orderby_param = 'Datum'
 
     def __init__(self, document_json):
         super().__init__(document_json)
         self.activiteiten_cache = []
         self.zaken_cache = []
+        self.agendapunten_cache = []
 
     @property
     def aanhangselnummer(self):
@@ -68,13 +77,16 @@ class ParlementairDocument(tkapi.TKItem):
         return activiteiten
 
     @property
+    def dossier_vetnummer(self):
+        if self.json['Kamerstuk'] and self.json['Kamerstuk']['Kamerstukdossier'] and self.json['Kamerstuk']['Kamerstukdossier']['Vetnummer']:
+            return self.json['Kamerstuk']['Kamerstukdossier']['Vetnummer']
+        return None
+
+    @property
     def dossier(self):
-        from tkapi.dossier import DossierFilter
-        dossier_filter = DossierFilter()
-        dossier_filter.filter_vetnummer(self.kamerstuk['Kamerstukdossier']['Vetnummer'])
-        dossiers = tkapi.api.get_dossiers(dossier_filter)
-        assert len(dossiers) == 1
-        return dossiers[0]
+        from tkapi.dossier import Dossier
+        dossier = tkapi.api.get_item(Dossier, self.kamerstuk['Kamerstukdossier']['Id'])
+        return dossier
 
     @property
     def zaken(self):
@@ -85,3 +97,14 @@ class ParlementairDocument(tkapi.TKItem):
             zaken.append(tkapi.api.get_item(Zaak, zaak_json['Id']))
         self.zaken_cache = zaken
         return zaken
+
+    @property
+    def agendapunten(self):
+        if self.agendapunten_cache:
+            return self.agendapunten_cache
+        from tkapi.agendapunt import Agendapunt
+        agendapunten = []
+        for agendapunt_json in self.json['Agendapunt']:
+            agendapunten.append(tkapi.api.get_item(Agendapunt, agendapunt_json['Id']))
+        self.agendapunten_cache = agendapunten
+        return agendapunten
