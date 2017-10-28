@@ -55,3 +55,53 @@ class TestZaak(unittest.TestCase):
             # print(zaak.soort)
         for soort in soorten:
             print(soort)
+
+    def test_zaak_nummer(self):
+        zaak_nummer = '2007Z01002'
+        zaak_filter = ZaakFilter()
+        zaak_filter.filter_nummer(zaak_nummer)
+        zaken = api.get_zaken(zaak_filter)
+        self.assertEqual(len(zaken), 1)
+        zaak = zaken[0]
+        self.assertEqual(zaak.nummer, zaak_nummer)
+        zaak.print_json()
+
+class TestZaakRelations(unittest.TestCase):
+
+    def test_zaak_filter_empty_besluiten(self):
+        zaak_filter = ZaakFilter()
+        zaak_filter.filter_empty_besluit()
+        zaken = api.get_zaken(zaak_filter)
+        self.assertEqual(len(zaken), 0)
+
+    def test_zaak_filter_empty_verslagzaak(self):
+        start_datetime = datetime.datetime(year=2016, month=1, day=1)
+        end_datetime = datetime.datetime(year=2016, month=6, day=1)
+        zaak_filter = ZaakFilter()
+        zaak_filter.filter_date_range(start_datetime, end_datetime)
+        zaak_filter.filter_empty_verslagzaak()
+        zaken = api.get_zaken(zaak_filter)
+        print(len(zaken))
+        self.assertTrue(len(zaken) > 35)
+
+    def test_zaak_filter_empty_activiteit(self):
+        start_datetime = datetime.datetime(year=2016, month=1, day=1)
+        end_datetime = datetime.datetime(year=2016, month=2, day=1)
+        zaak_filter = ZaakFilter()
+        zaak_filter.filter_date_range(start_datetime, end_datetime)
+        zaak_filter.filter_empty_activiteit()
+        # zaak_filter.filter_soort('Wetgeving')
+        zaken = api.get_zaken(zaak_filter)
+        print(len(zaken))
+        self.assertTrue(len(zaken) > 50)
+
+    def test_zaak_filter_empty_agendapunt(self):
+        start_datetime = datetime.datetime(year=2016, month=1, day=1)
+        end_datetime = datetime.datetime(year=2016, month=1, day=10)
+        zaak_filter = ZaakFilter()
+        zaak_filter.filter_date_range(start_datetime, end_datetime)
+        zaak_filter.filter_empty_agendapunt()
+        # zaak_filter.filter_soort('Wetgeving')
+        zaken = api.get_zaken(zaak_filter)
+        print(len(zaken))
+        self.assertTrue(len(zaken) > 50)

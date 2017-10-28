@@ -25,38 +25,43 @@ class ZaakFilter(tkapi.SoortFilter):
         self.filters.remove(filter_remove_str)
         self.filters.append(filter_new_str)
 
+    def filter_nummer(self, nummer):
+        filter_str = "Nummer eq " + "'" + nummer.replace("'", "''") + "'"
+        self.filters.append(filter_str)
+
     def filter_onderwerp(self, onderwerp):
         filter_str = "Onderwerp eq " + "'" + onderwerp.replace("'", "''") + "'"
+        self.filters.append(filter_str)
+
+    def filter_empty_besluit(self):
+        filter_str = 'Besluit/any(b: true)'
+        self.filters.append(filter_str)
+
+    def filter_empty_activiteit(self):
+        filter_str = 'Activiteit/any(b: true)'
+        self.filters.append(filter_str)
+
+    def filter_empty_agendapunt(self):
+        filter_str = 'Agendapunt/any(b: true)'
+        self.filters.append(filter_str)
+
+    def filter_empty_verslagzaak(self):
+        filter_str = 'VerslagZaak/any(b: true)'
         self.filters.append(filter_str)
 
 
 class Zaak(tkapi.TKItem):
     url = 'Zaak'
-    expand_param = 'Activiteit'
+    expand_param = 'Activiteit, Besluit, Agendapunt, VerslagZaak'
     orderby_param = 'GestartOp'
 
     def __init__(self, zaak_json):
         super().__init__(zaak_json)
         self.activiteiten_cache = []
+        self.besluiten_cach = []
 
     def __str__(self):
         return 'Zaak: ' + str(self.nummer) + ', soort: ' + self.soort + ', onderwerp: ' + self.onderwerp + ', afgedaan: ' + str(self.afgedaan)
-
-    @staticmethod
-    def filter_onderwerp(onderwerp):
-        filter_str = "Onderwerp eq " + "'" + onderwerp.replace("'", "''") + "'"
-        params = {
-            '$filter': filter_str,
-        }
-        return params
-
-    @staticmethod
-    def add_filter_soort(soort):
-        filter_str = "Soort eq " + "'" + soort.replace("'", "''") + "'"
-        params = {
-            '$filter': filter_str,
-        }
-        return params
 
     @property
     def onderwerp(self):
@@ -72,7 +77,7 @@ class Zaak(tkapi.TKItem):
 
     @property
     def afgedaan(self):
-        return self.get_property_or_empty_string('Afgedaan')
+        return self.json['Afgedaan']
 
     @property
     def activiteiten(self):
@@ -84,6 +89,17 @@ class Zaak(tkapi.TKItem):
             activiteiten.append(tkapi.api.get_item(Activiteit, activiteit_json['Id']))
         self.activiteiten_cache = activiteiten
         return activiteiten
+
+    @property
+    def besluiten(self):
+        if self.besluiten_cach:
+            return self.besluiten_cach
+        from tkapi.besluit import Besluit
+        besluiten = []
+        for besluit_json in self.json['Besluit']:
+            besluiten.append(tkapi.api.get_item(Besluit, besluit_json['Id']))
+        self.besluiten_cach = besluiten
+        return besluiten
 
 ## Mogelijke Zaak-Soorten zoals gevonden in Zaken van 2016:
 # Amendement
