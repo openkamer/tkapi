@@ -21,6 +21,9 @@ class Filter(object):
 
 class SoortFilter(Filter):
 
-    def filter_soort(self, soort):
+    def filter_soort(self, soort, is_or=False):
         filter_str = "Soort eq " + "'" + soort.replace("'", "''") + "'"
-        self.filters.append(filter_str)
+        if is_or:
+            self.filters_or.append(filter_str)
+        else:
+            self.filters.append(filter_str)
