@@ -46,7 +46,8 @@ class TestDossierKamerstukken(unittest.TestCase):
         # vetnummer = 34693
         # vetnummer = 34374
         # vetnummer = 34051
-        vetnummer = 22139
+        # vetnummer = 22139
+        vetnummer = 34723
         dossier_filter = DossierFilter()
         dossier_filter.filter_vetnummer(vetnummer)
         dossiers = api.get_dossiers(filter=dossier_filter)
@@ -140,15 +141,28 @@ class TestWetsvoorstelDossier(unittest.TestCase):
         pds = api.get_parlementaire_documenten(pd_filter)
 
         dossier_nrs = []
+        pds_no_dossier_nr = []
         for pd in pds:
             print(pd.dossier_vetnummer)
             if pd.dossier_vetnummer:
                 dossier_nrs.append(pd.dossier_vetnummer)
+            else:
+                pds_no_dossier_nr.append(pd)
+        for pd in pds_no_dossier_nr:
+            print(pd.nummer)
+            print(pd.onderwerp)
+            try:
+                dossier_nr = int(pd.onderwerp.split('Voorstel van wet')[0].strip())
+                dossier_nrs.append(dossier_nr)
+            except TypeError:
+                continue
+
         dossier_nrs = OrderedSet(sorted(dossier_nrs))
         print(dossier_nrs)
         for dossier_nr in dossier_nrs:
             print(dossier_nr)
         print(len(dossier_nrs))
+
 
     # def test_get_dossiers(self):
     #     zaak_filter = ZaakFilter()
