@@ -17,7 +17,8 @@ class TestParlementairDocument(unittest.TestCase):
             TestParlementairDocument.start_datetime,
             TestParlementairDocument.end_datetime
         )
-        pd_filter.filter_soort('Voorstel van wet')
+        pd_filter.filter_soort('Voorstel van wet', is_or=True)
+        pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
         # print(pd_filter.filter_str)
         pds = api.get_parlementaire_documenten(pd_filter)
         for pd in pds:
@@ -90,3 +91,17 @@ class TestParlementairDocumentSoorten(unittest.TestCase):
         soorten = OrderedSet(sorted(soorten))
         for soort in soorten:
             print(soort)
+
+
+class TestParlementairDocumentTitel(unittest.TestCase):
+
+    def test_filter_titel(self):
+        titel = 'Wijziging van de Warmtewet (wijzigingen naar aanleiding van de evaluatie van de Warmtewet)'
+        pd_filter = ParlementairDocumentFilter()
+        pd_filter.filter_titel(titel)
+        pds = api.get_parlementaire_documenten(pd_filter)
+        self.assertTrue(len(pds) >= 7)
+        for pd in pds:
+            self.assertEqual(pd.titel, titel)
+        # for pd in pds:
+        #     pd.print_json()
