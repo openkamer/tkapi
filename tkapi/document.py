@@ -21,6 +21,14 @@ class ParlementairDocumentFilter(tkapi.SoortFilter):
         filter_str = 'Agendapunt/any(a: true)'
         self.filters.append(filter_str)
 
+    def filter_onderwerp(self, onderwerp):
+        filter_str = 'Onderwerp eq ' + "'" + onderwerp.replace("'", "''") + "'"
+        self.filters.append(filter_str)
+
+    def filter_titel(self, titel):
+        filter_str = 'Titel eq ' + "'" + titel.replace("'", "''") + "'"
+        self.filters.append(filter_str)
+
 
 class ParlementairDocument(tkapi.TKItem):
     url = 'ParlementairDocument'
