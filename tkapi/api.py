@@ -101,8 +101,8 @@ class Api(object):
     def get_zaken(self, filter=None):
         return self.get_items(Zaak, filter, max_items=None)
 
-    def get_activiteiten(self, max_items=None):
-        return self.get_items(Activiteit, filter=None, max_items=max_items)
+    def get_activiteiten(self, filter, max_items=None):
+        return self.get_items(Activiteit, filter=filter, max_items=max_items)
 
     def get_kamerstukken(self, filter=None, max_items=None):
         return self.get_items(Kamerstuk, filter, max_items)
