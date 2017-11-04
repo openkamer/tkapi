@@ -20,7 +20,7 @@ setup(
     ],
     packages=['tkapi'],
     install_requires=[
-        'requests>=2.13.0',
+        'requests>=2.13.0, orderedset>=2.0',
     ],
     test_suite="tests",
 )
