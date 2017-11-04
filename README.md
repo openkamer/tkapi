@@ -1,14 +1,14 @@
 # tkapi
 
-Python bindings for the Tweede Kamer OData API.
+Python bindings for the [Tweede Kamer](https://tweedekamer.nl) [Open Data Portaal](https://opendata.tweedekamer.nl) OData API.
 
 Requires Python 3.3+
 
-WARNING: This is a work in progress. There will be major changes that break everything!
+**WARNING**: This is a work in progress. There will be major changes that break everything!
 
 ## Installation
 ```
-$ pip install tkapi
+pip install tkapi
 ```
 
 ## Usage
@@ -22,11 +22,27 @@ for persoon in personen:
     print(persoon.achternaam)
 ```
 
-Where `USERNAME` and `PASSWORD` are your Tweede Kamer OpenData username and password. You can get one by registering at https://opendata.tweedekamer.nl .
+Where `USERNAME` and `PASSWORD` are your Tweede Kamer OpenData username and password. 
+You can get one by registering at https://opendata.tweedekamer.nl .
 
-## Tests
+## Development
+
+### Tests
 
 Run all tests,
+```bash
+python -m unittest discover
 ```
-$ python -m unittest discover
+
+#### Coverage report
+
+Run all tests,
+```bash
+coverage -m unittest discover
 ```
+
+Create coverage report,
+```bash
+coverage html
+```
+Then visit htmlcov/index.html in your browser.
