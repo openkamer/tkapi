@@ -27,3 +27,10 @@ class SoortFilter(Filter):
             self.filters_or.append(filter_str)
         else:
             self.filters.append(filter_str)
+
+
+class ZaakFilter(Filter):
+
+    def filter_empty_zaak(self):
+        filter_str = 'Zaak/any(z: true)'
+        self.filters.append(filter_str)

@@ -2,7 +2,7 @@ import tkapi
 from tkapi.zaak import Zaak
 
 
-class ParlementairDocumentFilter(tkapi.SoortFilter):
+class ParlementairDocumentFilter(tkapi.SoortFilter, tkapi.ZaakFilter):
 
     def __init__(self):
         super().__init__()
@@ -11,10 +11,6 @@ class ParlementairDocumentFilter(tkapi.SoortFilter):
         filter_str = "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)
         self.filters.append(filter_str)
         filter_str = "Datum lt " + tkapi.util.datetime_to_odata(end_datetime)
-        self.filters.append(filter_str)
-
-    def filter_empty_zaak(self):
-        filter_str = 'Zaak/any(z: true)'
         self.filters.append(filter_str)
 
     def filter_empty_agendapunt(self):

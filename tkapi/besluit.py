@@ -1,14 +1,10 @@
 import tkapi
 
 
-class BesluitFilter(tkapi.SoortFilter):
+class BesluitFilter(tkapi.SoortFilter, tkapi.ZaakFilter):
 
     def __init__(self):
         super().__init__()
-
-    def filter_empty_zaak(self):
-        filter_str = 'Zaak/any(z: true)'
-        self.filters.append(filter_str)
 
 
 class Besluit(tkapi.TKItem):
