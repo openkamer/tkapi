@@ -23,7 +23,7 @@ class TestParlementairDocument(unittest.TestCase):
         pds = api.get_parlementaire_documenten(pd_filter)
         for pd in pds:
             print(pd.titel)
-            print(pd.activiteit)
+            print(pd.activiteiten)
             # pd.print_json()
             # print('\t' + str(pd.dossier.vetnummer))
             # print('\t dossier afgesloten: ' + str(pd.dossier.afgesloten))

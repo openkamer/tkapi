@@ -9,10 +9,10 @@ class TestActiviteit(unittest.TestCase):
     end_datetime = datetime.datetime(year=2017, month=2, day=1)
 
     def test_get_activiteiten(self):
-        activiteiten = api.get_activiteiten(max_items=50)
+        activiteiten = api.get_activiteiten(filter=None, max_items=50)
         soorten = set()
         for activiteit in activiteiten:
-            activiteit.print_json()
+            # activiteit.print_json()
             soorten.add(activiteit.soort)
         for soort in soorten:
             print(soort)
