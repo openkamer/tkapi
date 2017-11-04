@@ -1,12 +1,19 @@
 import tkapi
 
 
+class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakFilter):
+
+    def __init__(self):
+        super().__init__()
+
+
 class Activiteit(tkapi.TKItem):
     url = 'Activiteit'
     expand_param = 'Zaak'
 
     def __init__(self, activiteit_json):
         super().__init__(activiteit_json)
+        self.zaken_cache = []
 
     @property
     def begin(self):
@@ -25,9 +32,15 @@ class Activiteit(tkapi.TKItem):
         return self.get_property_or_empty_string('Nummer')
 
     @property
-    def zaak(self):
+    def zaken(self):
         from tkapi.zaak import Zaak
-        return Zaak(self.json['Zaak'])
+        if self.zaken_cache:
+            return self.zaken_cache
+        zaken = []
+        for zaak_json in self.json['Zaak']:
+            zaken.append(tkapi.api.get_item(Zaak, zaak_json['Id']))
+        self.zaken_cache = zaken
+        return zaken
 
     # @property
     # def voortouwcommissie(self):
