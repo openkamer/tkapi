@@ -66,6 +66,7 @@ class TestZaak(unittest.TestCase):
         self.assertEqual(zaak.nummer, zaak_nummer)
         zaak.print_json()
 
+
 class TestZaakRelations(unittest.TestCase):
 
     def test_zaak_filter_empty_besluiten(self):
