@@ -70,6 +70,10 @@ class ParlementairDocument(tkapi.TKItem):
         return self.get_property_or_empty_string('Vergaderjaar')
 
     @property
+    def alias(self):
+        return self.get_property_or_empty_string('Alias')
+
+    @property
     def kamerstuk(self):
         return self.json['Kamerstuk']
 
