@@ -4,8 +4,11 @@ import datetime
 import unittest
 
 from tkapi import api
+from tkapi.activiteit import ActiviteitFilter
+from tkapi.besluit import BesluitFilter
 from tkapi.document import ParlementairDocument
 from tkapi.document import ParlementairDocumentFilter
+from tkapi.stemming import StemmingFilter
 
 
 class TestWetsvoorstelWithoutDossier(unittest.TestCase):
@@ -38,8 +41,8 @@ class TestKamervragen(unittest.TestCase):
 
     def test_get_kamervragen_2013(self):
         """These kamervragen have no Zaak (essential to match with kamerantwoord)"""
-        start_datetime = datetime.datetime(year=2014, month=1, day=1)
-        end_datetime = datetime.datetime(year=2014, month=2, day=1)
+        start_datetime = datetime.datetime(year=2013, month=1, day=1)
+        end_datetime = datetime.datetime(year=2013, month=2, day=1)
         pd_filter = ParlementairDocumentFilter()
         pd_filter.filter_date_range(start_datetime, end_datetime)
         pd_filter.filter_soort('Schriftelijke vragen')
@@ -57,3 +60,45 @@ class TestKamervragen(unittest.TestCase):
         parlementair_document_id = 'f629d66b-42c1-493f-b081-c4e1ef8c99e1'
         pd = api.get_item(ParlementairDocument, parlementair_document_id)
         self.assertEqual(pd.alias, '2080904960 2080904960')  # this should simply be '2080904960'
+
+
+class TestCommissies(unittest.TestCase):
+
+    def test_commissie_info_missing(self):
+        commissies = api.get_commissies()
+        commissies_without_name = []
+        commissies_with_name = []
+        commissies_with_soort = []
+        for commissie in commissies:
+            if not commissie.naam:
+                commissies_without_name.append(commissie)
+            if not commissie.soort:
+                commissies_with_soort.append(commissie)
+            else:
+                commissies_with_name.append(commissie)
+        # for commissie in commissies_without_name:
+        #     print(commissie.id)
+        self.assertTrue(len(commissies_without_name) >= 130)
+        self.assertTrue(len(commissies_with_soort) >= 191)
+
+
+class TestBesluit(unittest.TestCase):
+
+    def test_besluiten_without_zaak(self):
+        besluit_filter = BesluitFilter()
+        besluit_filter.filter_empty_zaak()
+        besluiten = api.get_besluiten(filter=besluit_filter)
+        self.assertEqual(len(besluiten), 0)  # Not a single Besluit has a Zaak
+
+
+class TestActiviteit(unittest.TestCase):
+
+    def test_activiteit_without_zaak(self):
+        activiteit_filter = ActiviteitFilter()
+        activiteiten = api.get_activiteiten(filter=activiteit_filter, max_items=100)
+        activiteiten_without_zaak = []
+        for activiteit in activiteiten:
+            if not activiteit.zaken:
+                activiteiten_without_zaak.append(activiteit)
+        print(len(activiteiten_without_zaak))
+        self.assertTrue(len(activiteiten_without_zaak) >= 96)
