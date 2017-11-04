@@ -2,7 +2,7 @@ import tkapi
 from tkapi.zaak import Zaak
 
 
-class ParlementairDocumentFilter(tkapi.SoortFilter, tkapi.ZaakFilter):
+class ParlementairDocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
     def __init__(self):
         super().__init__()
@@ -36,6 +36,10 @@ class ParlementairDocument(tkapi.TKItem):
         self.activiteiten_cache = []
         self.zaken_cache = []
         self.agendapunten_cache = []
+
+    @staticmethod
+    def create_filter():
+        return ParlementairDocumentFilter()
 
     @property
     def aanhangselnummer(self):

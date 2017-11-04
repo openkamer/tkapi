@@ -14,6 +14,10 @@ class Stemming(tkapi.TKItem):
     def __init__(self, stemming_json):
         super().__init__(stemming_json)
 
+    @staticmethod
+    def create_filter():
+        return StemmingFilter()
+
     @property
     def soort(self):
         return self.get_property_or_empty_string('Soort')

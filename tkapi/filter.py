@@ -29,7 +29,7 @@ class SoortFilter(Filter):
             self.filters.append(filter_str)
 
 
-class ZaakFilter(Filter):
+class ZaakRelationFilter(Filter):
 
     def filter_empty_zaak(self):
         filter_str = 'Zaak/any(z: true)'

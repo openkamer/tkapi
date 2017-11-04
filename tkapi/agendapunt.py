@@ -16,6 +16,10 @@ class Agendapunt(tkapi.TKItem):
         self.zaken_cache = []
         self.parlementaire_documenten_cache = []
 
+    @staticmethod
+    def create_filter():
+        return AgendapuntFilter()
+
     @property
     def zaken(self):
         if self.zaken_cache:

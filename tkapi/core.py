@@ -7,6 +7,10 @@ class TKItem(object):
     orderby_param = ''
     filter_param = ''
 
+    @staticmethod
+    def create_filter():
+        return NotImplementedError
+
     def __init__(self, item_json, *args, **kwargs):
         self.json = item_json
 

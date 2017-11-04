@@ -1,7 +1,7 @@
 import tkapi
 
 
-class BesluitFilter(tkapi.SoortFilter, tkapi.ZaakFilter):
+class BesluitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
     def __init__(self):
         super().__init__()
@@ -13,6 +13,10 @@ class Besluit(tkapi.TKItem):
 
     def __init__(self, stemming_json):
         super().__init__(stemming_json)
+
+    @staticmethod
+    def create_filter():
+        return BesluitFilter()
 
     @property
     def soort(self):

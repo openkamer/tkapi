@@ -63,6 +63,10 @@ class Zaak(tkapi.TKItem):
     def __str__(self):
         return 'Zaak: ' + str(self.nummer) + ', soort: ' + self.soort + ', onderwerp: ' + self.onderwerp + ', afgedaan: ' + str(self.afgedaan)
 
+    @staticmethod
+    def create_filter():
+        return ZaakFilter()
+
     @property
     def onderwerp(self):
         return self.get_property_or_empty_string('Onderwerp')

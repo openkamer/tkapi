@@ -4,7 +4,7 @@ import unittest
 from orderedset import OrderedSet
 
 from tkapi import api
-from tkapi.document import ParlementairDocumentFilter
+from tkapi.document import ParlementairDocument
 
 
 class TestParlementairDocument(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestParlementairDocument(unittest.TestCase):
     end_datetime = datetime.datetime(year=2017, month=6, day=1)
 
     def test_get_voorstel_van_wet(self):
-        pd_filter = ParlementairDocumentFilter()
+        pd_filter = ParlementairDocument.create_filter()
         pd_filter.filter_date_range(
             TestParlementairDocument.start_datetime,
             TestParlementairDocument.end_datetime
@@ -39,7 +39,7 @@ class TestParlementairDocument(unittest.TestCase):
 class TestParlementairDocumentFilter(unittest.TestCase):
 
     def test_filter_empty_zaak(self):
-        pd_filter = ParlementairDocumentFilter()
+        pd_filter = ParlementairDocument.create_filter()
         start_datetime = datetime.datetime(year=2017, month=1, day=1)
         end_datetime = datetime.datetime(year=2017, month=2, day=1)
         pd_filter.filter_date_range(
@@ -57,7 +57,7 @@ class TestParlementairDocumentFilter(unittest.TestCase):
         print(len(pds))
 
     def test_filter_empty_agendapunt(self):
-        pd_filter = ParlementairDocumentFilter()
+        pd_filter = ParlementairDocument.create_filter()
         start_datetime = datetime.datetime(year=2005, month=1, day=1)
         end_datetime = datetime.datetime.now()
         pd_filter.filter_date_range(
@@ -77,7 +77,7 @@ class TestParlementairDocumentFilter(unittest.TestCase):
 class TestParlementairDocumentSoorten(unittest.TestCase):
 
     def test_all_soorten(self):
-        pd_filter = ParlementairDocumentFilter()
+        pd_filter = ParlementairDocument.create_filter()
         start_datetime = datetime.datetime(year=2010, month=1, day=1)
         end_datetime = datetime.datetime(year=2010, month=2, day=1)
         pd_filter.filter_date_range(
@@ -97,7 +97,7 @@ class TestParlementairDocumentTitel(unittest.TestCase):
 
     def test_filter_titel(self):
         titel = 'Wijziging van de Warmtewet (wijzigingen naar aanleiding van de evaluatie van de Warmtewet)'
-        pd_filter = ParlementairDocumentFilter()
+        pd_filter = ParlementairDocument.create_filter()
         pd_filter.filter_titel(titel)
         pds = api.get_parlementaire_documenten(pd_filter)
         self.assertTrue(len(pds) >= 7)

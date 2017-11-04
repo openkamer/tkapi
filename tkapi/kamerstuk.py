@@ -23,6 +23,10 @@ class Kamerstuk(tkapi.TKItem):
     def __init__(self, kamerstuk_json):
         super().__init__(kamerstuk_json)
 
+    @staticmethod
+    def create_filter():
+        return KamerstukFilter()
+
     @property
     def ondernummer(self):
         return self.get_property_or_empty_string('Ondernummer')

@@ -20,6 +20,10 @@ class Commissie(tkapi.TKItem):
         super().__init__(commissie_json)
         self.leden_cache = []
 
+    @staticmethod
+    def create_filter():
+        return CommissieFilter()
+
     @property
     def afkorting(self):
         return self.get_property_or_empty_string('Afkorting')

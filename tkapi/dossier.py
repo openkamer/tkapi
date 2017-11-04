@@ -42,6 +42,10 @@ class Dossier(tkapi.TKItem):
         super().__init__(dossier_json)
         self.zaken_cache = []
 
+    @staticmethod
+    def create_filter():
+        return DossierFilter()
+
     @property
     def vetnummer(self):
         return self.get_property_or_none('Vetnummer')

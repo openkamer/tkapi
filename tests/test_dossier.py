@@ -4,10 +4,9 @@ import unittest
 from orderedset import OrderedSet
 
 from tkapi import api
-from tkapi.zaak import ZaakFilter
+from tkapi.zaak import Zaak
 from tkapi.dossier import Dossier
-from tkapi.dossier import DossierFilter
-from tkapi.document import ParlementairDocumentFilter
+from tkapi.document import ParlementairDocument
 
 
 class TestDossier(unittest.TestCase):
@@ -19,7 +18,7 @@ class TestDossier(unittest.TestCase):
 
     def test_get_dossier_by_vetnummer(self):
         vetnummer = 34435
-        filter = DossierFilter()
+        filter = Dossier.create_filter()
         filter.filter_vetnummer(vetnummer)
         dossiers = api.get_dossiers(filter=filter)
         self.assertEqual(len(dossiers), 1)
@@ -30,7 +29,7 @@ class TestDossier(unittest.TestCase):
         self.check_dossier_filter('2016Z24906', 34640)
 
     def check_dossier_filter(self, zaak_nr, expected_dossier_vetnummer):
-        dossier_filter = DossierFilter()
+        dossier_filter = Dossier.create_filter()
         dossier_filter.filter_zaak(zaak_nr)
         dossiers = api.get_dossiers(filter=dossier_filter)
         for dossier in dossiers:
@@ -48,7 +47,7 @@ class TestDossierKamerstukken(unittest.TestCase):
         # vetnummer = 34051
         # vetnummer = 22139
         vetnummer = 34723
-        dossier_filter = DossierFilter()
+        dossier_filter = Dossier.create_filter()
         dossier_filter.filter_vetnummer(vetnummer)
         dossiers = api.get_dossiers(filter=dossier_filter)
         self.assertEqual(len(dossiers), 1)
@@ -86,7 +85,7 @@ class TestDossiersForZaken(unittest.TestCase):
     end_datetime = datetime.datetime(year=2016, month=4, day=1)
 
     def test_get_dossiers(self):
-        zaak_filter = ZaakFilter()
+        zaak_filter = Zaak.create_filter()
         zaak_filter.filter_date_range(
             TestDossiersForZaken.start_datetime,
             TestDossiersForZaken.end_datetime
@@ -96,7 +95,7 @@ class TestDossiersForZaken(unittest.TestCase):
 
         print('Wetgeving zaken found: ' + str(len(zaken)))
 
-        dossier_filter = DossierFilter()
+        dossier_filter = Dossier.create_filter()
         zaak_nummers = [zaak.nummer for zaak in zaken]
         print(zaak_nummers)
         dossier_filter.filter_zaken(zaak_nummers)
@@ -123,7 +122,7 @@ class TestDossierAfgesloten(unittest.TestCase):
     end_datetime = datetime.datetime(year=2015, month=1, day=10)
 
     def test_filter_afgesloten(self):
-        dossier_filter = DossierFilter()
+        dossier_filter = Dossier.create_filter()
         dossier_filter.filter_afgesloten(True)
         dossiers = api.get_dossiers(filter=dossier_filter)
         self.assertEqual(len(dossiers), 0)  # There are currently no afgesloten dossiers, this will hopefully change in the future
@@ -132,7 +131,7 @@ class TestDossierAfgesloten(unittest.TestCase):
 class TestWetsvoorstelDossier(unittest.TestCase):
 
     def test_get_dossiers(self):
-        pd_filter = ParlementairDocumentFilter()
+        pd_filter = ParlementairDocument.create_filter()
         # start_datetime = datetime.datetime(year=2016, month=1, day=1)
         # end_datetime = datetime.datetime(year=2017, month=6, day=1)
         # pd_filter.filter_date_range(start_datetime, end_datetime)
@@ -165,7 +164,7 @@ class TestWetsvoorstelDossier(unittest.TestCase):
 
 
     # def test_get_dossiers(self):
-    #     zaak_filter = ZaakFilter()
+    #     zaak_filter = Zaak.create_filter()
     #     start_datetime = datetime.datetime(year=2005, month=1, day=1)
     #     end_datetime = datetime.datetime.now()
     #     zaak_filter.filter_date_range(start_datetime, end_datetime)
@@ -180,7 +179,7 @@ class TestWetsvoorstelDossier(unittest.TestCase):
     #         nrs_batch.add(zaak_nr)
     #         if len(nrs_batch) < 10:
     #             continue
-    #         dossier_filter = DossierFilter()
+    #         dossier_filter = Dossier.create_filter()
     #         dossier_filter.filter_zaken(nrs_batch)
     #         nrs_batch = set()
     #         dossiers_for_zaak = api.get_dossiers(filter=dossier_filter)

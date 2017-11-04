@@ -1,7 +1,7 @@
 import tkapi
 
 
-class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakFilter):
+class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
     def __init__(self):
         super().__init__()
@@ -14,6 +14,10 @@ class Activiteit(tkapi.TKItem):
     def __init__(self, activiteit_json):
         super().__init__(activiteit_json)
         self.zaken_cache = []
+
+    @staticmethod
+    def create_filter():
+        return ActiviteitFilter()
 
     @property
     def begin(self):

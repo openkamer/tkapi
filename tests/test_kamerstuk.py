@@ -3,7 +3,6 @@ import unittest
 
 from tkapi import api
 from tkapi.kamerstuk import Kamerstuk
-from tkapi.kamerstuk import KamerstukFilter
 
 
 class TestKamerstuk(unittest.TestCase):
@@ -21,7 +20,7 @@ class TestKamerstuk(unittest.TestCase):
 
     def test_get_kamerstuk_by_ondernummer(self):
         ondernummer = '82'
-        kamerstuk_filter = KamerstukFilter()
+        kamerstuk_filter = Kamerstuk.create_filter()
         kamerstuk_filter.filter_ondernummer(ondernummer)
         kamerstukken = api.get_kamerstukken(filter=kamerstuk_filter)
         self.assertTrue(len(kamerstukken) > 100)

@@ -2,7 +2,7 @@ import requests
 
 import tkapi
 from tkapi.document import ParlementairDocument
-from tkapi.zaak import ZaakFilter
+from tkapi.zaak import Zaak
 
 
 class Kamervraag(ParlementairDocument):
@@ -22,7 +22,7 @@ class Kamervraag(ParlementairDocument):
         if hasattr(self, 'zaak_found'):
             return self.zaak_found.json
         print('WARNING: no Zaak found, trying to find Zaak by onderwerp')
-        zaak_filter = ZaakFilter()
+        zaak_filter = Zaak.create_filter()
         zaak_filter.filter_onderwerp(self.onderwerp)
         zaken = tkapi.api.get_zaken(zaak_filter)
         if zaken:

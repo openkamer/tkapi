@@ -4,18 +4,16 @@ import datetime
 import unittest
 
 from tkapi import api
-from tkapi.activiteit import ActiviteitFilter
-from tkapi.besluit import BesluitFilter
+from tkapi.activiteit import Activiteit
+from tkapi.besluit import Besluit
 from tkapi.document import ParlementairDocument
-from tkapi.document import ParlementairDocumentFilter
-from tkapi.stemming import StemmingFilter
 
 
 class TestWetsvoorstelWithoutDossier(unittest.TestCase):
 
     def test_get_wetsvoorstel_document_without_kamerstuk_and_dossier(self):
         """These documents lack a kamerstuk with dossiervetnummer"""
-        pd_filter = ParlementairDocumentFilter()
+        pd_filter = ParlementairDocument.create_filter()
         pd_filter.filter_soort('Voorstel van wet', is_or=True)
         pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
         pds = api.get_parlementaire_documenten(pd_filter)
@@ -43,7 +41,7 @@ class TestKamervragen(unittest.TestCase):
         """These kamervragen have no Zaak (essential to match with kamerantwoord)"""
         start_datetime = datetime.datetime(year=2013, month=1, day=1)
         end_datetime = datetime.datetime(year=2013, month=2, day=1)
-        pd_filter = ParlementairDocumentFilter()
+        pd_filter = ParlementairDocument.create_filter()
         pd_filter.filter_date_range(start_datetime, end_datetime)
         pd_filter.filter_soort('Schriftelijke vragen')
         schriftelijke_vragen = api.get_parlementaire_documenten(pd_filter)
@@ -85,7 +83,7 @@ class TestCommissies(unittest.TestCase):
 class TestBesluit(unittest.TestCase):
 
     def test_besluiten_without_zaak(self):
-        besluit_filter = BesluitFilter()
+        besluit_filter = Besluit.create_filter()
         besluit_filter.filter_empty_zaak()
         besluiten = api.get_besluiten(filter=besluit_filter)
         self.assertEqual(len(besluiten), 0)  # Not a single Besluit has a Zaak
@@ -94,11 +92,11 @@ class TestBesluit(unittest.TestCase):
 class TestActiviteit(unittest.TestCase):
 
     def test_activiteit_without_zaak(self):
-        activiteit_filter = ActiviteitFilter()
+        activiteit_filter = Activiteit.create_filter()
         activiteiten = api.get_activiteiten(filter=activiteit_filter, max_items=100)
         activiteiten_without_zaak = []
         for activiteit in activiteiten:
             if not activiteit.zaken:
                 activiteiten_without_zaak.append(activiteit)
-        print(len(activiteiten_without_zaak))
+        print('Actvititeiten without zaak: ' + str(len(activiteiten_without_zaak)))
         self.assertTrue(len(activiteiten_without_zaak) >= 96)

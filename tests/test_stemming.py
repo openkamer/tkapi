@@ -3,7 +3,6 @@ import unittest
 
 from tkapi import api
 from tkapi.stemming import Stemming
-from tkapi.stemming import StemmingFilter
 
 
 class TestStemming(unittest.TestCase):
@@ -16,7 +15,7 @@ class TestStemming(unittest.TestCase):
     #
     # def test_get_dossier_by_vetnummer(self):
     #     vetnummer = 34435
-    #     filter = DossierFilter()
+    #     filter = Dossier.create_filter()
     #     filter.filter_vetnummer(vetnummer)
     #     dossiers = api.get_dossiers(filter=filter)
     #     self.assertEqual(len(dossiers), 1)
@@ -27,7 +26,7 @@ class TestStemming(unittest.TestCase):
     #     self.check_dossier_filter('2016Z24906', 34640)
     #
     # def check_dossier_filter(self, zaak_nr, expected_dossier_vetnummer):
-    #     dossier_filter = DossierFilter()
+    #     dossier_filter = Dossier.create_filter()
     #     dossier_filter.filter_zaak(zaak_nr)
     #     dossiers = api.get_dossiers(filter=dossier_filter)
     #     for dossier in dossiers:

@@ -3,7 +3,6 @@ import datetime
 
 from tkapi import api
 from tkapi.zaak import Zaak
-from tkapi.zaak import ZaakFilter
 
 
 class TestZaak(unittest.TestCase):
@@ -11,7 +10,7 @@ class TestZaak(unittest.TestCase):
     end_datetime = datetime.datetime(year=2016, month=4, day=1)
 
     def test_zaak_filters(self):
-        zaak_filter = ZaakFilter()
+        zaak_filter = Zaak.create_filter()
         zaak_filter.filter_date_range(TestZaak.start_datetime, TestZaak.end_datetime)
         zaak_filter.filter_soort('Wetgeving')
         zaken = api.get_zaken(zaak_filter)
@@ -37,7 +36,7 @@ class TestZaak(unittest.TestCase):
 
     def test_zaak_for_onderwerp(self):
         onderwerp = "Selectie aan de poort bij steeds meer universitaire studies"
-        zaak_filter = ZaakFilter()
+        zaak_filter = Zaak.create_filter()
         zaak_filter.filter_onderwerp(onderwerp)
         zaken = api.get_zaken(zaak_filter)
         self.assertEqual(len(zaken), 1)
@@ -45,7 +44,7 @@ class TestZaak(unittest.TestCase):
         zaken[0].print_json()
 
     def test_zaken_for_date_range(self):
-        zaak_filter = ZaakFilter()
+        zaak_filter = Zaak.create_filter()
         zaak_filter.filter_date_range(TestZaak.start_datetime, TestZaak.end_datetime)
         zaken = api.get_zaken(zaak_filter)
         soorten = set()
@@ -58,7 +57,7 @@ class TestZaak(unittest.TestCase):
 
     def test_zaak_nummer(self):
         zaak_nummer = '2007Z01002'
-        zaak_filter = ZaakFilter()
+        zaak_filter = Zaak.create_filter()
         zaak_filter.filter_nummer(zaak_nummer)
         zaken = api.get_zaken(zaak_filter)
         self.assertEqual(len(zaken), 1)
@@ -70,7 +69,7 @@ class TestZaak(unittest.TestCase):
 class TestZaakRelations(unittest.TestCase):
 
     def test_zaak_filter_empty_besluiten(self):
-        zaak_filter = ZaakFilter()
+        zaak_filter = Zaak.create_filter()
         zaak_filter.filter_empty_besluit()
         zaken = api.get_zaken(zaak_filter)
         self.assertEqual(len(zaken), 0)
@@ -78,7 +77,7 @@ class TestZaakRelations(unittest.TestCase):
     def test_zaak_filter_empty_verslagzaak(self):
         start_datetime = datetime.datetime(year=2016, month=1, day=1)
         end_datetime = datetime.datetime(year=2016, month=6, day=1)
-        zaak_filter = ZaakFilter()
+        zaak_filter = Zaak.create_filter()
         zaak_filter.filter_date_range(start_datetime, end_datetime)
         zaak_filter.filter_empty_verslagzaak()
         zaken = api.get_zaken(zaak_filter)
@@ -88,7 +87,7 @@ class TestZaakRelations(unittest.TestCase):
     def test_zaak_filter_empty_activiteit(self):
         start_datetime = datetime.datetime(year=2016, month=1, day=1)
         end_datetime = datetime.datetime(year=2016, month=2, day=1)
-        zaak_filter = ZaakFilter()
+        zaak_filter = Zaak.create_filter()
         zaak_filter.filter_date_range(start_datetime, end_datetime)
         zaak_filter.filter_empty_activiteit()
         # zaak_filter.filter_soort('Wetgeving')
@@ -99,7 +98,7 @@ class TestZaakRelations(unittest.TestCase):
     def test_zaak_filter_empty_agendapunt(self):
         start_datetime = datetime.datetime(year=2016, month=1, day=1)
         end_datetime = datetime.datetime(year=2016, month=1, day=10)
-        zaak_filter = ZaakFilter()
+        zaak_filter = Zaak.create_filter()
         zaak_filter.filter_date_range(start_datetime, end_datetime)
         zaak_filter.filter_empty_agendapunt()
         # zaak_filter.filter_soort('Wetgeving')
