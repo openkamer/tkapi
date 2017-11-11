@@ -12,6 +12,10 @@ class Kamervraag(ParlementairDocument):
         super().__init__(vraag_json)
         self.document_url = self.get_document_url()
 
+    @staticmethod
+    def nearest(items, pivot):
+        return min(items, key=lambda x: abs(x - pivot))
+
     @property
     def zaak(self):
         if self.json['Zaak']:
@@ -25,10 +29,14 @@ class Kamervraag(ParlementairDocument):
         zaak_filter = Zaak.create_filter()
         zaak_filter.filter_onderwerp(self.onderwerp)
         zaken = tkapi.api.get_zaken(zaak_filter)
-        if zaken:
-            print('Info: Zaak found by onderwerp')
+        if len(zaken) == 1:
+            print('INFO: zaak found for onderwerp')
             self.zaak_found = zaken[0]
             return zaken[0].json
+        elif len(zaken) > 1:
+            print('INFO: multiple zaken found for onderwerp: ' + str(self.onderwerp) + ', ' + str(len(zaken)))
+            self.zaak_found = Kamervraag.nearest(zaken, self.datum)
+            return self.zaak_found
         return None
 
     @property
