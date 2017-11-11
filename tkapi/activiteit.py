@@ -9,11 +9,23 @@ class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
 class Activiteit(tkapi.TKItem):
     url = 'Activiteit'
-    expand_param = 'Zaak'
+    expand_param = 'Zaak, Voortouwcommissie/Commissie, ParlementairDocument'
 
     def __init__(self, activiteit_json):
         super().__init__(activiteit_json)
         self.zaken_cache = []
+        self.parlementaire_documenten_cache = []
+
+    @property
+    def parlementaire_documenten(self):
+        if self.parlementaire_documenten_cache:
+            return self.parlementaire_documenten_cache
+        from tkapi.document import ParlementairDocument
+        parlementaire_documenten = []
+        for pd_json in self.json['ParlementairDocument']:
+            parlementaire_documenten.append(tkapi.api.get_item(ParlementairDocument, pd_json['Id']))
+        self.parlementaire_documenten_cache = parlementaire_documenten
+        return parlementaire_documenten
 
     @staticmethod
     def create_filter():
