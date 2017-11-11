@@ -13,8 +13,8 @@ class Kamervraag(ParlementairDocument):
         self.document_url = self.get_document_url()
 
     @staticmethod
-    def nearest(items, pivot):
-        return min(items, key=lambda x: abs(x - pivot))
+    def nearest(zaken, pivot):
+        return min(zaken, key=lambda zaak: abs(zaak.gestart_op - pivot))
 
     @property
     def zaak(self):
