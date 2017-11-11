@@ -51,6 +51,10 @@ class Dossier(tkapi.TKItem):
         return self.get_property_or_none('Vetnummer')
 
     @property
+    def toevoeging(self):
+        return self.get_property_or_none('Toevoeging')
+
+    @property
     def afgesloten(self):
         return self.json['Afgesloten']
 
