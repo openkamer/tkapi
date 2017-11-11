@@ -86,7 +86,7 @@ class Zaak(tkapi.TKItem):
 
     @property
     def gestart_op(self):
-        return self.get_date_or_none(['GestartOp'])
+        return self.get_date_or_none('GestartOp')
 
     @property
     def activiteiten(self):
