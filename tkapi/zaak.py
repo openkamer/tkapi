@@ -52,13 +52,14 @@ class ZaakFilter(tkapi.SoortFilter):
 
 class Zaak(tkapi.TKItem):
     url = 'Zaak'
-    expand_param = 'Activiteit, Besluit, Agendapunt, VerslagZaak'
+    expand_param = 'Activiteit, Besluit, Agendapunt, VerslagZaak, Voortouwcommissie/Commissie'
     orderby_param = 'GestartOp'
 
     def __init__(self, zaak_json):
         super().__init__(zaak_json)
         self.activiteiten_cache = []
         self.besluiten_cach = []
+        self.voortouwcommissies_cache = []
 
     def __str__(self):
         return 'Zaak: ' + str(self.nummer) + ', soort: ' + self.soort + ', onderwerp: ' + self.onderwerp + ', afgedaan: ' + str(self.afgedaan)
@@ -84,6 +85,10 @@ class Zaak(tkapi.TKItem):
         return self.json['Afgedaan']
 
     @property
+    def gestart_op(self):
+        return self.get_date_or_none(['GestartOp'])
+
+    @property
     def activiteiten(self):
         if self.activiteiten_cache:
             return self.activiteiten_cache
@@ -104,6 +109,18 @@ class Zaak(tkapi.TKItem):
             besluiten.append(tkapi.api.get_item(Besluit, besluit_json['Id']))
         self.besluiten_cach = besluiten
         return besluiten
+
+    @property
+    def voortouwcommissies(self):
+        if self.voortouwcommissies_cache:
+            return self.voortouwcommissies_cache
+        from tkapi.commissie import Commissie
+        voortouwcommissies = []
+        for voortouwcommissie_json in self.json['Voortouwcommissie']:
+            print(voortouwcommissie_json['Commissie']['Id'])
+            voortouwcommissies.append(tkapi.api.get_item(Commissie, voortouwcommissie_json['Commissie']['Id']))
+        self.voortouwcommissies_cache = voortouwcommissies
+        return voortouwcommissies
 
 ## Mogelijke Zaak-Soorten zoals gevonden in Zaken van 2016:
 # Amendement
