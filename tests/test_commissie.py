@@ -54,3 +54,19 @@ class TestCommissieInfo(unittest.TestCase):
         print('\n=== SOORTEN ===')
         for naam in OrderedSet(sorted(namen)):
             print(naam)
+
+
+class TestCommissieActiviteit(unittest.TestCase):
+
+    def test_get_activiteit_actor(self):
+        activiteiten = api.get_activiteiten(filter=None, max_items=50)
+        for activiteit in activiteiten:
+            # activiteit.print_json()
+            if activiteit.json['Voortouwcommissie']:
+                print('has Voortouwcommissie')
+                print(activiteit.json['Voortouwcommissie']['Commissie']['NaamNL'])
+            if activiteit.json['ParlementairDocument']:
+                print('has ParlementairDocument')
+            # print(activiteit.json['Voortouwcommissie'])
+            # print(activiteit.json['ParlementairDocument'])
+        print(len(activiteiten))

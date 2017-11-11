@@ -15,34 +15,27 @@ api = tkapi.Api(user=USER, password=PASSWORD, verbose=True)
 
 def main():
     print('BEGIN')
-    year = 2011
+    year = 2016
     start_datetime = datetime.datetime(year=year, month=1, day=1)
     end_datetime = datetime.datetime(year=year+1, month=1, day=1)
     pd_filter = ParlementairDocument.create_filter()
     pd_filter.filter_date_range(start_datetime, end_datetime)
     verslagen = api.get_verslagen_van_algemeen_overleg(pd_filter)
     with open('verslagen_algemeen_overleg_' + str(year) + '.csv', 'w') as fileout:
-        header = ','.join(['datum gepubliceerd', 'begin', 'einde', 'dossier nr', 'dossier toevoeging', 'kamerstuk ondernummer', 'url'])
+        header = ','.join(['datum gepubliceerd', 'dossier nr', 'dossier toevoeging', 'kamerstuk ondernummer', 'url'])
         fileout.write(header + '\n')
         for verslag in verslagen:
             if not verslag.kamerstuk or not verslag.dossier:
                 print('WARNING: no kamerstuk or dossier number found for ' + str(verslag.datum))
                 continue
             toevoeging = ''
-            begin = ''
-            end = ''
-            if verslag.dossier['Toevoeging']:
-                toevoeging = verslag.dossier['Toevoeging']
-            if verslag.activiteit and verslag.activiteit.begin and verslag.activiteit.einde:
-                begin = verslag.activiteit.begin.isoformat()
-                end = verslag.activiteit.einde.isoformat()
+            if verslag.dossier.toevoeging:
+                toevoeging = verslag.dossier.toevoeging
             row = ','.join([
                 verslag.datum.strftime('%Y-%m-%d'),
-                begin,
-                end,
-                str(verslag.dossier['Vetnummer']),
+                str(verslag.dossier.vetnummer),
                 toevoeging,
-                str(verslag.kamerstuk['Ondernummer']),
+                str(verslag.kamerstuk.ondernummer),
                 verslag.document_url
             ])
             fileout.write(row + '\n')

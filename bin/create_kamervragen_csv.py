@@ -14,7 +14,7 @@ from local_settings import USER, PASSWORD
 
 def main():
     print('BEGIN')
-    year = 2008
+    year = 2017
     month = 1
     api = tkapi.Api(user=USER, password=PASSWORD, verbose=True)
     start_datetime = datetime.datetime(year=year, month=month, day=1)

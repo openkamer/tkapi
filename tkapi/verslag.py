@@ -1,34 +1,14 @@
 import requests
 
-import tkapi.util
-
 from tkapi.document import ParlementairDocument
-import tkapi.activiteit
 
 
 class VerslagAlgemeenOverleg(ParlementairDocument):
     filter_param = "Soort eq 'Verslag van een algemeen overleg'"
-    expand_param = 'Zaak/Voortouwcommissie/Commissie, Activiteit/Voortouwcommissie/Commissie, Activiteit/Volgcommissie/Commissie, Kamerstuk/Kamerstukdossier'
+    # expand_param = 'Zaak/Voortouwcommissie/Commissie, Activiteit/Voortouwcommissie/Commissie, Activiteit/Volgcommissie/Commissie, Kamerstuk/Kamerstukdossier'
 
     def __init__(self, document_json):
         super().__init__(document_json)
-        self.document_url = self.get_document_url()
-
-    @property
-    def datum(self):
-        return self.get_date_or_none('Datum')
-
-    @property
-    def zaak(self):
-        if self.json['Zaak']:
-            return self.json['Zaak'][0]
-        return None
-
-    @property
-    def activiteit(self):
-        if self.json['Activiteit']:
-            return tkapi.activiteit.Activiteit(self.json['Activiteit'][0])
-        return None
 
     # @property
     # def commissie(self):
@@ -45,18 +25,7 @@ class VerslagAlgemeenOverleg(ParlementairDocument):
     #     return None
 
     @property
-    def kamerstuk(self):
-        if 'Kamerstuk' in self.json:
-            return self.json['Kamerstuk']
-        return None
-
-    @property
-    def dossier(self):
-        if self.kamerstuk and 'Kamerstukdossier' in self.kamerstuk:
-            return self.kamerstuk['Kamerstukdossier']
-        return None
-
-    def get_document_url(self):
+    def document_url(self):
         url = ''
         if self.dossier and self.kamerstuk:
             kamerstuk_id = str(self.dossier['Vetnummer'])
