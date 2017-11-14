@@ -7,7 +7,7 @@ setup(
     name='tkapi',
     description='Python bindings for the Tweede Kamer OData API',
     long_description=long_description,
-    version='0.1.2',
+    version='0.2.0',
     url='https://github.com/openkamer/tkapi',
     author='Open Kamer',
     author_email='info@openkamer.org',
@@ -20,7 +20,7 @@ setup(
     ],
     packages=['tkapi'],
     install_requires=[
-        'requests>=2.13.0, orderedset>=2.0',
+        'requests>=2.13.0', 'orderedset>=2.0',
     ],
     test_suite="tests",
 )
