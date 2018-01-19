@@ -21,6 +21,7 @@ class Api(object):
         self._user = user
         self._password = password
         self._verbose = verbose
+        self.api_root = api_root
 
     @staticmethod
     def add_filter_to_params(filter, params):
@@ -47,7 +48,7 @@ class Api(object):
         # params['$format'] = 'json',
         params['$format'] = 'application/json;odata=fullmetadata',
         # print(params)
-        r = requests.get(API_ROOT_URL + url, params=params, auth=(self._user, self._password))
+        r = requests.get(self.api_root + url, params=params, auth=(self._user, self._password))
         if self._verbose:
             print('url: ' + str(r.url))
         if r.status_code != 200:
