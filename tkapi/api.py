@@ -12,12 +12,10 @@ from .persoon import Persoon
 from .stemming import Stemming
 from .verslag import VerslagAlgemeenOverleg
 from .zaak import Zaak
-from local_settings import API_ROOT_URL
-
 
 class Api(object):
 
-    def __init__(self, user, password, api_root=API_ROOT_URL, verbose=False):
+    def __init__(self, user, password, api_root, verbose=False):
         self._user = user
         self._password = password
         self._verbose = verbose
