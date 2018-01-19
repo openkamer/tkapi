@@ -1,7 +1,7 @@
-import datetime
 import unittest
 
 from tkapi import api
+from tkapi.document import ParlementairDocument
 from tkapi.kamerstuk import Kamerstuk
 
 
@@ -35,3 +35,20 @@ class TestKamerstuk(unittest.TestCase):
         self.assertEqual(kamerstuk.ondernummer, '82')
         pd = kamerstuk.parlementair_document
         pd.print_json()
+
+
+class TestWetsvoorstellenDossier(unittest.TestCase):
+
+    def test_get_wetsvoorstel_document_without_kamerstuk_and_dossier(self):
+        pd_filter = ParlementairDocument.create_filter()
+        pd_filter.filter_soort('Voorstel van wet', is_or=True)
+        pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
+        pds = api.get_parlementaire_documenten(pd_filter)
+
+        pds_no_dossier_nr = []
+        for pd in pds:
+            if not pd.dossier_vetnummer:
+                pds_no_dossier_nr.append(pd)
+
+        print('wetsvoorstellen without dossier: ' + str(len(pds_no_dossier_nr)))
+        self.assertEqual(len(pds_no_dossier_nr), 0)

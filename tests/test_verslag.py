@@ -18,7 +18,7 @@ class TestVerslagAlgemeenOverleg(unittest.TestCase):
         for verslag in verslagen:
             print(verslag.onderwerp)
             if verslag.kamerstuk:
-                print(str(verslag.kamerstuk.dossier.vetnummer) +  ', ' + str(verslag.kamerstuk.ondernummer))
+                print(str(verslag.kamerstuk.dossier.vetnummer) + ', ' + str(verslag.kamerstuk.ondernummer))
                 print(verslag.document_url)
             # print(verslag.document_url)
             # verslag.kamerstuk.print_json()

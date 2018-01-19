@@ -18,6 +18,23 @@ class TestRawApiKamerVraag(unittest.TestCase):
         self.assertEqual(kamervraag['Nummer'], '2007D05003')
 
 
+class TestKamervragen(unittest.TestCase):
+
+    def test_get_kamervragen_2013(self):
+        start_datetime = datetime.datetime(year=2013, month=1, day=1)
+        end_datetime = datetime.datetime(year=2013, month=2, day=1)
+        pd_filter = ParlementairDocument.create_filter()
+        pd_filter.filter_date_range(start_datetime, end_datetime)
+        pd_filter.filter_soort('Schriftelijke vragen')
+        schriftelijke_vragen = api.get_parlementaire_documenten(pd_filter)
+        kamervragen_no_zaak = []
+        for kamervraag in schriftelijke_vragen:
+            if not kamervraag.zaken:
+                kamervragen_no_zaak.append(kamervraag)
+        print('kamervragen without zaak: ' + str(len(kamervragen_no_zaak)))
+        self.assertEqual(0, len(kamervragen_no_zaak))
+
+
 class TestObjectKamerVraag(unittest.TestCase):
 
     def test_get_kamervragen_new(self):
