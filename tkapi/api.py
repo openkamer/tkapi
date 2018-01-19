@@ -12,12 +12,12 @@ from .persoon import Persoon
 from .stemming import Stemming
 from .verslag import VerslagAlgemeenOverleg
 from .zaak import Zaak
+from local_settings import API_ROOT_URL
 
 
 class Api(object):
-    API_ROOT_URL = 'https://gegevensmagazijn.tweedekamer.nl/OData/v1/'
 
-    def __init__(self, user, password, verbose=False):
+    def __init__(self, user, password, api_root=API_ROOT_URL, verbose=False):
         self._user = user
         self._password = password
         self._verbose = verbose
@@ -47,7 +47,7 @@ class Api(object):
         # params['$format'] = 'json',
         params['$format'] = 'application/json;odata=fullmetadata',
         # print(params)
-        r = requests.get(Api.API_ROOT_URL + url, params=params, auth=(self._user, self._password))
+        r = requests.get(API_ROOT_URL + url, params=params, auth=(self._user, self._password))
         if self._verbose:
             print('url: ' + str(r.url))
         if r.status_code != 200:
