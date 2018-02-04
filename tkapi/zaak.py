@@ -50,9 +50,10 @@ class ZaakFilter(tkapi.SoortFilter):
         self.filters.append(filter_str)
 
 
-class Zaak(tkapi.TKItem):
+class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Zaak'
-    expand_param = 'Activiteit, Besluit, Agendapunt, VerslagZaak, Voortouwcommissie/Commissie'
+    # expand_param = 'Activiteit, Besluit, Agendapunt, VerslagZaak, Voortouwcommissie/Commissie'
+    expand_param = ''
     orderby_param = 'GestartOp'
 
     def __init__(self, zaak_json):
@@ -89,6 +90,11 @@ class Zaak(tkapi.TKItem):
         return self.get_date_or_none('GestartOp')
 
     @property
+    def agendapunten(self):
+        from tkapi.agendapunt import Agendapunt
+        return self.related_items(Agendapunt)
+
+    @property
     def activiteiten(self):
         if self.activiteiten_cache:
             return self.activiteiten_cache
@@ -121,6 +127,7 @@ class Zaak(tkapi.TKItem):
             voortouwcommissies.append(tkapi.api.get_item(Commissie, voortouwcommissie_json['Commissie']['Id']))
         self.voortouwcommissies_cache = voortouwcommissies
         return voortouwcommissies
+
 
 ## Mogelijke Zaak-Soorten zoals gevonden in Zaken van 2016:
 # Amendement

@@ -13,6 +13,7 @@ from .stemming import Stemming
 from .verslag import VerslagAlgemeenOverleg
 from .zaak import Zaak
 
+
 class Api(object):
 
     def __init__(self, user, password, api_root, verbose=False):
@@ -32,11 +33,13 @@ class Api(object):
         items = []
         for item in page['value']:
             items.append(item)
+            if max_items is not None and len(items) >= max_items:
+                return items
         while 'odata.nextLink' in page:
             page = self.request_json(page['odata.nextLink'])
             for item in page['value']:
                 items.append(item)
-                if max_items and len(items) >= max_items:
+                if max_items is not None and len(items) >= max_items:
                     return items
         return items
 
@@ -59,6 +62,17 @@ class Api(object):
         if params is None:
             params = tkitem.get_param_expand()
         return tkitem(self.request_json(url, params))
+
+    def get_related(self, tkitem, tkitem_related, id, params=None):
+        url = tkitem.url + '(guid\'' + id + '\')'
+        url += '/' + tkitem_related.url
+        if params is None:
+            params = tkitem_related.get_param_expand()
+        related_json = self.request_json(url, params)
+        related_items = []
+        for item_json in related_json['value']:
+            related_items.append(tkitem_related(item_json))
+        return related_items
 
     def get_items(self, item_class, filter=None, max_items=None):
         items = []
@@ -91,8 +105,8 @@ class Api(object):
     def get_antwoorden(self, filter=None, max_items=None):
         return self.get_items(Antwoord, filter, max_items)
 
-    def get_parlementaire_documenten(self, filter=None):
-        return self.get_items(ParlementairDocument, filter, max_items=None)
+    def get_parlementaire_documenten(self, filter=None, max_items=None):
+        return self.get_items(ParlementairDocument, filter, max_items=max_items)
 
     def get_dossiers(self, filter=None, max_items=None):
         return self.get_items(Dossier, filter, max_items)

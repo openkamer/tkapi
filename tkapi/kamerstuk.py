@@ -16,12 +16,17 @@ class KamerstukFilter(tkapi.Filter):
         self.filters.append(filter_str)
 
 
-class Kamerstuk(tkapi.TKItem):
+class Kamerstuk(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Kamerstuk'
-    expand_param = 'Kamerstukdossier, ParlementairDocument'
+    # expand_param = 'Kamerstukdossier, ParlementairDocument'
 
     def __init__(self, kamerstuk_json):
         super().__init__(kamerstuk_json)
+
+    @property
+    def dossiers(self):
+        from tkapi.dossier import Dossier
+        return self.related_items(Dossier)
 
     @staticmethod
     def create_filter():
