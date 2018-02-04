@@ -7,6 +7,26 @@ from tkapi import api
 from tkapi.document import ParlementairDocument
 
 
+class TestSingleParlementairDocument(unittest.TestCase):
+
+    def test_get_voorstel_van_wet(self):
+        pds = api.get_parlementaire_documenten(max_items=1)
+        self.assertEqual(1, len(pds))
+        pd = pds[0]
+        pd.print_json()
+        for zaak in pd.zaken:
+            print(zaak)
+        # use cache
+        for zaak in pd.zaken:
+            print(zaak)
+        for kamerstuk in pd.kamerstukken:
+            print(kamerstuk)
+        for agendapunt in pd.agendapunten:
+            print(agendapunt)
+        for dossier in pd.dossiers:
+            print(dossier)
+
+
 class TestParlementairDocument(unittest.TestCase):
     start_datetime = datetime.datetime(year=2017, month=1, day=1)
     end_datetime = datetime.datetime(year=2017, month=6, day=1)
