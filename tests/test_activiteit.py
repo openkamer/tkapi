@@ -12,13 +12,13 @@ class TestActiviteit(unittest.TestCase):
         activiteiten = api.get_activiteiten(filter=None, max_items=50)
         soorten = set()
         for activiteit in activiteiten:
-            # activiteit.print_json()
+            activiteit.print_json()
             soorten.add(activiteit.soort)
         for soort in soorten:
             print(soort)
 
     def test_activiteit_voortouwcommissies(self):
-        activiteiten = api.get_activiteiten(filter=None, max_items=1000)
+        activiteiten = api.get_activiteiten(filter=None, max_items=10)
         for activiteit in activiteiten:
             if 'Voortouwcommissie' in activiteit.json and activiteit.json['Voortouwcommissie'] is not None:
                 if 'Commissie' in activiteit.json['Voortouwcommissie']:
@@ -26,7 +26,7 @@ class TestActiviteit(unittest.TestCase):
                     print(activiteit.json['Voortouwcommissie']['Commissie']['NaamNL'])
 
     def test_activiteit_documenten(self):
-        activiteiten = api.get_activiteiten(filter=None, max_items=200)
+        activiteiten = api.get_activiteiten(filter=None, max_items=10)
         for activiteit in activiteiten:
             for pd in activiteit.parlementaire_documenten:
                 if pd.kamerstuk:

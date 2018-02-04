@@ -26,7 +26,7 @@ class TestMetaData(unittest.TestCase):
     def test_activiteit_metadata(self):
         TestMetaData.print_entity_example(
             item_class=Activiteit,
-            uid='01aeb96f-ad46-48ec-9213-000ab9dbaf75'
+            uid='9763a274-42ff-469f-a9ed-003b0feae686'
         )
 
     def test_zaak_metadata(self):
