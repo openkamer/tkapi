@@ -16,7 +16,7 @@ from .zaak import Zaak
 
 class Api(object):
 
-    def __init__(self, user, password, api_root, verbose=False):
+    def __init__(self, user, password, api_root='https://gegevensmagazijn.tweedekamer.nl/OData/v3/1.0/', verbose=False):
         self._user = user
         self._password = password
         self._verbose = verbose

@@ -10,13 +10,15 @@ sys.path.append(parentdir)
 import tkapi
 from tkapi.document import ParlementairDocument
 
-from local_settings import USER, PASSWORD
+from local_settings import USER, PASSWORD, API_ROOT_URL
 
-api = tkapi.Api(user=USER, password=PASSWORD, verbose=True)
+api = tkapi.Api(user=USER, password=PASSWORD, api_root=API_ROOT_URL, verbose=True)
 
 
 def main():
     print('BEGIN')
+
+    out_dir = os.path.join(parentdir, '../ok-tk-data/wetsvoorstellen/')
     pd_filter = ParlementairDocument.create_filter()
     # start_datetime = datetime.datetime(year=2016, month=1, day=1)
     # end_datetime = datetime.datetime(year=2017, month=6, day=1)
@@ -34,9 +36,15 @@ def main():
             pds_no_dossier_nr.append(pd)
     for pd in pds_no_dossier_nr:
         try:
-            dossier_nr = int(pd.onderwerp.split('Voorstel van wet')[0].strip())
+            dossier_nr_str = pd.onderwerp.lower().split('voorstel van wet')[0].strip()
+            if dossier_nr_str == '':
+                print('WARNING: empty dossier nr in: ' + pd.onderwerp)
+                continue
+            dossier_nr_str = dossier_nr_str.split('(')[0].strip()  # for Rijkswetten '(R2096)' remove the rijkswet ID
+            dossier_nr = int(dossier_nr_str)
             dossier_nrs.append(dossier_nr)
-        except TypeError:
+        except (TypeError, ValueError):
+            print('WARNING: could not extract dossier nr from: ' + pd.onderwerp)
             continue
 
     dossier_nrs = OrderedSet(sorted(dossier_nrs))
@@ -45,7 +53,7 @@ def main():
         print(dossier_nr)
     print(len(dossier_nrs))
 
-    with open('wetsvoorstellen_dossier_ids' + '.txt', 'w') as fileout:
+    with open(os.path.join(out_dir, 'wetsvoorstellen_dossier_ids' + '.txt'), 'w') as fileout:
         for dossier_nr in dossier_nrs:
             fileout.write(str(dossier_nr) + '\n')
     print('END')
