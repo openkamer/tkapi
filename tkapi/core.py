@@ -87,3 +87,9 @@ class TKItemRelated(object):
         items = tkapi.api.get_related(self.__class__, tkitem, self.json['Id'])
         self.set_cache(tkitem, items)
         return items
+
+    def related_item(self, tkitem):
+        related_items = self.related_items(tkitem)
+        if related_items:
+            return related_items[0]
+        return None

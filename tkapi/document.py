@@ -62,9 +62,9 @@ class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
         return dossiers
 
     @property
-    def kamerstukken(self):
+    def kamerstuk(self):
         from tkapi.kamerstuk import Kamerstuk
-        return self.related_items(Kamerstuk)
+        return self.related_item(Kamerstuk)
 
     @property
     def aanhangselnummer(self):
@@ -100,7 +100,6 @@ class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def dossier_vetnummer(self):
-        for kamerstuk in self.kamerstukken:
-            if kamerstuk.dossier and kamerstuk.dossier.vetnummer:
-                return kamerstuk.dossier.vetnummer
+        if self.kamerstuk and self.kamerstuk.dossier and self.kamerstuk.dossier.vetnummer:
+            return self.kamerstuk.dossier.vetnummer
         return None

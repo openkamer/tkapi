@@ -82,6 +82,11 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_items(VoortouwCommissie)
 
     @property
+    def dossier(self):
+        from tkapi.dossier import Dossier
+        return self.related_item(Dossier)
+
+    @property
     def onderwerp(self):
         return self.get_property_or_empty_string('Onderwerp')
 

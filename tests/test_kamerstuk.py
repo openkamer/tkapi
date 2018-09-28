@@ -27,7 +27,7 @@ class TestKamerstuk(unittest.TestCase):
         kamerstukken[0].print_json()
         for kamerstuk in kamerstukken:
             self.assertEqual(kamerstuk.ondernummer, ondernummer)
-        self.assertGreater(kamerstukken, 0)
+        self.assertGreater(len(kamerstukken), 0)
 
     def test_get_kamerstuk_parlementair_document(self):
         ks_uid = '79471b03-156c-4124-9203-0041dee38963'

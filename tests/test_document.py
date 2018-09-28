@@ -16,8 +16,7 @@ class TestSingleParlementairDocument(unittest.TestCase):
         pd.print_json()
         for zaak in pd.zaken:
             print(zaak)
-        for kamerstuk in pd.kamerstukken:
-            print(kamerstuk)
+        print(pd.kamerstuk)
         for agendapunt in pd.agendapunten:
             print(agendapunt)
         for dossier in pd.dossiers:

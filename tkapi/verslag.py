@@ -29,11 +29,10 @@ class VerslagAlgemeenOverleg(ParlementairDocument):
         url = ''
         if self.dossiers:
             dossier = self.dossiers[0]
-            kamerstuk = self.kamerstukken[0]
             kamerstuk_id = str(dossier.vetnummer)
             if dossier.toevoeging and '(' not in dossier.toevoeging:
                 kamerstuk_id += '-' + str(dossier.toevoeging)
-            kamerstuk_id += '-' + str(kamerstuk.ondernummer)
+            kamerstuk_id += '-' + str(self.kamerstuk.ondernummer)
             url = 'https://zoek.officielebekendmakingen.nl/kst-' + kamerstuk_id
             response = requests.get(url)
             assert response.status_code == 200

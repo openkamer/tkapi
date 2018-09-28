@@ -1,9 +1,6 @@
-import json
-
 import tkapi
 
 from tkapi.document import ParlementairDocument
-from tkapi.dossier import Dossier
 
 
 class KamerstukFilter(tkapi.Filter):
@@ -28,6 +25,10 @@ class Kamerstuk(tkapi.TKItemRelated, tkapi.TKItem):
         return KamerstukFilter()
 
     @property
+    def parlementair_document(self):
+        return self.related_item(ParlementairDocument)
+
+    @property
     def dossiers(self):
         from tkapi.dossier import Dossier
         return self.related_items(Dossier)
@@ -35,11 +36,6 @@ class Kamerstuk(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def ondernummer(self):
         return self.get_property_or_empty_string('Ondernummer')
-
-    @property
-    def parlementair_document(self):
-        pd_uid = self.get_property_or_none('ParlementairDocument')['Id']
-        return tkapi.api.get_item(ParlementairDocument, pd_uid)
 
     @property
     def dossier(self):

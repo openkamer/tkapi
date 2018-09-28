@@ -31,5 +31,5 @@ class TestActiviteit(unittest.TestCase):
         self.assertEqual(10, len(activiteiten))
         for activiteit in activiteiten:
             for pd in activiteit.parlementaire_documenten:
-                for kamerstuk in pd.kamerstukken:
-                    print('dossier vetnummer:', kamerstuk.dossier.vetnummer)
+                if pd.kamerstuk:
+                    print('dossier vetnummer:', pd.kamerstuk.dossier.vetnummer)
