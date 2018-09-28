@@ -68,11 +68,11 @@ class TestZaak(unittest.TestCase):
 
 class TestZaakRelations(unittest.TestCase):
 
-    def test_zaak_filter_empty_besluiten(self):
-        zaak_filter = Zaak.create_filter()
-        zaak_filter.filter_empty_besluit()
-        zaken = api.get_zaken(zaak_filter)
-        self.assertEqual(len(zaken), 0)
+    # def test_zaak_filter_empty_besluiten(self):
+    #     zaak_filter = Zaak.create_filter()
+    #     zaak_filter.filter_empty_besluit()
+    #     zaken = api.get_zaken(zaak_filter)
+    #     self.assertEqual(len(zaken), 0)
 
     def test_zaak_filter_empty_activiteit(self):
         start_datetime = datetime.datetime(year=2016, month=1, day=1)
@@ -82,7 +82,7 @@ class TestZaakRelations(unittest.TestCase):
         zaak_filter.filter_empty_activiteit()
         # zaak_filter.filter_soort('Wetgeving')
         zaken = api.get_zaken(zaak_filter)
-        print(len(zaken))
+        print('Zaken without activiteit', len(zaken))
         self.assertTrue(len(zaken) > 50)
 
     def test_zaak_filter_empty_agendapunt(self):
@@ -93,5 +93,5 @@ class TestZaakRelations(unittest.TestCase):
         zaak_filter.filter_empty_agendapunt()
         # zaak_filter.filter_soort('Wetgeving')
         zaken = api.get_zaken(zaak_filter)
-        print(len(zaken))
+        print('Zaken without agendapunt', len(zaken))
         self.assertTrue(len(zaken) > 50)

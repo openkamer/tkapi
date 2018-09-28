@@ -44,7 +44,7 @@ class TestMetaData(unittest.TestCase):
     def test_parlementair_document_metadata(self):
         TestMetaData.print_entity_example(
             item_class=ParlementairDocument,
-            uid='a1ab86b1-a681-4849-b7c8-fe5481fc654d'
+            uid='2b65bd6a-2b2c-421b-8d03-1b7d5f85be0a'
         )
 
     def test_commissie_metadata(self):

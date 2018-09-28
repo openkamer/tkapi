@@ -12,23 +12,24 @@ class TestRawApiKamerVraag(unittest.TestCase):
         self.assertTrue(True)
 
     def test_raw_get_kamervraag_by_id(self):
-        id = "fb6d90db-e4a3-44e1-97fb-6c7832504fe7"
+        id = "0d7cf75c-8bcc-40f5-ab12-ba856141160d"
         kamervraag = api.get_item(Kamervraag, id, params={'$expand': 'Zaak', })
         kamervraag.print_json()
-        self.assertEqual(kamervraag['Nummer'], '2007D05003')
+        self.assertEqual('2013D00041', kamervraag.nummer)
 
 
 class TestKamervragen(unittest.TestCase):
 
     def test_get_kamervragen_2013(self):
         start_datetime = datetime.datetime(year=2013, month=1, day=1)
-        end_datetime = datetime.datetime(year=2013, month=2, day=1)
+        end_datetime = datetime.datetime(year=2013, month=1, day=7)
         pd_filter = ParlementairDocument.create_filter()
         pd_filter.filter_date_range(start_datetime, end_datetime)
         pd_filter.filter_soort('Schriftelijke vragen')
         schriftelijke_vragen = api.get_parlementaire_documenten(pd_filter)
         kamervragen_no_zaak = []
         for kamervraag in schriftelijke_vragen:
+            print(kamervraag.id)
             if not kamervraag.zaken:
                 kamervragen_no_zaak.append(kamervraag)
         print('kamervragen without zaak: ' + str(len(kamervragen_no_zaak)))

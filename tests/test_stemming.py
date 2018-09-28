@@ -8,7 +8,7 @@ from tkapi.stemming import Stemming
 class TestStemming(unittest.TestCase):
 
     def test_get_stemmingen(self):
-        stemmingen = api.get_stemmingen(filter=None, max_items=2)
+        stemmingen = api.get_stemmingen(filter=None, max_items=10)
         for stemming in stemmingen:
             stemming.print_json()
             # stemming.besluit.print_json()

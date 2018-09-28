@@ -10,10 +10,7 @@ class TestBesluit(unittest.TestCase):
     def test_get_besluiten(self):
         besluit_filter = Besluit.create_filter()
         besluit_filter.filter_empty_zaak()
-        besluiten = api.get_besluiten(filter=besluit_filter, max_items=1000)
+        besluiten = api.get_besluiten(filter=besluit_filter, max_items=10)
         for besluit in besluiten:
-            if besluit['Zaak']:
+            if besluit.zaken:
                 print('BINGO!!!!')
-            # besluit.print_json()
-            # for stemming in besluit.stemmingen:
-            #     stemming.print_json()
