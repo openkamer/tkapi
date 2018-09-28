@@ -48,14 +48,16 @@ class Api(object):
             params = {}
         # params['$format'] = 'json',
         params['$format'] = 'application/json;odata=fullmetadata',
-        # print(params)
-        r = requests.get(self.api_root + url, params=params, auth=(self._user, self._password))
+        response = requests.get(self.api_root + url, params=params, auth=(self._user, self._password))
         if self._verbose:
-            print('url: ' + str(r.url))
-        if r.status_code != 200:
-            print(r.text)
-        assert r.status_code == 200
-        return r.json()
+            print('url: ' + str(response.url))
+        if response.status_code == 204:
+            print('### WARNING: requested item does not exist:', url, '###')
+            return {}
+        elif response.status_code != 200:
+            print(response.status_code)
+        assert response.status_code == 200
+        return response.json()
 
     def get_item(self, tkitem, id, params=None):
         url = tkitem.url + '(guid\'' + id + '\')'
@@ -70,8 +72,11 @@ class Api(object):
             params = tkitem_related.get_param_expand()
         related_json = self.request_json(url, params)
         related_items = []
-        for item_json in related_json['value']:
-            related_items.append(tkitem_related(item_json))
+        if 'value' in related_json:
+            for item_json in related_json['value']:
+                related_items.append(tkitem_related(item_json))
+        elif related_json:
+            related_items.append(tkitem_related(related_json))
         return related_items
 
     def get_items(self, item_class, filter=None, max_items=None):
@@ -82,7 +87,6 @@ class Api(object):
             if params['$filter']:
                 params['$filter'] += ' and '
             params['$filter'] += item_class.filter_param
-        # print(params)
         first_page = self.request_json(item_class.url, params)
         items_json = self.get_all_items(first_page, max_items=max_items)
         for item_json in items_json:

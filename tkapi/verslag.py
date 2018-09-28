@@ -27,19 +27,19 @@ class VerslagAlgemeenOverleg(ParlementairDocument):
     @property
     def document_url(self):
         url = ''
-        if self.dossier and self.kamerstuk:
-            kamerstuk_id = str(self.dossier['Vetnummer'])
-            if self.dossier['Toevoeging'] and '(' not in self.dossier['Toevoeging']:
-                kamerstuk_id += '-' + str(self.dossier['Toevoeging'])
-            kamerstuk_id += '-' + str(self.kamerstuk['Ondernummer'])
+        if self.dossiers:
+            dossier = self.dossiers[0]
+            kamerstuk = self.kamerstukken[0]
+            kamerstuk_id = str(dossier.vetnummer)
+            if dossier.toevoeging and '(' not in dossier.toevoeging:
+                kamerstuk_id += '-' + str(dossier.toevoeging)
+            kamerstuk_id += '-' + str(kamerstuk.ondernummer)
             url = 'https://zoek.officielebekendmakingen.nl/kst-' + kamerstuk_id
             response = requests.get(url)
             assert response.status_code == 200
             if 'Errors/404.htm' in response.url:
                 print('WARNING: no verslag document url found')
-                # self.print_json()
                 url = ''
         else:
             print('no dossier or kamerstuk found')
-            # self.print_json()
         return url

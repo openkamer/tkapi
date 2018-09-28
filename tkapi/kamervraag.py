@@ -67,17 +67,11 @@ class Kamervraag(ParlementairDocument):
 
 
 class Antwoord(ParlementairDocument):
-    filter_param = "Soort eq 'Antwoord'"
+    filter_param = "Soort eq 'Antwoord schriftelijke vragen'"
 
     def __init__(self, antwoord_json):
         super().__init__(antwoord_json)
         self.document_url = self.get_document_url()
-
-    @property
-    def zaak(self):
-        if self.json['Zaak']:
-            return self.json['Zaak'][0]
-        return None
 
     @property
     def datum(self):

@@ -12,7 +12,6 @@ class TKItem(object):
         return NotImplementedError
 
     def __init__(self, item_json, *args, **kwargs):
-        print('TKItem init!')
         self.json = item_json
 
     def __dict__(self):
@@ -68,24 +67,23 @@ class TKItem(object):
     #     item.json
 
 
-class TKItemRelated():
+class TKItemRelated(object):
 
     def __init__(self, *args, **kwargs):
-        print('Related!')
         super().__init__(*args, **kwargs)
         self.items_cache = {}
 
-    def set_cache(self, tktime, items):
-        self.items_cache[tktime.__name__] = items
+    def set_cache(self, tkitem, items):
+        self.items_cache[tkitem.__name__] = items
 
-    def related_items(self, tktime):
-        if tktime.url + '@odata.navigationLinkUrl' not in self.json:
+    def related_items(self, tkitem):
+        if tkitem.url + '@odata.navigationLinkUrl' not in self.json:
             return []
-        if tktime.__name__ in self.items_cache:
-            print('use cache')
-            return self.items_cache[tktime.__name__]
-        items = tkapi.api.get_related(self.__class__, tktime, self.json['Id'])
-        for item in items:
-            item.print_json()
-        self.set_cache(tktime, items)
+        if tkitem.url in self.json and self.json[tkitem.url] is None:
+            return []
+        if tkitem.__name__ in self.items_cache:
+            # print('use cache')
+            return self.items_cache[tkitem.__name__]
+        items = tkapi.api.get_related(self.__class__, tkitem, self.json['Id'])
+        self.set_cache(tkitem, items)
         return items

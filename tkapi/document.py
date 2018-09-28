@@ -27,16 +27,11 @@ class ParlementairDocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
 class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'ParlementairDocument'
-    expand_param = 'Zaak, Activiteit, Agendapunt, Kamerstuk/Kamerstukdossier'
-    # expand_param = ''
+    expand_param = 'Zaak'
     orderby_param = 'Datum'
 
     def __init__(self, document_json):
         super().__init__(document_json)
-        self.activiteiten_cache = []
-        self.agendapunten_cache = []
-        self.kamerstuk_cache = None
-        self.dossier_cache = None
 
     @staticmethod
     def create_filter():
@@ -44,14 +39,8 @@ class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def activiteiten(self):
-        if self.activiteiten_cache:
-            return self.activiteiten_cache
         from tkapi.activiteit import Activiteit
-        activiteiten = []
-        for activiteit_json in self.json['Activiteit']:
-            activiteiten.append(tkapi.api.get_item(Activiteit, activiteit_json['Id']))
-        self.activiteiten_cache = activiteiten
-        return activiteiten
+        return self.related_items(Activiteit)
 
     @property
     def zaken(self):
@@ -69,7 +58,7 @@ class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
     def dossiers(self):
         dossiers = []
         for kamerstuk in self.kamerstukken:
-            kamerstuk += kamerstuk.dossiers
+            dossiers += kamerstuk.dossiers
         return dossiers
 
     @property
@@ -111,7 +100,7 @@ class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def dossier_vetnummer(self):
-        if self.json['Kamerstuk'] and self.json['Kamerstuk']['Kamerstukdossier'] and self.json['Kamerstuk']['Kamerstukdossier']['Vetnummer']:
-            return self.json['Kamerstuk']['Kamerstukdossier']['Vetnummer']
+        for kamerstuk in self.kamerstukken:
+            if kamerstuk.dossier and kamerstuk.dossier.vetnummer:
+                return kamerstuk.dossier.vetnummer
         return None
-

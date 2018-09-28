@@ -3,7 +3,7 @@ import tkapi
 
 class Persoon(tkapi.TKItem):
     url = 'Persoon'
-    expand_param = 'Fractielid, Functie, Afbeelding'
+    expand_param = 'Fractielid'
     orderby_param = 'Achternaam'
     filter_param = 'Achternaam ne null'
 
