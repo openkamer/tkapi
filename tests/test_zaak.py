@@ -74,16 +74,6 @@ class TestZaakRelations(unittest.TestCase):
         zaken = api.get_zaken(zaak_filter)
         self.assertEqual(len(zaken), 0)
 
-    def test_zaak_filter_empty_verslagzaak(self):
-        start_datetime = datetime.datetime(year=2016, month=1, day=1)
-        end_datetime = datetime.datetime(year=2016, month=6, day=1)
-        zaak_filter = Zaak.create_filter()
-        zaak_filter.filter_date_range(start_datetime, end_datetime)
-        zaak_filter.filter_empty_verslagzaak()
-        zaken = api.get_zaken(zaak_filter)
-        print(len(zaken))
-        self.assertTrue(len(zaken) > 35)
-
     def test_zaak_filter_empty_activiteit(self):
         start_datetime = datetime.datetime(year=2016, month=1, day=1)
         end_datetime = datetime.datetime(year=2016, month=2, day=1)

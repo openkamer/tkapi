@@ -45,14 +45,10 @@ class ZaakFilter(tkapi.SoortFilter):
         filter_str = 'Agendapunt/any(b: true)'
         self.filters.append(filter_str)
 
-    def filter_empty_verslagzaak(self):
-        filter_str = 'VerslagZaak/any(b: true)'
-        self.filters.append(filter_str)
-
 
 class Zaak(tkapi.TKItem):
     url = 'Zaak'
-    expand_param = 'Activiteit, Besluit, Agendapunt, VerslagZaak, Voortouwcommissie/Commissie'
+    expand_param = 'Activiteit, Besluit, Agendapunt, Voortouwcommissie/Commissie'
     orderby_param = 'GestartOp'
 
     def __init__(self, zaak_json):
