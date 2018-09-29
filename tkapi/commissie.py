@@ -1,5 +1,5 @@
 import tkapi
-from tkapi.persoon import Persoon
+from tkapi.actor import Persoon
 
 
 class CommissieFilter(tkapi.SoortFilter):

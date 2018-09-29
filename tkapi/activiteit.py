@@ -24,6 +24,11 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
         from tkapi.zaak import Zaak
         return self.related_items(Zaak)
 
+    @property
+    def voortouwcommissies(self):
+        from tkapi.commissie import VoortouwCommissie
+        return self.related_items(VoortouwCommissie)
+
     @staticmethod
     def create_filter():
         return ActiviteitFilter()
@@ -43,11 +48,6 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def nummer(self):
         return self.get_property_or_empty_string('Nummer')
-
-    @property
-    def voortouwcommissies(self):
-        from tkapi.commissie import VoortouwCommissie
-        return self.related_items(VoortouwCommissie)
 
 
 ## Soorten Activiteiten

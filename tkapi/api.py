@@ -1,5 +1,6 @@
 import requests
 
+from .actor import Fractie, Persoon, FractieLid
 from .agendapunt import Agendapunt
 from .besluit import Besluit
 from .commissie import Commissie
@@ -8,7 +9,6 @@ from .dossier import Dossier
 from .kamerstuk import Kamerstuk
 from .activiteit import Activiteit
 from .kamervraag import Kamervraag, Antwoord
-from .persoon import Persoon
 from .stemming import Stemming
 from .verslag import VerslagAlgemeenOverleg
 from .zaak import Zaak
@@ -65,12 +65,10 @@ class Api(object):
             params = tkitem.get_param_expand()
         return tkitem(self.request_json(url, params))
 
-    def get_related(self, tkitem, tkitem_related, id, params=None):
-        url = tkitem.url + '(guid\'' + id + '\')'
-        url += '/' + tkitem_related.url
+    def get_related(self, tkitem_related, related_url, params=None):
         if params is None:
             params = tkitem_related.get_param_expand()
-        related_json = self.request_json(url, params)
+        related_json = self.request_json(related_url, params)
         related_items = []
         if 'value' in related_json:
             for item_json in related_json['value']:
@@ -99,6 +97,9 @@ class Api(object):
 
     def get_personen(self, max_items=None):
         return self.get_items(Persoon, filter=None, max_items=max_items)
+
+    def get_fracties(self, filter=None, max_items=None):
+        return self.get_items(Fractie, filter, max_items)
 
     def get_verslagen_van_algemeen_overleg(self, filter=None, max_items=None):
         return self.get_items(VerslagAlgemeenOverleg, filter=filter, max_items=max_items)
@@ -132,3 +133,6 @@ class Api(object):
 
     def get_besluiten(self, filter=None, max_items=None):
         return self.get_items(Besluit, filter, max_items)
+
+    def get_fractie_leden(self, filter=None, max_items=None):
+        return self.get_items(FractieLid, filter, max_items)

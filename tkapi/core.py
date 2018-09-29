@@ -82,9 +82,10 @@ class TKItemRelated(object):
         if tkitem.url in self.json and self.json[tkitem.url] is None:
             return []
         if tkitem.__name__ in self.items_cache:
-            # print('use cache')
             return self.items_cache[tkitem.__name__]
-        items = tkapi.api.get_related(self.__class__, tkitem, self.json['Id'])
+        url = self.json[tkitem.url + '@odata.navigationLinkUrl']
+        # print(url)
+        items = tkapi.api.get_related(tkitem, related_url=url)
         self.set_cache(tkitem, items)
         return items
 

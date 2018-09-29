@@ -1,14 +1,15 @@
 import unittest
-import datetime
 
 from tkapi import api
+from tkapi.actor import Persoon
+from tkapi.actor import FractieLid
+from tkapi.actor import Fractie
 from tkapi.activiteit import Activiteit
 from tkapi.besluit import Besluit
 from tkapi.commissie import Commissie
 from tkapi.dossier import Dossier
 from tkapi.document import ParlementairDocument
 from tkapi.kamerstuk import Kamerstuk
-from tkapi.persoon import Persoon
 from tkapi.stemming import Stemming
 from tkapi.zaak import Zaak
 
@@ -59,12 +60,6 @@ class TestMetaData(unittest.TestCase):
             uid='8d5481b7-d6b9-4452-921d-003819845c48'
         )
 
-    def test_persoon_metadata(self):
-        TestMetaData.print_entity_example(
-            item_class=Persoon,
-            uid='96a61016-76f0-4e73-80f0-0f554d919a93'
-        )
-
     def test_stemming_metadata(self):
         TestMetaData.print_entity_example(
             item_class=Stemming,
@@ -75,4 +70,22 @@ class TestMetaData(unittest.TestCase):
         TestMetaData.print_entity_example(
             item_class=Besluit,
             uid='e2a08641-6ed7-4a96-9353-001663f136ba'
+        )
+
+    def test_persoon_metadata(self):
+        TestMetaData.print_entity_example(
+            item_class=Persoon,
+            uid='96a61016-76f0-4e73-80f0-0f554d919a93'
+        )
+
+    def test_fractielid_metadata(self):
+        TestMetaData.print_entity_example(
+            item_class=FractieLid,
+            uid='63ec44ec-4b04-460c-b46e-2230c26b3ade'
+        )
+
+    def test_fractie_metadata(self):
+        TestMetaData.print_entity_example(
+            item_class=Fractie,
+            uid='97d432a7-8a64-4db9-9189-cc9f70a4109b'
         )
