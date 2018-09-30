@@ -14,7 +14,7 @@ class CommissieFilter(tkapi.SoortFilter):
 
 class Commissie(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Commissie'
-    expand_param = 'Organisatie'
+    # expand_param = 'Organisatie'
 
     def __init__(self, commissie_json):
         super().__init__(commissie_json)

@@ -7,9 +7,9 @@ class StemmingFilter(tkapi.SoortFilter):
         super().__init__()
 
 
-class Stemming(tkapi.TKItem):
+class Stemming(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Stemming'
-    expand_param = 'Besluit'
+    # expand_param = 'Besluit'
 
     def __init__(self, stemming_json):
         super().__init__(stemming_json)
@@ -21,7 +21,12 @@ class Stemming(tkapi.TKItem):
     @property
     def besluit(self):
         from tkapi.besluit import Besluit
-        return tkapi.api.get_item(Besluit, self.json['Besluit']['Id'])
+        return self.related_item(Besluit)
+
+    @property
+    def zaken(self):
+        from tkapi.zaak import Zaak
+        return self.related_items(Zaak)
 
     @property
     def soort(self):
@@ -29,13 +34,8 @@ class Stemming(tkapi.TKItem):
 
     @property
     def vergissing(self):
-        return self.json['Vergissing']
+        return self.get_property_or_none('Vergissing')
 
     @property
     def fractie_size(self):
         return self.get_property_or_none('fractieGrootte')
-
-    # @property
-    # def zaak(self):
-    #     from tkapi.zaak import Zaak
-    #     return tkapi.api.get_item(Zaak, self.json['Zaak']['Id'])

@@ -36,7 +36,7 @@ class TestKamervragen(unittest.TestCase):
         self.assertEqual(0, len(kamervragen_no_zaak))
 
 
-class TestObjectKamerVraag(unittest.TestCase):
+class TestKamervraagItem(unittest.TestCase):
 
     def test_get_kamervragen_new(self):
         start_datetime = datetime.datetime(year=2015, month=1, day=1)
@@ -62,7 +62,7 @@ class TestObjectKamerVraag(unittest.TestCase):
         kamervragen = api.get_kamervragen(kv_filter)
 
 
-class TestObjectAntwoord(unittest.TestCase):
+class TestAntwoordItem(unittest.TestCase):
 
     def test_get_antwoorden_new(self):
         start_datetime = datetime.datetime(year=2015, month=1, day=1)

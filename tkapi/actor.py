@@ -37,7 +37,7 @@ class Actor(tkapi.TKItemRelated, tkapi.TKItem):
 class Fractie(Actor):
     url = 'Fractie'
     # expand_param = 'ZaakActorPersoon'
-    expand_param = 'Lid'
+    # expand_param = 'Lid'
 
     def __init__(self, stemming_json):
         super().__init__(stemming_json)

@@ -13,7 +13,7 @@ class TestSingleParlementairDocument(unittest.TestCase):
         pds = api.get_parlementaire_documenten(max_items=1)
         self.assertEqual(1, len(pds))
         pd = pds[0]
-        pd.print_json()
+        # pd.print_json()
         for zaak in pd.zaken:
             print(zaak)
         print(pd.kamerstuk)

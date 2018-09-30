@@ -9,7 +9,7 @@ class BesluitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
 class Besluit(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Besluit'
-    expand_param = 'Zaak, Stemming'
+    # expand_param = 'Zaak, Stemming'
 
     def __init__(self, stemming_json):
         super().__init__(stemming_json)

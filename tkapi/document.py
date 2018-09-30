@@ -27,7 +27,7 @@ class ParlementairDocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
 class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'ParlementairDocument'
-    expand_param = 'Zaak'
+    # expand_param = 'Zaak'
     orderby_param = 'Datum'
 
     def __init__(self, document_json):
@@ -56,10 +56,9 @@ class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def dossiers(self):
-        dossiers = []
-        for kamerstuk in self.kamerstukken:
-            dossiers += kamerstuk.dossiers
-        return dossiers
+        if self.kamerstuk:
+            return self.kamerstuk.dossiers
+        return []
 
     @property
     def kamerstuk(self):

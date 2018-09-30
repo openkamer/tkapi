@@ -15,7 +15,7 @@ class KamerstukFilter(tkapi.Filter):
 
 class Kamerstuk(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Kamerstuk'
-    expand_param = 'Kamerstukdossier, ParlementairDocument'
+    # expand_param = 'Kamerstukdossier, ParlementairDocument'
 
     def __init__(self, kamerstuk_json):
         super().__init__(kamerstuk_json)
@@ -34,12 +34,11 @@ class Kamerstuk(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_items(Dossier)
 
     @property
-    def ondernummer(self):
-        return self.get_property_or_empty_string('Ondernummer')
+    def dossier(self):
+        if self.dossiers:
+            return self.dossiers[0]
+        return None
 
     @property
-    def dossier(self):
-        dossiers = self.dossiers
-        if dossiers:
-            return dossiers[0]
-        return None
+    def ondernummer(self):
+        return self.get_property_or_empty_string('Ondernummer')

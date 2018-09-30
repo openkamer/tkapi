@@ -9,7 +9,7 @@ class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
 class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Activiteit'
-    expand_param = 'Zaak, ParlementairDocument'
+    # expand_param = 'Zaak, ParlementairDocument'
 
     def __init__(self, activiteit_json):
         super().__init__(activiteit_json)

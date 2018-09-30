@@ -17,8 +17,8 @@ class TestVerslagAlgemeenOverleg(unittest.TestCase):
         self.assertEqual(13, len(verslagen))
         for verslag in verslagen:
             print(verslag.onderwerp)
-            for kamerstuk in verslag.kamerstukken:
-                print(str(kamerstuk.dossier.vetnummer) + ', ' + str(kamerstuk.ondernummer))
+            if verslag.kamerstuk:
+                print(str(verslag.kamerstuk.dossier.vetnummer) + ', ' + str(verslag.kamerstuk.ondernummer))
                 print(verslag.document_url)
             # print(verslag.document_url)
             # verslag.kamerstuk.print_json()

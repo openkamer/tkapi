@@ -20,17 +20,18 @@ class TestFractie(unittest.TestCase):
         # fractie.print_json()
         leden = fractie.leden
         for lid in leden:
-            lid.print_json()
+            # lid.print_json()
             print(lid.van, '-', lid.tot_en_met)
-            print(lid.persoon.achternaam)
+            if lid.persoon:
+                print(lid.persoon)
         print('fractieleden:', len(leden))
         self.assertGreater(len(leden), 53)
 
     def test_get_fracties(self):
         fracties = api.get_fracties(filter=None, max_items=50)
         for fractie in fracties:
-            fractie.print_json()
-            print('fractie naam:', fractie.naam, '| zetels:', fractie.zetels)
+            # fractie.print_json()
+            print('fractie:', fractie.naam, '| zetels:', fractie.zetels)
         self.assertEqual(46, len(fracties))
 
 

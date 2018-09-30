@@ -9,7 +9,7 @@ class AgendapuntFilter(tkapi.SoortFilter):
 
 class Agendapunt(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Agendapunt'
-    expand_param = 'Zaak, ParlementairDocument'
+    # expand_param = 'Zaak, ParlementairDocument'
 
     def __init__(self, agendapunt_json):
         super().__init__(agendapunt_json)
