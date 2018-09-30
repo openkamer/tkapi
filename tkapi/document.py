@@ -1,5 +1,4 @@
 import tkapi
-from tkapi.zaak import Zaak
 
 
 class ParlementairDocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
@@ -26,18 +25,13 @@ class ParlementairDocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
         self.filters.append(filter_str)
 
 
-class ParlementairDocument(tkapi.TKItem):
+class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'ParlementairDocument'
-    expand_param = 'Zaak, Activiteit, Agendapunt, Kamerstuk/Kamerstukdossier'
+    # expand_param = 'Zaak'
     orderby_param = 'Datum'
 
     def __init__(self, document_json):
         super().__init__(document_json)
-        self.activiteiten_cache = []
-        self.zaken_cache = []
-        self.agendapunten_cache = []
-        self.kamerstuk_cache = None
-        self.dossier_cache = None
 
     @staticmethod
     def create_filter():
@@ -45,55 +39,31 @@ class ParlementairDocument(tkapi.TKItem):
 
     @property
     def activiteiten(self):
-        if self.activiteiten_cache:
-            return self.activiteiten_cache
         from tkapi.activiteit import Activiteit
-        activiteiten = []
-        for activiteit_json in self.json['Activiteit']:
-            activiteiten.append(tkapi.api.get_item(Activiteit, activiteit_json['Id']))
-        self.activiteiten_cache = activiteiten
-        return activiteiten
+        return self.related_items(Activiteit)
 
     @property
     def zaken(self):
-        if self.zaken_cache:
-            return self.zaken_cache
-        zaken = []
-        for zaak_json in self.json['Zaak']:
-            zaken.append(tkapi.api.get_item(Zaak, zaak_json['Id']))
-        self.zaken_cache = zaken
-        return zaken
+        from tkapi.zaak import Zaak
+        return self.related_items(Zaak)
 
     @property
     def agendapunten(self):
-        if self.agendapunten_cache:
-            return self.agendapunten_cache
-        from tkapi.agendapunt import Agendapunt
         agendapunten = []
-        for agendapunt_json in self.json['Agendapunt']:
-            agendapunten.append(tkapi.api.get_item(Agendapunt, agendapunt_json['Id']))
-        self.agendapunten_cache = agendapunten
+        for zaak in self.zaken:
+            agendapunten += zaak.agendapunten
         return agendapunten
 
     @property
-    def dossier(self):
-        if self.dossier_cache:
-            return self.dossier_cache
-        from tkapi.dossier import Dossier
-        dossier = tkapi.api.get_item(Dossier, self.kamerstuk['Kamerstukdossier']['Id'])
-        self.dossier_cache = dossier
-        return dossier
+    def dossiers(self):
+        if self.kamerstuk:
+            return self.kamerstuk.dossiers
+        return []
 
     @property
     def kamerstuk(self):
-        if self.kamerstuk_cache:
-            return self.kamerstuk_cache
-        if self.json['Kamerstuk'] is None:
-            return None
         from tkapi.kamerstuk import Kamerstuk
-        kamerstuk = tkapi.api.get_item(Kamerstuk, self.json['Kamerstuk']['Id'])
-        self.kamerstuk_cache = kamerstuk
-        return kamerstuk
+        return self.related_item(Kamerstuk)
 
     @property
     def aanhangselnummer(self):
@@ -129,7 +99,6 @@ class ParlementairDocument(tkapi.TKItem):
 
     @property
     def dossier_vetnummer(self):
-        if self.json['Kamerstuk'] and self.json['Kamerstuk']['Kamerstukdossier'] and self.json['Kamerstuk']['Kamerstukdossier']['Vetnummer']:
-            return self.json['Kamerstuk']['Kamerstukdossier']['Vetnummer']
+        if self.kamerstuk and self.kamerstuk.dossier and self.kamerstuk.dossier.vetnummer:
+            return self.kamerstuk.dossier.vetnummer
         return None
-

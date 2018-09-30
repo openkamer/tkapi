@@ -61,28 +61,19 @@ class TestDossierKamerstukken(unittest.TestCase):
             # document.print_json()
             print(document.soort)
             print(document.titel)
-            [print(zaak) for zaak in document.zaken]
-            # [zaak.print_json() for zaak in document.zaken]
-            for zaak in document.zaken:
-                if not zaak.afgedaan:
-                    print('NIET GESLOTEN')
             for agendapunt in document.agendapunten:
                 agendapunt.print_json()
             for zaak in document.zaken:
-                if zaak['Besluit']:
-                    zaak.print_json()
-                # for activiteit in zaak.activiteiten:
-                #     activiteit.print_json()
+                if not zaak.afgedaan:
+                    print('NIET GESLOTEN')
                 for besluit in zaak.besluiten:
-                    # besluit.print_json()
-                    besluit.stemming.print_json()
-            # for activiteit in document.activiteiten:
-            #     activiteit.print_json()
+                    for stemming in besluit.stemmingen:
+                        stemming.print_json()
 
 
 class TestDossiersForZaken(unittest.TestCase):
     start_datetime = datetime.datetime(year=2016, month=1, day=1)
-    end_datetime = datetime.datetime(year=2016, month=4, day=1)
+    end_datetime = datetime.datetime(year=2016, month=1, day=14)
 
     def test_get_dossiers(self):
         zaak_filter = Zaak.create_filter()
@@ -103,12 +94,10 @@ class TestDossiersForZaken(unittest.TestCase):
         dossier_zaak_nummers = set()
         for dossier in dossiers:
             print('dossier.vetnummer: ', str(dossier.vetnummer))
-            # print(dossier.kamerstukken)
-            # pds = dossier.parlementaire_documenten
-            # print(dossier.parlementaire_documenten)
             for pd in dossier.parlementaire_documenten:
                 for zaak in pd.zaken:
                     dossier_zaak_nummers.add(zaak.nummer)
+        print('dossier_zaak_nummers', dossier_zaak_nummers)
         for zaak in zaken:
             if zaak.nummer not in dossier_zaak_nummers:
                 print(zaak.nummer)
@@ -119,7 +108,7 @@ class TestDossiersForZaken(unittest.TestCase):
 
 class TestDossierAfgesloten(unittest.TestCase):
     start_datetime = datetime.datetime(year=2015, month=1, day=1)
-    end_datetime = datetime.datetime(year=2015, month=1, day=10)
+    end_datetime = datetime.datetime.now()
 
     def test_filter_afgesloten(self):
         dossier_filter = Dossier.create_filter()
@@ -132,8 +121,9 @@ class TestWetsvoorstelDossier(unittest.TestCase):
 
     def test_get_dossiers(self):
         pd_filter = ParlementairDocument.create_filter()
+        # NOTE: this date filter does not seem to work in combination with the soort filter.
         # start_datetime = datetime.datetime(year=2016, month=1, day=1)
-        # end_datetime = datetime.datetime(year=2017, month=6, day=1)
+        # end_datetime = datetime.datetime(year=2016, month=2, day=1)
         # pd_filter.filter_date_range(start_datetime, end_datetime)
         pd_filter.filter_soort('Voorstel van wet', is_or=True)
         pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
@@ -141,7 +131,7 @@ class TestWetsvoorstelDossier(unittest.TestCase):
 
         dossier_nrs = []
         pds_no_dossier_nr = []
-        for pd in pds:
+        for pd in pds[:10]:
             print(pd.dossier_vetnummer)
             if pd.dossier_vetnummer:
                 dossier_nrs.append(pd.dossier_vetnummer)
@@ -150,11 +140,6 @@ class TestWetsvoorstelDossier(unittest.TestCase):
         for pd in pds_no_dossier_nr:
             print(pd.nummer)
             print(pd.onderwerp)
-            try:
-                dossier_nr = int(pd.onderwerp.split('Voorstel van wet')[0].strip())
-                dossier_nrs.append(dossier_nr)
-            except TypeError:
-                continue
 
         dossier_nrs = OrderedSet(sorted(dossier_nrs))
         print(dossier_nrs)

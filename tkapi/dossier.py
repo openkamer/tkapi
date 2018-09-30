@@ -1,9 +1,4 @@
-import json
-
 import tkapi
-
-from tkapi.document import ParlementairDocument
-from tkapi.zaak import Zaak
 
 
 class DossierFilter(tkapi.Filter):
@@ -34,17 +29,30 @@ class DossierFilter(tkapi.Filter):
         self.filters.append(filter_str)
 
 
-class Dossier(tkapi.TKItem):
+class Dossier(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Kamerstukdossier'
-    expand_param = 'Kamerstuk, Kamerstuk/ParlementairDocument/Zaak'
+    expand_param = ''
 
     def __init__(self, dossier_json):
         super().__init__(dossier_json)
-        self.zaken_cache = []
 
     @staticmethod
     def create_filter():
         return DossierFilter()
+
+    @property
+    def kamerstukken(self):
+        from tkapi.kamerstuk import Kamerstuk
+        return self.related_items(Kamerstuk)
+
+    @property
+    def zaken(self):
+        from tkapi.zaak import Zaak
+        return self.related_items(Zaak)
+
+    @property
+    def parlementaire_documenten(self):
+        return [kamerstuk.parlementair_document for kamerstuk in self.kamerstukken]
 
     @property
     def vetnummer(self):
@@ -65,32 +73,3 @@ class Dossier(tkapi.TKItem):
     @property
     def organisatie(self):
         return self.get_property_or_empty_string('Organisatie')
-
-    @property
-    def kamerstukken(self):
-        from tkapi.kamerstuk import Kamerstuk
-        kamerstukken = []
-        for kamerstuk in self.json['Kamerstuk']:
-            kamerstukken.append(tkapi.api.get_item(Kamerstuk, kamerstuk['Id']))
-        return kamerstukken
-
-    @property
-    def zaken(self):
-        if self.zaken_cache:
-            return self.zaken_cache
-        zaken = []
-        for pd in self.parlementaire_documenten:
-            zaken += pd.zaken
-        self.zaken_cache = zaken
-        return zaken
-
-    @property
-    def parlementaire_documenten(self):
-        parlementair_documenten = []
-        for kamerstuk in self.json['Kamerstuk']:
-            if kamerstuk == '':
-                continue
-            pds = kamerstuk['ParlementairDocument']
-            pd = ParlementairDocument(pds)
-            parlementair_documenten.append(pd)
-        return parlementair_documenten

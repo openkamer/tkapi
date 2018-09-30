@@ -62,3 +62,35 @@ class TKItem(object):
         if property_key in self.json and self.json[property_key]:
             return tkapi.util.odatedatetime_to_datetime(self.json[property_key])
         return None
+
+    # def get_related_id(self, item, key):
+    #     item.json
+
+
+class TKItemRelated(object):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.items_cache = {}
+
+    def set_cache(self, tkitem, items):
+        self.items_cache[tkitem.__name__] = items
+
+    def related_items(self, tkitem):
+        if tkitem.url + '@odata.navigationLinkUrl' not in self.json:
+            return []
+        if tkitem.url in self.json and self.json[tkitem.url] is None:
+            return []
+        if tkitem.__name__ in self.items_cache:
+            return self.items_cache[tkitem.__name__]
+        url = self.json[tkitem.url + '@odata.navigationLinkUrl']
+        # print(url)
+        items = tkapi.api.get_related(tkitem, related_url=url)
+        self.set_cache(tkitem, items)
+        return items
+
+    def related_item(self, tkitem):
+        related_items = self.related_items(tkitem)
+        if related_items:
+            return related_items[0]
+        return None

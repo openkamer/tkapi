@@ -7,6 +7,7 @@ from tkapi.zaak import Zaak
 
 class Kamervraag(ParlementairDocument):
     filter_param = "Soort eq 'Schriftelijke vragen'"
+    expand_param = 'Zaak'
 
     def __init__(self, vraag_json):
         super().__init__(vraag_json)
@@ -45,7 +46,7 @@ class Kamervraag(ParlementairDocument):
 
     @property
     def onderwerp(self):
-        return self.json['Onderwerp']
+        return self.get_property_or_empty_string('Onderwerp')
 
     def get_document_url(self):
         url = ''
@@ -67,17 +68,11 @@ class Kamervraag(ParlementairDocument):
 
 
 class Antwoord(ParlementairDocument):
-    filter_param = "Soort eq 'Antwoord'"
+    filter_param = "Soort eq 'Antwoord schriftelijke vragen'"
 
     def __init__(self, antwoord_json):
         super().__init__(antwoord_json)
         self.document_url = self.get_document_url()
-
-    @property
-    def zaak(self):
-        if self.json['Zaak']:
-            return self.json['Zaak'][0]
-        return None
 
     @property
     def datum(self):

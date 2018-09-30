@@ -1,5 +1,5 @@
 import tkapi
-from tkapi.persoon import Persoon
+from tkapi.actor import Persoon
 
 
 class CommissieFilter(tkapi.SoortFilter):
@@ -12,17 +12,20 @@ class CommissieFilter(tkapi.SoortFilter):
         self.filters.append(filter_str)
 
 
-class Commissie(tkapi.TKItem):
+class Commissie(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Commissie'
-    expand_param = 'Organisatie, Lid/VastPersoon'
+    # expand_param = 'Organisatie'
 
     def __init__(self, commissie_json):
         super().__init__(commissie_json)
-        self.leden_cache = []
 
     @staticmethod
     def create_filter():
         return CommissieFilter()
+
+    @property
+    def leden(self):
+        return self.related_items(CommissieLid)
 
     @property
     def afkorting(self):
@@ -40,24 +43,16 @@ class Commissie(tkapi.TKItem):
     def soort(self):
         return self.get_property_or_empty_string('Soort')
 
-    @property
-    def leden(self):
-        if self.leden_cache:
-            return self.leden_cache
-        if 'Lid' not in self.json:
-            return []
-        leden = []
-        for lid in self.json['Lid']:
-            leden.append(CommissieLid(lid))
-        self.leden_cache = leden
-        return leden
-
     def __str__(self):
         pretty_print = self.id + ': '
         pretty_print += self.naam
         if self.afkorting:
             pretty_print += ' (' + self.afkorting + ')'
         return pretty_print
+
+
+class VoortouwCommissie(tkapi.TKItemRelated, tkapi.TKItem):
+    url = 'Voortouwcommissie'
 
 
 class CommissieLid(tkapi.TKItem):

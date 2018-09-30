@@ -7,9 +7,25 @@ from tkapi import api
 from tkapi.document import ParlementairDocument
 
 
+class TestSingleParlementairDocument(unittest.TestCase):
+
+    def test_get_voorstel_van_wet(self):
+        pds = api.get_parlementaire_documenten(max_items=1)
+        self.assertEqual(1, len(pds))
+        pd = pds[0]
+        # pd.print_json()
+        for zaak in pd.zaken:
+            print(zaak)
+        print(pd.kamerstuk)
+        for agendapunt in pd.agendapunten:
+            print(agendapunt)
+        for dossier in pd.dossiers:
+            print(dossier)
+
+
 class TestParlementairDocument(unittest.TestCase):
     start_datetime = datetime.datetime(year=2017, month=1, day=1)
-    end_datetime = datetime.datetime(year=2017, month=6, day=1)
+    end_datetime = datetime.datetime(year=2017, month=1, day=14)
 
     def test_get_voorstel_van_wet(self):
         pd_filter = ParlementairDocument.create_filter()
@@ -19,21 +35,10 @@ class TestParlementairDocument(unittest.TestCase):
         )
         pd_filter.filter_soort('Voorstel van wet', is_or=True)
         pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
-        # print(pd_filter.filter_str)
         pds = api.get_parlementaire_documenten(pd_filter)
         for pd in pds:
             print(pd.titel)
-            print(pd.activiteiten)
-            # pd.print_json()
-            # print('\t' + str(pd.dossier.vetnummer))
-            # print('\t dossier afgesloten: ' + str(pd.dossier.afgesloten))
-            # pd.dossier.print_json()
-            # print(pd.dossier.afgesloten)
-            # print(pd.dossier.kamerstukken)
-            # for zaak in pd.dossier.zaken:
-            #     print('\t zaak afgedaan: ' + str(zaak.afgedaan))
-            #     print('\t zaak soort: ' + str(zaak.soort))
-            #     print('\t zaak soort: ' + str(zaak.nummer))
+        self.assertEqual(253, len(pds))
 
 
 class TestParlementairDocumentFilter(unittest.TestCase):
@@ -50,16 +55,16 @@ class TestParlementairDocumentFilter(unittest.TestCase):
         pd_filter.filter_empty_zaak()
         pds = api.get_parlementaire_documenten(pd_filter)
         for pd in pds:
-            print('\n============')
             print(pd.titel)
             for zaak in pd.zaken:
                 print(zaak)
         print(len(pds))
+        self.assertEqual(8, len(pds))
 
     def test_filter_empty_agendapunt(self):
         pd_filter = ParlementairDocument.create_filter()
-        start_datetime = datetime.datetime(year=2005, month=1, day=1)
-        end_datetime = datetime.datetime.now()
+        start_datetime = datetime.datetime(year=2017, month=1, day=1)
+        end_datetime = datetime.datetime(year=2018, month=1, day=1)
         pd_filter.filter_date_range(
             start_datetime,
             end_datetime
@@ -67,11 +72,11 @@ class TestParlementairDocumentFilter(unittest.TestCase):
         pd_filter.filter_empty_agendapunt()
         pds = api.get_parlementaire_documenten(pd_filter)
         for pd in pds:
-            print('\n============')
             print(pd.titel)
             for zaak in pd.zaken:
                 print(zaak)
         print(len(pds))
+        self.assertEqual(4, len(pds))
 
 
 class TestParlementairDocumentSoorten(unittest.TestCase):
@@ -80,14 +85,9 @@ class TestParlementairDocumentSoorten(unittest.TestCase):
         pd_filter = ParlementairDocument.create_filter()
         start_datetime = datetime.datetime(year=2010, month=1, day=1)
         end_datetime = datetime.datetime(year=2010, month=2, day=1)
-        pd_filter.filter_date_range(
-            start_datetime,
-            end_datetime
-        )
+        pd_filter.filter_date_range(start_datetime, end_datetime)
         pds = api.get_parlementaire_documenten(pd_filter)
-        soorten = []
-        for pd in pds:
-            soorten.append(pd.soort)
+        soorten = [pd.soort for pd in pds]
         soorten = OrderedSet(sorted(soorten))
         for soort in soorten:
             print(soort)
