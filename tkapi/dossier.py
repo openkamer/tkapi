@@ -3,9 +3,6 @@ import tkapi
 
 class DossierFilter(tkapi.Filter):
 
-    def __init__(self):
-        super().__init__()
-
     def filter_vetnummer(self, vetnummer):
         filter_str = "Vetnummer eq " + str(vetnummer)
         self.filters.append(filter_str)
@@ -32,9 +29,6 @@ class DossierFilter(tkapi.Filter):
 class Dossier(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Kamerstukdossier'
     expand_param = ''
-
-    def __init__(self, dossier_json):
-        super().__init__(dossier_json)
 
     @staticmethod
     def create_filter():

@@ -4,9 +4,6 @@ from tkapi.actor import Persoon
 
 class CommissieFilter(tkapi.SoortFilter):
 
-    def __init__(self):
-        super().__init__()
-
     def filter_naam(self, naam):
         filter_str = "NaamNL eq " + "'" + naam.replace("'", "''") + "'"
         self.filters.append(filter_str)
@@ -15,9 +12,6 @@ class CommissieFilter(tkapi.SoortFilter):
 class Commissie(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Commissie'
     # expand_param = 'Organisatie'
-
-    def __init__(self, commissie_json):
-        super().__init__(commissie_json)
 
     @staticmethod
     def create_filter():
@@ -56,8 +50,6 @@ class VoortouwCommissie(tkapi.TKItemRelated, tkapi.TKItem):
 
 
 class CommissieLid(tkapi.TKItem):
-    def __init__(self, lid_json):
-        super().__init__(lid_json)
 
     @property
     def vast_van(self):

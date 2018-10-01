@@ -3,9 +3,6 @@ import tkapi
 
 class ParlementairDocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
-    def __init__(self):
-        super().__init__()
-
     def filter_date_range(self, start_datetime, end_datetime):
         filter_str = "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)
         self.filters.append(filter_str)
@@ -29,9 +26,6 @@ class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'ParlementairDocument'
     # expand_param = 'Zaak'
     orderby_param = 'Datum'
-
-    def __init__(self, document_json):
-        super().__init__(document_json)
 
     @staticmethod
     def create_filter():

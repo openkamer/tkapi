@@ -11,9 +11,6 @@ class Actor(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Actor'
     expand_param = ''
 
-    def __init__(self, stemming_json):
-        super().__init__(stemming_json)
-
     @staticmethod
     def create_filter():
         return ActorFilter()
@@ -38,9 +35,6 @@ class Fractie(Actor):
     url = 'Fractie'
     # expand_param = 'ZaakActorPersoon'
     # expand_param = 'Lid'
-
-    def __init__(self, stemming_json):
-        super().__init__(stemming_json)
 
     @property
     def naam(self):
@@ -72,9 +66,6 @@ class Persoon(Actor):
     expand_param = 'Fractielid/Fractie'
     orderby_param = 'Achternaam'
     filter_param = 'Achternaam ne null'
-
-    def __init__(self, persoon_json):
-        super().__init__(persoon_json)
 
     @property
     def fracties(self):
@@ -121,9 +112,6 @@ class Persoon(Actor):
 class FractieLid(Actor):
     url = 'FractieLid'
 
-    def __init__(self, json):
-        super().__init__(json)
-
     @property
     def fractie(self):
         return self.related_item(Fractie)
@@ -131,9 +119,6 @@ class FractieLid(Actor):
 
 class Lid(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Lid'
-
-    def __init__(self, json):
-        super().__init__(json)
 
     @property
     def persoon(self):

@@ -5,9 +5,6 @@ from tkapi.document import ParlementairDocument
 
 class KamerstukFilter(tkapi.Filter):
 
-    def __init__(self):
-        super().__init__()
-
     def filter_ondernummer(self, ondernumer):
         filter_str = "Ondernummer eq " + "'" + str(ondernumer) + "'"
         self.filters.append(filter_str)
@@ -16,9 +13,6 @@ class KamerstukFilter(tkapi.Filter):
 class Kamerstuk(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Kamerstuk'
     # expand_param = 'Kamerstukdossier, ParlementairDocument'
-
-    def __init__(self, kamerstuk_json):
-        super().__init__(kamerstuk_json)
 
     @staticmethod
     def create_filter():

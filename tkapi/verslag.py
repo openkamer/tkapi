@@ -7,9 +7,6 @@ class VerslagAlgemeenOverleg(ParlementairDocument):
     filter_param = "Soort eq 'Verslag van een algemeen overleg'"
     # expand_param = 'Zaak/Voortouwcommissie/Commissie, Activiteit/Voortouwcommissie/Commissie, Activiteit/Volgcommissie/Commissie, Kamerstuk/Kamerstukdossier'
 
-    def __init__(self, document_json):
-        super().__init__(document_json)
-
     # @property
     # def commissie(self):
     #     if self.zaak and self.zaak['Voortouwcommissie']:

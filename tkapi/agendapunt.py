@@ -11,9 +11,6 @@ class Agendapunt(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Agendapunt'
     # expand_param = 'Zaak, ParlementairDocument'
 
-    def __init__(self, agendapunt_json):
-        super().__init__(agendapunt_json)
-
     @staticmethod
     def create_filter():
         return AgendapuntFilter()

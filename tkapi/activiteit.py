@@ -11,9 +11,6 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Activiteit'
     # expand_param = 'Zaak, ParlementairDocument'
 
-    def __init__(self, activiteit_json):
-        super().__init__(activiteit_json)
-
     @property
     def parlementaire_documenten(self):
         from tkapi.document import ParlementairDocument

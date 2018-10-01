@@ -9,8 +9,8 @@ class Kamervraag(ParlementairDocument):
     filter_param = "Soort eq 'Schriftelijke vragen'"
     expand_param = 'Zaak'
 
-    def __init__(self, vraag_json):
-        super().__init__(vraag_json)
+    def __init__(self, json):
+        super().__init__(json)
         self.document_url = self.get_document_url()
 
     @staticmethod
@@ -70,8 +70,8 @@ class Kamervraag(ParlementairDocument):
 class Antwoord(ParlementairDocument):
     filter_param = "Soort eq 'Antwoord schriftelijke vragen'"
 
-    def __init__(self, antwoord_json):
-        super().__init__(antwoord_json)
+    def __init__(self, json):
+        super().__init__(json)
         self.document_url = self.get_document_url()
 
     @property

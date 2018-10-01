@@ -3,9 +3,6 @@ import tkapi
 
 class ZaakFilter(tkapi.SoortFilter):
 
-    def __init__(self):
-        super().__init__()
-
     def filter_date_range(self, start_datetime, end_datetime):
         filter_str = "GestartOp ge " + tkapi.util.datetime_to_odata(start_datetime)
         self.filters.append(filter_str)
@@ -50,9 +47,6 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Zaak'
     expand_param = ''
     orderby_param = 'GestartOp'
-
-    def __init__(self, zaak_json):
-        super().__init__(zaak_json)
 
     def __str__(self):
         return 'Zaak: ' + str(self.nummer) + ', soort: ' + self.soort + ', onderwerp: ' + self.onderwerp + ', afgedaan: ' + str(self.afgedaan)

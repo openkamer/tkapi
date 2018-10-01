@@ -11,9 +11,6 @@ class Stemming(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Stemming'
     # expand_param = 'Besluit'
 
-    def __init__(self, stemming_json):
-        super().__init__(stemming_json)
-
     @staticmethod
     def create_filter():
         return StemmingFilter()
