@@ -1,19 +1,19 @@
 from setuptools import setup
-from pypandoc import convert_file
 
-long_description = convert_file('README.md', 'rst')
+with open("README.md", "r") as fh:
+    long_description = fh.read()
 
 setup(
     name='tkapi',
     description='Python bindings for the Tweede Kamer OData API',
     long_description=long_description,
-    version='0.2.0',
+    version='0.3.0',
     url='https://github.com/openkamer/tkapi',
     author='Open Kamer',
     author_email='info@openkamer.org',
     license='MIT',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
