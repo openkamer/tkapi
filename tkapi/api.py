@@ -22,6 +22,51 @@ class Api(object):
         self._verbose = verbose
         self.api_root = api_root
 
+    def get_commissies(self, filter=None, max_items=None):
+        return self.get_items(Commissie, filter, max_items)
+
+    def get_personen(self, max_items=None):
+        return self.get_items(Persoon, filter=None, max_items=max_items)
+
+    def get_fracties(self, filter=None, max_items=None):
+        return self.get_items(Fractie, filter, max_items)
+
+    def get_verslagen_van_algemeen_overleg(self, filter=None, max_items=None):
+        return self.get_items(VerslagAlgemeenOverleg, filter=filter, max_items=max_items)
+
+    def get_kamervragen(self, filter=None, max_items=None):
+        return self.get_items(Kamervraag, filter, max_items)
+
+    def get_antwoorden(self, filter=None, max_items=None):
+        return self.get_items(Antwoord, filter, max_items)
+
+    def get_parlementaire_documenten(self, filter=None, max_items=None):
+        return self.get_items(ParlementairDocument, filter, max_items=max_items)
+
+    def get_dossiers(self, filter=None, max_items=None):
+        return self.get_items(Dossier, filter, max_items)
+
+    def get_zaken(self, filter=None):
+        return self.get_items(Zaak, filter, max_items=None)
+
+    def get_activiteiten(self, filter, max_items=None):
+        return self.get_items(Activiteit, filter=filter, max_items=max_items)
+
+    def get_kamerstukken(self, filter=None, max_items=None):
+        return self.get_items(Kamerstuk, filter, max_items)
+
+    def get_stemmingen(self, filter=None, max_items=None):
+        return self.get_items(Stemming, filter, max_items)
+
+    def get_agendapunten(self, filter=None, max_items=None):
+        return self.get_items(Agendapunt, filter, max_items)
+
+    def get_besluiten(self, filter=None, max_items=None):
+        return self.get_items(Besluit, filter, max_items)
+
+    def get_fractie_leden(self, filter=None, max_items=None):
+        return self.get_items(FractieLid, filter, max_items)
+
     @staticmethod
     def add_filter_to_params(filter, params):
         params['$filter'] = ''
@@ -91,48 +136,3 @@ class Api(object):
             item = item_class(item_json)
             items.append(item)
         return items
-
-    def get_commissies(self, filter=None, max_items=None):
-        return self.get_items(Commissie, filter, max_items)
-
-    def get_personen(self, max_items=None):
-        return self.get_items(Persoon, filter=None, max_items=max_items)
-
-    def get_fracties(self, filter=None, max_items=None):
-        return self.get_items(Fractie, filter, max_items)
-
-    def get_verslagen_van_algemeen_overleg(self, filter=None, max_items=None):
-        return self.get_items(VerslagAlgemeenOverleg, filter=filter, max_items=max_items)
-
-    def get_kamervragen(self, filter=None, max_items=None):
-        return self.get_items(Kamervraag, filter, max_items)
-
-    def get_antwoorden(self, filter=None, max_items=None):
-        return self.get_items(Antwoord, filter, max_items)
-
-    def get_parlementaire_documenten(self, filter=None, max_items=None):
-        return self.get_items(ParlementairDocument, filter, max_items=max_items)
-
-    def get_dossiers(self, filter=None, max_items=None):
-        return self.get_items(Dossier, filter, max_items)
-
-    def get_zaken(self, filter=None):
-        return self.get_items(Zaak, filter, max_items=None)
-
-    def get_activiteiten(self, filter, max_items=None):
-        return self.get_items(Activiteit, filter=filter, max_items=max_items)
-
-    def get_kamerstukken(self, filter=None, max_items=None):
-        return self.get_items(Kamerstuk, filter, max_items)
-
-    def get_stemmingen(self, filter=None, max_items=None):
-        return self.get_items(Stemming, filter, max_items)
-
-    def get_agendapunten(self, filter=None, max_items=None):
-        return self.get_items(Agendapunt, filter, max_items)
-
-    def get_besluiten(self, filter=None, max_items=None):
-        return self.get_items(Besluit, filter, max_items)
-
-    def get_fractie_leden(self, filter=None, max_items=None):
-        return self.get_items(FractieLid, filter, max_items)
