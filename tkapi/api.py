@@ -110,9 +110,10 @@ class Api(object):
             params = tkitem.get_param_expand()
         return tkitem(self.request_json(url, params))
 
-    def get_related(self, tkitem_related, related_url, params=None):
+    def get_related(self, tkitem_related, related_url, filter=None, params=None):
         if params is None:
             params = tkitem_related.get_param_expand()
+        params = Api.add_filter_to_params(filter, params)
         related_json = self.request_json(related_url, params)
         related_items = []
         if 'value' in related_json:

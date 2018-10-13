@@ -9,7 +9,6 @@ class ActorFilter(tkapi.Filter):
 
 class Actor(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Actor'
-    expand_param = ''
 
     @staticmethod
     def create_filter():
@@ -31,10 +30,21 @@ class Actor(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_item(Stemming)
 
 
+class FractieFilter(ActorFilter):
+
+    def filter_actief(self):
+        self.filters.append("DatumInactief eq null")
+        self.filters.append("DatumActief ne null")
+
+
 class Fractie(Actor):
     url = 'Fractie'
     # expand_param = 'ZaakActorPersoon'
     # expand_param = 'Lid'
+
+    @staticmethod
+    def create_filter():
+        return FractieFilter()
 
     @property
     def naam(self):
@@ -53,12 +63,21 @@ class Fractie(Actor):
         return self.related_items(Lid)
 
     @property
+    def leden_actief(self):
+        filter = Lid.create_filter()
+        filter.filter_actief()
+        return self.related_items(Lid, filter=filter)
+
+    @property
     def datum_actief(self):
         return self.get_date_or_none('DatumActief')
 
     @property
     def datum_inactief(self):
         return self.get_date_or_none('DatumInactief')
+
+    def __str__(self):
+        return '{} ({}) ({} zetels)'.format(self.naam, self.afkorting, self.zetels)
 
 
 class Persoon(Actor):
@@ -109,20 +128,27 @@ class Persoon(Actor):
         return pretty_print
 
 
-class FractieLid(Actor):
-    url = 'FractieLid'
+class LidFilter(ActorFilter):
 
-    @property
-    def fractie(self):
-        return self.related_item(Fractie)
+    def filter_actief(self):
+        self.filters.append("TotEnMet eq null")
+        self.filters.append("Verwijderd eq false")
 
 
 class Lid(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Lid'
 
+    @staticmethod
+    def create_filter():
+        return LidFilter()
+
     @property
     def persoon(self):
         return self.related_item(Persoon)
+
+    @property
+    def is_actief(self):
+        return self.tot_en_met is None
 
     @property
     def van(self):
@@ -131,3 +157,11 @@ class Lid(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def tot_en_met(self):
         return self.get_date_or_none('TotEnMet')
+
+
+class FractieLid(Lid):
+    url = 'FractieLid'
+
+    @property
+    def fractie(self):
+        return self.related_item(Fractie)

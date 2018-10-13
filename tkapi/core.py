@@ -73,20 +73,27 @@ class TKItemRelated(object):
         super().__init__(*args, **kwargs)
         self.items_cache = {}
 
-    def set_cache(self, tkitem, items):
-        self.items_cache[tkitem.__name__] = items
+    def create_cache_key(self, tkitem, filter):
+        cache_key = tkitem.__name__
+        if filter is not None:
+            cache_key += filter.filter_str
+        return cache_key
 
-    def related_items(self, tkitem):
+    def set_cache(self, tkitem, filter, items):
+        self.items_cache[self.create_cache_key(tkitem, filter)] = items
+
+    def related_items(self, tkitem, filter=None):
         if tkitem.url + '@odata.navigationLinkUrl' not in self.json:
             return []
         if tkitem.url in self.json and self.json[tkitem.url] is None:
             return []
-        if tkitem.__name__ in self.items_cache:
-            return self.items_cache[tkitem.__name__]
+        cache_key = self.create_cache_key(tkitem, filter)
+        if cache_key in self.items_cache:
+            return self.items_cache[cache_key]
         url = self.json[tkitem.url + '@odata.navigationLinkUrl']
         # print(url)
-        items = tkapi.api.get_related(tkitem, related_url=url)
-        self.set_cache(tkitem, items)
+        items = tkapi.api.get_related(tkitem, related_url=url, filter=filter)
+        self.set_cache(tkitem, filter, items)
         return items
 
     def related_item(self, tkitem):
