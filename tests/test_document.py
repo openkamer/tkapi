@@ -38,7 +38,7 @@ class TestParlementairDocument(unittest.TestCase):
         pds = api.get_parlementaire_documenten(pd_filter)
         for pd in pds:
             print(pd.titel)
-        self.assertEqual(253, len(pds))
+        self.assertGreater(len(pds), 253)
 
 
 class TestParlementairDocumentFilter(unittest.TestCase):

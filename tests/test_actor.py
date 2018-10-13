@@ -4,6 +4,7 @@ import unittest
 from tkapi import api
 from tkapi.actor import Persoon
 from tkapi.actor import Fractie
+from tkapi.actor import FractieLid
 
 
 class TestFractie(unittest.TestCase):
@@ -28,11 +29,28 @@ class TestFractie(unittest.TestCase):
         self.assertGreater(len(leden), 53)
 
     def test_get_fracties(self):
-        fracties = api.get_fracties(filter=None, max_items=50)
+        fracties = api.get_fracties(max_items=50)
         for fractie in fracties:
             # fractie.print_json()
             print('fractie:', fractie.naam, '| zetels:', fractie.zetels)
         self.assertEqual(46, len(fracties))
+
+    def test_filter_fracties_actief(self):
+        filter = Fractie.create_filter()
+        filter.filter_actief()
+        fracties = api.get_fracties(max_items=50, filter=filter)
+        for fractie in fracties:
+            fractie.print_json()
+            print('fractie:', fractie.naam, '| zetels:', fractie.zetels)
+        self.assertEqual(13, len(fracties))
+
+    def test_filter_actieve_leden(self):
+        fractie = api.get_item(Fractie, id='97d432a7-8a64-4db9-9189-cc9f70a4109b')
+        leden_actief = fractie.leden_actief
+        print(fractie.naam, fractie.zetels)
+        for lid in leden_actief:
+            print('\t', lid.persoon)
+        self.assertEqual(fractie.zetels, len(leden_actief))
 
 
 class TestPersoon(unittest.TestCase):
@@ -66,7 +84,19 @@ class TestPersoon(unittest.TestCase):
 class TestFractieLid(unittest.TestCase):
 
     def test_get_fractie_leden(self):
-        leden = api.get_fractie_leden(max_items=100)
+        leden = api.get_fractie_leden(max_items=10)
+        print('fractieleden:', len(leden))
+        self.assertEqual(10, len(leden))
+        for lid in leden:
+            lid.print_json()
+
+    def test_get_fractie_leden_actief(self):
+        filter = FractieLid.create_filter()
+        filter.filter_actief()
+        leden = api.get_fractie_leden(max_items=10, filter=filter)
         print('fractieleden:', len(leden))
         for lid in leden:
             lid.print_json()
+            self.assertEqual(lid.tot_en_met, None)
+            self.assertEqual(lid.is_actief, True)
+
