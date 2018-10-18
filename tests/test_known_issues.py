@@ -1,14 +1,13 @@
-"""Tests known and reported issues of the OData API, test succeed if issues still exist"""
+"""Tests known and reported issues of the ODataself.api, test succeed if issues still exist"""
+from tkapi.besluit import Besluit
 
-import unittest
-
-from tkapi import api
+from .core import TKApiTestCase
 
 
-class TestCommissies(unittest.TestCase):
+class TestCommissies(TKApiTestCase):
 
     def test_commissie_info_missing(self):
-        commissies = api.get_commissies()
+        commissies = self.api.get_commissies()
         commissies_without_name = []
         commissies_with_name = []
         commissies_with_soort = []
@@ -27,20 +26,20 @@ class TestCommissies(unittest.TestCase):
         self.assertGreater(len(commissies_with_soort), 100)
 
 
-# class TestBesluit(unittest.TestCase):
+# class TestBesluit(TKApiTestCase):
 #
 #     def test_besluiten_without_zaak(self):
 #         besluit_filter = Besluit.create_filter()
 #         besluit_filter.filter_empty_zaak()
-#         besluiten = api.get_besluiten(filter=besluit_filter)
+#         besluiten = self.api.get_besluiten(filter=besluit_filter)
 #         self.assertEqual(len(besluiten), 0)  # Not a single Besluit has a Zaak
-#
-#
-# class TestActiviteit(unittest.TestCase):
+
+
+# class TestActiviteit(TKApiTestCase):
 #
 #     def test_activiteit_without_zaak(self):
 #         activiteit_filter = Activiteit.create_filter()
-#         activiteiten = api.get_activiteiten(filter=activiteit_filter, max_items=100)
+#         activiteiten = self.api.get_activiteiten(filter=activiteit_filter, max_items=100)
 #         activiteiten_without_zaak = []
 #         for activiteit in activiteiten:
 #             if not activiteit.zaken:

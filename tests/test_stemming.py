@@ -1,14 +1,14 @@
 import datetime
-import unittest
 
-from tkapi import api
 from tkapi.stemming import Stemming
 
+from .core import TKApiTestCase
 
-class TestStemming(unittest.TestCase):
+
+class TestStemming(TKApiTestCase):
 
     def test_get_stemmingen(self):
-        stemmingen = api.get_stemmingen(filter=None, max_items=10)
+        stemmingen = self.api.get_stemmingen(filter=None, max_items=10)
         for stemming in stemmingen:
             stemming.print_json()
             # stemming.besluit.print_json()
@@ -17,7 +17,7 @@ class TestStemming(unittest.TestCase):
     #     vetnummer = 34435
     #     filter = Dossier.create_filter()
     #     filter.filter_vetnummer(vetnummer)
-    #     dossiers = api.get_dossiers(filter=filter)
+    #     dossiers = self.api.get_dossiers(filter=filter)
     #     self.assertEqual(len(dossiers), 1)
     #     dossiers[0].print_json()
     #
@@ -28,7 +28,7 @@ class TestStemming(unittest.TestCase):
     # def check_dossier_filter(self, zaak_nr, expected_dossier_vetnummer):
     #     dossier_filter = Dossier.create_filter()
     #     dossier_filter.filter_zaak(zaak_nr)
-    #     dossiers = api.get_dossiers(filter=dossier_filter)
+    #     dossiers = self.api.get_dossiers(filter=dossier_filter)
     #     for dossier in dossiers:
     #         dossier.print_json()
     #     self.assertEqual(len(dossiers), 1)

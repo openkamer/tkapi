@@ -15,57 +15,80 @@ from .zaak import Zaak
 
 
 class Api(object):
+    _user = None
+    _password = None
+    _verbose = False
+    api_root = 'https://gegevensmagazijn.tweedekamer.nl/OData/v3/1.0/'
 
-    def __init__(self, user, password, api_root='https://gegevensmagazijn.tweedekamer.nl/OData/v3/1.0/', verbose=False):
-        self._user = user
-        self._password = password
-        self._verbose = verbose
-        self.api_root = api_root
+    def __init__(self, user=None, password=None, api_root=None, verbose=None):
+        if user is not None:
+            self._user = user
+        if password is not None:
+            self._password = password
+        if api_root is not None:
+            self.api_root = api_root
+        if verbose is not None:
+            self._verbose = verbose
 
-    def get_commissies(self, filter=None, max_items=None):
-        return self.get_items(Commissie, filter, max_items)
+    @classmethod
+    def get_commissies(cls, filter=None, max_items=None):
+        return cls.get_items(Commissie, filter, max_items)
 
-    def get_personen(self, max_items=None):
-        return self.get_items(Persoon, filter=None, max_items=max_items)
+    @classmethod
+    def get_personen(cls, max_items=None):
+        return cls.get_items(Persoon, filter=None, max_items=max_items)
 
-    def get_fracties(self, filter=None, max_items=None):
-        return self.get_items(Fractie, filter, max_items)
+    @classmethod
+    def get_fracties(cls, filter=None, max_items=None):
+        return cls.get_items(Fractie, filter, max_items)
 
-    def get_verslagen_van_algemeen_overleg(self, filter=None, max_items=None):
-        return self.get_items(VerslagAlgemeenOverleg, filter=filter, max_items=max_items)
+    @classmethod
+    def get_verslagen_van_algemeen_overleg(cls, filter=None, max_items=None):
+        return cls.get_items(VerslagAlgemeenOverleg, filter=filter, max_items=max_items)
 
-    def get_kamervragen(self, filter=None, max_items=None):
-        return self.get_items(Kamervraag, filter, max_items)
+    @classmethod
+    def get_kamervragen(cls, filter=None, max_items=None):
+        return cls.get_items(Kamervraag, filter, max_items)
 
-    def get_antwoorden(self, filter=None, max_items=None):
-        return self.get_items(Antwoord, filter, max_items)
+    @classmethod
+    def get_antwoorden(cls, filter=None, max_items=None):
+        return cls.get_items(Antwoord, filter, max_items)
 
-    def get_parlementaire_documenten(self, filter=None, max_items=None):
-        return self.get_items(ParlementairDocument, filter, max_items=max_items)
+    @classmethod
+    def get_parlementaire_documenten(cls, filter=None, max_items=None):
+        return cls.get_items(ParlementairDocument, filter, max_items=max_items)
 
-    def get_dossiers(self, filter=None, max_items=None):
-        return self.get_items(Dossier, filter, max_items)
+    @classmethod
+    def get_dossiers(cls, filter=None, max_items=None):
+        return cls.get_items(Dossier, filter, max_items)
 
-    def get_zaken(self, filter=None):
-        return self.get_items(Zaak, filter, max_items=None)
+    @classmethod
+    def get_zaken(cls, filter=None):
+        return cls.get_items(Zaak, filter, max_items=None)
 
-    def get_activiteiten(self, filter, max_items=None):
-        return self.get_items(Activiteit, filter=filter, max_items=max_items)
+    @classmethod
+    def get_activiteiten(cls, filter, max_items=None):
+        return cls.get_items(Activiteit, filter=filter, max_items=max_items)
 
-    def get_kamerstukken(self, filter=None, max_items=None):
-        return self.get_items(Kamerstuk, filter, max_items)
+    @classmethod
+    def get_kamerstukken(cls, filter=None, max_items=None):
+        return cls.get_items(Kamerstuk, filter, max_items)
 
-    def get_stemmingen(self, filter=None, max_items=None):
-        return self.get_items(Stemming, filter, max_items)
+    @classmethod
+    def get_stemmingen(cls, filter=None, max_items=None):
+        return cls.get_items(Stemming, filter, max_items)
 
-    def get_agendapunten(self, filter=None, max_items=None):
-        return self.get_items(Agendapunt, filter, max_items)
+    @classmethod
+    def get_agendapunten(cls, filter=None, max_items=None):
+        return cls.get_items(Agendapunt, filter, max_items)
 
-    def get_besluiten(self, filter=None, max_items=None):
-        return self.get_items(Besluit, filter, max_items)
+    @classmethod
+    def get_besluiten(cls, filter=None, max_items=None):
+        return cls.get_items(Besluit, filter, max_items)
 
-    def get_fractie_leden(self, filter=None, max_items=None):
-        return self.get_items(FractieLid, filter, max_items)
+    @classmethod
+    def get_fractie_leden(cls, filter=None, max_items=None):
+        return cls.get_items(FractieLid, filter, max_items)
 
     @staticmethod
     def add_filter_to_params(filter, params):
@@ -74,27 +97,29 @@ class Api(object):
             params['$filter'] += filter.filter_str
         return params
 
-    def get_all_items(self, page, max_items=None):
+    @classmethod
+    def get_all_items(cls, page, max_items=None):
         items = []
         for item in page['value']:
             items.append(item)
             if max_items is not None and len(items) >= max_items:
                 return items
         while 'odata.nextLink' in page:
-            page = self.request_json(page['odata.nextLink'])
+            page = cls.request_json(page['odata.nextLink'])
             for item in page['value']:
                 items.append(item)
                 if max_items is not None and len(items) >= max_items:
                     return items
         return items
 
-    def request_json(self, url, params=None):
+    @classmethod
+    def request_json(cls, url, params=None):
         if not params:
             params = {}
         # params['$format'] = 'json',
         params['$format'] = 'application/json;odata=fullmetadata',
-        response = requests.get(self.api_root + url, params=params, auth=(self._user, self._password))
-        if self._verbose:
+        response = requests.get(cls.api_root + url, params=params, auth=(cls._user, cls._password))
+        if cls._verbose:
             print('url: ' + str(response.url))
         if response.status_code == 204:
             print('### WARNING: requested item does not exist:', url, '###')
@@ -104,17 +129,19 @@ class Api(object):
         assert response.status_code == 200
         return response.json()
 
-    def get_item(self, tkitem, id, params=None):
+    @classmethod
+    def get_item(cls, tkitem, id, params=None):
         url = tkitem.url + '(guid\'' + id + '\')'
         if params is None:
             params = tkitem.get_param_expand()
-        return tkitem(self.request_json(url, params))
+        return tkitem(cls.request_json(url, params))
 
-    def get_related(self, tkitem_related, related_url, filter=None, params=None):
+    @classmethod
+    def get_related(cls, tkitem_related, related_url, filter=None, params=None):
         if params is None:
             params = tkitem_related.get_param_expand()
         params = Api.add_filter_to_params(filter, params)
-        related_json = self.request_json(related_url, params)
+        related_json = cls.request_json(related_url, params)
         related_items = []
         if 'value' in related_json:
             for item_json in related_json['value']:
@@ -123,7 +150,8 @@ class Api(object):
             related_items.append(tkitem_related(related_json))
         return related_items
 
-    def get_items(self, item_class, filter=None, max_items=None):
+    @classmethod
+    def get_items(cls, item_class, filter=None, max_items=None):
         items = []
         params = item_class.get_params_default()
         params = Api.add_filter_to_params(filter, params)
@@ -131,8 +159,8 @@ class Api(object):
             if params['$filter']:
                 params['$filter'] += ' and '
             params['$filter'] += item_class.filter_param
-        first_page = self.request_json(item_class.url, params)
-        items_json = self.get_all_items(first_page, max_items=max_items)
+        first_page = cls.request_json(item_class.url, params)
+        items_json = cls.get_all_items(first_page, max_items=max_items)
         for item_json in items_json:
             item = item_class(item_json)
             items.append(item)

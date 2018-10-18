@@ -63,9 +63,6 @@ class TKItem(object):
             return tkapi.util.odatedatetime_to_datetime(self.json[property_key])
         return None
 
-    # def get_related_id(self, item, key):
-    #     item.json
-
 
 class TKItemRelated(object):
 
@@ -73,7 +70,8 @@ class TKItemRelated(object):
         super().__init__(*args, **kwargs)
         self.items_cache = {}
 
-    def create_cache_key(self, tkitem, filter):
+    @staticmethod
+    def create_cache_key(tkitem, filter):
         cache_key = tkitem.__name__
         if filter is not None:
             cache_key += filter.filter_str
@@ -83,6 +81,7 @@ class TKItemRelated(object):
         self.items_cache[self.create_cache_key(tkitem, filter)] = items
 
     def related_items(self, tkitem, filter=None):
+        from tkapi.api import Api
         if tkitem.url + '@odata.navigationLinkUrl' not in self.json:
             return []
         if tkitem.url in self.json and self.json[tkitem.url] is None:
@@ -92,7 +91,7 @@ class TKItemRelated(object):
             return self.items_cache[cache_key]
         url = self.json[tkitem.url + '@odata.navigationLinkUrl']
         # print(url)
-        items = tkapi.api.get_related(tkitem, related_url=url, filter=filter)
+        items = Api().get_related(tkitem, related_url=url, filter=filter)
         self.set_cache(tkitem, filter, items)
         return items
 

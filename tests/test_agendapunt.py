@@ -1,14 +1,12 @@
 import datetime
-import unittest
 
-from tkapi import api
-from tkapi.agendapunt import Agendapunt
+from .core import TKApiTestCase
 
 
-class TestAgendapunt(unittest.TestCase):
+class TestAgendapunt(TKApiTestCase):
 
     def test_get_agendapunten(self):
-        agendapunten = api.get_agendapunten(filter=None, max_items=10)
+        agendapunten = self.api.get_agendapunten(filter=None, max_items=10)
         for agendapunt in agendapunten:
             if agendapunt.parlementaire_documenten:
                 agendapunt.print_json()

@@ -8,7 +8,8 @@ class DossierFilter(tkapi.Filter):
         self.filters.append(filter_str)
 
     def filter_zaak(self, zaak_number):
-        filter_str = 'Kamerstuk/any(ks:ks/ParlementairDocument/Zaak/any(z:z/Nummer eq ' + "'" + str(zaak_number) + "'" + '))'
+        filter_str = 'Kamerstuk/any(ks:ks/ParlementairDocument/Zaak/any(z:z/Nummer eq ' \
+                     + "'" + str(zaak_number) + "'" + '))'
         self.filters.append(filter_str)
 
     def filter_afgesloten(self, is_afgesloten):

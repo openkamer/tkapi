@@ -1,11 +1,11 @@
-import unittest
 import datetime
 
-from tkapi import api
 from tkapi.zaak import Zaak
 
+from .core import TKApiTestCase
 
-class TestZaak(unittest.TestCase):
+
+class TestZaak(TKApiTestCase):
     start_datetime = datetime.datetime(year=2016, month=1, day=1)
     end_datetime = datetime.datetime(year=2016, month=4, day=1)
 
@@ -13,18 +13,18 @@ class TestZaak(unittest.TestCase):
         zaak_filter = Zaak.create_filter()
         zaak_filter.filter_date_range(TestZaak.start_datetime, TestZaak.end_datetime)
         zaak_filter.filter_soort('Wetgeving')
-        zaken = api.get_zaken(zaak_filter)
+        zaken = self.api.get_zaken(zaak_filter)
         # for zaak in zaken:
         #     zaak.print_json()
         self.assertEqual(len(zaken), 27)
 
         zaak_filter.add_afgedaan(True)
-        zaken_afgedaan = api.get_zaken(zaak_filter)
+        zaken_afgedaan = self.api.get_zaken(zaak_filter)
         # for zaak in zaken_afgedaan:
         #     zaak.print_json()
 
         zaak_filter.update_afgedaan(False)
-        zaken_aanhangig = api.get_zaken(zaak_filter)
+        zaken_aanhangig = self.api.get_zaken(zaak_filter)
         # for zaak in zaken_aanhangig:
         #     zaak.print_json()
 
@@ -38,7 +38,7 @@ class TestZaak(unittest.TestCase):
         onderwerp = "Selectie aan de poort bij steeds meer universitaire studies"
         zaak_filter = Zaak.create_filter()
         zaak_filter.filter_onderwerp(onderwerp)
-        zaken = api.get_zaken(zaak_filter)
+        zaken = self.api.get_zaken(zaak_filter)
         self.assertEqual(len(zaken), 1)
         self.assertEqual(zaken[0].onderwerp, onderwerp)
         zaken[0].print_json()
@@ -46,7 +46,7 @@ class TestZaak(unittest.TestCase):
     def test_zaken_for_date_range(self):
         zaak_filter = Zaak.create_filter()
         zaak_filter.filter_date_range(TestZaak.start_datetime, TestZaak.end_datetime)
-        zaken = api.get_zaken(zaak_filter)
+        zaken = self.api.get_zaken(zaak_filter)
         soorten = set()
         for zaak in zaken:
             # zaak.print_json()
@@ -59,19 +59,19 @@ class TestZaak(unittest.TestCase):
         zaak_nummer = '2007Z01002'
         zaak_filter = Zaak.create_filter()
         zaak_filter.filter_nummer(zaak_nummer)
-        zaken = api.get_zaken(zaak_filter)
+        zaken = self.api.get_zaken(zaak_filter)
         self.assertEqual(len(zaken), 1)
         zaak = zaken[0]
         self.assertEqual(zaak.nummer, zaak_nummer)
         zaak.print_json()
 
 
-class TestZaakRelations(unittest.TestCase):
+class TestZaakRelations(TKApiTestCase):
 
     # def test_zaak_filter_empty_besluiten(self):
     #     zaak_filter = Zaak.create_filter()
     #     zaak_filter.filter_empty_besluit()
-    #     zaken = api.get_zaken(zaak_filter)
+    #     zaken = self.api.get_zaken(zaak_filter)
     #     self.assertEqual(len(zaken), 0)
 
     def test_zaak_filter_empty_activiteit(self):
@@ -81,7 +81,7 @@ class TestZaakRelations(unittest.TestCase):
         zaak_filter.filter_date_range(start_datetime, end_datetime)
         zaak_filter.filter_empty_activiteit()
         # zaak_filter.filter_soort('Wetgeving')
-        zaken = api.get_zaken(zaak_filter)
+        zaken = self.api.get_zaken(zaak_filter)
         print('Zaken without activiteit', len(zaken))
         self.assertTrue(len(zaken) > 50)
 
@@ -92,6 +92,6 @@ class TestZaakRelations(unittest.TestCase):
         zaak_filter.filter_date_range(start_datetime, end_datetime)
         zaak_filter.filter_empty_agendapunt()
         # zaak_filter.filter_soort('Wetgeving')
-        zaken = api.get_zaken(zaak_filter)
+        zaken = self.api.get_zaken(zaak_filter)
         print('Zaken without agendapunt', len(zaken))
         self.assertTrue(len(zaken) > 50)

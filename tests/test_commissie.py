@@ -1,17 +1,17 @@
-import unittest
 from orderedset import OrderedSet
 
-from tkapi import api
 from tkapi.commissie import Commissie
 from tkapi.info import get_commissie_namen
 from tkapi.info import get_commissie_soorten
 
+from .core import TKApiTestCase
 
-class TestCommissie(unittest.TestCase):
+
+class TestCommissie(TKApiTestCase):
 
     def test_get_commissies(self):
         max_items = None
-        commissies = api.get_commissies(max_items=max_items)
+        commissies = self.api.get_commissies(max_items=max_items)
         soorten = set()
         commissies_without_soort = []
         commissies_without_name = []
@@ -47,7 +47,7 @@ class TestCommissie(unittest.TestCase):
         soort = 'Algemeen'
         com_filter = Commissie.create_filter()
         com_filter.filter_soort(soort)
-        commissies_algemeen = api.get_commissies(com_filter)
+        commissies_algemeen = self.api.get_commissies(com_filter)
         self.assertTrue(len(commissies_algemeen) >= 5)
         for commissie in commissies_algemeen:
             self.assertEqual(commissie.soort, soort)
@@ -57,14 +57,14 @@ class TestCommissie(unittest.TestCase):
         naam = 'Vaste commissie voor Binnenlandse Zaken'
         com_filter = Commissie.create_filter()
         com_filter.filter_naam(naam)
-        commissies_algemeen = api.get_commissies(com_filter)
+        commissies_algemeen = self.api.get_commissies(com_filter)
         commissies_algemeen[0].print_json()
         self.assertTrue(len(commissies_algemeen), 1)
         for commissie in commissies_algemeen:
             self.assertEqual(commissie.naam, naam)
 
 
-class TestCommissieInfo(unittest.TestCase):
+class TestCommissieInfo(TKApiTestCase):
 
     def test_commissie_namen(self):
         namen = get_commissie_namen()
@@ -79,10 +79,10 @@ class TestCommissieInfo(unittest.TestCase):
             print(naam)
 
 
-# class TestCommissieActiviteit(unittest.TestCase):
+# class TestCommissieActiviteit(TKApiTestCase):
 #
 #     def test_get_activiteit_actor(self):
-#         activiteiten = api.get_activiteiten(filter=None, max_items=50)
+#         activiteiten = self.api.get_activiteiten(filter=None, max_items=50)
 #         for activiteit in activiteiten:
 #             # activiteit.print_json()
 #             if activiteit.json['Voortouwcommissie']:

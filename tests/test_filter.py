@@ -1,9 +1,9 @@
-import unittest
-
 from tkapi.document import ParlementairDocument
 
+from .core import TKApiTestCase
 
-class TestFilters(unittest.TestCase):
+
+class TestFilters(TKApiTestCase):
 
     def test_filter_mixin(self):
         pd_filter = ParlementairDocument.create_filter()

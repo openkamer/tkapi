@@ -1,18 +1,18 @@
 import datetime
-import unittest
 
 from orderedset import OrderedSet
 
-from tkapi import api
 from tkapi.zaak import Zaak
 from tkapi.dossier import Dossier
 from tkapi.document import ParlementairDocument
 
+from .core import TKApiTestCase
 
-class TestDossier(unittest.TestCase):
+
+class TestDossier(TKApiTestCase):
 
     def test_get_dossiers(self):
-        dossiers = api.get_dossiers(filter=None, max_items=10)
+        dossiers = self.api.get_dossiers(filter=None, max_items=10)
         for dossier in dossiers:
             dossier.print_json()
 
@@ -20,7 +20,7 @@ class TestDossier(unittest.TestCase):
         vetnummer = 34435
         filter = Dossier.create_filter()
         filter.filter_vetnummer(vetnummer)
-        dossiers = api.get_dossiers(filter=filter)
+        dossiers = self.api.get_dossiers(filter=filter)
         self.assertEqual(len(dossiers), 1)
         dossiers[0].print_json()
 
@@ -31,7 +31,7 @@ class TestDossier(unittest.TestCase):
     def check_dossier_filter(self, zaak_nr, expected_dossier_vetnummer):
         dossier_filter = Dossier.create_filter()
         dossier_filter.filter_zaak(zaak_nr)
-        dossiers = api.get_dossiers(filter=dossier_filter)
+        dossiers = self.api.get_dossiers(filter=dossier_filter)
         for dossier in dossiers:
             dossier.print_json()
         self.assertEqual(len(dossiers), 1)
@@ -39,7 +39,7 @@ class TestDossier(unittest.TestCase):
         self.assertEqual(dossiers[0].vetnummer, expected_dossier_vetnummer)
 
 
-class TestDossierKamerstukken(unittest.TestCase):
+class TestDossierKamerstukken(TKApiTestCase):
 
     def test_dossier_kamerstukken(self):
         # vetnummer = 34693
@@ -49,7 +49,7 @@ class TestDossierKamerstukken(unittest.TestCase):
         vetnummer = 34723
         dossier_filter = Dossier.create_filter()
         dossier_filter.filter_vetnummer(vetnummer)
-        dossiers = api.get_dossiers(filter=dossier_filter)
+        dossiers = self.api.get_dossiers(filter=dossier_filter)
         self.assertEqual(len(dossiers), 1)
         dossier = dossiers[0]
         kamerstukken = dossier.kamerstukken
@@ -71,7 +71,7 @@ class TestDossierKamerstukken(unittest.TestCase):
                         stemming.print_json()
 
 
-class TestDossiersForZaken(unittest.TestCase):
+class TestDossiersForZaken(TKApiTestCase):
     start_datetime = datetime.datetime(year=2016, month=1, day=1)
     end_datetime = datetime.datetime(year=2016, month=1, day=14)
 
@@ -82,7 +82,7 @@ class TestDossiersForZaken(unittest.TestCase):
             TestDossiersForZaken.end_datetime
         )
         zaak_filter.filter_soort('Wetgeving')
-        zaken = api.get_zaken(zaak_filter)
+        zaken = self.api.get_zaken(zaak_filter)
 
         print('Wetgeving zaken found: ' + str(len(zaken)))
 
@@ -90,7 +90,7 @@ class TestDossiersForZaken(unittest.TestCase):
         zaak_nummers = [zaak.nummer for zaak in zaken]
         print(zaak_nummers)
         dossier_filter.filter_zaken(zaak_nummers)
-        dossiers = api.get_dossiers(filter=dossier_filter)
+        dossiers = self.api.get_dossiers(filter=dossier_filter)
         dossier_zaak_nummers = set()
         for dossier in dossiers:
             print('dossier.vetnummer: ', str(dossier.vetnummer))
@@ -106,18 +106,19 @@ class TestDossiersForZaken(unittest.TestCase):
         # print(zaken)
 
 
-class TestDossierAfgesloten(unittest.TestCase):
+class TestDossierAfgesloten(TKApiTestCase):
     start_datetime = datetime.datetime(year=2015, month=1, day=1)
     end_datetime = datetime.datetime.now()
 
     def test_filter_afgesloten(self):
         dossier_filter = Dossier.create_filter()
         dossier_filter.filter_afgesloten(True)
-        dossiers = api.get_dossiers(filter=dossier_filter)
-        self.assertEqual(len(dossiers), 0)  # There are currently no afgesloten dossiers, this will hopefully change in the future
+        dossiers = self.api.get_dossiers(filter=dossier_filter)
+        # There are currently no afgesloten dossiers, this will hopefully change in the future
+        self.assertEqual(len(dossiers), 0)
 
 
-class TestWetsvoorstelDossier(unittest.TestCase):
+class TestWetsvoorstelDossier(TKApiTestCase):
 
     def test_get_dossiers(self):
         pd_filter = ParlementairDocument.create_filter()
@@ -127,7 +128,7 @@ class TestWetsvoorstelDossier(unittest.TestCase):
         # pd_filter.filter_date_range(start_datetime, end_datetime)
         pd_filter.filter_soort('Voorstel van wet', is_or=True)
         pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
-        pds = api.get_parlementaire_documenten(pd_filter)
+        pds = self.api.get_parlementaire_documenten(pd_filter)
 
         dossier_nrs = []
         pds_no_dossier_nr = []
@@ -147,14 +148,13 @@ class TestWetsvoorstelDossier(unittest.TestCase):
             print(dossier_nr)
         print(len(dossier_nrs))
 
-
     # def test_get_dossiers(self):
     #     zaak_filter = Zaak.create_filter()
     #     start_datetime = datetime.datetime(year=2005, month=1, day=1)
     #     end_datetime = datetime.datetime.now()
     #     zaak_filter.filter_date_range(start_datetime, end_datetime)
     #     zaak_filter.filter_soort('Wetgeving')
-    #     zaken = api.get_zaken(zaak_filter)
+    #     zaken = self.api.get_zaken(zaak_filter)
     #     print('Wetgeving zaken found: ' + str(len(zaken)))
     #     zaak_nummers = [zaak.nummer for zaak in zaken]
     #     print(zaak_nummers)
@@ -167,7 +167,7 @@ class TestWetsvoorstelDossier(unittest.TestCase):
     #         dossier_filter = Dossier.create_filter()
     #         dossier_filter.filter_zaken(nrs_batch)
     #         nrs_batch = set()
-    #         dossiers_for_zaak = api.get_dossiers(filter=dossier_filter)
+    #         dossiers_for_zaak = self.api.get_dossiers(filter=dossier_filter)
     #         if dossiers_for_zaak:
     #             dossiers += dossiers_for_zaak
     #             print('Dossier found for zaak: ' + str(zaak_nr))

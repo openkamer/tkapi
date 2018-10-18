@@ -1,18 +1,18 @@
 import datetime
-import unittest
 
-from tkapi import api
 from tkapi.verslag import VerslagAlgemeenOverleg
 
+from .core import TKApiTestCase
 
-class TestVerslagAlgemeenOverleg(unittest.TestCase):
+
+class TestVerslagAlgemeenOverleg(TKApiTestCase):
 
     def test_get_verslagen_algemeen_overleg(self):
         start_datetime = datetime.datetime(year=2015, month=1, day=1)
         end_datetime = datetime.datetime(year=2015, month=1, day=20)
         v_filter = VerslagAlgemeenOverleg.create_filter()
         v_filter.filter_date_range(start_datetime, end_datetime)
-        verslagen = api.get_verslagen_van_algemeen_overleg(v_filter)
+        verslagen = self.api.get_verslagen_van_algemeen_overleg(v_filter)
         print('verslagen found:',  len(verslagen))
         self.assertEqual(13, len(verslagen))
         for verslag in verslagen:

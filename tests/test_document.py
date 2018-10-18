@@ -1,16 +1,16 @@
 import datetime
-import unittest
 
 from orderedset import OrderedSet
 
-from tkapi import api
 from tkapi.document import ParlementairDocument
 
+from .core import TKApiTestCase
 
-class TestSingleParlementairDocument(unittest.TestCase):
+
+class TestSingleParlementairDocument(TKApiTestCase):
 
     def test_get_voorstel_van_wet(self):
-        pds = api.get_parlementaire_documenten(max_items=1)
+        pds = self.api.get_parlementaire_documenten(max_items=1)
         self.assertEqual(1, len(pds))
         pd = pds[0]
         # pd.print_json()
@@ -23,7 +23,7 @@ class TestSingleParlementairDocument(unittest.TestCase):
             print(dossier)
 
 
-class TestParlementairDocument(unittest.TestCase):
+class TestParlementairDocument(TKApiTestCase):
     start_datetime = datetime.datetime(year=2017, month=1, day=1)
     end_datetime = datetime.datetime(year=2017, month=1, day=14)
 
@@ -35,13 +35,13 @@ class TestParlementairDocument(unittest.TestCase):
         )
         pd_filter.filter_soort('Voorstel van wet', is_or=True)
         pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
-        pds = api.get_parlementaire_documenten(pd_filter)
+        pds = self.api.get_parlementaire_documenten(pd_filter)
         for pd in pds:
             print(pd.titel)
         self.assertGreater(len(pds), 253)
 
 
-class TestParlementairDocumentFilter(unittest.TestCase):
+class TestParlementairDocumentFilter(TKApiTestCase):
 
     def test_filter_empty_zaak(self):
         pd_filter = ParlementairDocument.create_filter()
@@ -53,7 +53,7 @@ class TestParlementairDocumentFilter(unittest.TestCase):
         )
         pd_filter.filter_soort('Voorstel van wet')
         pd_filter.filter_empty_zaak()
-        pds = api.get_parlementaire_documenten(pd_filter)
+        pds = self.api.get_parlementaire_documenten(pd_filter)
         for pd in pds:
             print(pd.titel)
             for zaak in pd.zaken:
@@ -70,7 +70,7 @@ class TestParlementairDocumentFilter(unittest.TestCase):
             end_datetime
         )
         pd_filter.filter_empty_agendapunt()
-        pds = api.get_parlementaire_documenten(pd_filter)
+        pds = self.api.get_parlementaire_documenten(pd_filter)
         for pd in pds:
             print(pd.titel)
             for zaak in pd.zaken:
@@ -79,27 +79,27 @@ class TestParlementairDocumentFilter(unittest.TestCase):
         self.assertEqual(4, len(pds))
 
 
-class TestParlementairDocumentSoorten(unittest.TestCase):
+class TestParlementairDocumentSoorten(TKApiTestCase):
 
     def test_all_soorten(self):
         pd_filter = ParlementairDocument.create_filter()
         start_datetime = datetime.datetime(year=2010, month=1, day=1)
         end_datetime = datetime.datetime(year=2010, month=2, day=1)
         pd_filter.filter_date_range(start_datetime, end_datetime)
-        pds = api.get_parlementaire_documenten(pd_filter)
+        pds = self.api.get_parlementaire_documenten(pd_filter)
         soorten = [pd.soort for pd in pds]
         soorten = OrderedSet(sorted(soorten))
         for soort in soorten:
             print(soort)
 
 
-class TestParlementairDocumentTitel(unittest.TestCase):
+class TestParlementairDocumentTitel(TKApiTestCase):
 
     def test_filter_titel(self):
         titel = 'Wijziging van de Warmtewet (wijzigingen naar aanleiding van de evaluatie van de Warmtewet)'
         pd_filter = ParlementairDocument.create_filter()
         pd_filter.filter_titel(titel)
-        pds = api.get_parlementaire_documenten(pd_filter)
+        pds = self.api.get_parlementaire_documenten(pd_filter)
         self.assertTrue(len(pds) >= 7)
         for pd in pds:
             self.assertEqual(pd.titel, titel)

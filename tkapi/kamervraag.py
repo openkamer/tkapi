@@ -20,13 +20,15 @@ class Kamervraag(ParlementairDocument):
     @property
     def zaak(self):
         if self.json['Zaak']:
+            print('Zaak attribute exists')
             assert len(self.json['Zaak']) == 1
             return self.json['Zaak'][0]
         # Try to find a Zaak by Onderwerp, this is needed because Zaak is missing for old Kamervragen.
         # TODO: Remove this ugly workaround if TK fixes this data
         if hasattr(self, 'zaak_found'):
             return self.zaak_found.json
-        print('WARNING: no Zaak found, trying to find Zaak by onderwerp')
+        print('WARNING: no Zaak found, trying to find Zaak by onderwerp', self.datum, self.onderwerp)
+        self.print_json()
         zaak_filter = Zaak.create_filter()
         zaak_filter.filter_onderwerp(self.onderwerp)
         zaken = tkapi.api.get_zaken(zaak_filter)
@@ -51,7 +53,7 @@ class Kamervraag(ParlementairDocument):
     def get_document_url(self):
         url = ''
         # kamervragen have two url types at officielebekendmakingen, one starting with 'kv-tk' an old ones with 'kv-'
-        #TODO: determine date at which this format is switched to reduce the number of requests
+        # TODO: determine date at which this format is switched to reduce the number of requests
         if self.zaak:
             url = 'https://zoek.officielebekendmakingen.nl/kv-tk-' + self.zaak['Nummer']
             response = requests.get(url)
@@ -85,7 +87,7 @@ class Antwoord(ParlementairDocument):
         if not self.aanhangselnummer:
             print('document.aanhangselnummer is empty, early return')
             return ''
-        url_id = self.vergaderjaar.replace('-', '') + '-' + self.aanhangselnummer[-4:].lstrip('0')  #20162017-11
+        url_id = self.vergaderjaar.replace('-', '') + '-' + self.aanhangselnummer[-4:].lstrip('0')  # 20162017-11
         url = 'https://zoek.officielebekendmakingen.nl/ah-tk-' + url_id
         response = requests.get(url)
         assert response.status_code == 200

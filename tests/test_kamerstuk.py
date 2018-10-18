@@ -1,20 +1,19 @@
-import unittest
-
-from tkapi import api
 from tkapi.document import ParlementairDocument
 from tkapi.kamerstuk import Kamerstuk
 
+from .core import TKApiTestCase
 
-class TestKamerstuk(unittest.TestCase):
+
+class TestKamerstuk(TKApiTestCase):
 
     def test_get_kamerstuk(self):
         ks_uid = '79471b03-156c-4124-9203-0041dee38963'
-        kamerstuk = api.get_item(Kamerstuk, ks_uid)
+        kamerstuk = self.api.get_item(Kamerstuk, ks_uid)
         self.assertEqual(kamerstuk.id, ks_uid)
         self.assertEqual(kamerstuk.ondernummer, '2135')
 
     def test_get_kamerstukken(self):
-        kamerstukken = api.get_kamerstukken(filter=None, max_items=100)
+        kamerstukken = self.api.get_kamerstukken(filter=None, max_items=100)
         for kamerstuk in kamerstukken:
             kamerstuk.print_json()
 
@@ -22,7 +21,7 @@ class TestKamerstuk(unittest.TestCase):
         ondernummer = '82'
         kamerstuk_filter = Kamerstuk.create_filter()
         kamerstuk_filter.filter_ondernummer(ondernummer)
-        kamerstukken = api.get_kamerstukken(filter=kamerstuk_filter)
+        kamerstukken = self.api.get_kamerstukken(filter=kamerstuk_filter)
         self.assertTrue(len(kamerstukken) > 100)
         kamerstukken[0].print_json()
         for kamerstuk in kamerstukken:
@@ -31,20 +30,20 @@ class TestKamerstuk(unittest.TestCase):
 
     def test_get_kamerstuk_parlementair_document(self):
         ks_uid = '79471b03-156c-4124-9203-0041dee38963'
-        kamerstuk = api.get_item(Kamerstuk, ks_uid)
+        kamerstuk = self.api.get_item(Kamerstuk, ks_uid)
         self.assertEqual(kamerstuk.id, ks_uid)
         self.assertEqual(kamerstuk.ondernummer, '2135')
         pd = kamerstuk.parlementair_document
         pd.print_json()
 
 
-class TestWetsvoorstellenDossier(unittest.TestCase):
+class TestWetsvoorstellenDossier(TKApiTestCase):
 
     def test_get_wetsvoorstel_document_without_kamerstuk_and_dossier(self):
         pd_filter = ParlementairDocument.create_filter()
         pd_filter.filter_soort('Voorstel van wet', is_or=True)
         pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
-        pds = api.get_parlementaire_documenten(pd_filter)
+        pds = self.api.get_parlementaire_documenten(pd_filter)
 
         # pds_no_dossier_nr = []
         # for pd in pds:
