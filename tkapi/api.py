@@ -116,7 +116,7 @@ class Api(object):
             if max_items is not None and len(items) >= max_items:
                 return items
         while 'odata.nextLink' in page:
-            page = cls.request_json(page['odata.nextLink'])
+            page = cls.request_json(page['odata.nextLink'], max_items=max_items)
             for item in page['value']:
                 items.append(item)
                 if max_items is not None and len(items) >= max_items:
@@ -124,11 +124,13 @@ class Api(object):
         return items
 
     @classmethod
-    def request_json(cls, url, params=None):
+    def request_json(cls, url, params=None, max_items=None):
         if not params:
             params = {}
         # params['$format'] = 'json',
         params['$format'] = 'application/json;odata=fullmetadata',
+        if max_items is not None:
+            params['$top'] = max_items,
         response = requests.get(cls.api_root + url, params=params, auth=(str(cls._user), str(cls._password)))
         if cls._verbose:
             print('url: ' + str(response.url))
@@ -173,7 +175,7 @@ class Api(object):
             if params['$filter']:
                 params['$filter'] += ' and '
             params['$filter'] += item_class.filter_param
-        first_page = cls.request_json(item_class.url, params)
+        first_page = cls.request_json(item_class.url, params, max_items=max_items)
         items_json = cls.get_all_items(first_page, max_items=max_items)
         for item_json in items_json:
             item = item_class(item_json)
