@@ -15,11 +15,11 @@ def odatedatetime_to_datetime(odate_datetime):
     return datetime.datetime.strptime(odate_datetime, '%Y-%m-%dT%H:%M:%S')
 
 
-def create_api():
+def create_api(verbose=False):
     try:
         from local_settings import USER, PASSWORD, API_ROOT_URL
         from .api import Api
-        return Api(user=USER, password=PASSWORD, api_root=API_ROOT_URL, verbose=False)
+        return Api(user=USER, password=PASSWORD, api_root=API_ROOT_URL, verbose=verbose)
     except ModuleNotFoundError as error:
         print("util.create_api(): No 'local_settings.py' found with USER and PASSWORD.")
         raise error

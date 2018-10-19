@@ -33,7 +33,7 @@ class TestFractie(TKApiTestCase):
         for fractie in fracties:
             # fractie.print_json()
             print('fractie:', fractie.naam, '| zetels:', fractie.zetels)
-        self.assertEqual(46, len(fracties))
+        self.assertEqual(39, len(fracties))
 
     def test_filter_fracties_actief(self):
         filter = Fractie.create_filter()
@@ -68,7 +68,7 @@ class TestPersoon(TKApiTestCase):
             #         persoon.fractie_lid.fractie.print_json()
         self.assertEqual(max_items, len(personen))
 
-    def test_get_fracties(self):
+    def test_persoon_get_fracties(self):
         uid = '96a61016-76f0-4e73-80f0-0f554d919a93'
         persoon = self.api.get_item(Persoon, id=uid)
         fractieleden = persoon.fractieleden
@@ -79,6 +79,13 @@ class TestPersoon(TKApiTestCase):
         for fractie in persoon.fracties:
             print(fractie.naam)
         self.assertEqual(4, len(persoon.fracties))
+
+    def test_get_functies(self):
+        uid = '20415249-f14a-4375-b2c1-36608cbf0a76'
+        persoon = self.api.get_item(Persoon, id=uid)
+        functies = persoon.functies
+        for functie in functies:
+            print(functie.omschrijving)
 
 
 class TestFractieLid(TKApiTestCase):

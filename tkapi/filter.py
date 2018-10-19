@@ -29,6 +29,13 @@ class SoortFilter(Filter):
             self.filters.append(filter_str)
 
 
+class VerwijderdFilter(Filter):
+
+    def filter_verwijderd(self, is_deleted=False):
+        filter_str = "Verwijderd eq " + str(is_deleted).lower()
+        self.filters.append(filter_str)
+
+
 class ZaakRelationFilter(Filter):
 
     def filter_empty_zaak(self):

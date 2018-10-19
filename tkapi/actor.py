@@ -99,6 +99,10 @@ class Persoon(Actor):
         return fractieleden
 
     @property
+    def functies(self):
+        return self.related_items(Functie)
+
+    @property
     def achternaam(self):
         return self.get_property_or_empty_string('Achternaam')
 
@@ -165,3 +169,19 @@ class FractieLid(Lid):
     @property
     def fractie(self):
         return self.related_item(Fractie)
+
+
+class Functie(tkapi.TKItemRelated, tkapi.TKItem):
+    url = 'Functie'
+
+    @staticmethod
+    def create_filter():
+        return ActorFilter()
+
+    @property
+    def persoon(self):
+        return self.related_item(Persoon)
+
+    @property
+    def omschrijving(self):
+        return self.get_property_or_empty_string('Waarde')

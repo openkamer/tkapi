@@ -1,6 +1,7 @@
 from tkapi.document import ParlementairDocument
 
 from .core import TKApiTestCase
+from tkapi.actor import Persoon
 
 
 class TestFilters(TKApiTestCase):
@@ -10,3 +11,9 @@ class TestFilters(TKApiTestCase):
         pd_filter.filter_soort('test soort')
         pd_filter.filter_empty_zaak()
         self.assertEqual(len(pd_filter.filters), 2)
+
+    def test_filter_non_deleted(self):
+        uid = '20415249-f14a-4375-b2c1-36608cbf0a76'
+        persoon = self.api.get_item(Persoon, id=uid)
+        functies = persoon.functies
+        self.assertEqual(1, len(functies))

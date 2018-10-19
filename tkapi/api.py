@@ -12,6 +12,7 @@ from .kamervraag import Kamervraag, Antwoord
 from .stemming import Stemming
 from .verslag import VerslagAlgemeenOverleg
 from .zaak import Zaak
+from .filter import VerwijderdFilter
 
 
 class Api(object):
@@ -22,13 +23,13 @@ class Api(object):
 
     def __init__(self, user=None, password=None, api_root=None, verbose=None):
         if user is not None:
-            self._user = user
+            Api._user = user
         if password is not None:
-            self._password = password
+            Api._password = password
         if api_root is not None:
-            self.api_root = api_root
+            Api.api_root = api_root
         if verbose is not None:
-            self._verbose = verbose
+            Api._verbose = verbose
 
     @classmethod
     def get_commissies(cls, filter=None, max_items=None):
@@ -92,10 +93,20 @@ class Api(object):
 
     @staticmethod
     def add_filter_to_params(filter, params):
-        params['$filter'] = ''
-        if filter is not None:
-            params['$filter'] += filter.filter_str
+        if filter is None:
+            return params
+        if '$filter' in params and params['$filter']:
+            params['$filter'] += ' and '
+        else:
+            params['$filter'] = ''
+        params['$filter'] += filter.filter_str
         return params
+
+    @staticmethod
+    def add_non_deleted_filter(params):
+        non_deleted_filter = VerwijderdFilter()
+        non_deleted_filter.filter_verwijderd()
+        return Api.add_filter_to_params(non_deleted_filter, params)
 
     @classmethod
     def get_all_items(cls, page, max_items=None):
@@ -118,10 +129,10 @@ class Api(object):
             params = {}
         # params['$format'] = 'json',
         params['$format'] = 'application/json;odata=fullmetadata',
-        response = requests.get(cls.api_root + url, params=params, auth=(cls._user, cls._password))
+        response = requests.get(cls.api_root + url, params=params, auth=(str(cls._user), str(cls._password)))
         if cls._verbose:
             print('url: ' + str(response.url))
-        if response.status_code == 204:
+        if response.status_code == 204 or response.status_code == 404:
             print('### WARNING: requested item does not exist:', url, '###')
             return {}
         elif response.status_code != 200:
@@ -134,6 +145,7 @@ class Api(object):
         url = tkitem.url + '(guid\'' + id + '\')'
         if params is None:
             params = tkitem.get_param_expand()
+        params = Api.add_non_deleted_filter(params)
         return tkitem(cls.request_json(url, params))
 
     @classmethod
@@ -141,6 +153,7 @@ class Api(object):
         if params is None:
             params = tkitem_related.get_param_expand()
         params = Api.add_filter_to_params(filter, params)
+        params = Api.add_non_deleted_filter(params)
         related_json = cls.request_json(related_url, params)
         related_items = []
         if 'value' in related_json:
@@ -155,6 +168,7 @@ class Api(object):
         items = []
         params = item_class.get_params_default()
         params = Api.add_filter_to_params(filter, params)
+        params = Api.add_non_deleted_filter(params)
         if item_class.filter_param:
             if params['$filter']:
                 params['$filter'] += ' and '

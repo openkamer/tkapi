@@ -8,5 +8,5 @@ class TKApiTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.api = create_api()
+        cls.api = create_api(verbose=True)
         super().setUpClass()

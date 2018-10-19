@@ -90,7 +90,6 @@ class TKItemRelated(object):
         if cache_key in self.items_cache:
             return self.items_cache[cache_key]
         url = self.json[tkitem.url + '@odata.navigationLinkUrl']
-        # print(url)
         items = Api().get_related(tkitem, related_url=url, filter=filter)
         self.set_cache(tkitem, filter, items)
         return items

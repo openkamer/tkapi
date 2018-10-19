@@ -4,26 +4,26 @@ from tkapi.besluit import Besluit
 from .core import TKApiTestCase
 
 
-class TestCommissies(TKApiTestCase):
-
-    def test_commissie_info_missing(self):
-        commissies = self.api.get_commissies()
-        commissies_without_name = []
-        commissies_with_name = []
-        commissies_with_soort = []
-        for commissie in commissies:
-            if not commissie.naam:
-                commissies_without_name.append(commissie)
-            if not commissie.soort:
-                commissies_with_soort.append(commissie)
-            else:
-                commissies_with_name.append(commissie)
-        # for commissie in commissies_without_name:
-        #     print(commissie.id)
-        print('commissies without name: ' + str(len(commissies_with_name)))
-        print('commissies without soort: ' + str(len(commissies_with_soort)))
-        self.assertGreater(len(commissies_without_name), 41)
-        self.assertGreater(len(commissies_with_soort), 100)
+# class TestCommissies(TKApiTestCase):
+#
+#     def test_commissie_info_missing(self):
+#         commissies = self.api.get_commissies()
+#         commissies_without_name = []
+#         commissies_with_name = []
+#         commissies_with_soort = []
+#         for commissie in commissies:
+#             if not commissie.naam:
+#                 commissies_without_name.append(commissie)
+#             if not commissie.soort:
+#                 commissies_with_soort.append(commissie)
+#             else:
+#                 commissies_with_name.append(commissie)
+#         # for commissie in commissies_without_name:
+#         #     print(commissie.id)
+#         print('commissies without name: ' + str(len(commissies_with_name)))
+#         print('commissies without soort: ' + str(len(commissies_with_soort)))
+#         self.assertGreater(len(commissies_without_name), 41)
+#         self.assertGreater(len(commissies_with_soort), 100)
 
 
 # class TestBesluit(TKApiTestCase):
