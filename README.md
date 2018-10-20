@@ -29,6 +29,32 @@ You can get one by registering at https://opendata.tweedekamer.nl.
 
 The tests can serve as more detailed examples.
 
+## Entities
+**Bold** entities are implemented.
+
+|                            |                            |                              |
+|----------------------------|----------------------------|------------------------------|
+| **Activiteit**             | **Commissie**                  | **Persoon**                      |
+| ActiviteitActor            | CommissieOrganisatie       | PersoonAdres                 |
+| **Zaak**                       | CommissieAanvullendGegeven | PersoonContactinformatie     |
+| ZaakActor**                  | **CommissieZetel**             | PersoonGeschenk              |
+| **Kamerstukdossier**           | **CommissieVastPersoon**       | PersoonLoopbaan              |
+| **Fractie**                    | CommissieVastVacature      | PersoonNevenfunctie          |
+| FractieOrganisatie         | CommissieVervangerVacature | PersoonNevenfunctieInkomsten |
+| FractieAanvullendGegeven   | CommissieVervangerPersoon  | PersoonOnderwijs             |
+| **FractieLid**                 |                            | PersoonReis                  |
+| **Stemming**                   |                            | PersoonFunctie               |
+| Zaal                       |                            |                              |
+| Reservering                |                            |                              |
+| **Vergadering**                |                            |                              |
+| **ParlementairDocument**       |                            |                              |
+| ParlementairDocumentVersie |                            |                              |
+| Bestand                    |                            |                              |
+| **Kamerstuk**                  |                            |                              |
+| **Verslag**                    |                            |                              |
+| **Agendapunt**                 |                            |                              |
+| **Besluit**                    |                            |                              |
+
 ## Development
 
 ### Tests
