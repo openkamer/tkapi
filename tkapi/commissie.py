@@ -18,8 +18,8 @@ class Commissie(tkapi.TKItemRelated, tkapi.TKItem):
         return CommissieFilter()
 
     @property
-    def leden(self):
-        return self.related_items(CommissieLid)
+    def zetels(self):
+        return self.related_items(CommissieZetel)
 
     @property
     def afkorting(self):
@@ -37,6 +37,10 @@ class Commissie(tkapi.TKItemRelated, tkapi.TKItem):
     def soort(self):
         return self.get_property_or_empty_string('Soort')
 
+    @property
+    def nummer(self):
+        return self.get_property_or_empty_string('Nummer')
+
     def __str__(self):
         pretty_print = self.id + ': '
         pretty_print += self.naam
@@ -49,7 +53,16 @@ class VoortouwCommissie(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Voortouwcommissie'
 
 
-class CommissieLid(tkapi.TKItem):
+class CommissieZetel(tkapi.TKItemRelated, tkapi.TKItem):
+    url = 'CommissieZetel'
+
+    @property
+    def personen_vast(self):
+        return self.related_items(CommissieVastPersoon)
+
+    @property
+    def commissie(self):
+        return self.related_item(Commissie)
 
     @property
     def vast_van(self):
@@ -59,21 +72,27 @@ class CommissieLid(tkapi.TKItem):
     def vast_tot_en_met(self):
         return self.get_date_from_datetime_or_none('VastTotEnMet')
 
+
+class CommissieVastPersoon(tkapi.TKItemRelated, tkapi.TKItem):
+    url = 'CommissieVastPersoon'
+
     @property
     def persoon(self):
-        if self.json['VastPersoon']:
-            return Persoon(self.json['VastPersoon'])
-        return None
+        from tkapi.actor import Persoon
+        return self.related_item(Persoon)
 
-    def __str__(self):
-        pretty_print = ''
-        if self.persoon:
-            pretty_print = str(self.persoon)
-        if self.vast_van:
-            pretty_print += ': ' + str(self.vast_van)
-        if self.vast_tot_en_met:
-            pretty_print += ' - ' + str(self.vast_tot_en_met)
-        else:
-            pretty_print += ' - heden'
-        return pretty_print
+    @property
+    def zetel(self):
+        return self.related_item(CommissieZetel)
 
+    @property
+    def functie(self):
+        return self.get_property_or_empty_string('Functie')
+
+    @property
+    def van(self):
+        return self.get_date_from_datetime_or_none('Van')
+
+    @property
+    def tot_en_met(self):
+        return self.get_date_from_datetime_or_none('TotEnMet')

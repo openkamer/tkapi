@@ -30,9 +30,6 @@ class TestCommissie(TKApiTestCase):
                 print('===========')
                 print(commissie)
                 print(commissie.soort)
-                for lid in commissie.leden:
-                    if lid.persoon:
-                        print('\t' + str(lid))
         print('\n=====Commissies=====')
         for commissie in commissies_with_name:
             print(commissie.naam)
@@ -42,6 +39,14 @@ class TestCommissie(TKApiTestCase):
         print('\n=====Commissies Incomplete=====')
         print('commissies without soort: ' + str(len(commissies_without_soort)))
         print('commissies without name: ' + str(len(commissies_without_name)))
+
+    def test_get_leden(self):
+        uid = '1349488c-8474-4704-bdad-26fa54ea9789'
+        commissie = self.api.get_item(Commissie, id=uid)
+        zetels = commissie.zetels
+        self.assertEqual(319, len(zetels))
+        self.assertEqual(2, len(zetels[1].personen_vast))
+        self.assertEqual('Oosten', zetels[1].personen_vast[0].persoon.achternaam)
 
     def test_soort_filter(self):
         soort = 'Algemeen'

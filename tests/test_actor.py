@@ -40,7 +40,7 @@ class TestFractie(TKApiTestCase):
         filter.filter_actief()
         fracties = self.api.get_fracties(max_items=50, filter=filter)
         for fractie in fracties:
-            fractie.print_json()
+            # fractie.print_json()
             print('fractie:', fractie.naam, '| zetels:', fractie.zetels)
         self.assertEqual(13, len(fracties))
 
@@ -61,7 +61,7 @@ class TestPersoon(TKApiTestCase):
         for persoon in personen:
             print('Roepnaam:', persoon.roepnaam)
             print('Volledige naam:', persoon.voornamen, persoon.achternaam)
-            persoon.print_json()
+            # persoon.print_json()
             # if persoon.fractie_lid is not None:
             #     persoon.fractie_lid.print_json()
             #     if persoon.fractie_lid.fractie is not None:
@@ -95,7 +95,8 @@ class TestFractieLid(TKApiTestCase):
         print('fractieleden:', len(leden))
         self.assertEqual(10, len(leden))
         for lid in leden:
-            lid.print_json()
+            print(lid.persoon.voornamen, lid.persoon.achternaam)
+            # lid.print_json()
 
     def test_get_fractie_leden_actief(self):
         filter = FractieLid.create_filter()
@@ -103,7 +104,7 @@ class TestFractieLid(TKApiTestCase):
         leden = self.api.get_fractie_leden(max_items=10, filter=filter)
         print('fractieleden:', len(leden))
         for lid in leden:
-            lid.print_json()
+            # lid.print_json()
             self.assertEqual(lid.tot_en_met, None)
             self.assertEqual(lid.is_actief, True)
 
