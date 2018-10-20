@@ -70,11 +70,11 @@ class Fractie(Actor):
 
     @property
     def datum_actief(self):
-        return self.get_date_or_none('DatumActief')
+        return self.get_date_from_datetime_or_none('DatumActief')
 
     @property
     def datum_inactief(self):
-        return self.get_date_or_none('DatumInactief')
+        return self.get_date_from_datetime_or_none('DatumInactief')
 
     def __str__(self):
         return '{} ({}) ({} zetels)'.format(self.naam, self.afkorting, self.zetels)
@@ -156,11 +156,11 @@ class Lid(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def van(self):
-        return self.get_date_or_none('Van')
+        return self.get_date_from_datetime_or_none('Van')
 
     @property
     def tot_en_met(self):
-        return self.get_date_or_none('TotEnMet')
+        return self.get_date_from_datetime_or_none('TotEnMet')
 
 
 class FractieLid(Lid):

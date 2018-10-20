@@ -1,6 +1,5 @@
 import requests
 
-import tkapi
 from tkapi.document import ParlementairDocument
 from tkapi.zaak import Zaak
 
@@ -28,10 +27,11 @@ class Kamervraag(ParlementairDocument):
         if hasattr(self, 'zaak_found'):
             return self.zaak_found.json
         print('WARNING: no Zaak found, trying to find Zaak by onderwerp', self.datum, self.onderwerp)
-        self.print_json()
+        # self.print_json()
         zaak_filter = Zaak.create_filter()
         zaak_filter.filter_onderwerp(self.onderwerp)
-        zaken = tkapi.api.get_zaken(zaak_filter)
+        from tkapi.api import Api
+        zaken = Api().get_zaken(zaak_filter)
         if len(zaken) == 1:
             print('INFO: zaak found for onderwerp')
             self.zaak_found = zaken[0]
@@ -44,7 +44,7 @@ class Kamervraag(ParlementairDocument):
 
     @property
     def datum(self):
-        return self.get_date_or_none('Datum')
+        return self.get_date_from_datetime_or_none('Datum')
 
     @property
     def onderwerp(self):
@@ -78,7 +78,7 @@ class Antwoord(ParlementairDocument):
 
     @property
     def datum(self):
-        return self.get_date_or_none('Datum')
+        return self.get_date_from_datetime_or_none('Datum')
 
     def get_document_url(self):
         if not self.vergaderjaar:

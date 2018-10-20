@@ -32,11 +32,11 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def begin(self):
-        return self.get_date_or_none('Begin')
+        return self.get_date_from_datetime_or_none('Begin')
 
     @property
     def einde(self):
-        return self.get_date_or_none('Einde')
+        return self.get_date_from_datetime_or_none('Einde')
 
     @property
     def soort(self):

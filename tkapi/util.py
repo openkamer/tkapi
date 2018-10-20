@@ -15,6 +15,10 @@ def odatedatetime_to_datetime(odate_datetime):
     return datetime.datetime.strptime(odate_datetime, '%Y-%m-%dT%H:%M:%S')
 
 
+def odatedate_to_date(odate_date):
+    return datetime.datetime.strptime(odate_date, '%Y-%m-%d')
+
+
 def create_api(verbose=False):
     try:
         from local_settings import USER, PASSWORD, API_ROOT_URL

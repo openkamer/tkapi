@@ -69,7 +69,7 @@ class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def datum(self):
-        return self.get_date_or_none('Datum')
+        return self.get_date_from_datetime_or_none('Datum')
 
     @property
     def nummer(self):

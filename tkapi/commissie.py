@@ -53,11 +53,11 @@ class CommissieLid(tkapi.TKItem):
 
     @property
     def vast_van(self):
-        return self.get_date_or_none('VastVan')
+        return self.get_date_from_datetime_or_none('VastVan')
 
     @property
     def vast_tot_en_met(self):
-        return self.get_date_or_none('VastTotEnMet')
+        return self.get_date_from_datetime_or_none('VastTotEnMet')
 
     @property
     def persoon(self):

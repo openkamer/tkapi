@@ -98,7 +98,7 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def gestart_op(self):
-        return self.get_date_or_none('GestartOp')
+        return self.get_date_from_datetime_or_none('GestartOp')
 
 
 ## Mogelijke Zaak-Soorten zoals gevonden in Zaken van 2016:

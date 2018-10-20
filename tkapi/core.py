@@ -53,9 +53,14 @@ class TKItem(object):
             return str(self.json[property_key])
         return ''
 
-    def get_date_or_none(self, property_key):
+    def get_date_from_datetime_or_none(self, property_key):
         if property_key in self.json and self.json[property_key]:
             return tkapi.util.odatedatetime_to_datetime(self.json[property_key]).date()
+        return None
+
+    def get_date_or_none(self, property_key):
+        if property_key in self.json and self.json[property_key]:
+            return tkapi.util.odatedate_to_date(self.json[property_key]).date()
         return None
 
     def get_datetime_or_none(self, property_key):

@@ -9,6 +9,7 @@ from .dossier import Dossier
 from .kamerstuk import Kamerstuk
 from .activiteit import Activiteit
 from .kamervraag import Kamervraag, Antwoord
+from .reis import Reis
 from .stemming import Stemming
 from .verslag import VerslagAlgemeenOverleg
 from .zaak import Zaak
@@ -36,8 +37,8 @@ class Api(object):
         return cls.get_items(Commissie, filter, max_items)
 
     @classmethod
-    def get_personen(cls, max_items=None):
-        return cls.get_items(Persoon, filter=None, max_items=max_items)
+    def get_personen(cls, filter=None, max_items=None):
+        return cls.get_items(Persoon, filter, max_items=max_items)
 
     @classmethod
     def get_fracties(cls, filter=None, max_items=None):
@@ -90,6 +91,10 @@ class Api(object):
     @classmethod
     def get_fractie_leden(cls, filter=None, max_items=None):
         return cls.get_items(FractieLid, filter, max_items)
+
+    @classmethod
+    def get_reizen(cls, filter=None, max_items=None):
+        return cls.get_items(Reis, filter, max_items)
 
     @staticmethod
     def add_filter_to_params(filter, params):
