@@ -171,13 +171,14 @@ class Api(object):
             params = tkitem_related.get_param_expand()
         params = Api.add_filter_to_params(filter, params)
         params = Api.add_non_deleted_filter(params)
-        related_json = cls.request_json(related_url, params)
+        first_page = cls.request_json(related_url, params)
         related_items = []
-        if 'value' in related_json:
-            for item_json in related_json['value']:
+        if 'value' in first_page:
+            items_json = cls.get_all_items(first_page)
+            for item_json in items_json:
                 related_items.append(tkitem_related(item_json))
-        elif related_json:
-            related_items.append(tkitem_related(related_json))
+        elif first_page:
+            related_items.append(tkitem_related(first_page))
         return related_items
 
     @classmethod
