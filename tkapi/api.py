@@ -153,8 +153,8 @@ class Api(object):
             print('### WARNING: requested item does not exist:', url, '###')
             return {}
         elif response.status_code != 200:
-            print(response.status_code)
-        assert response.status_code == 200
+            print('HTTP STATUS CODE', response.status_code)
+        # assert response.status_code == 200
         return response.json()
 
     @classmethod
