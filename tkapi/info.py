@@ -11,10 +11,23 @@ def get_commissie_namen():
     return OrderedSet(sorted(namen))
 
 
+def get_soorten(items):
+    soorten = []
+    for item in items:
+        if item.soort:
+            soorten.append(item.soort)
+    return OrderedSet(sorted(soorten))
+
+
 def get_commissie_soorten():
     commissies = Api().get_commissies()
-    soorten = []
-    for commissie in commissies:
-        if commissie.soort:
-            soorten.append(commissie.soort)
-    return OrderedSet(sorted(soorten))
+    return get_soorten(commissies)
+
+
+def get_verslag_soorten():
+    verslagen = Api().get_verslagen()
+    return get_soorten(verslagen)
+
+def get_vergadering_soorten():
+    verslagen = Api().get_vergaderingen()
+    return get_soorten(verslagen)

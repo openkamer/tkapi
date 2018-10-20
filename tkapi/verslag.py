@@ -1,6 +1,41 @@
+from enum import Enum
 import requests
 
+import tkapi
 from tkapi.document import ParlementairDocument
+
+
+class VerslagSoort(Enum):
+    EINDPUBLICATIE = 'Eindpublicatie'
+    TUSSENPUBLICATIE = 'Tussenpublicatie'
+    VOORPUBLICATIE = 'Voorpublicatie'
+
+
+class VerslagFilter(tkapi.SoortFilter):
+
+    def __init__(self):
+        super().__init__()
+
+
+class Verslag(tkapi.TKItemRelated, tkapi.TKItem):
+    url = 'Verslag'
+
+    @staticmethod
+    def create_filter():
+        return VerslagFilter()
+
+    @property
+    def soort(self):
+        return self.get_property_or_empty_string('Soort')
+
+    @property
+    def vergadering(self):
+        from tkapi.vergadering import Vergadering
+        return self.related_item(Vergadering)
+
+    @property
+    def status(self):
+        return self.get_property_or_empty_string('Status')
 
 
 class VerslagAlgemeenOverleg(ParlementairDocument):

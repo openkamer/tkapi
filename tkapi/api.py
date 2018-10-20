@@ -11,6 +11,8 @@ from .activiteit import Activiteit
 from .kamervraag import Kamervraag, Antwoord
 from .reis import Reis
 from .stemming import Stemming
+from .vergadering import Vergadering
+from .verslag import Verslag
 from .verslag import VerslagAlgemeenOverleg
 from .zaak import Zaak
 from .filter import VerwijderdFilter
@@ -43,6 +45,14 @@ class Api(object):
     @classmethod
     def get_fracties(cls, filter=None, max_items=None):
         return cls.get_items(Fractie, filter, max_items)
+
+    @classmethod
+    def get_verslagen(cls, filter=None, max_items=None):
+        return cls.get_items(Verslag, filter=filter, max_items=max_items)
+
+    @classmethod
+    def get_vergaderingen(cls, filter=None, max_items=None):
+        return cls.get_items(Vergadering, filter=filter, max_items=max_items)
 
     @classmethod
     def get_verslagen_van_algemeen_overleg(cls, filter=None, max_items=None):

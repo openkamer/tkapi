@@ -2,14 +2,14 @@ import tkapi.util
 
 
 class TKItem(object):
-    url = ''
+    url = NotImplementedError
     expand_param = ''
     orderby_param = ''
     filter_param = ''
 
     @staticmethod
     def create_filter():
-        return NotImplementedError
+        raise NotImplementedError
 
     def __init__(self, item_json, *args, **kwargs):
         self.json = item_json
