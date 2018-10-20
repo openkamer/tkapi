@@ -42,7 +42,7 @@ The tests can serve as more detailed examples.
 | **Fractie**                | CommissieVastVacature      | PersoonNevenfunctie          |
 | FractieOrganisatie         | CommissieVervangerVacature | PersoonNevenfunctieInkomsten |
 | FractieAanvullendGegeven   | CommissieVervangerPersoon  | PersoonOnderwijs             |
-| **FractieLid**             |                            | PersoonReis                  |
+| **FractieLid**             |                            | **PersoonReis**              |
 | **Stemming**               |                            | PersoonFunctie               |
 | Zaal                       |                            |                              |
 | Reservering                |                            |                              |

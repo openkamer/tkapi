@@ -16,7 +16,7 @@ class Reis(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def persoon(self):
-        from tkapi.actor import Persoon
+        from tkapi.persoon import Persoon
         return self.related_item(Persoon)
 
     @property

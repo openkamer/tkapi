@@ -1,7 +1,7 @@
 from tkapi.document import ParlementairDocument
 
 from .core import TKApiTestCase
-from tkapi.actor import Persoon
+from tkapi.persoon import Persoon
 
 
 class TestFilters(TKApiTestCase):

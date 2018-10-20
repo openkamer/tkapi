@@ -80,58 +80,6 @@ class Fractie(Actor):
         return '{} ({}) ({} zetels)'.format(self.naam, self.afkorting, self.zetels)
 
 
-class Persoon(Actor):
-    url = 'Persoon'
-    expand_param = 'Fractielid/Fractie'
-    orderby_param = 'Achternaam'
-    filter_param = 'Achternaam ne null'
-
-    @property
-    def fracties(self):
-        return [lid.fractie for lid in self.fractieleden]
-
-    @property
-    def fractieleden(self):
-        # we cannot use related_items() here because the type (FractieLid) is different from the key (Fractielid)
-        fractieleden = []
-        for lid_json in self.json['Fractielid']:
-            fractieleden.append(FractieLid(lid_json))
-        return fractieleden
-
-    @property
-    def functies(self):
-        return self.related_items(Functie)
-
-    @property
-    def achternaam(self):
-        return self.get_property_or_empty_string('Achternaam')
-
-    @property
-    def initialen(self):
-        return self.get_property_or_empty_string('Initialen')
-
-    @property
-    def roepnaam(self):
-        return self.get_property_or_empty_string('Roepnaam')
-
-    @property
-    def voornamen(self):
-        return self.get_property_or_empty_string('Voornamen')
-
-    @property
-    def geboortedatum(self):
-        return self.get_property_or_empty_string('Geboortedatum')
-
-    def __str__(self):
-        pretty_print = ''
-        if self.roepnaam:
-            pretty_print = str(self.roepnaam) + ' '
-        pretty_print += str(self.achternaam) + ' '
-        if self.initialen:
-            pretty_print += '(' + str(self.initialen) + ')'
-        return pretty_print
-
-
 class LidFilter(ActorFilter):
 
     def filter_actief(self):
@@ -148,6 +96,7 @@ class Lid(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def persoon(self):
+        from tkapi.persoon import Persoon
         return self.related_item(Persoon)
 
     @property
@@ -180,6 +129,7 @@ class Functie(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def persoon(self):
+        from tkapi.persoon import Persoon
         return self.related_item(Persoon)
 
     @property

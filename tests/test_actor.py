@@ -1,6 +1,5 @@
 import datetime
 
-from tkapi.actor import Persoon
 from tkapi.actor import Fractie
 from tkapi.actor import FractieLid
 
@@ -51,41 +50,6 @@ class TestFractie(TKApiTestCase):
         for lid in leden_actief:
             print('\t', lid.persoon)
         self.assertEqual(fractie.zetels, len(leden_actief))
-
-
-class TestPersoon(TKApiTestCase):
-
-    def test_get_personen(self):
-        max_items = 66
-        personen = self.api.get_personen(max_items=max_items)
-        for persoon in personen:
-            print('Roepnaam:', persoon.roepnaam)
-            print('Volledige naam:', persoon.voornamen, persoon.achternaam)
-            # persoon.print_json()
-            # if persoon.fractie_lid is not None:
-            #     persoon.fractie_lid.print_json()
-            #     if persoon.fractie_lid.fractie is not None:
-            #         persoon.fractie_lid.fractie.print_json()
-        self.assertEqual(max_items, len(personen))
-
-    def test_persoon_get_fracties(self):
-        uid = '96a61016-76f0-4e73-80f0-0f554d919a93'
-        persoon = self.api.get_item(Persoon, id=uid)
-        fractieleden = persoon.fractieleden
-        print(persoon.roepnaam, persoon.achternaam)
-        print('fractieleden:', len(fractieleden))
-        for lid in persoon.fractieleden:
-            print(lid.fractie.naam)
-        for fractie in persoon.fracties:
-            print(fractie.naam)
-        self.assertEqual(4, len(persoon.fracties))
-
-    def test_get_functies(self):
-        uid = '20415249-f14a-4375-b2c1-36608cbf0a76'
-        persoon = self.api.get_item(Persoon, id=uid)
-        functies = persoon.functies
-        for functie in functies:
-            print(functie.omschrijving)
 
 
 class TestFractieLid(TKApiTestCase):

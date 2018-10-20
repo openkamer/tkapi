@@ -1,4 +1,4 @@
-from tkapi.actor import Persoon
+from tkapi.persoon import Persoon
 from tkapi.actor import FractieLid
 from tkapi.actor import Fractie
 from tkapi.activiteit import Activiteit

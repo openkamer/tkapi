@@ -1,6 +1,7 @@
 import requests
 
-from .actor import Fractie, Persoon, FractieLid
+from .actor import Fractie, FractieLid
+from tkapi.persoon import Persoon
 from .agendapunt import Agendapunt
 from .besluit import Besluit
 from .commissie import Commissie
