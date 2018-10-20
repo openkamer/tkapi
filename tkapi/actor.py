@@ -47,6 +47,16 @@ class Fractie(Actor):
         return FractieFilter()
 
     @property
+    def leden(self):
+        return self.related_items(Lid)
+
+    @property
+    def leden_actief(self):
+        filter = Lid.create_filter()
+        filter.filter_actief()
+        return self.related_items(Lid, filter=filter)
+
+    @property
     def naam(self):
         return self.get_property_or_empty_string('NaamNL')
 
@@ -57,16 +67,6 @@ class Fractie(Actor):
     @property
     def zetels(self):
         return self.get_property_or_none('AantalZetels')
-
-    @property
-    def leden(self):
-        return self.related_items(Lid)
-
-    @property
-    def leden_actief(self):
-        filter = Lid.create_filter()
-        filter.filter_actief()
-        return self.related_items(Lid, filter=filter)
 
     @property
     def datum_actief(self):
