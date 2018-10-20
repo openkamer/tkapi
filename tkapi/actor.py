@@ -76,6 +76,10 @@ class Fractie(Actor):
     def datum_inactief(self):
         return self.get_date_from_datetime_or_none('DatumInactief')
 
+    @property
+    def organisatie(self):
+        return self.related_item('Organisatie')
+
     def __str__(self):
         return '{} ({}) ({} zetels)'.format(self.naam, self.afkorting, self.zetels)
 
@@ -118,3 +122,15 @@ class FractieLid(Lid):
     @property
     def fractie(self):
         return self.related_item(Fractie)
+
+
+class FractieOrganisatie(Lid):
+    url = 'FractieOrganisatie'
+
+    @property
+    def fractie(self):
+        return self.related_item(Fractie)
+
+    @property
+    def naam(self):
+        return self.get_property_or_empty_string('Waarde')

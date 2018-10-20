@@ -40,7 +40,7 @@ The tests can serve as more detailed examples.
 | ZaakActor                  | **CommissieZetel**         | **PersoonGeschenk**          |
 | **Kamerstukdossier**       | **CommissieVastPersoon**   | **PersoonLoopbaan**          |
 | **Fractie**                | CommissieVastVacature      | **PersoonNevenfunctie**      |
-| FractieOrganisatie         | CommissieVervangerVacature | **PersoonNevenfunctieInkomsten** |
+| **FractieOrganisatie**     | CommissieVervangerVacature | **PersoonNevenfunctieInkomsten** |
 | FractieAanvullendGegeven   | CommissieVervangerPersoon  | **PersoonOnderwijs**         |
 | **FractieLid**             |                            | **PersoonReis**              |
 | **Stemming**               |                            | **PersoonFunctie**           |

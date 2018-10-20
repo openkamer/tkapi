@@ -2,6 +2,7 @@ import datetime
 
 from tkapi.actor import Fractie
 from tkapi.actor import FractieLid
+from tkapi.actor import FractieOrganisatie
 
 from .core import TKApiTestCase
 
@@ -72,3 +73,11 @@ class TestFractieLid(TKApiTestCase):
             self.assertEqual(lid.tot_en_met, None)
             self.assertEqual(lid.is_actief, True)
 
+
+class TestFractieOrganisatie(TKApiTestCase):
+
+    def test_get_organisatie(self):
+        uid = '96cd98f6-7cd5-408d-b699-2af03404be7b'
+        organisatie = self.api.get_item(FractieOrganisatie, id=uid)
+        self.assertEqual('Tweede Kamer der Staten-Generaal', organisatie.naam)
+        self.assertEqual('7682ced0-84ea-46f1-8e27-294b272af931', organisatie.fractie.id)
