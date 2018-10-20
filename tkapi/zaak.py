@@ -71,6 +71,14 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_items(Besluit)
 
     @property
+    def indiener(self):
+        return self.related_item(ZaakIndiener, item_key='Indiener')
+
+    @property
+    def medeindieners(self):
+        return self.related_items(ZaakMedeindiener, item_key='Medeindiener')
+
+    @property
     def voortouwcommissies(self):
         from tkapi.commissie import VoortouwCommissie
         return self.related_items(VoortouwCommissie)
@@ -94,11 +102,38 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def afgedaan(self):
-        return self.json['Afgedaan']
+        return self.get_property_or_none('Afgedaan')
+
+    @property
+    def vervangen_door(self):
+        return self.related_item(Zaak, item_key='VervangenDoor')
 
     @property
     def gestart_op(self):
         return self.get_date_from_datetime_or_none('GestartOp')
+
+
+class ZaakIndiener(tkapi.TKItemRelated, tkapi.TKItem):
+    url = 'ZaakActor'
+
+    @property
+    def persoon(self):
+        from tkapi.persoon import Persoon
+        return self.related_item(Persoon)
+
+    @property
+    def zaak(self):
+        return self.related_item(Zaak)
+
+    @property
+    def fractie(self):
+        from tkapi.actor import Fractie
+        return self.related_item(Fractie)
+
+
+class ZaakMedeindiener(ZaakIndiener):
+    url = 'ZaakActor'
+
 
 
 ## Mogelijke Zaak-Soorten zoals gevonden in Zaken van 2016:

@@ -108,8 +108,8 @@ class TKItemRelated(object):
         self.set_cache(tkitem, filter, items)
         return items
 
-    def related_item(self, tkitem, item_type=None):
-        related_items = self.related_items(tkitem, item_key=item_type)
+    def related_item(self, tkitem, item_key=None):
+        related_items = self.related_items(tkitem, item_key=item_key)
         if related_items:
             return related_items[0]
         return None
