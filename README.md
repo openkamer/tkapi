@@ -34,26 +34,26 @@ The tests can serve as more detailed examples.
 
 |                            |                            |                              |
 |----------------------------|----------------------------|------------------------------|
-| **Activiteit**             | **Commissie**                  | **Persoon**                      |
+| **Activiteit**             | **Commissie**              | **Persoon**                  |
 | ActiviteitActor            | CommissieOrganisatie       | PersoonAdres                 |
-| **Zaak**                       | CommissieAanvullendGegeven | PersoonContactinformatie     |
-| ZaakActor**                  | **CommissieZetel**             | PersoonGeschenk              |
-| **Kamerstukdossier**           | **CommissieVastPersoon**       | PersoonLoopbaan              |
-| **Fractie**                    | CommissieVastVacature      | PersoonNevenfunctie          |
+| **Zaak**                   | CommissieAanvullendGegeven | PersoonContactinformatie     |
+| ZaakActor                  | **CommissieZetel**         | PersoonGeschenk              |
+| **Kamerstukdossier**       | **CommissieVastPersoon**   | PersoonLoopbaan              |
+| **Fractie**                | CommissieVastVacature      | PersoonNevenfunctie          |
 | FractieOrganisatie         | CommissieVervangerVacature | PersoonNevenfunctieInkomsten |
 | FractieAanvullendGegeven   | CommissieVervangerPersoon  | PersoonOnderwijs             |
-| **FractieLid**                 |                            | PersoonReis                  |
-| **Stemming**                   |                            | PersoonFunctie               |
+| **FractieLid**             |                            | PersoonReis                  |
+| **Stemming**               |                            | PersoonFunctie               |
 | Zaal                       |                            |                              |
 | Reservering                |                            |                              |
-| **Vergadering**                |                            |                              |
-| **ParlementairDocument**       |                            |                              |
+| **Vergadering**            |                            |                              |
+| **ParlementairDocument**   |                            |                              |
 | ParlementairDocumentVersie |                            |                              |
 | Bestand                    |                            |                              |
-| **Kamerstuk**                  |                            |                              |
-| **Verslag**                    |                            |                              |
-| **Agendapunt**                 |                            |                              |
-| **Besluit**                    |                            |                              |
+| **Kamerstuk**              |                            |                              |
+| **Verslag**                |                            |                              |
+| **Agendapunt**             |                            |                              |
+| **Besluit**                |                            |                              |
 
 ## Development
 
