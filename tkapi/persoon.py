@@ -73,8 +73,7 @@ class Persoon(Actor):
         return pretty_print
 
 
-class PersoonReis(tkapi.TKItemRelated, tkapi.TKItem):
-    url = 'PersoonReis'
+class PersoonEntity(tkapi.TKItemRelated, tkapi.TKItem):
 
     @staticmethod
     def create_filter():
@@ -83,6 +82,10 @@ class PersoonReis(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def persoon(self):
         return self.related_item(Persoon)
+
+
+class PersoonReis(PersoonEntity):
+    url = 'PersoonReis'
 
     @property
     def doel(self):
@@ -105,16 +108,8 @@ class PersoonReis(tkapi.TKItemRelated, tkapi.TKItem):
         return self.get_property_or_empty_string('BetaaldDoor')
 
 
-class PersoonOnderwijs(tkapi.TKItemRelated, tkapi.TKItem):
+class PersoonOnderwijs(PersoonEntity):
     url = 'PersoonOnderwijs'
-
-    @staticmethod
-    def create_filter():
-        return ActorFilter()
-
-    @property
-    def persoon(self):
-        return self.related_item(Persoon)
 
     @property
     def opleiding_nl(self):
@@ -141,32 +136,16 @@ class PersoonOnderwijs(tkapi.TKItemRelated, tkapi.TKItem):
         return self.get_year_or_none('TotEnMet')
 
 
-class PersoonFunctie(tkapi.TKItemRelated, tkapi.TKItem):
+class PersoonFunctie(PersoonEntity):
     url = 'PersoonFunctie'
-
-    @staticmethod
-    def create_filter():
-        return ActorFilter()
-
-    @property
-    def persoon(self):
-        return self.related_item(Persoon)
 
     @property
     def omschrijving(self):
         return self.get_property_or_empty_string('Waarde')
 
 
-class PersoonLoopbaan(tkapi.TKItemRelated, tkapi.TKItem):
+class PersoonLoopbaan(PersoonEntity):
     url = 'PersoonLoopbaan'
-
-    @staticmethod
-    def create_filter():
-        return ActorFilter()
-
-    @property
-    def persoon(self):
-        return self.related_item(Persoon)
 
     @property
     def functie(self):
@@ -197,16 +176,8 @@ class PersoonLoopbaan(tkapi.TKItemRelated, tkapi.TKItem):
         return self.get_year_or_none('TotEnMet')
 
 
-class PersoonGeschenk(tkapi.TKItemRelated, tkapi.TKItem):
+class PersoonGeschenk(PersoonEntity):
     url = 'PersoonGeschenk'
-
-    @staticmethod
-    def create_filter():
-        return ActorFilter()
-
-    @property
-    def persoon(self):
-        return self.related_item(Persoon)
 
     @property
     def omschrijving(self):
@@ -217,16 +188,8 @@ class PersoonGeschenk(tkapi.TKItemRelated, tkapi.TKItem):
         return self.get_datetime_or_none('Datum')
 
 
-class PersoonNevenfunctie(tkapi.TKItemRelated, tkapi.TKItem):
+class PersoonNevenfunctie(PersoonEntity):
     url = 'PersoonNevenfunctie'
-
-    @staticmethod
-    def create_filter():
-        return ActorFilter()
-
-    @property
-    def persoon(self):
-        return self.related_item(Persoon)
 
     @property
     def inkomsten(self):
@@ -263,6 +226,10 @@ class PersoonNevenfunctieInkomsten(tkapi.TKItemRelated, tkapi.TKItem):
     @staticmethod
     def create_filter():
         return ActorFilter()
+
+    @property
+    def nevenfunctie(self):
+        return self.related_item(PersoonNevenfunctie)
 
     @property
     def omschrijving(self):
