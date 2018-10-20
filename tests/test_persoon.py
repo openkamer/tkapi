@@ -5,6 +5,7 @@ from tkapi.persoon import PersoonReis
 from tkapi.persoon import PersoonOnderwijs
 from tkapi.persoon import PersoonFunctie
 from tkapi.persoon import PersoonLoopbaan
+from tkapi.persoon import PersoonGeschenk
 
 from .core import TKApiTestCase
 
@@ -101,3 +102,13 @@ class TestPersoonLoopbaan(TKApiTestCase):
         self.assertEqual('Haarlem', loopbaan.plaats)
         self.assertGreater(loopbaan.tot_en_met, loopbaan.van)
         self.assertEqual('355337af-a30f-48b8-882a-002ce35f9d07', loopbaan.persoon.id)
+
+
+class TestPersoonGeschenk(TKApiTestCase):
+
+    def test_get_geschenk(self):
+        uid = '1650fba4-5979-44d3-a591-0ff90c0736c4'
+        geschenk = self.api.get_item(PersoonGeschenk, id=uid)
+        self.assertEqual('Ontvangen van de Irakese ambassade een doros je wijn ter waarde van ongeveer €60,--.', geschenk.omschrijving)
+        self.assertEqual(2009, geschenk.datum.year)
+        self.assertEqual('355337af-a30f-48b8-882a-002ce35f9d07', geschenk.persoon.id)

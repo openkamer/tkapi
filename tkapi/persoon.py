@@ -52,6 +52,10 @@ class Persoon(Actor):
         return self.related_items(PersoonLoopbaan, item_key='Loopbaan')
 
     @property
+    def geschenken(self):
+        return self.related_items(PersoonGeschenk, item_key='PersoonGeschenk')
+
+    @property
     def geboortedatum(self):
         return self.get_property_or_empty_string('Geboortedatum')
 
@@ -187,3 +191,23 @@ class PersoonLoopbaan(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def tot_en_met(self):
         return self.get_year_or_none('TotEnMet')
+
+
+class PersoonGeschenk(tkapi.TKItemRelated, tkapi.TKItem):
+    url = 'PersoonGeschenk'
+
+    @staticmethod
+    def create_filter():
+        return ActorFilter()
+
+    @property
+    def persoon(self):
+        return self.related_item(Persoon)
+
+    @property
+    def omschrijving(self):
+        return self.get_property_or_empty_string('Omschrijving')
+
+    @property
+    def datum(self):
+        return self.get_datetime_or_none('Datum')

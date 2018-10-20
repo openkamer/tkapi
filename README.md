@@ -37,7 +37,7 @@ The tests can serve as more detailed examples.
 | **Activiteit**             | **Commissie**              | **Persoon**                  |
 | ActiviteitActor            | CommissieOrganisatie       | PersoonAdres                 |
 | **Zaak**                   | CommissieAanvullendGegeven | PersoonContactinformatie     |
-| ZaakActor                  | **CommissieZetel**         | PersoonGeschenk              |
+| ZaakActor                  | **CommissieZetel**         | **PersoonGeschenk**          |
 | **Kamerstukdossier**       | **CommissieVastPersoon**   | **PersoonLoopbaan**          |
 | **Fractie**                | CommissieVastVacature      | PersoonNevenfunctie          |
 | FractieOrganisatie         | CommissieVervangerVacature | PersoonNevenfunctieInkomsten |
