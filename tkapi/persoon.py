@@ -88,3 +88,39 @@ class PersoonReis(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def betaald_door(self):
         return self.get_property_or_empty_string('BetaaldDoor')
+
+
+class PersoonOnderwijs(tkapi.TKItemRelated, tkapi.TKItem):
+    url = 'PersoonOnderwijs'
+
+    @staticmethod
+    def create_filter():
+        return ActorFilter()
+
+    @property
+    def persoon(self):
+        return self.related_item(Persoon)
+
+    @property
+    def opleiding_nl(self):
+        return self.get_property_or_empty_string('OpleidingNl')
+
+    @property
+    def opleiding_en(self):
+        return self.get_property_or_empty_string('OpleidingEn')
+
+    @property
+    def instelling(self):
+        return self.get_property_or_empty_string('Instelling')
+
+    @property
+    def plaats(self):
+        return self.get_property_or_empty_string('Plaats')
+
+    @property
+    def van(self):
+        return self.get_year_or_none('Van')
+
+    @property
+    def tot_en_met(self):
+        return self.get_year_or_none('TotEnMet')

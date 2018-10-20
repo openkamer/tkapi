@@ -2,6 +2,7 @@ import datetime
 
 from tkapi.persoon import Persoon
 from tkapi.persoon import PersoonReis
+from tkapi.persoon import PersoonOnderwijs
 
 from .core import TKApiTestCase
 
@@ -62,3 +63,16 @@ class TestPersoonReis(TKApiTestCase):
         self.assertEqual('Ministerie van Defensie.', reis.betaald_door)
         self.assertGreater(reis.tot_en_met, reis.van)
         self.assertTrue('355337af-a30f-48b8-882a-002ce35f9d07', reis.persoon.id)
+
+
+class TestPersoonOnderwijs(TKApiTestCase):
+
+    def test_get_reis(self):
+        uid = 'bb6e9fa6-f966-4ba2-9b48-4ce872d1128d'
+        onderwijs = self.api.get_item(PersoonOnderwijs, id=uid)
+        self.assertEqual('Master Public Management (MPM)', onderwijs.opleiding_nl)
+        self.assertEqual('Master\'s degree in Public Management (MPM), University of Twente 1999-2001', onderwijs.opleiding_en)
+        self.assertEqual('Universiteit Twente', onderwijs.instelling)
+        self.assertEqual('', onderwijs.plaats)
+        self.assertGreater(onderwijs.tot_en_met, onderwijs.van)
+        self.assertTrue('355337af-a30f-48b8-882a-002ce35f9d07', onderwijs.persoon.id)

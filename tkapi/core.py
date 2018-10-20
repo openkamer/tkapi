@@ -63,6 +63,11 @@ class TKItem(object):
             return tkapi.util.odatedate_to_date(self.json[property_key]).date()
         return None
 
+    def get_year_or_none(self, property_key):
+        if property_key in self.json and self.json[property_key]:
+            return tkapi.util.odateyear_to_date(self.json[property_key]).date()
+        return None
+
     def get_datetime_or_none(self, property_key):
         if property_key in self.json and self.json[property_key]:
             return tkapi.util.odatedatetime_to_datetime(self.json[property_key])
