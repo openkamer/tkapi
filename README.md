@@ -39,8 +39,8 @@ The tests can serve as more detailed examples.
 | **Zaak**                   | CommissieAanvullendGegeven | PersoonContactinformatie     |
 | ZaakActor                  | **CommissieZetel**         | **PersoonGeschenk**          |
 | **Kamerstukdossier**       | **CommissieVastPersoon**   | **PersoonLoopbaan**          |
-| **Fractie**                | CommissieVastVacature      | PersoonNevenfunctie          |
-| FractieOrganisatie         | CommissieVervangerVacature | PersoonNevenfunctieInkomsten |
+| **Fractie**                | CommissieVastVacature      | **PersoonNevenfunctie**      |
+| FractieOrganisatie         | CommissieVervangerVacature | **PersoonNevenfunctieInkomsten** |
 | FractieAanvullendGegeven   | CommissieVervangerPersoon  | **PersoonOnderwijs**         |
 | **FractieLid**             |                            | **PersoonReis**              |
 | **Stemming**               |                            | **PersoonFunctie**           |
