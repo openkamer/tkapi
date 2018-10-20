@@ -53,7 +53,11 @@ class Persoon(Actor):
 
     @property
     def geschenken(self):
-        return self.related_items(PersoonGeschenk, item_key='PersoonGeschenk')
+        return self.related_items(PersoonGeschenk, item_key='Geschenk')
+
+    @property
+    def nevenfuncties(self):
+        return self.related_items(PersoonNevenfunctie, item_key='Nevenfunctie')
 
     @property
     def geboortedatum(self):
@@ -203,6 +207,62 @@ class PersoonGeschenk(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def persoon(self):
         return self.related_item(Persoon)
+
+    @property
+    def omschrijving(self):
+        return self.get_property_or_empty_string('Omschrijving')
+
+    @property
+    def datum(self):
+        return self.get_datetime_or_none('Datum')
+
+
+class PersoonNevenfunctie(tkapi.TKItemRelated, tkapi.TKItem):
+    url = 'PersoonNevenfunctie'
+
+    @staticmethod
+    def create_filter():
+        return ActorFilter()
+
+    @property
+    def persoon(self):
+        return self.related_item(Persoon)
+
+    @property
+    def inkomsten(self):
+        return self.related_items(PersoonNevenfunctieInkomsten)
+
+    @property
+    def omschrijving(self):
+        return self.get_property_or_empty_string('Omschrijving')
+
+    @property
+    def van(self):
+        return self.get_datetime_or_none('PeriodeVan')
+
+    @property
+    def tot_en_met(self):
+        return self.get_datetime_or_none('PeriodeTotEnMet')
+
+    @property
+    def is_actief(self):
+        return self.get_property_or_none('IsActief')
+
+    @property
+    def soort(self):
+        return self.get_property_or_empty_string('VergoedingSoort')
+
+    @property
+    def toelichting(self):
+        return self.get_property_or_empty_string('VergoedingToelichting')
+
+
+class PersoonNevenfunctieInkomsten(tkapi.TKItemRelated, tkapi.TKItem):
+    url = 'PersoonNevenfunctieInkomsten'
+
+    @staticmethod
+    def create_filter():
+        return ActorFilter()
 
     @property
     def omschrijving(self):

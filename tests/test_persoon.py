@@ -6,6 +6,7 @@ from tkapi.persoon import PersoonOnderwijs
 from tkapi.persoon import PersoonFunctie
 from tkapi.persoon import PersoonLoopbaan
 from tkapi.persoon import PersoonGeschenk
+from tkapi.persoon import PersoonNevenfunctie
 
 from .core import TKApiTestCase
 
@@ -112,3 +113,18 @@ class TestPersoonGeschenk(TKApiTestCase):
         self.assertEqual('Ontvangen van de Irakese ambassade een doros je wijn ter waarde van ongeveer €60,--.', geschenk.omschrijving)
         self.assertEqual(2009, geschenk.datum.year)
         self.assertEqual('355337af-a30f-48b8-882a-002ce35f9d07', geschenk.persoon.id)
+
+
+class TestPersoonNevenfunctie(TKApiTestCase):
+
+    def test_get_nevenfunctie(self):
+        uid = '9ef1fb14-395c-44da-b378-089f7c1b5a1f'
+        nevenfunctie = self.api.get_item(PersoonNevenfunctie, id=uid)
+        self.assertEqual('Deelname in de Raad van advies van het Comité ter vervolging van oorlogsmisdadigers', nevenfunctie.omschrijving)
+        self.assertEqual(None, nevenfunctie.van)
+        self.assertEqual(None, nevenfunctie.tot_en_met)
+        print(nevenfunctie.is_actief)
+        self.assertEqual(False, nevenfunctie.is_actief)
+        self.assertEqual('Onbezoldigd', nevenfunctie.soort)
+        self.assertEqual('', nevenfunctie.toelichting)
+        self.assertEqual('355337af-a30f-48b8-882a-002ce35f9d07', nevenfunctie.persoon.id)
