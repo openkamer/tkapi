@@ -38,12 +38,12 @@ The tests can serve as more detailed examples.
 | ActiviteitActor            | CommissieOrganisatie       | PersoonAdres                 |
 | **Zaak**                   | CommissieAanvullendGegeven | PersoonContactinformatie     |
 | ZaakActor                  | **CommissieZetel**         | PersoonGeschenk              |
-| **Kamerstukdossier**       | **CommissieVastPersoon**   | PersoonLoopbaan              |
+| **Kamerstukdossier**       | **CommissieVastPersoon**   | **PersoonLoopbaan**          |
 | **Fractie**                | CommissieVastVacature      | PersoonNevenfunctie          |
 | FractieOrganisatie         | CommissieVervangerVacature | PersoonNevenfunctieInkomsten |
-| FractieAanvullendGegeven   | CommissieVervangerPersoon  | **PersoonOnderwijs**             |
+| FractieAanvullendGegeven   | CommissieVervangerPersoon  | **PersoonOnderwijs**         |
 | **FractieLid**             |                            | **PersoonReis**              |
-| **Stemming**               |                            | PersoonFunctie               |
+| **Stemming**               |                            | **PersoonFunctie**           |
 | Zaal                       |                            |                              |
 | Reservering                |                            |                              |
 | **Vergadering**            |                            |                              |

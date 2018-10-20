@@ -118,20 +118,3 @@ class FractieLid(Lid):
     @property
     def fractie(self):
         return self.related_item(Fractie)
-
-
-class Functie(tkapi.TKItemRelated, tkapi.TKItem):
-    url = 'Functie'
-
-    @staticmethod
-    def create_filter():
-        return ActorFilter()
-
-    @property
-    def persoon(self):
-        from tkapi.persoon import Persoon
-        return self.related_item(Persoon)
-
-    @property
-    def omschrijving(self):
-        return self.get_property_or_empty_string('Waarde')

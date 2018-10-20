@@ -20,11 +20,6 @@ class Persoon(Actor):
         return self.related_items(FractieLid, item_key='Fractielid')
 
     @property
-    def functies(self):
-        from tkapi.actor import Functie
-        return self.related_items(Functie)
-
-    @property
     def achternaam(self):
         return self.get_property_or_empty_string('Achternaam')
 
@@ -43,6 +38,18 @@ class Persoon(Actor):
     @property
     def reizen(self):
         return self.related_items(PersoonReis, item_key='Reis')
+
+    @property
+    def onderwijs(self):
+        return self.related_items(PersoonOnderwijs, item_key='Onderwijs')
+
+    @property
+    def functies(self):
+        return self.related_items(PersoonFunctie, item_key='Functie')
+
+    @property
+    def loopbaan(self):
+        return self.related_items(PersoonLoopbaan, item_key='Loopbaan')
 
     @property
     def geboortedatum(self):
@@ -112,6 +119,62 @@ class PersoonOnderwijs(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def instelling(self):
         return self.get_property_or_empty_string('Instelling')
+
+    @property
+    def plaats(self):
+        return self.get_property_or_empty_string('Plaats')
+
+    @property
+    def van(self):
+        return self.get_year_or_none('Van')
+
+    @property
+    def tot_en_met(self):
+        return self.get_year_or_none('TotEnMet')
+
+
+class PersoonFunctie(tkapi.TKItemRelated, tkapi.TKItem):
+    url = 'PersoonFunctie'
+
+    @staticmethod
+    def create_filter():
+        return ActorFilter()
+
+    @property
+    def persoon(self):
+        return self.related_item(Persoon)
+
+    @property
+    def omschrijving(self):
+        return self.get_property_or_empty_string('Waarde')
+
+
+class PersoonLoopbaan(tkapi.TKItemRelated, tkapi.TKItem):
+    url = 'PersoonLoopbaan'
+
+    @staticmethod
+    def create_filter():
+        return ActorFilter()
+
+    @property
+    def persoon(self):
+        return self.related_item(Persoon)
+
+    @property
+    def functie(self):
+        return self.get_property_or_empty_string('Functie')
+
+    @property
+    def werkgever(self):
+        return self.get_property_or_empty_string('Werkgever')
+
+    @property
+    def omschrijving(self):
+        return self.get_property_or_empty_string('OmschrijvingNl')
+
+    @property
+    def omschrijving_en(self):
+        return self.get_property_or_empty_string('OmschrijvingEn')
 
     @property
     def plaats(self):

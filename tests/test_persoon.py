@@ -3,6 +3,8 @@ import datetime
 from tkapi.persoon import Persoon
 from tkapi.persoon import PersoonReis
 from tkapi.persoon import PersoonOnderwijs
+from tkapi.persoon import PersoonFunctie
+from tkapi.persoon import PersoonLoopbaan
 
 from .core import TKApiTestCase
 
@@ -62,12 +64,12 @@ class TestPersoonReis(TKApiTestCase):
         self.assertEqual('Bijwonen oefening.', reis.doel)
         self.assertEqual('Ministerie van Defensie.', reis.betaald_door)
         self.assertGreater(reis.tot_en_met, reis.van)
-        self.assertTrue('355337af-a30f-48b8-882a-002ce35f9d07', reis.persoon.id)
+        self.assertEqual('355337af-a30f-48b8-882a-002ce35f9d07', reis.persoon.id)
 
 
 class TestPersoonOnderwijs(TKApiTestCase):
 
-    def test_get_reis(self):
+    def test_get_onderwijs(self):
         uid = 'bb6e9fa6-f966-4ba2-9b48-4ce872d1128d'
         onderwijs = self.api.get_item(PersoonOnderwijs, id=uid)
         self.assertEqual('Master Public Management (MPM)', onderwijs.opleiding_nl)
@@ -75,4 +77,27 @@ class TestPersoonOnderwijs(TKApiTestCase):
         self.assertEqual('Universiteit Twente', onderwijs.instelling)
         self.assertEqual('', onderwijs.plaats)
         self.assertGreater(onderwijs.tot_en_met, onderwijs.van)
-        self.assertTrue('355337af-a30f-48b8-882a-002ce35f9d07', onderwijs.persoon.id)
+        self.assertEqual('355337af-a30f-48b8-882a-002ce35f9d07', onderwijs.persoon.id)
+
+
+class TestPersoonFunctie(TKApiTestCase):
+
+    def test_get_functie(self):
+        uid = '310a2b85-6b99-4633-aa73-9a978cdeb3a8'
+        functie = self.api.get_item(PersoonFunctie, id=uid)
+        self.assertEqual('Oud Kamerlid', functie.omschrijving)
+        self.assertEqual('355337af-a30f-48b8-882a-002ce35f9d07', functie.persoon.id)
+
+
+class TestPersoonLoopbaan(TKApiTestCase):
+
+    def test_get_loopbaan(self):
+        uid = 'aa767276-e588-42b0-9f38-097a635081d0'
+        loopbaan = self.api.get_item(PersoonLoopbaan, id=uid)
+        self.assertEqual('Teamleider', loopbaan.functie)
+        self.assertEqual('FIOD', loopbaan.werkgever)
+        self.assertEqual('', loopbaan.omschrijving)
+        self.assertEqual('Team leader, FIOD, Haarlem 1990-1993', loopbaan.omschrijving_en)
+        self.assertEqual('Haarlem', loopbaan.plaats)
+        self.assertGreater(loopbaan.tot_en_met, loopbaan.van)
+        self.assertEqual('355337af-a30f-48b8-882a-002ce35f9d07', loopbaan.persoon.id)
