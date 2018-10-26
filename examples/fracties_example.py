@@ -3,7 +3,7 @@ from tkapi.actor import Fractie
 
 from local_settings import USER, PASSWORD
 
-api = tkapi.Api(user=USER, password=PASSWORD, verbose=True)
+api = tkapi.Api(user=USER, password=PASSWORD, verbose=False)
 
 
 def example_fracties_leden_actief():
