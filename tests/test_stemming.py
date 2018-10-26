@@ -9,29 +9,28 @@ class TestStemming(TKApiTestCase):
 
     def test_get_stemmingen(self):
         stemmingen = self.api.get_stemmingen(filter=None, max_items=10)
+        self.assertEqual(10, len(stemmingen))
+
+
+class TestStemmingFilters(TKApiTestCase):
+
+    def test_filter_moties(self):
+        n_items = 10
+        filter = Stemming.create_filter()
+        filter.filter_moties()
+        stemmingen = self.api.get_stemmingen(filter=filter, max_items=n_items)
+        self.assertEqual(n_items, len(stemmingen))
         for stemming in stemmingen:
-            stemming.print_json()
-            # stemming.besluit.print_json()
-    #
-    # def test_get_dossier_by_vetnummer(self):
-    #     vetnummer = 34435
-    #     filter = Dossier.create_filter()
-    #     filter.filter_vetnummer(vetnummer)
-    #     dossiers = self.api.get_dossiers(filter=filter)
-    #     self.assertEqual(len(dossiers), 1)
-    #     dossiers[0].print_json()
-    #
-    # def test_dossier_filter(self):
-    #     self.check_dossier_filter('2016Z16486', 34537)
-    #     self.check_dossier_filter('2016Z24906', 34640)
-    #
-    # def check_dossier_filter(self, zaak_nr, expected_dossier_vetnummer):
-    #     dossier_filter = Dossier.create_filter()
-    #     dossier_filter.filter_zaak(zaak_nr)
-    #     dossiers = self.api.get_dossiers(filter=dossier_filter)
-    #     for dossier in dossiers:
-    #         dossier.print_json()
-    #     self.assertEqual(len(dossiers), 1)
-    #     # print(dossiers[0].vetnummer)
-    #     self.assertEqual(dossiers[0].vetnummer, expected_dossier_vetnummer)
-    #
+            self.assertEqual('Motie', stemming.besluit.zaken[0].soort)
+
+    def test_filter_kamerstukdossier(self):
+        filter = Stemming.create_filter()
+        filter.filter_kamerstukdossier(vetnummer=33885)
+        stemmingen = self.api.get_stemmingen(filter=filter)
+        self.assertEqual(208, len(stemmingen))
+
+    def test_filter_kamerstuk(self):
+        filter = Stemming.create_filter()
+        filter.filter_kamerstuk(vetnummer=33885, ondernummer=16)
+        stemmingen = self.api.get_stemmingen(filter=filter)
+        self.assertEqual(16, len(stemmingen))

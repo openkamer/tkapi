@@ -1,6 +1,4 @@
 import tkapi
-from tkapi.actor import Fractie
-from tkapi.dossier import Dossier
 from tkapi.stemming import Stemming
 
 from local_settings import USER, PASSWORD
@@ -11,7 +9,7 @@ api = tkapi.Api(user=USER, password=PASSWORD, verbose=False)
 def example_stemming():
     """Example that shows how to get all active fracties and their active members."""
     filter = Stemming.create_filter()
-    filter.filter_kamerstuk(dossier_nr=33885, ondernummer=16)
+    filter.filter_kamerstuk(vetnummer=33885, ondernummer=16)
     stemmingen = api.get_stemmingen(filter=filter, max_items=100)
     print('stemmingen', len(stemmingen))
     total_votes = 0
