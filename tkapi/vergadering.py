@@ -1,6 +1,7 @@
 from enum import Enum
 
 import tkapi
+from tkapi.util import util
 
 
 class VergaderingSoort(Enum):
@@ -14,9 +15,9 @@ class VergaderingFilter(tkapi.SoortFilter):
         super().__init__()
 
     def filter_date_range(self, begin_datetime, end_datetime):
-        filter_str = "Begin ge " + tkapi.util.datetime_to_odata(begin_datetime)
+        filter_str = "Begin ge " + util.datetime_to_odata(begin_datetime)
         self.filters.append(filter_str)
-        filter_str = "Einde lt " + tkapi.util.datetime_to_odata(end_datetime)
+        filter_str = "Einde lt " + util.datetime_to_odata(end_datetime)
         self.filters.append(filter_str)
 
 

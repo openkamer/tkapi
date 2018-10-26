@@ -1,6 +1,6 @@
 import unittest
 
-from tkapi.util import create_api
+from tkapi.util import util
 
 
 class TKApiTestCase(unittest.TestCase):
@@ -8,5 +8,5 @@ class TKApiTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.api = create_api(verbose=True)
+        cls.api = util.create_api(verbose=True)
         super().setUpClass()

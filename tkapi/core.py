@@ -1,4 +1,4 @@
-import tkapi.util
+from tkapi.util import util
 
 
 class TKItem(object):
@@ -41,7 +41,7 @@ class TKItem(object):
         return self.get_property_or_empty_string('Id')
 
     def print_json(self):
-        tkapi.util.print_pretty(self.json)
+        util.print_pretty(self.json)
 
     def get_property_or_none(self, property_key):
         if property_key in self.json:
@@ -55,22 +55,22 @@ class TKItem(object):
 
     def get_date_from_datetime_or_none(self, property_key):
         if property_key in self.json and self.json[property_key]:
-            return tkapi.util.odatedatetime_to_datetime(self.json[property_key]).date()
+            return util.odatedatetime_to_datetime(self.json[property_key]).date()
         return None
 
     def get_date_or_none(self, property_key):
         if property_key in self.json and self.json[property_key]:
-            return tkapi.util.odatedate_to_date(self.json[property_key]).date()
+            return util.odatedate_to_date(self.json[property_key]).date()
         return None
 
     def get_year_or_none(self, property_key):
         if property_key in self.json and self.json[property_key]:
-            return tkapi.util.odateyear_to_date(self.json[property_key]).date()
+            return util.odateyear_to_date(self.json[property_key]).date()
         return None
 
     def get_datetime_or_none(self, property_key):
         if property_key in self.json and self.json[property_key]:
-            return tkapi.util.odatedatetime_to_datetime(self.json[property_key])
+            return util.odatedatetime_to_datetime(self.json[property_key])
         return None
 
 

@@ -1,12 +1,13 @@
 import tkapi
+from tkapi.util import util
 
 
 class ZaakFilter(tkapi.SoortFilter):
 
     def filter_date_range(self, start_datetime, end_datetime):
-        filter_str = "GestartOp ge " + tkapi.util.datetime_to_odata(start_datetime)
+        filter_str = "GestartOp ge " + util.datetime_to_odata(start_datetime)
         self.filters.append(filter_str)
-        filter_str = "GestartOp lt " + tkapi.util.datetime_to_odata(end_datetime)
+        filter_str = "GestartOp lt " + util.datetime_to_odata(end_datetime)
         self.filters.append(filter_str)
 
     def add_afgedaan(self, is_afgedaan):

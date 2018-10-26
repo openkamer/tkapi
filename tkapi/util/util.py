@@ -26,7 +26,7 @@ def odateyear_to_date(odate_date):
 def create_api(verbose=False):
     try:
         from local_settings import USER, PASSWORD, API_ROOT_URL
-        from .api import Api
+        from tkapi.api import Api
         return Api(user=USER, password=PASSWORD, api_root=API_ROOT_URL, verbose=verbose)
     except ModuleNotFoundError as error:
         print("util.create_api(): No 'local_settings.py' found with USER and PASSWORD.")

@@ -1,12 +1,13 @@
 import tkapi
+from tkapi.util import util
 
 
 class ParlementairDocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
     def filter_date_range(self, start_datetime, end_datetime):
-        filter_str = "Datum ge " + tkapi.util.datetime_to_odata(start_datetime)
+        filter_str = "Datum ge " + util.datetime_to_odata(start_datetime)
         self.filters.append(filter_str)
-        filter_str = "Datum lt " + tkapi.util.datetime_to_odata(end_datetime)
+        filter_str = "Datum lt " + util.datetime_to_odata(end_datetime)
         self.filters.append(filter_str)
 
     def filter_empty_agendapunt(self):

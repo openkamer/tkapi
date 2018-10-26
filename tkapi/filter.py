@@ -25,7 +25,6 @@ class Filter(object):
                 filter_str += ' and '
             sep = ' or '
             filter_str += sep.join(self.filters_or)
-        print('filter:', filter_str)
         return filter_str
 
 

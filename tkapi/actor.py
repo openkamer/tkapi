@@ -52,9 +52,9 @@ class Fractie(Actor):
 
     @property
     def leden_actief(self):
-        filter = Lid.create_filter()
+        filter = FractieLid.create_filter()
         filter.filter_actief()
-        return self.related_items(Lid, filter=filter)
+        return self.related_items(FractieLid, filter=filter, item_key='Lid')
 
     @property
     def naam(self):
