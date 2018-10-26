@@ -57,6 +57,27 @@ class TestPersoon(TKApiTestCase):
             print(reis.bestemming)
 
 
+class TestPersoonFilters(TKApiTestCase):
+
+    def test_filter_achternaam(self):
+        achternaam = 'Pechtold'
+        filter = Persoon.create_filter()
+        filter.filter_achternaam(achternaam)
+        personen = self.api.get_personen(filter=filter)
+        self.assertEqual(1, len(personen))
+        persoon = personen[0]
+        self.assertEqual(achternaam, persoon.achternaam)
+
+    def test_filter_is_fractielid(self):
+        n_items = 10
+        filter = Persoon.create_filter()
+        filter.filter_is_fractielid()
+        personen = self.api.get_personen(filter=filter, max_items=n_items)
+        self.assertEqual(n_items, len(personen))
+        for persoon in personen:
+            self.assertTrue(persoon.fractieleden)
+
+
 class TestPersoonReis(TKApiTestCase):
 
     def test_get_reis(self):

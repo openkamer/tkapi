@@ -118,6 +118,16 @@ class TestDossierAfgesloten(TKApiTestCase):
         self.assertEqual(len(dossiers), 0)
 
 
+class TestDossierFilter(TKApiTestCase):
+
+    def test_filter_kamerstuk(self):
+        filter = Dossier.create_filter()
+        filter.filter_kamerstuk(vetnummer=33885, ondernummer=16)
+        dossiers = self.api.get_dossiers(filter=filter)
+        for dossier in dossiers:
+            print(dossier.vetnummer, len(dossier.kamerstukken))
+
+
 class TestWetsvoorstelDossier(TKApiTestCase):
 
     def test_get_dossiers(self):

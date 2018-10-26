@@ -4,12 +4,24 @@ from tkapi.actor import Actor
 from tkapi.actor import FractieLid
 
 from tkapi.actor import ActorFilter
+from tkapi.actor import FractieLidRelationFilter
+
+
+class PersoonFilter(FractieLidRelationFilter):
+
+    def filter_achternaam(self, achternaam):
+        filter_str = 'Achternaam eq \'{}\''.format(achternaam)
+        self.add_filter_str(filter_str)
 
 
 class Persoon(Actor):
     url = 'Persoon'
     orderby_param = 'Achternaam'
     filter_param = 'Achternaam ne null'
+
+    @staticmethod
+    def create_filter():
+        return PersoonFilter()
 
     @property
     def fracties(self):

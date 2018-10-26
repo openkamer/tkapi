@@ -52,7 +52,7 @@ class TestParlementairDocumentFilter(TKApiTestCase):
             end_datetime
         )
         pd_filter.filter_soort('Voorstel van wet')
-        pd_filter.filter_empty_zaak()
+        pd_filter.filter_non_empty_zaak()
         pds = self.api.get_parlementaire_documenten(pd_filter)
         for pd in pds:
             print(pd.titel)

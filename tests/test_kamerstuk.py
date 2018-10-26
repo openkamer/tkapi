@@ -52,3 +52,12 @@ class TestWetsvoorstellenDossier(TKApiTestCase):
         #
         # print('wetsvoorstellen without dossier: ' + str(len(pds_no_dossier_nr)))
         # self.assertEqual(len(pds_no_dossier_nr), 0)
+
+
+class TestKamerstukFilters(TKApiTestCase):
+
+    def test_filter_dossier(self):
+        filter = Kamerstuk.create_filter()
+        filter.filter_kamerstukdossier(vetnummer=33885)
+        kamerstukken = self.api.get_kamerstukken(filter=filter)
+        self.assertEqual(31, len(kamerstukken))

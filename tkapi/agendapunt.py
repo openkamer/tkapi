@@ -1,7 +1,14 @@
 import tkapi
 
 
-class AgendapuntFilter(tkapi.SoortFilter):
+class AgendaPuntRelationFilter(tkapi.RelationFilter):
+
+    @property
+    def related_url(self):
+        return Agendapunt.url
+
+
+class AgendapuntFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
     def __init__(self):
         super().__init__()

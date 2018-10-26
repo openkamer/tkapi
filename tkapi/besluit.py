@@ -1,6 +1,13 @@
 import tkapi
 
 
+class BesluitRelationFilter(tkapi.RelationFilter):
+
+    @property
+    def related_url(self):
+        return Besluit.url
+
+
 class BesluitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
     def __init__(self):
@@ -9,7 +16,6 @@ class BesluitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
 class Besluit(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Besluit'
-    # expand_param = 'Zaak, Stemming'
 
     @staticmethod
     def create_filter():

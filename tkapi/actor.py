@@ -116,6 +116,16 @@ class Lid(tkapi.TKItemRelated, tkapi.TKItem):
         return self.get_date_from_datetime_or_none('TotEnMet')
 
 
+class FractieLidRelationFilter(tkapi.RelationFilter):
+
+    @property
+    def related_url(self):
+        return 'Fractielid'
+
+    def filter_is_fractielid(self):
+        self._filter_non_empty()
+
+
 class FractieLid(Lid):
     url = 'FractieLid'
 
