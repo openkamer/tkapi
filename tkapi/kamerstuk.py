@@ -9,10 +9,13 @@ class KamerstukFilter(tkapi.Filter):
         filter_str = "Ondernummer eq " + "'" + str(ondernumer) + "'"
         self.filters.append(filter_str)
 
+    def filter_kamerstukdossier(self, vetnummer):
+        filter_str = 'Kamerstukdossier/Vetnummer eq {}'.format(vetnummer)
+        self.add_filter_str(filter_str)
+
 
 class Kamerstuk(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Kamerstuk'
-    # expand_param = 'Kamerstukdossier, ParlementairDocument'
 
     @staticmethod
     def create_filter():

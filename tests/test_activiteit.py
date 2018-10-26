@@ -1,5 +1,7 @@
 import datetime
 
+from tkapi.activiteit import Activiteit, ActiviteitSoort
+
 from .core import TKApiTestCase
 
 
@@ -32,3 +34,62 @@ class TestActiviteit(TKApiTestCase):
             for pd in activiteit.parlementaire_documenten:
                 if pd.kamerstuk:
                     print('dossier vetnummer:', pd.kamerstuk.dossier.vetnummer)
+
+
+class TestActiviteitFilters(TKApiTestCase):
+    N_ITEMS = 15
+
+    def test_kamerstuk_dossier_filter(self):
+        filter = Activiteit.create_filter()
+        filter.filter_kamerstukdossier(vetnummer=31239)
+        activiteiten = self.api.get_activiteiten(filter=filter, max_items=self.N_ITEMS)
+        print(len(activiteiten))
+        self.assertEqual(self.N_ITEMS, len(activiteiten))
+        ids = set()
+        for activiteit in activiteiten:
+            ids.add(activiteit.id)
+            print(
+                'Activiteit: {} ({} - {})'
+                .format(activiteit.onderwerp, activiteit.begin, activiteit.einde)
+            )
+        self.assertEqual(len(activiteiten), len(ids))
+
+    def test_kamerstuk_filter(self):
+        filter = Activiteit.create_filter()
+        filter.filter_kamerstuk(vetnummer=31239, ondernummer=16)
+        activiteiten = self.api.get_activiteiten(filter=filter, max_items=self.N_ITEMS)
+        print(len(activiteiten))
+        self.assertEqual(self.N_ITEMS, len(activiteiten))
+        ids = set()
+        for activiteit in activiteiten:
+            ids.add(activiteit.id)
+            print(
+                'Activiteit: {} ({} - {})'
+                .format(activiteit.onderwerp, activiteit.begin, activiteit.einde)
+            )
+        self.assertEqual(len(activiteiten), len(ids))
+
+    def test_soort_filter(self):
+        soorten = [
+            ActiviteitSoort.STEMMINGEN,
+            ActiviteitSoort.VERGADERING,
+            ActiviteitSoort.VRAGENUUR,
+            ActiviteitSoort.PLENAIR_DEBAT,
+            ActiviteitSoort.ALGEMEEN_OVERLEG,
+            ActiviteitSoort.WETSVOORSTEL_INBRENG_VERSLAG,
+            ActiviteitSoort.WETGEVINGSOVERLEG,
+        ]
+        for soort in soorten:
+            filter = Activiteit.create_filter()
+            filter.filter_soort(soort)
+            activiteiten = self.api.get_activiteiten(filter=filter, max_items=self.N_ITEMS)
+            print(len(activiteiten))
+            ids = set()
+            for activiteit in activiteiten:
+                ids.add(activiteit.id)
+                # print(
+                #     'Activiteit: {} ({} - {})'
+                #     .format(activiteit.soort, activiteit.begin, activiteit.einde)
+                # )
+            self.assertEqual(self.N_ITEMS, len(activiteiten))
+            self.assertEqual(len(activiteiten), len(ids))

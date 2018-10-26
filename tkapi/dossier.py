@@ -1,7 +1,7 @@
 import tkapi
 
 
-class DossierFilter(tkapi.Filter):
+class DossierFilter(tkapi.ZaakRelationFilter):
 
     def filter_vetnummer(self, vetnummer):
         filter_str = "Vetnummer eq " + str(vetnummer)
