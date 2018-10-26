@@ -1,3 +1,3 @@
-requests==2.13.0
-orderedset==2.0
-coverage==4.4.1
+requests==2.20.0
+orderedset==2.0.1
+coverage==4.5.1
