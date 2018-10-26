@@ -1,5 +1,5 @@
 import tkapi
-from tkapi.actor import Fractie
+from tkapi.fractie import Fractie
 
 from local_settings import USER, PASSWORD
 

@@ -132,7 +132,7 @@ class ZaakIndiener(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def fractie(self):
-        from tkapi.actor import Fractie
+        from tkapi.fractie import Fractie
         return self.related_item(Fractie)
 
 

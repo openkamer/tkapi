@@ -1,6 +1,5 @@
 from tkapi.persoon import Persoon
-from tkapi.actor import FractieLid
-from tkapi.actor import Fractie
+from tkapi.fractie import Fractie, FractieLid
 from tkapi.activiteit import Activiteit
 from tkapi.besluit import Besluit
 from tkapi.commissie import Commissie

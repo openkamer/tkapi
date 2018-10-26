@@ -1,5 +1,5 @@
 from tkapi import Api
-from tkapi.actor import Fractie
+from tkapi.fractie import Fractie
 
 
 def get_fractieleden_actief():

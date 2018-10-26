@@ -1,8 +1,6 @@
 import datetime
 
-from tkapi.actor import Fractie
-from tkapi.actor import FractieLid
-from tkapi.actor import FractieOrganisatie
+from tkapi.fractie import Fractie, FractieOrganisatie, FractieLid
 
 from .core import TKApiTestCase
 

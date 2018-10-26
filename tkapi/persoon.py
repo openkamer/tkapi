@@ -1,10 +1,9 @@
 import tkapi
 
 from tkapi.actor import Actor
-from tkapi.actor import FractieLid
 
 from tkapi.actor import ActorFilter
-from tkapi.actor import FractieLidRelationFilter
+from tkapi.fractie import FractieLidRelationFilter, FractieLid
 
 
 class PersoonFilter(FractieLidRelationFilter):
