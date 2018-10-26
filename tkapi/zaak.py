@@ -101,6 +101,10 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
         return self.get_property_or_empty_string('Nummer')
 
     @property
+    def volgnummer(self):
+        return self.get_property_or_empty_string('Volgnummer')
+
+    @property
     def afgedaan(self):
         return self.get_property_or_none('Afgedaan')
 

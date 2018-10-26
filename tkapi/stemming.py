@@ -6,6 +6,10 @@ class StemmingFilter(tkapi.SoortFilter):
     def __init__(self):
         super().__init__()
 
+    def filter_kamerstuk(self, dossier_nr, ondernummer):
+        filter_str = 'Besluit/Zaak/any(z: z/Volgnummer eq {} and z/Kamerstukdossier/any(d: d/Vetnummer eq {}))'.format(ondernummer, dossier_nr)
+        self.filters.append(filter_str)
+
 
 class Stemming(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Stemming'
@@ -21,9 +25,9 @@ class Stemming(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_item(Besluit)
 
     @property
-    def zaken(self):
-        from tkapi.zaak import Zaak
-        return self.related_items(Zaak)
+    def fractie(self):
+        from tkapi.actor import Fractie
+        return self.related_item(Fractie)
 
     @property
     def soort(self):
