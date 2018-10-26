@@ -7,7 +7,7 @@ class KamerstukFilter(tkapi.Filter):
 
     def filter_ondernummer(self, ondernumer):
         filter_str = "Ondernummer eq " + "'" + str(ondernumer) + "'"
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
     def filter_kamerstukdossier(self, vetnummer):
         filter_str = 'Kamerstukdossier/Vetnummer eq {}'.format(vetnummer)

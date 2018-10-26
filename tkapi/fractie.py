@@ -87,15 +87,15 @@ class FractieOrganisatie(Lid):
 class FractieFilter(tkapi.Filter):
 
     def filter_actief(self):
-        self.filters.append("DatumInactief eq null")
-        self.filters.append("DatumActief ne null")
+        self._filters.append("DatumInactief eq null")
+        self._filters.append("DatumActief ne null")
 
 
 class LidFilter(tkapi.Filter):
 
     def filter_actief(self):
-        self.filters.append("TotEnMet eq null")
-        self.filters.append("Verwijderd eq false")
+        self._filters.append("TotEnMet eq null")
+        self._filters.append("Verwijderd eq false")
 
 
 class FractieLidRelationFilter(tkapi.RelationFilter):

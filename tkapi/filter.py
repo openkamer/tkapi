@@ -5,26 +5,26 @@ class Filter(object):
 
     def __init__(self):
         super().__init__()
-        self.filters = []
-        self.filters_or = []
+        self._filters = []
+        self._filters_or = []
 
     def add_filter_str(self, filter_str, is_or=False):
         if is_or:
-            self.filters_or.append(filter_str)
+            self._filters_or.append(filter_str)
         else:
-            self.filters.append(filter_str)
+            self._filters.append(filter_str)
 
     @property
     def filter_str(self):
         filter_str = ''
-        if self.filters:
+        if self._filters:
             sep = ' and '
-            filter_str = sep.join(self.filters)
-        if self.filters_or:
+            filter_str = sep.join(self._filters)
+        if self._filters_or:
             if filter_str:
                 filter_str += ' and '
             sep = ' or '
-            filter_str += sep.join(self.filters_or)
+            filter_str += sep.join(self._filters_or)
         return filter_str
 
 
@@ -41,7 +41,7 @@ class VerwijderdFilter(Filter):
 
     def filter_verwijderd(self, is_deleted=False):
         filter_str = "Verwijderd eq " + str(is_deleted).lower()
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
 
 class RelationFilter(Filter):
@@ -52,11 +52,11 @@ class RelationFilter(Filter):
 
     def filter_non_empty(self, related_entity):
         filter_str = '{}/any(z: true)'.format(related_entity.url)
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
     def _filter_non_empty(self):
         filter_str = self.related_url + '/any(z: true)'
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
 
 class ZaakRelationFilter(RelationFilter):
@@ -90,4 +90,4 @@ class ZaakRelationFilter(RelationFilter):
 
     def filter_moties(self):
         filter_str = '{}/any(z: z/Soort eq \'{}\')'.format(self.zaak_related_url, 'Motie')
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)

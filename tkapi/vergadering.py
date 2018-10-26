@@ -16,9 +16,9 @@ class VergaderingFilter(tkapi.SoortFilter):
 
     def filter_date_range(self, begin_datetime, end_datetime):
         filter_str = "Begin ge " + util.datetime_to_odata(begin_datetime)
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
         filter_str = "Einde lt " + util.datetime_to_odata(end_datetime)
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
 
 class Vergadering(tkapi.TKItemRelated, tkapi.TKItem):

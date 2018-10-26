@@ -6,7 +6,7 @@ class CommissieFilter(tkapi.SoortFilter):
 
     def filter_naam(self, naam):
         filter_str = "NaamNL eq " + "'" + naam.replace("'", "''") + "'"
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
 
 class Commissie(tkapi.TKItemRelated, tkapi.TKItem):

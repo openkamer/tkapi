@@ -6,42 +6,42 @@ class ZaakFilter(tkapi.SoortFilter):
 
     def filter_date_range(self, start_datetime, end_datetime):
         filter_str = "GestartOp ge " + util.datetime_to_odata(start_datetime)
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
         filter_str = "GestartOp lt " + util.datetime_to_odata(end_datetime)
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
     def add_afgedaan(self, is_afgedaan):
         is_afgedaan_str = 'true' if is_afgedaan else 'false'
         filter_str = "Afgedaan eq " + is_afgedaan_str
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
     def update_afgedaan(self, is_afgedaan):
         is_afgedaan_new_str = 'true' if is_afgedaan else 'false'
         is_afgedaan_remove_str = 'false' if is_afgedaan else 'true'
         filter_new_str = "Afgedaan eq " + is_afgedaan_new_str
         filter_remove_str = "Afgedaan eq " + is_afgedaan_remove_str
-        self.filters.remove(filter_remove_str)
-        self.filters.append(filter_new_str)
+        self._filters.remove(filter_remove_str)
+        self._filters.append(filter_new_str)
 
     def filter_nummer(self, nummer):
         filter_str = "Nummer eq " + "'" + nummer.replace("'", "''") + "'"
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
     def filter_onderwerp(self, onderwerp):
         filter_str = "Onderwerp eq " + "'" + onderwerp.replace("'", "''") + "'"
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
     def filter_empty_besluit(self):
         filter_str = 'Besluit/any(b: true)'
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
     def filter_empty_activiteit(self):
         filter_str = 'Activiteit/any(b: true)'
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
     def filter_empty_agendapunt(self):
         filter_str = 'Agendapunt/any(b: true)'
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
 
 class Zaak(tkapi.TKItemRelated, tkapi.TKItem):

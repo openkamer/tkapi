@@ -6,21 +6,21 @@ class ParlementairDocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
     def filter_date_range(self, start_datetime, end_datetime):
         filter_str = "Datum ge " + util.datetime_to_odata(start_datetime)
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
         filter_str = "Datum lt " + util.datetime_to_odata(end_datetime)
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
     def filter_empty_agendapunt(self):
         filter_str = 'Agendapunt/any(a: true)'
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
     def filter_onderwerp(self, onderwerp):
         filter_str = 'Onderwerp eq ' + "'" + onderwerp.replace("'", "''") + "'"
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
     def filter_titel(self, titel):
         filter_str = 'Titel eq ' + "'" + titel.replace("'", "''") + "'"
-        self.filters.append(filter_str)
+        self._filters.append(filter_str)
 
 
 class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
