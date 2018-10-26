@@ -2,7 +2,6 @@ import tkapi
 
 from tkapi.actor import Actor
 
-from tkapi.actor import ActorFilter
 from tkapi.fractie import FractieLidRelationFilter, FractieLid
 
 
@@ -85,10 +84,6 @@ class Persoon(Actor):
 
 
 class PersoonEntity(tkapi.TKItemRelated, tkapi.TKItem):
-
-    @staticmethod
-    def create_filter():
-        return ActorFilter()
 
     @property
     def persoon(self):
@@ -233,10 +228,6 @@ class PersoonNevenfunctie(PersoonEntity):
 
 class PersoonNevenfunctieInkomsten(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'PersoonNevenfunctieInkomsten'
-
-    @staticmethod
-    def create_filter():
-        return ActorFilter()
 
     @property
     def nevenfunctie(self):
