@@ -7,7 +7,6 @@ api = tkapi.Api(user=USER, password=PASSWORD, verbose=False)
 
 
 def example_stemming():
-    """Example that shows how to get all active fracties and their active members."""
     filter = Stemming.create_filter()
     filter.filter_kamerstuk(vetnummer=33885, ondernummer=16)
     stemmingen = api.get_stemmingen(filter=filter, max_items=100)
