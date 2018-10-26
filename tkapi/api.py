@@ -155,6 +155,7 @@ class Api(object):
             return {}
         elif response.status_code != 200:
             print('HTTP STATUS CODE', response.status_code)
+            print('ODATA ERROR: ', response.json()['odata.error']['message']['value'])
         # assert response.status_code == 200
         return response.json()
 
