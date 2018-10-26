@@ -13,8 +13,7 @@ class TestDossier(TKApiTestCase):
 
     def test_get_dossiers(self):
         dossiers = self.api.get_dossiers(filter=None, max_items=10)
-        for dossier in dossiers:
-            dossier.print_json()
+        self.assertEqual(10, len(dossiers))
 
     def test_get_dossier_by_vetnummer(self):
         vetnummer = 34435
