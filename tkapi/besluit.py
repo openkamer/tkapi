@@ -27,6 +27,11 @@ class Besluit(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_items(Zaak)
 
     @property
+    def zaak(self):
+        from tkapi.zaak import Zaak
+        return self.related_item(Zaak)
+
+    @property
     def stemmingen(self):
         from tkapi.stemming import Stemming
         return self.related_items(Stemming)
@@ -34,7 +39,7 @@ class Besluit(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def agendapunt(self):
         from tkapi.agendapunt import Agendapunt
-        return self.related_items(Agendapunt)
+        return self.related_item(Agendapunt)
 
     @property
     def soort(self):
