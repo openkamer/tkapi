@@ -26,6 +26,11 @@ class Stemming(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_item(Fractie)
 
     @property
+    def persoon(self):
+        from tkapi.persoon import Persoon
+        return self.related_item(Persoon)
+
+    @property
     def soort(self):
         return self.get_property_or_empty_string('Soort')
 
