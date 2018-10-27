@@ -4,8 +4,6 @@ Python bindings for the [Tweede Kamer](https://tweedekamer.nl) [Open Data Portaa
 
 Requires Python 3.3+
 
-**WARNING**: This is a work in progress. Code is not clean, nor complete. There will be major changes that break everything!
-
 You are welcome to open an issue if you have any problems, questions or suggestions.
 
 ## Installation
@@ -25,9 +23,9 @@ for persoon in personen:
 ```
 
 Where `USERNAME` and `PASSWORD` are your Tweede Kamer OpenData username and password. 
-You can get one by registering at https://opendata.tweedekamer.nl.
+You can get one by registering at https://opendata.tweedekamer.nl. You also need to whitelist your IP.
 
-The tests can serve as more detailed examples.
+For more examples see the `examples` directory and the tests.
 
 ## Entities
 **Bold** entities are implemented.
