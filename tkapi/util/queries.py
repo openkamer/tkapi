@@ -5,6 +5,7 @@ from tkapi.fractie import Fractie
 from tkapi.stemming import Stemming
 from tkapi.dossier import Dossier
 from tkapi.besluit import Besluit
+from tkapi.activiteit import Activiteit
 
 
 def get_fractieleden_actief():
@@ -62,3 +63,9 @@ def get_dossier_besluiten_with_stemmingen(vetnummer):
     filter.filter_kamerstukdossier(vetnummer=vetnummer)
     filter.filter_non_empty(Stemming)
     return Api().get_besluiten(filter=filter)
+
+
+def get_dossier_activiteiten(vetnummer):
+    filter = Activiteit.create_filter()
+    filter.filter_kamerstukdossier(vetnummer=vetnummer)
+    return Api().get_activiteiten(filter=filter)
