@@ -32,6 +32,11 @@ class Besluit(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_items(Stemming)
 
     @property
+    def agendapunt(self):
+        from tkapi.agendapunt import Agendapunt
+        return self.related_items(Agendapunt)
+
+    @property
     def soort(self):
         return self.get_property_or_empty_string('Soort')
 
