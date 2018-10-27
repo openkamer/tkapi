@@ -97,3 +97,9 @@ class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
         if self.kamerstuk and self.kamerstuk.dossier and self.kamerstuk.dossier.vetnummer:
             return self.kamerstuk.dossier.vetnummer
         return None
+
+    @property
+    def dossier_toevoeging(self):
+        if self.kamerstuk and self.kamerstuk.dossier and self.kamerstuk.dossier.toevoeging:
+            return self.kamerstuk.dossier.toevoeging
+        return None

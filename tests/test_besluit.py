@@ -19,14 +19,14 @@ class TestBesluit(TKApiTestCase):
 class TestBesluitFilters(TKApiTestCase):
 
     def test_kamerstukdossier_filter(self):
-        n_items = 5
-        vetnummer = 33885
+        n_items = 4
+        vetnummer = 34822
         filter = Besluit.create_filter()
         filter.filter_kamerstukdossier(vetnummer=vetnummer)
         besluiten = self.api.get_besluiten(filter=filter, max_items=n_items)
         self.assertEqual(n_items, len(besluiten))
         for besluit in besluiten:
-            self.assertEqual(vetnummer, besluit.zaken[0].dossier.vetnummer)
+            self.assertEqual(vetnummer, besluit.zaak.dossier.vetnummer)
 
     def test_kamerstuk_filter(self):
         n_items = 5

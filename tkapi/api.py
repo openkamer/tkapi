@@ -69,19 +69,19 @@ class Api(object):
 
     @classmethod
     def get_parlementaire_documenten(cls, filter=None, max_items=None):
-        return cls.get_items(ParlementairDocument, filter, max_items=max_items)
+        return cls.get_items(ParlementairDocument, filter, max_items)
 
     @classmethod
     def get_dossiers(cls, filter=None, max_items=None):
         return cls.get_items(Dossier, filter, max_items)
 
     @classmethod
-    def get_zaken(cls, filter=None):
-        return cls.get_items(Zaak, filter, max_items=None)
+    def get_zaken(cls, filter=None, max_items=None):
+        return cls.get_items(Zaak, filter, max_items)
 
     @classmethod
     def get_activiteiten(cls, filter, max_items=None):
-        return cls.get_items(Activiteit, filter=filter, max_items=max_items)
+        return cls.get_items(Activiteit, filter, max_items)
 
     @classmethod
     def get_kamerstukken(cls, filter=None, max_items=None):
