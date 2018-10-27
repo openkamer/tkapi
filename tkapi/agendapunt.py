@@ -28,6 +28,16 @@ class Agendapunt(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_items(Zaak)
 
     @property
+    def activiteit(self):
+        from tkapi.activiteit import Activiteit
+        return self.related_item(Activiteit)
+
+    @property
+    def besluit(self):
+        from tkapi.besluit import Besluit
+        return self.related_item(Besluit)
+
+    @property
     def parlementaire_documenten(self):
         from tkapi.document import ParlementairDocument
         return self.related_items(ParlementairDocument)
