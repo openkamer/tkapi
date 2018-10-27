@@ -7,7 +7,7 @@ setup(
     name='tkapi',
     description='Python bindings for the Tweede Kamer OData API',
     long_description=long_description,
-    version='0.5.1',
+    version='0.5.2',
     url='https://github.com/openkamer/tkapi',
     author='Open Kamer',
     author_email='info@openkamer.org',
@@ -18,7 +18,7 @@ setup(
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
     ],
-    packages=['tkapi'],
+    packages=['tkapi', 'tkapi.util'],
     install_requires=[
         'requests>=2.13.0', 'orderedset>=2.0',
     ],
