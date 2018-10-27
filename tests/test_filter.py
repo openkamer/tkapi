@@ -10,7 +10,7 @@ class TestFilters(TKApiTestCase):
         pd_filter = ParlementairDocument.create_filter()
         pd_filter.filter_soort('test soort')
         pd_filter.filter_non_empty_zaak()
-        self.assertEqual(len(pd_filter.filters), 2)
+        self.assertEqual(len(pd_filter._filters), 2)
 
     def test_filter_non_deleted(self):
         uid = '20415249-f14a-4375-b2c1-36608cbf0a76'
