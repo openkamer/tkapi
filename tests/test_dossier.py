@@ -3,7 +3,7 @@ import datetime
 from orderedset import OrderedSet
 
 from tkapi.zaak import Zaak, ZaakSoort
-from tkapi.dossier import Dossier
+from tkapi.dossier import Dossier, DossierWetsvoorstel
 from tkapi.document import ParlementairDocument
 
 from .core import TKApiTestCase
@@ -129,7 +129,12 @@ class TestDossierFilter(TKApiTestCase):
 
 class TestWetsvoorstelDossier(TKApiTestCase):
 
-    def test_get_dossiers(self):
+    def test_get_wetsvoorstellen_dossiers(self):
+        max_items = 200
+        wetsvoorstellen = self.api.get_items(DossierWetsvoorstel, max_items=max_items)
+        self.assertEqual(max_items, len(wetsvoorstellen))
+
+    def test_get_dossiers_via_documenten(self):
         pd_filter = ParlementairDocument.create_filter()
         # NOTE: this date filter does not seem to work in combination with the soort filter.
         # start_datetime = datetime.datetime(year=2016, month=1, day=1)

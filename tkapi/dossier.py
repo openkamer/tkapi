@@ -1,4 +1,5 @@
 import tkapi
+from tkapi.zaak import ZaakSoort
 
 
 class DossierFilter(tkapi.ZaakRelationFilter):
@@ -69,3 +70,8 @@ class Dossier(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def organisatie(self):
         return self.get_property_or_empty_string('Organisatie')
+
+
+class DossierWetsvoorstel(Dossier):
+    filter_param = 'Zaak/any(z:z/Soort eq \'{}\') or Zaak/any(z:z/Soort eq \'{}\') or Zaak/any(z:z/Soort eq \'{}\')'\
+        .format(ZaakSoort.WETGEVING.value, ZaakSoort.INITIATIEF_WETGEVING.value, ZaakSoort.BEGROTING.value)

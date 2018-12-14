@@ -8,7 +8,7 @@ parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parentdir)
 
 import tkapi
-from tkapi.zaak import Zaak
+from tkapi.zaak import Zaak, ZaakSoort
 
 from local_settings import API_ROOT_URL
 
@@ -19,8 +19,8 @@ out_dir = os.path.join(parentdir, '../ok-tk-data/wetsvoorstellen/')
 
 def main():
     filter = Zaak.create_filter()
-    filter.filter_soort('Wetgeving', is_or=True)
-    filter.filter_soort('Initiatiefwetgeving', is_or=True)
+    filter.filter_soort(ZaakSoort.WETGEVING, is_or=True)
+    filter.filter_soort(ZaakSoort.INITIATIEF_WETGEVING, is_or=True)
     # TODO BR: enable when dossier toevoeging is possible
     # filter.filter_soort('Begroting', is_or=True)
     zaken = api.get_zaken(filter=filter)
