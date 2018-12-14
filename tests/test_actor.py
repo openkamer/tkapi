@@ -55,11 +55,12 @@ class TestFractieLid(TKApiTestCase):
 
     def test_get_fractie_leden(self):
         leden = self.api.get_fractie_leden(max_items=10)
-        print('fractieleden:', len(leden))
         self.assertEqual(10, len(leden))
         for lid in leden:
-            print(lid.persoon.voornamen, lid.persoon.achternaam)
-            # lid.print_json()
+            if lid.persoon:
+                print(lid.persoon.voornamen, lid.persoon.achternaam)
+            else:
+                self.assertTrue(lid.vacature)
 
     def test_get_fractie_leden_actief(self):
         filter = FractieLid.create_filter()

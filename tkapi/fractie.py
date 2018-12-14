@@ -79,6 +79,14 @@ class Lid(tkapi.TKItemRelated, tkapi.TKItem):
     def tot_en_met(self):
         return self.get_date_from_datetime_or_none('TotEnMet')
 
+    @staticmethod
+    def begin_date_key():
+        return 'Van'
+
+    @staticmethod
+    def end_date_key():
+        return 'TotEnMet'
+
 
 class FractieOrganisatie(Lid):
     url = 'FractieOrganisatie'
@@ -122,3 +130,7 @@ class FractieLid(Lid):
     @property
     def fractie(self):
         return self.related_item(Fractie)
+
+    @property
+    def vacature(self):
+        return self.get_property_or_none('Vacature')
