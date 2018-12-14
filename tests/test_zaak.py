@@ -3,6 +3,7 @@ import datetime
 from tkapi.zaak import Zaak
 from tkapi.zaak import ZaakIndiener
 from tkapi.zaak import ZaakMedeindiener
+from tkapi.zaak import ZaakSoort
 
 from .core import TKApiTestCase
 
@@ -14,7 +15,7 @@ class TestZaak(TKApiTestCase):
     def test_zaak_filters(self):
         zaak_filter = Zaak.create_filter()
         zaak_filter.filter_date_range(TestZaak.start_datetime, TestZaak.end_datetime)
-        zaak_filter.filter_soort('Wetgeving')
+        zaak_filter.filter_soort(ZaakSoort.WETGEVING)
         zaken = self.api.get_zaken(zaak_filter)
         # for zaak in zaken:
         #     zaak.print_json()
@@ -121,3 +122,14 @@ class TestZaakIndiener(TKApiTestCase):
         self.assertEqual('ad21ebf6-352c-4411-a110-95205bfa3126', indiener.persoon.id)
         self.assertEqual('8266ae85-5e77-44e9-a8d4-b399b96ca4b2', indiener.fractie.id)
         self.assertEqual('e8f337b7-ffbc-4fcd-a62c-00079510a0e9', indiener.zaak.id)
+
+
+class TestZaakSoort(TKApiTestCase):
+
+    def test_zaak_soorten_enum(self):
+        max_items = 1
+        for soort in ZaakSoort:
+            zaak_filter = Zaak.create_filter()
+            zaak_filter.filter_soort(soort)
+            zaken = self.api.get_zaken(zaak_filter, max_items=max_items)
+            self.assertEqual(max_items, len(zaken))

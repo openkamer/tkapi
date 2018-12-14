@@ -2,7 +2,7 @@ import datetime
 
 from orderedset import OrderedSet
 
-from tkapi.zaak import Zaak
+from tkapi.zaak import Zaak, ZaakSoort
 from tkapi.dossier import Dossier
 from tkapi.document import ParlementairDocument
 
@@ -80,7 +80,7 @@ class TestDossiersForZaken(TKApiTestCase):
             TestDossiersForZaken.start_datetime,
             TestDossiersForZaken.end_datetime
         )
-        zaak_filter.filter_soort('Wetgeving')
+        zaak_filter.filter_soort(ZaakSoort.WETGEVING)
         zaken = self.api.get_zaken(zaak_filter)
 
         print('Wetgeving zaken found: ' + str(len(zaken)))

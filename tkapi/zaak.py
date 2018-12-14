@@ -1,3 +1,5 @@
+from enum import Enum
+
 import tkapi
 from tkapi.util import util
 
@@ -143,6 +145,40 @@ class ZaakIndiener(tkapi.TKItemRelated, tkapi.TKItem):
 class ZaakMedeindiener(ZaakIndiener):
     url = 'ZaakActor'
 
+
+class ZaakSoort(Enum):
+    AMENDEMENT = 'Amendement'
+    ARTIKELEN_WETSVOORSTEL = 'Artikelen/onderdelen (wetsvoorstel)'
+    BEGROTING = 'Begroting'
+    BRIEF_COMMISSIE = 'Brief commissie'
+    BRIEF_EUROPESE_COMMISSIE = 'Brief Europese Commissie'
+    BRIEF_KAMER = 'Brief Kamer'
+    BRIEF_REGERING = 'Brief Regering'
+    BRIEF_LID = 'Brief van lid/fractie/commissie'
+    EU_VOORSTEL = 'EU-voorstel'
+    INITIATIEF_NOTA = 'Initiatiefnota'
+    INITIATIEF_WETGEVING = 'Initiatiefwetgeving'
+    LIJST_EU_VOORSTELLEN = 'Lijst met EU-voorstellen'
+    MONDELINGE_VRAGEN = 'Mondelinge vragen'
+    MOTIE = 'Motie'
+    NATIONALE_OMBUDSMAN = 'Nationale ombudsman'
+    NETWERKVERKENNING = 'Netwerkverkenning'
+    NOTA_VAN_VERSLAG = 'Nota naar aanleiding van het (nader) verslag'
+    NOTA_VAN_WIJZIGING = 'Nota van wijziging'
+    OVERIG = 'Overig'
+    PARLEMENTAIR_ONDERZOEKSRAPPORT = 'Parlementair onderzoeksrapport'
+    PKB_STRUCTUURVISIE = 'PKB/Structuurvisie'
+    POSITION_PAPER = 'Position paper'
+    RAPPORT_ALGEMENE_REKENKAMER = 'Rapport/brief Algemene Rekenkamer'
+    RONDVRAAGPUNT_PROCEDUREVERGADERING = 'Rondvraagpunt procedurevergadering'
+    SCHRIFTELIJKE_VRAGEN = 'Schriftelijke vragen'
+    VERDRAG = 'Verdrag'
+    VERZOEK_REGELING_WERKZAAMHEDEN = 'Verzoek bij regeling van werkzaamheden'
+    VERZOEKSCHRIFT = 'Verzoekschrift'
+    VOORDRACHTEN_EN_BENOEMINGEN = 'Voordrachten en benoemingen'
+    WETGEVING = 'Wetgeving'
+    WIJZIGING_RVO = 'Wijziging RvO'
+    WIJZIGING_VOORGESTELD_REGERING = 'Wijzigingen voorgesteld door de regering'
 
 
 ## Mogelijke Zaak-Soorten zoals gevonden in Zaken van 2016:
