@@ -2,20 +2,22 @@ import requests
 
 from tkapi.fractie import Fractie, FractieLid
 from tkapi.persoon import Persoon
+from .activiteit import Activiteit
 from .agendapunt import Agendapunt
 from .besluit import Besluit
 from .commissie import Commissie
 from .document import ParlementairDocument
 from .dossier import Dossier
 from .kamerstuk import Kamerstuk
-from .activiteit import Activiteit
 from .kamervraag import Kamervraag, Antwoord
+from .persoon import PersoonGeschenk
 from .reis import Reis
 from .stemming import Stemming
 from .vergadering import Vergadering
 from .verslag import Verslag
 from .verslag import VerslagAlgemeenOverleg
 from .zaak import Zaak
+
 from .filter import VerwijderdFilter
 
 
@@ -106,6 +108,10 @@ class Api(object):
     @classmethod
     def get_reizen(cls, filter=None, max_items=None):
         return cls.get_items(Reis, filter, max_items)
+
+    @classmethod
+    def get_geschenken(cls, filter=None, max_items=None):
+        return cls.get_items(PersoonGeschenk, filter, max_items)
 
     @staticmethod
     def add_filter_to_params(filter, params):
