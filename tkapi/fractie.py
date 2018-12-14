@@ -43,6 +43,14 @@ class Fractie(Actor):
     def organisatie(self):
         return self.related_item('Organisatie')
 
+    @staticmethod
+    def begin_date_key():
+        return 'DatumActief'
+
+    @staticmethod
+    def end_date_key():
+        return 'DatumInactief'
+
     def __str__(self):
         return '{} ({}) ({} zetels)'.format(self.naam, self.afkorting, self.zetels)
 

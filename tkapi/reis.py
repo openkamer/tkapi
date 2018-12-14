@@ -38,3 +38,11 @@ class Reis(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def tot_en_met(self):
         return self.get_date_or_none('TotEnMet')
+
+    @staticmethod
+    def begin_date_key():
+        return 'Van'
+
+    @staticmethod
+    def end_date_key():
+        return 'TotEnMet'

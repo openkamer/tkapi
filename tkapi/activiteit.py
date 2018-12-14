@@ -76,6 +76,14 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
     def nummer(self):
         return self.get_property_or_empty_string('Nummer')
 
+    @staticmethod
+    def begin_date_key():
+        return 'Begin'
+
+    @staticmethod
+    def end_date_key():
+        return 'Einde'
+
 
 class ActiviteitSoort(Enum):
     AANBIEDING = 'Aanbieding'

@@ -72,6 +72,14 @@ class CommissieZetel(tkapi.TKItemRelated, tkapi.TKItem):
     def vast_tot_en_met(self):
         return self.get_date_from_datetime_or_none('VastTotEnMet')
 
+    @staticmethod
+    def begin_date_key():
+        return 'VastVan'
+
+    @staticmethod
+    def end_date_key():
+        return 'VastTotEnMet'
+
 
 class CommissieVastPersoon(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'CommissieVastPersoon'
@@ -96,3 +104,11 @@ class CommissieVastPersoon(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def tot_en_met(self):
         return self.get_date_from_datetime_or_none('TotEnMet')
+
+    @staticmethod
+    def begin_date_key():
+        return 'Van'
+
+    @staticmethod
+    def end_date_key():
+        return 'TotEnMet'

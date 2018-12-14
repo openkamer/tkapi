@@ -4,12 +4,20 @@ from tkapi.util import util
 class TKItem(object):
     url = NotImplementedError
     expand_param = ''
-    orderby_param = ''
+    orderby_param = None
     filter_param = ''
 
     @staticmethod
     def create_filter():
         raise NotImplementedError
+
+    @staticmethod
+    def begin_date_key():
+        return None
+
+    @staticmethod
+    def end_date_key():
+        return None
 
     def __init__(self, item_json, *args, **kwargs):
         self.json = item_json
@@ -25,10 +33,14 @@ class TKItem(object):
 
     @classmethod
     def get_params_default(cls):
-        return {
-            '$expand': cls.expand_param,
-            '$orderby': cls.orderby_param,
-        }
+        params = {}
+        if cls.expand_param:
+            params['$expand'] = cls.expand_param
+        if cls.expand_param:
+            params['$orderby'] = cls.orderby_param
+        elif cls.begin_date_key():
+            params['$orderby'] = cls.begin_date_key()
+        return params
 
     @classmethod
     def get_param_expand(cls):

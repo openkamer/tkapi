@@ -113,6 +113,14 @@ class PersoonReis(PersoonEntity):
     def betaald_door(self):
         return self.get_property_or_empty_string('BetaaldDoor')
 
+    @staticmethod
+    def begin_date_key():
+        return 'Van'
+
+    @staticmethod
+    def end_date_key():
+        return 'TotEnMet'
+
 
 class PersoonOnderwijs(PersoonEntity):
     url = 'PersoonOnderwijs'
@@ -140,6 +148,14 @@ class PersoonOnderwijs(PersoonEntity):
     @property
     def tot_en_met(self):
         return self.get_year_or_none('TotEnMet')
+
+    @staticmethod
+    def begin_date_key():
+        return 'Van'
+
+    @staticmethod
+    def end_date_key():
+        return 'TotEnMet'
 
 
 class PersoonFunctie(PersoonEntity):
@@ -221,6 +237,14 @@ class PersoonNevenfunctie(PersoonEntity):
     def tot_en_met(self):
         return self.get_datetime_or_none('PeriodeTotEnMet')
 
+    @staticmethod
+    def begin_date_key():
+        return 'PeriodeVan'
+
+    @staticmethod
+    def end_date_key():
+        return 'PeriodeTotEnMet'
+
     @property
     def is_actief(self):
         return self.get_property_or_none('IsActief')
@@ -248,3 +272,7 @@ class PersoonNevenfunctieInkomsten(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def datum(self):
         return self.get_datetime_or_none('Datum')
+
+    @staticmethod
+    def begin_date_key():
+        return 'Datum'

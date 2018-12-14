@@ -92,6 +92,10 @@ class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
     def alias(self):
         return self.get_property_or_empty_string('Alias')
 
+    @staticmethod
+    def begin_date_key():
+        return 'Datum'
+
     @property
     def dossier_vetnummer(self):
         if self.kamerstuk and self.kamerstuk.dossier and self.kamerstuk.dossier.vetnummer:
