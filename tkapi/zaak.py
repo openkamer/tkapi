@@ -16,7 +16,7 @@ class ZaakFilter(tkapi.SoortFilter):
         filter_str = "GestartOp ne null"
         self._filters.append(filter_str)
 
-    def add_afgedaan(self, is_afgedaan):
+    def filter_afgedaan(self, is_afgedaan=True):
         is_afgedaan_str = 'true' if is_afgedaan else 'false'
         filter_str = "Afgedaan eq " + is_afgedaan_str
         self._filters.append(filter_str)
@@ -188,36 +188,33 @@ class ZaakSoort(Enum):
     WIJZIGING_VOORGESTELD_REGERING = 'Wijzigingen voorgesteld door de regering'
 
 
-## Mogelijke Zaak-Soorten zoals gevonden in Zaken van 2016:
-# Amendement
-# Artikelen/onderdelen (wetsvoorstel)
-# Begroting
-# Brief commissie
-# Brief Europese Commissie
-# Brief Kamer
-# Brief regering
-# Brief van lid/fractie/commissie
-# EU-voorstel
-# Initiatiefnota
-# Initiatiefwetgeving
-# Lijst met EU-voorstellen
-# Mondelinge vragen
-# Motie
-# Nationale ombudsman
-# Netwerkverkenning
-# Nota naar aanleiding van het (nader) verslag
-# Nota van wijziging
-# Overig
-# Parlementair onderzoeksrapport
-# PKB/Structuurvisie
-# Position paper
-# Rapport/brief Algemene Rekenkamer
-# Rondvraagpunt procedurevergadering
-# Schriftelijke vragen
-# Verdrag
-# Verzoek bij regeling van werkzaamheden
-# Verzoekschrift
-# Voordrachten en benoemingen
-# Wetgeving
-# Wijziging RvO
-# Wijzigingen voorgesteld door de regering
+class ZaakMetBesluitBase(Zaak):
+
+    @property
+    def besluit(self):
+        besluiten = self.besluiten
+        if not besluiten:
+            return None
+        return self.besluiten[0]
+
+    @property
+    def besluit_text(self):
+        besluit = self.besluit
+        if not besluit:
+            return None
+        return besluit.slottekst
+
+    @property
+    def stemmingen(self):
+        besluit = self.besluit
+        if not besluit:
+            return None
+        return self.besluit.stemmingen
+
+
+class ZaakMotie(ZaakMetBesluitBase):
+    filter_param = 'Soort eq \'{}\''.format(ZaakSoort.MOTIE.value)
+
+
+class ZaakAmendement(ZaakMetBesluitBase):
+    filter_param = 'Soort eq \'{}\''.format(ZaakSoort.AMENDEMENT.value)

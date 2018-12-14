@@ -217,6 +217,10 @@ class PersoonGeschenk(PersoonEntity):
     def datum(self):
         return self.get_datetime_or_none('Datum')
 
+    @property
+    def begin_date_key(self):
+        return 'Datum'
+
 
 class PersoonNevenfunctie(PersoonEntity):
     url = 'PersoonNevenfunctie'

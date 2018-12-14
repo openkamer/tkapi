@@ -4,6 +4,8 @@ from tkapi.zaak import Zaak
 from tkapi.zaak import ZaakIndiener
 from tkapi.zaak import ZaakMedeindiener
 from tkapi.zaak import ZaakSoort
+from tkapi.zaak import ZaakMotie
+from tkapi.zaak import ZaakAmendement
 
 from .core import TKApiTestCase
 
@@ -21,7 +23,7 @@ class TestZaak(TKApiTestCase):
         #     zaak.print_json()
         self.assertEqual(len(zaken), 27)
 
-        zaak_filter.add_afgedaan(True)
+        zaak_filter.filter_afgedaan(True)
         zaken_afgedaan = self.api.get_zaken(zaak_filter)
         # for zaak in zaken_afgedaan:
         #     zaak.print_json()
@@ -133,3 +135,31 @@ class TestZaakSoort(TKApiTestCase):
             zaak_filter.filter_soort(soort)
             zaken = self.api.get_zaken(filter=zaak_filter, max_items=max_items)
             self.assertEqual(max_items, len(zaken))
+
+
+class TestZaakMotie(TKApiTestCase):
+
+    def test_get_motie_zaken(self):
+        max_items = 100
+        zaak_filter = ZaakMotie.create_filter()
+        zaak_filter.filter_empty_besluit()
+        motie_zaken = self.api.get_items(ZaakMotie, filter=zaak_filter, max_items=max_items)
+        for zaak in motie_zaken:
+            self.assertEqual(zaak.soort, ZaakSoort.MOTIE.value)
+            print(zaak.besluit_text)
+            if zaak.stemmingen:
+                print('number of stemmingen:', len(zaak.stemmingen))
+
+
+class TestZaakAmendement(TKApiTestCase):
+
+    def test_get_amendement_zaken(self):
+        max_items = 100
+        zaak_filter = ZaakAmendement.create_filter()
+        zaak_filter.filter_empty_besluit()
+        motie_zaken = self.api.get_items(ZaakAmendement, filter=zaak_filter, max_items=max_items)
+        for zaak in motie_zaken:
+            self.assertEqual(zaak.soort, ZaakSoort.AMENDEMENT.value)
+            print(zaak.besluit_text)
+            if zaak.stemmingen:
+                print('number of stemmingen:', len(zaak.stemmingen))
