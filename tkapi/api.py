@@ -132,7 +132,7 @@ class Api(object):
             if max_items is not None and len(items) >= max_items:
                 return items
         while 'odata.nextLink' in page:
-            page = cls.request_json(page['odata.nextLink'], max_items=max_items)
+            page = cls.request_json(page['odata.nextLink'])
             for item in page['value']:
                 items.append(item)
                 if max_items is not None and len(items) >= max_items:

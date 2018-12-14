@@ -28,6 +28,7 @@ def get_verslag_soorten():
     verslagen = Api().get_verslagen()
     return get_soorten(verslagen)
 
+
 def get_vergadering_soorten():
     verslagen = Api().get_vergaderingen()
     return get_soorten(verslagen)
