@@ -26,5 +26,6 @@ class Order(object):
         :param type: asc or desc
         :return: the OData orderby parameter
         """
+        if tkitemclass.begin_date_key() is None:
+            return ''
         self.order_by_str = '{} {}'.format(tkitemclass.begin_date_key(), type.value)
-        print(self.order_by_str)
