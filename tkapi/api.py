@@ -190,7 +190,7 @@ class Api(object):
         return related_items
 
     @classmethod
-    def get_items(cls, item_class, filter=None, max_items=None):
+    def get_items(cls, item_class, filter=None, order=None, max_items=None):
         items = []
         params = item_class.get_params_default()
         params = Api.add_filter_to_params(filter, params)
@@ -199,6 +199,8 @@ class Api(object):
             if params['$filter']:
                 params['$filter'] += ' and '
             params['$filter'] += item_class.filter_param
+        if order:
+            params['$orderby'] = order.order_by_str
         first_page = cls.request_json(item_class.url, params, max_items=max_items)
         items_json = cls.get_all_items(first_page, max_items=max_items)
         for item_json in items_json:

@@ -2,7 +2,7 @@ from .core import TKApiTestCase
 from tkapi.zaak import Zaak
 
 
-class TestRequestJson(TKApiTestCase):
+class TestGetItems(TKApiTestCase):
 
     def test_max_items(self):
         max_items = 400

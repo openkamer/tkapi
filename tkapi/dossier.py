@@ -31,7 +31,6 @@ class DossierFilter(tkapi.ZaakRelationFilter):
 
 class Dossier(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Kamerstukdossier'
-    expand_param = ''
 
     @staticmethod
     def create_filter():

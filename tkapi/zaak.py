@@ -12,6 +12,10 @@ class ZaakFilter(tkapi.SoortFilter):
         filter_str = "GestartOp lt " + util.datetime_to_odata(end_datetime)
         self._filters.append(filter_str)
 
+    def filter_begin_date_not_empty(self):
+        filter_str = "GestartOp ne null"
+        self._filters.append(filter_str)
+
     def add_afgedaan(self, is_afgedaan):
         is_afgedaan_str = 'true' if is_afgedaan else 'false'
         filter_str = "Afgedaan eq " + is_afgedaan_str
@@ -52,7 +56,6 @@ class ZaakFilter(tkapi.SoortFilter):
 
 class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Zaak'
-    expand_param = ''
     orderby_param = 'GestartOp'
 
     def __str__(self):
