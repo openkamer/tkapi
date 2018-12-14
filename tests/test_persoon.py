@@ -89,6 +89,22 @@ class TestPersoonReis(TKApiTestCase):
         self.assertGreater(reis.tot_en_met, reis.van)
         self.assertEqual('355337af-a30f-48b8-882a-002ce35f9d07', reis.persoon.id)
 
+    def test_get_reizen(self):
+        n_items = 20
+        reizen = self.api.get_reizen(max_items=n_items)
+        print('reizen:', len(reizen))
+        self.assertEqual(n_items, len(reizen))
+        for reis in reizen:
+            print(reis.bestemming)
+            print(reis.doel)
+            print(reis.van, reis.tot_en_met)
+            print(reis.betaald_door)
+            self.assertIsNotNone(reis.bestemming)
+            self.assertIsNotNone(reis.doel)
+            self.assertIsNotNone(reis.van)
+            self.assertIsNotNone(reis.tot_en_met)
+            self.assertIsNotNone(reis.betaald_door)
+
 
 class TestPersoonOnderwijs(TKApiTestCase):
 

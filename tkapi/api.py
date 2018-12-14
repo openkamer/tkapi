@@ -11,7 +11,7 @@ from .dossier import Dossier
 from .kamerstuk import Kamerstuk
 from .kamervraag import Kamervraag, Antwoord
 from .persoon import PersoonGeschenk
-from .reis import Reis
+from .persoon import PersoonReis
 from .stemming import Stemming
 from .vergadering import Vergadering
 from .verslag import Verslag
@@ -107,7 +107,7 @@ class Api(object):
 
     @classmethod
     def get_reizen(cls, filter=None, order=None, max_items=None):
-        return cls.get_items(Reis, filter, order, max_items)
+        return cls.get_items(PersoonReis, filter, order, max_items)
 
     @classmethod
     def get_geschenken(cls, filter=None, order=None, max_items=None):
