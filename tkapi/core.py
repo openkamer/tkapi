@@ -25,7 +25,7 @@ class TKItem(object):
 
     @staticmethod
     def begin_date_key():
-        return None
+        return 'GewijzigdOp'
 
     @staticmethod
     def end_date_key():
