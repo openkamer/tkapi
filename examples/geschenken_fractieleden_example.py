@@ -1,9 +1,8 @@
 import tkapi
 from tkapi.util import queries
 
-from local_settings import USER, PASSWORD
 
-api = tkapi.Api(user=USER, password=PASSWORD, verbose=False)
+api = tkapi.Api(verbose=False)
 
 
 def example_geschenken_fractieleden_actief():

@@ -1,9 +1,7 @@
 import tkapi
 from tkapi.stemming import Stemming
 
-from local_settings import USER, PASSWORD
-
-api = tkapi.Api(user=USER, password=PASSWORD, verbose=False)
+api = tkapi.Api(verbose=False)
 
 
 def example_stemming():

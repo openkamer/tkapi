@@ -5,12 +5,10 @@ import os
 parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parentdir)
 
-from local_settings import USER, PASSWORD
-
 import tkapi
 from tkapi.document import ParlementairDocument
 
-api = tkapi.Api(user=USER, password=PASSWORD, verbose=True)
+api = tkapi.Api(verbose=True)
 
 
 def main():

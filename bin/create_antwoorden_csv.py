@@ -8,13 +8,11 @@ sys.path.append(parentdir)
 import tkapi
 from tkapi.document import ParlementairDocument
 
-from local_settings import USER, PASSWORD
-
 
 def main():
     print('BEGIN')
     year = 2017
-    api = tkapi.Api(user=USER, password=PASSWORD, verbose=True)
+    api = tkapi.Api(verbose=True)
     start_datetime = datetime.datetime(year=year, month=1, day=1)
     end_datetime = datetime.datetime(year=year+1, month=1, day=1)
     kv_filter = ParlementairDocument.create_filter()

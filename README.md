@@ -11,19 +11,19 @@ You are welcome to open an issue if you have any problems, questions or suggesti
 pip install tkapi
 ```
 
+## Authentication
+You need to whitelist your IP by registering at https://opendata.tweedekamer.nl.
+
 ## Usage
 A simple first example,
 ```python
 import tkapi
 
-api = tkapi.Api(user=USERNAME, password=PASSWORD)
+api = tkapi.Api()
 personen = api.get_personen(max_items=100)
 for persoon in personen:
     print(persoon.achternaam)
 ```
-
-Where `USERNAME` and `PASSWORD` are your Tweede Kamer OpenData username and password. 
-You can get one by registering at https://opendata.tweedekamer.nl. You also need to whitelist your IP.
 
 For more examples see the `examples` directory and the tests.
 
