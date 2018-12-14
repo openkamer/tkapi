@@ -38,80 +38,80 @@ class Api(object):
             Api._verbose = verbose
 
     @classmethod
-    def get_commissies(cls, filter=None, max_items=None):
-        return cls.get_items(Commissie, filter, max_items)
+    def get_commissies(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Commissie, filter, order, max_items)
 
     @classmethod
-    def get_personen(cls, filter=None, max_items=None):
-        return cls.get_items(Persoon, filter, max_items=max_items)
+    def get_personen(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Persoon, filter, order, max_items)
 
     @classmethod
-    def get_fracties(cls, filter=None, max_items=None):
-        return cls.get_items(Fractie, filter, max_items)
+    def get_fracties(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Fractie, filter, order, max_items)
 
     @classmethod
-    def get_verslagen(cls, filter=None, max_items=None):
-        return cls.get_items(Verslag, filter=filter, max_items=max_items)
+    def get_verslagen(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Verslag, filter, order, max_items)
 
     @classmethod
-    def get_vergaderingen(cls, filter=None, max_items=None):
-        return cls.get_items(Vergadering, filter=filter, max_items=max_items)
+    def get_vergaderingen(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Vergadering, filter, order, max_items)
 
     @classmethod
-    def get_verslagen_van_algemeen_overleg(cls, filter=None, max_items=None):
-        return cls.get_items(VerslagAlgemeenOverleg, filter=filter, max_items=max_items)
+    def get_verslagen_van_algemeen_overleg(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(VerslagAlgemeenOverleg, filter, order, max_items)
 
     @classmethod
-    def get_kamervragen(cls, filter=None, max_items=None):
-        return cls.get_items(Kamervraag, filter, max_items)
+    def get_kamervragen(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Kamervraag, filter, order, max_items)
 
     @classmethod
-    def get_antwoorden(cls, filter=None, max_items=None):
-        return cls.get_items(Antwoord, filter, max_items)
+    def get_antwoorden(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Antwoord, filter, order, max_items)
 
     @classmethod
-    def get_parlementaire_documenten(cls, filter=None, max_items=None):
-        return cls.get_items(ParlementairDocument, filter, max_items)
+    def get_parlementaire_documenten(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(ParlementairDocument, filter, order, max_items)
 
     @classmethod
-    def get_dossiers(cls, filter=None, max_items=None):
-        return cls.get_items(Dossier, filter, max_items)
+    def get_dossiers(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Dossier, filter, order, max_items)
 
     @classmethod
-    def get_zaken(cls, filter=None, max_items=None):
-        return cls.get_items(Zaak, filter, max_items)
+    def get_zaken(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Zaak, filter, order, max_items)
 
     @classmethod
     def get_activiteiten(cls, filter, max_items=None):
-        return cls.get_items(Activiteit, filter, max_items)
+        return cls.get_items(Activiteit, filter, order, max_items)
 
     @classmethod
-    def get_kamerstukken(cls, filter=None, max_items=None):
-        return cls.get_items(Kamerstuk, filter, max_items)
+    def get_kamerstukken(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Kamerstuk, filter, order, max_items)
 
     @classmethod
-    def get_stemmingen(cls, filter=None, max_items=None):
-        return cls.get_items(Stemming, filter, max_items)
+    def get_stemmingen(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Stemming, filter, order, max_items)
 
     @classmethod
-    def get_agendapunten(cls, filter=None, max_items=None):
-        return cls.get_items(Agendapunt, filter, max_items)
+    def get_agendapunten(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Agendapunt, filter, order, max_items)
 
     @classmethod
-    def get_besluiten(cls, filter=None, max_items=None):
-        return cls.get_items(Besluit, filter, max_items)
+    def get_besluiten(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Besluit, filter, order, max_items)
 
     @classmethod
-    def get_fractie_leden(cls, filter=None, max_items=None):
-        return cls.get_items(FractieLid, filter, max_items)
+    def get_fractie_leden(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(FractieLid, filter, order, max_items)
 
     @classmethod
-    def get_reizen(cls, filter=None, max_items=None):
-        return cls.get_items(Reis, filter, max_items)
+    def get_reizen(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(Reis, filter, order, max_items)
 
     @classmethod
-    def get_geschenken(cls, filter=None, max_items=None):
-        return cls.get_items(PersoonGeschenk, filter, max_items)
+    def get_geschenken(cls, filter=None, order=None, max_items=None):
+        return cls.get_items(PersoonGeschenk, filter, order, max_items)
 
     @staticmethod
     def add_filter_to_params(filter, params):
