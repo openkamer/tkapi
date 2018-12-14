@@ -140,7 +140,7 @@ class TestZaakSoort(TKApiTestCase):
 class TestZaakMotie(TKApiTestCase):
 
     def test_get_motie_zaken(self):
-        max_items = 100
+        max_items = 10
         zaak_filter = ZaakMotie.create_filter()
         zaak_filter.filter_empty_besluit()
         motie_zaken = self.api.get_items(ZaakMotie, filter=zaak_filter, max_items=max_items)
@@ -154,7 +154,7 @@ class TestZaakMotie(TKApiTestCase):
 class TestZaakAmendement(TKApiTestCase):
 
     def test_get_amendement_zaken(self):
-        max_items = 100
+        max_items = 10
         zaak_filter = ZaakAmendement.create_filter()
         zaak_filter.filter_empty_besluit()
         motie_zaken = self.api.get_items(ZaakAmendement, filter=zaak_filter, max_items=max_items)
