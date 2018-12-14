@@ -7,18 +7,6 @@ class TKItem(object):
     orderby_param = None
     filter_param = ''
 
-    @staticmethod
-    def create_filter():
-        raise NotImplementedError
-
-    @staticmethod
-    def begin_date_key():
-        return None
-
-    @staticmethod
-    def end_date_key():
-        return None
-
     def __init__(self, item_json, *args, **kwargs):
         self.json = item_json
 
@@ -30,6 +18,18 @@ class TKItem(object):
 
     def __setitem__(self, key, item):
         self.__dict__()[key] = item
+
+    @staticmethod
+    def create_filter():
+        raise NotImplementedError
+
+    @staticmethod
+    def begin_date_key():
+        return None
+
+    @staticmethod
+    def end_date_key():
+        return None
 
     @classmethod
     def get_params_default(cls):
