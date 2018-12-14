@@ -39,7 +39,7 @@ class TKItem(object):
         if cls.expand_param:
             params['$orderby'] = cls.orderby_param
         elif cls.begin_date_key():
-            params['$orderby'] = cls.begin_date_key()
+            params['$orderby'] = '{} {}'.format(cls.begin_date_key(), 'desc')
         return params
 
     @classmethod
