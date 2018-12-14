@@ -66,7 +66,7 @@ class VerslagAlgemeenOverleg(ParlementairDocument):
                 kamerstuk_id += '-' + str(dossier.toevoeging)
             kamerstuk_id += '-' + str(self.kamerstuk.ondernummer)
             url = 'https://zoek.officielebekendmakingen.nl/kst-' + kamerstuk_id
-            response = requests.get(url)
+            response = requests.get(url, timeout=60)
             assert response.status_code == 200
             if 'Errors/404.htm' in response.url:
                 print('WARNING: no verslag document url found')

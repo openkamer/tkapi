@@ -153,7 +153,12 @@ class Api(object):
         params['$format'] = 'application/json;odata=fullmetadata',
         if max_items is not None:
             params['$top'] = max_items,
-        response = requests.get(cls.api_root + url, params=params, auth=(str(cls._user), str(cls._password)))
+        response = requests.get(
+            cls.api_root + url,
+            params=params,
+            auth=(str(cls._user), str(cls._password)),
+            timeout=60
+        )
         if cls._verbose:
             print('url: ' + str(response.url))
         if response.status_code == 204 or response.status_code == 404:

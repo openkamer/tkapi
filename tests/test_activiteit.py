@@ -10,7 +10,7 @@ class TestActiviteit(TKApiTestCase):
     end_datetime = datetime.datetime(year=2017, month=2, day=1)
 
     def test_get_activiteiten(self):
-        activiteiten = self.api.get_activiteiten(filter=None, max_items=50)
+        activiteiten = self.api.get_activiteiten(filter=None, max_items=500)
         soorten = set()
         for activiteit in activiteiten:
             # activiteit.print_json()
@@ -18,7 +18,7 @@ class TestActiviteit(TKApiTestCase):
         print('### Soorten Activiteiten ###')
         for soort in soorten:
             print(soort)
-        self.assertGreater(len(soorten), 18)
+        self.assertGreater(len(soorten), 5)
 
     def test_activiteit_voortouwcommissies(self):
         activiteiten = self.api.get_activiteiten(filter=None, max_items=10)

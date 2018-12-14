@@ -56,11 +56,11 @@ class Kamervraag(ParlementairDocument):
         # TODO: determine date at which this format is switched to reduce the number of requests
         if self.zaak:
             url = 'https://zoek.officielebekendmakingen.nl/kv-tk-' + self.zaak['Nummer']
-            response = requests.get(url)
+            response = requests.get(url, timeout=60)
             assert response.status_code == 200
             if 'Errors/404.htm' in response.url and 'Alias' in self.zaak and self.zaak['Alias']:
                 url = 'https://zoek.officielebekendmakingen.nl/kv-' + self.zaak['Alias']
-                response = requests.get(url)
+                response = requests.get(url, timeout=60)
             if 'Errors/404.htm' in response.url:
                 url = ''
         else:
@@ -89,7 +89,7 @@ class Antwoord(ParlementairDocument):
             return ''
         url_id = self.vergaderjaar.replace('-', '') + '-' + self.aanhangselnummer[-4:].lstrip('0')  # 20162017-11
         url = 'https://zoek.officielebekendmakingen.nl/ah-tk-' + url_id
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
         assert response.status_code == 200
         if 'Errors/404.htm' in response.url:
             print('WARNING: no antwoord document url found')
