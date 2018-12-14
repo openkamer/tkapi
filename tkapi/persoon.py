@@ -181,6 +181,14 @@ class PersoonLoopbaan(PersoonEntity):
     def tot_en_met(self):
         return self.get_year_or_none('TotEnMet')
 
+    @property
+    def begin_date_key(self):
+        return 'Van'
+
+    @staticmethod
+    def end_date_key():
+        return 'TotEnMet'
+
 
 class PersoonGeschenk(PersoonEntity):
     url = 'PersoonGeschenk'

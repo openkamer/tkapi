@@ -19,3 +19,12 @@ class Order(object):
         :return: the OData orderby parameter
         """
         self.order_by_str = '{} {}'.format(str(property), type.value)
+
+    def order_by_begin_date(self, tkitemclass, type=OrderDirection.ASC):
+        """
+        :param tkitemclass: the TKItem class
+        :param type: asc or desc
+        :return: the OData orderby parameter
+        """
+        self.order_by_str = '{} {}'.format(tkitemclass.begin_date_key(), type.value)
+        print(self.order_by_str)

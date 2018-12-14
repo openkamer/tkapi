@@ -131,5 +131,5 @@ class TestZaakSoort(TKApiTestCase):
         for soort in ZaakSoort:
             zaak_filter = Zaak.create_filter()
             zaak_filter.filter_soort(soort)
-            zaken = self.api.get_zaken(zaak_filter, max_items=max_items)
+            zaken = self.api.get_zaken(filter=zaak_filter, max_items=max_items)
             self.assertEqual(max_items, len(zaken))

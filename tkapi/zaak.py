@@ -126,6 +126,10 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
     def gestart_op(self):
         return self.get_date_from_datetime_or_none('GestartOp')
 
+    @staticmethod
+    def begin_date_key():
+        return 'GestartOp'
+
 
 class ZaakIndiener(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'ZaakActor'

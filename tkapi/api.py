@@ -82,7 +82,7 @@ class Api(object):
         return cls.get_items(Zaak, filter, order, max_items)
 
     @classmethod
-    def get_activiteiten(cls, filter, max_items=None):
+    def get_activiteiten(cls, filter, order=None, max_items=None):
         return cls.get_items(Activiteit, filter, order, max_items)
 
     @classmethod
