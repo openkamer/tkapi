@@ -2,10 +2,10 @@ import tkapi
 
 from tkapi.actor import Actor
 
-from tkapi.fractie import FractieZetelRelationFilter, FractieZetel
+from tkapi.fractie import FractieZetelPersoonRelationFilter, FractieZetel
 
 
-class PersoonFilter(FractieZetelRelationFilter):
+class PersoonFilter(FractieZetelPersoonRelationFilter):
 
     def filter_achternaam(self, achternaam):
         filter_str = 'Achternaam eq \'{}\''.format(achternaam)
@@ -27,7 +27,8 @@ class Persoon(Actor):
 
     @property
     def fractieleden(self):
-        return self.related_items(FractieZetel, item_key='FractieZetel')
+        from .fractie import FractieZetelPersoon
+        return self.related_items(FractieZetelPersoon)
 
     @property
     def achternaam(self):
@@ -191,14 +192,14 @@ class PersoonLoopbaan(PersoonEntity):
 
     @property
     def van(self):
-        return self.get_year_or_none('Van')
+        return self.get_date_or_none('Van')
 
     @property
     def tot_en_met(self):
-        return self.get_year_or_none('TotEnMet')
+        return self.get_date_or_none('TotEnMet')
 
-    @property
-    def begin_date_key(self):
+    @staticmethod
+    def begin_date_key():
         return 'Van'
 
     @staticmethod
@@ -217,8 +218,8 @@ class PersoonGeschenk(PersoonEntity):
     def datum(self):
         return self.get_datetime_or_none('Datum')
 
-    @property
-    def begin_date_key(self):
+    @staticmethod
+    def begin_date_key():
         return 'Datum'
 
 

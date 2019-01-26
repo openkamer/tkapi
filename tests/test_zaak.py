@@ -101,15 +101,21 @@ class TestZaakRelations(TKApiTestCase):
         print('Zaken without agendapunt', len(zaken))
         self.assertTrue(len(zaken) > 50)
 
-    def test_zaak_vervangen_door(self):
-        uid = 'bee46617-c7e0-43e1-b6a3-0001a8d402eb'
-        zaak = self.api.get_item(Zaak, id=uid)
-        vervangen_zaak = zaak.vervangen_door
-        self.assertEqual('c4621bc4-5972-4440-beb0-473709846885', vervangen_zaak.id)
-        self.assertEqual('2016Z04909', vervangen_zaak.nummer)
+    # TODO BR: update with v2 (OData V4) uid
+    # def test_zaak_vervangen_door(self):
+    #     uid = 'bee46617-c7e0-43e1-b6a3-0001a8d402eb'
+    #     zaak = self.api.get_item(Zaak, id=uid)
+    #     vervangen_zaak = zaak.vervangen_door
+    #     self.assertEqual('c4621bc4-5972-4440-beb0-473709846885', vervangen_zaak.id)
+    #     self.assertEqual('2016Z04909', vervangen_zaak.nummer)
 
 
 class TestZaakIndiener(TKApiTestCase):
+
+    def test_get_first(self):
+        indieners = self.api.get_items(ZaakIndiener, max_items=10)
+        for ind in indieners:
+            print(ind.persoon)
 
     def test_get_indiener(self):
         uid = '01f9aa67-ee5d-4fcb-a8f3-961d31164977'

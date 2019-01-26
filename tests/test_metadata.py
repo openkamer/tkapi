@@ -1,12 +1,14 @@
 from tkapi.persoon import Persoon
 from tkapi.fractie import Fractie, FractieZetel
+from tkapi.fractie import FractieZetelPersoon
 from tkapi.activiteit import Activiteit
 from tkapi.besluit import Besluit
 from tkapi.commissie import Commissie
 from tkapi.dossier import Dossier
 from tkapi.document import Document
-from tkapi.kamerstuk import Kamerstuk
+# from tkapi.kamerstuk import Kamerstuk
 from tkapi.stemming import Stemming
+# from tkapi.vergadering import Vergadering
 from tkapi.zaak import Zaak
 
 from .core import TKApiTestCase
@@ -45,8 +47,8 @@ class TestMetaData(TKApiTestCase):
     def test_commissie_metadata(self):
         self.print_entity_first_example(Commissie)
 
-    def test_kamerstuk_metadata(self):
-        self.print_entity_first_example(Kamerstuk)
+    # def test_kamerstuk_metadata(self):
+    #     self.print_entity_first_example(Kamerstuk)
 
     def test_stemming_metadata(self):
         self.print_entity_first_example(Stemming)
@@ -60,5 +62,11 @@ class TestMetaData(TKApiTestCase):
     def test_fractiezetel_metadata(self):
         self.print_entity_first_example(FractieZetel)
 
+    def test_fractiezetelpersoon(self):
+        self.print_entity_first_example(FractieZetelPersoon)
+
     def test_fractie_metadata(self):
         self.print_entity_first_example(Fractie)
+
+    # def test_vergadering_metadata(self):
+    #     self.print_entity_first_example(Vergadering)

@@ -43,7 +43,7 @@ class TestCommissie(TKApiTestCase):
     def test_get_leden(self):
         uid = '1349488c-8474-4704-bdad-26fa54ea9789'
         commissie = self.api.get_item(Commissie, id=uid)
-        zetels = commissie.zetels
+        zetels = commissie.zetels_aantal
         self.assertEqual(319, len(zetels))
         self.assertEqual(2, len(zetels[1].personen_vast))
         self.assertEqual('Oosten', zetels[1].personen_vast[0].persoon.achternaam)
