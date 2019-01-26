@@ -53,24 +53,26 @@ class TestFractie(TKApiTestCase):
 
 class TestFractieZetel(TKApiTestCase):
 
-    def test_get_fractie_leden(self):
-        leden = self.api.get_fractie_leden(max_items=10)
-        self.assertEqual(10, len(leden))
-        for lid in leden:
-            if lid.persoon:
-                print(lid.persoon.voornamen, lid.persoon.achternaam)
-            else:
-                self.assertTrue(lid.vacature)
+    def test_get_fractie_zetels(self):
+        zetels = self.api.get_fractie_zetels(max_items=10)
+        self.assertEqual(10, len(zetels))
+        for zetel in zetels:
+            if zetel.fractie_zetel_persoon:
+                persoon = zetel.fractie_zetel_persoon.persoon
+                print(persoon.voornamen, persoon.achternaam)
+            # else:
+            #     self.assertTrue(lid.vacature)
 
-    def test_get_fractie_leden_actief(self):
-        filter = FractieZetel.create_filter()
-        filter.filter_actief()
-        leden = self.api.get_fractie_leden(max_items=10, filter=filter)
-        print('fractieleden:', len(leden))
-        for lid in leden:
-            # lid.print_json()
-            self.assertEqual(lid.tot_en_met, None)
-            self.assertEqual(lid.is_actief, True)
+    # TODO BR: move to fractie_zetel_persoon
+    # def test_get_fractie_zetels_actief(self):
+    #     filter = FractieZetel.create_filter()
+    #     filter.filter_actief()
+    #     zetels = self.api.get_fractie_zetels(max_items=10, filter=filter)
+    #     print('fractiezetels:', len(zetels))
+    #     for zetel in zetels:
+    #         # lid.print_json()
+    #         self.assertEqual(zetel.fractie_zetel_persoon.tot_en_met, None)
+    #         self.assertEqual(zetel.fractie_zetel_persoon.is_actief, True)
 
 
 class TestFractieOrganisatie(TKApiTestCase):

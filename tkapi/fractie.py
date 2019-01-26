@@ -60,7 +60,7 @@ class Lid(tkapi.TKItemRelated, tkapi.TKItem):
 
     @staticmethod
     def create_filter():
-        return ZetelFilter()
+        return FractieZetelPersoonFilter()
 
     @property
     def persoon(self):
@@ -79,13 +79,13 @@ class Lid(tkapi.TKItemRelated, tkapi.TKItem):
     def tot_en_met(self):
         return self.get_date_from_datetime_or_none('TotEnMet')
 
-    # @staticmethod
-    # def begin_date_key():
-    #     return 'Van'
-    #
-    # @staticmethod
-    # def end_date_key():
-    #     return 'TotEnMet'
+    @staticmethod
+    def begin_date_key():
+        return 'Van'
+
+    @staticmethod
+    def end_date_key():
+        return 'TotEnMet'
 
 
 class FractieOrganisatie(Lid):
@@ -107,7 +107,7 @@ class FractieFilter(tkapi.Filter):
         self._filters.append("DatumActief ne null")
 
 
-class ZetelFilter(tkapi.Filter):
+class FractieZetelPersoonFilter(tkapi.Filter):
 
     def filter_actief(self):
         self._filters.append("TotEnMet eq null")
@@ -124,7 +124,7 @@ class FractieZetelRelationFilter(tkapi.RelationFilter):
         self._filter_non_empty()
 
 
-class FractieZetel(Lid):
+class FractieZetel(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'FractieZetel'
 
     @property
@@ -132,5 +132,17 @@ class FractieZetel(Lid):
         return self.related_item(Fractie)
 
     @property
-    def vacature(self):
-        return self.get_property_or_none('Vacature')
+    def fractie_zetel_persoon(self):
+        return self.related_item(FractieZetelPersoon)
+
+    @property
+    def persoon(self):
+        return self.fractie_zetel_persoon.persoon
+
+
+class FractieZetelPersoon(Lid):
+    url = 'FractieZetelPersoon'
+
+    @property
+    def fractie_zetel(self):
+        return self.related_item(FractieZetel)
