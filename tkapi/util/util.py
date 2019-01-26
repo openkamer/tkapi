@@ -8,11 +8,11 @@ def print_pretty(json_in):
 
 
 def datetime_to_odata(datetime_obj):
-    return "datetime'" + datetime_obj.strftime('%Y-%m-%dT%H:%M:%S') + "'"
+    return datetime_obj.strftime('%Y-%m-%dT%H:%M:%SZ')
 
 
 def odatedatetime_to_datetime(odate_datetime):
-    return datetime.datetime.strptime(odate_datetime, '%Y-%m-%dT%H:%M:%S')
+    return datetime.datetime.strptime(odate_datetime, '%Y-%m-%dT%H:%M:%S%z')
 
 
 def odatedate_to_date(odate_date):
