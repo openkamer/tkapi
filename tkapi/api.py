@@ -25,7 +25,7 @@ class Api(object):
     _user = None
     _password = None
     _verbose = False
-    api_root = 'https://gegevensmagazijn.tweedekamer.nl/OData/v3/1.0/'
+    api_root = 'https://gegevensmagazijn-a.tweedekamer.nl/OData/V4/1.0/'
 
     def __init__(self, user=None, password=None, api_root=None, verbose=None):
         if user is not None:
@@ -150,7 +150,7 @@ class Api(object):
         if not params:
             params = {}
         # params['$format'] = 'json',
-        params['$format'] = 'application/json;odata=fullmetadata',
+        params['$format'] = 'application/json;odata.metadata=full',
         if max_items is not None:
             params['$top'] = max_items,
         response = requests.get(
