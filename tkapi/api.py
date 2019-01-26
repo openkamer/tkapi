@@ -159,8 +159,9 @@ class Api(object):
             timeout=60
         )
         if cls._verbose:
-            print('url: ' + str(response.url))
-        if response.status_code == 204 or response.status_code == 404:
+            print('url: ', response.url)
+        if response.status_code in [204, 404, 500]:
+            print('HTTP STATUS CODE', response.status_code)
             print('### WARNING: requested item does not exist:', url, '###')
             return {}
         elif response.status_code != 200:
@@ -171,10 +172,9 @@ class Api(object):
 
     @classmethod
     def get_item(cls, tkitem, id, params=None):
-        url = tkitem.url + '(guid\'' + id + '\')'
+        url = tkitem.url + '('+ id + ')'
         if params is None:
             params = tkitem.get_param_expand()
-        params = Api.add_non_deleted_filter(params)
         return tkitem(cls.request_json(url, params))
 
     @classmethod
@@ -182,7 +182,7 @@ class Api(object):
         if params is None:
             params = tkitem_related.get_param_expand()
         params = Api.add_filter_to_params(filter, params)
-        # params = Api.add_non_deleted_filter(params)
+        params = Api.add_non_deleted_filter(params)
         first_page = cls.request_json(related_url, params)
         related_items = []
         if 'value' in first_page:
