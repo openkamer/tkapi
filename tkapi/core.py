@@ -62,7 +62,7 @@ class TKItem(object):
 
     def get_property_or_empty_string(self, property_key):
         if property_key in self.json and self.json[property_key]:
-            return str(self.json[property_key])
+            return str(self.json[property_key]).strip()
         return ''
 
     def get_date_from_datetime_or_none(self, property_key):

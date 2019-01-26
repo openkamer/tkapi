@@ -142,7 +142,7 @@ class TestWetsvoorstelDossier(TKApiTestCase):
         # pd_filter.filter_date_range(start_datetime, end_datetime)
         pd_filter.filter_soort('Voorstel van wet', is_or=True)
         pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
-        pds = self.api.get_parlementaire_documenten(pd_filter)
+        pds = self.api.get_documenten(pd_filter)
 
         dossier_nrs = []
         pds_no_dossier_nr = []

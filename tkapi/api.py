@@ -65,7 +65,7 @@ class Api(object):
         return cls.get_items(Antwoord, filter, order, max_items)
 
     @classmethod
-    def get_parlementaire_documenten(cls, filter=None, order=None, max_items=None):
+    def get_documenten(cls, filter=None, order=None, max_items=None):
         return cls.get_items(Document, filter, order, max_items)
 
     @classmethod

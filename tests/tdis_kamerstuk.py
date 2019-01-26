@@ -43,7 +43,7 @@ class TestWetsvoorstellenDossier(TKApiTestCase):
         pd_filter = Document.create_filter()
         pd_filter.filter_soort('Voorstel van wet', is_or=True)
         pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
-        pds = self.api.get_parlementaire_documenten(pd_filter)
+        pds = self.api.get_documenten(pd_filter)
 
         # pds_no_dossier_nr = []
         # for pd in pds:
