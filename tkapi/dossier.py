@@ -4,8 +4,8 @@ from tkapi.zaak import ZaakSoort
 
 class DossierFilter(tkapi.ZaakRelationFilter):
 
-    def filter_vetnummer(self, vetnummer):
-        filter_str = "Vetnummer eq " + str(vetnummer)
+    def filter_nummer(self, nummer):
+        filter_str = "Nummer eq " + str(nummer)
         self._filters.append(filter_str)
 
     def filter_zaak(self, zaak_number):
@@ -52,8 +52,8 @@ class Dossier(tkapi.TKItemRelated, tkapi.TKItem):
         return [kamerstuk.document for kamerstuk in self.kamerstukken]
 
     @property
-    def vetnummer(self):
-        return self.get_property_or_none('Vetnummer')
+    def nummer(self):
+        return self.get_property_or_none('Nummer')
 
     @property
     def toevoeging(self):

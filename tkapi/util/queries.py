@@ -36,36 +36,36 @@ def do_load_stemmingen(stemmingen):
     return stemmingen_loaded
 
 
-def get_kamerstuk_stemmingen(vetnummer, ondernummer):
+def get_kamerstuk_stemmingen(nummer, ondernummer):
     filter = Stemming.create_filter()
-    filter.filter_kamerstuk(vetnummer=vetnummer, ondernummer=ondernummer)
+    filter.filter_kamerstuk(nummer=nummer, ondernummer=ondernummer)
     stemmingen = Api().get_stemmingen(filter=filter)
     stemmingen = do_load_stemmingen(stemmingen)
     return stemmingen
 
 
-def get_dossier(vetnummer):
+def get_dossier(nummer):
     filter = Dossier.create_filter()
-    filter.filter_vetnummer(vetnummer)
+    filter.filter_nummer(nummer)
     dossiers = Api().get_dossiers(filter=filter)
     dossier = dossiers[0]
     return dossier
 
 
-def get_dossier_besluiten(vetnummer):
+def get_dossier_besluiten(nummer):
     filter = Besluit.create_filter()
-    filter.filter_kamerstukdossier(vetnummer=vetnummer)
+    filter.filter_kamerstukdossier(nummer=nummer)
     return Api().get_besluiten(filter=filter)
 
 
-def get_dossier_besluiten_with_stemmingen(vetnummer):
+def get_dossier_besluiten_with_stemmingen(nummer):
     filter = Besluit.create_filter()
-    filter.filter_kamerstukdossier(vetnummer=vetnummer)
+    filter.filter_kamerstukdossier(nummer=nummer)
     filter.filter_non_empty(Stemming)
     return Api().get_besluiten(filter=filter)
 
 
-def get_dossier_activiteiten(vetnummer):
+def get_dossier_activiteiten(nummer):
     filter = Activiteit.create_filter()
-    filter.filter_kamerstukdossier(vetnummer=vetnummer)
+    filter.filter_kamerstukdossier(nummer=nummer)
     return Api().get_activiteiten(filter=filter)

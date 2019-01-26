@@ -24,7 +24,7 @@ def main():
     zaken = api.get_zaken(filter=filter)
     dossier_nrs = set()
     for zaak in zaken:
-        dossier_nr = str(zaak.dossier.vetnummer)
+        dossier_nr = str(zaak.dossier.nummer)
         if zaak.dossier.toevoeging:
             dossier_nr += '-' + str(zaak.dossier.toevoeging)
             # TODO BR: for now we cannot handle these

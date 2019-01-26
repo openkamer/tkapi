@@ -44,6 +44,8 @@ class TKItem(object):
 
     @classmethod
     def get_param_expand(cls):
+        if not cls.expand_param:
+            return ''
         return {
             '$expand': cls.expand_param,
         }

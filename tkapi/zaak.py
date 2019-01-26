@@ -29,8 +29,8 @@ class ZaakFilter(tkapi.SoortFilter):
         self._filters.remove(filter_remove_str)
         self._filters.append(filter_new_str)
 
-    def filter_kamerstukdossier(self, vetnummer):
-        filter_str = 'Kamerstukdossier/any(d: d/Vetnummer eq {})'.format(vetnummer)
+    def filter_kamerstukdossier(self, nummer):
+        filter_str = 'Kamerstukdossier/any(d: d/Nummer eq {})'.format(nummer)
         self.add_filter_str(filter_str)
 
     def filter_nummer(self, nummer):

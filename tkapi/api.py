@@ -197,7 +197,7 @@ class Api(object):
     def get_items(cls, item_class, filter=None, order=None, max_items=None):
         items = []
         params = cls.create_query_params(tkitem_class=item_class, filter=filter, order=order)
-        max_items_request = max_items if max_items <= cls._max_items_per_page else None
+        max_items_request = max_items if max_items is not None and max_items <= cls._max_items_per_page else None
         first_page = cls.request_json(item_class.url, params, max_items=max_items_request)
         items_json = cls.get_all_items(first_page, max_items=max_items)
         for item_json in items_json:

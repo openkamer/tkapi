@@ -15,10 +15,10 @@ class TestDossier(TKApiTestCase):
         dossiers = self.api.get_dossiers(filter=None, max_items=10)
         self.assertEqual(10, len(dossiers))
 
-    def test_get_dossier_by_vetnummer(self):
-        vetnummer = 34435
+    def test_get_dossier_by_nummer(self):
+        nummer = 34435
         filter = Dossier.create_filter()
-        filter.filter_vetnummer(vetnummer)
+        filter.filter_nummer(nummer)
         dossiers = self.api.get_dossiers(filter=filter)
         self.assertEqual(len(dossiers), 1)
         dossiers[0].print_json()
@@ -27,27 +27,27 @@ class TestDossier(TKApiTestCase):
         self.check_dossier_filter('2016Z16486', 34537)
         self.check_dossier_filter('2016Z24906', 34640)
 
-    def check_dossier_filter(self, zaak_nr, expected_dossier_vetnummer):
+    def check_dossier_filter(self, zaak_nr, expected_dossier_nummer):
         dossier_filter = Dossier.create_filter()
         dossier_filter.filter_zaak(zaak_nr)
         dossiers = self.api.get_dossiers(filter=dossier_filter)
         # for dossier in dossiers:
         #     dossier.print_json()
         self.assertEqual(len(dossiers), 1)
-        # print(dossiers[0].vetnummer)
-        self.assertEqual(dossiers[0].vetnummer, expected_dossier_vetnummer)
+        # print(dossiers[0].nummer)
+        self.assertEqual(dossiers[0].nummer, expected_dossier_nummer)
 
 
 class TestDossierKamerstukken(TKApiTestCase):
 
     def test_dossier_kamerstukken(self):
-        # vetnummer = 34693
-        # vetnummer = 34374
-        # vetnummer = 34051
-        # vetnummer = 22139
-        vetnummer = 34723
+        # nummer = 34693
+        # nummer = 34374
+        # nummer = 34051
+        # nummer = 22139
+        nummer = 34723
         dossier_filter = Dossier.create_filter()
-        dossier_filter.filter_vetnummer(vetnummer)
+        dossier_filter.filter_nummer(nummer)
         dossiers = self.api.get_dossiers(filter=dossier_filter)
         self.assertEqual(len(dossiers), 1)
         dossier = dossiers[0]
@@ -94,7 +94,7 @@ class TestDossiersForZaken(TKApiTestCase):
         dossiers = self.api.get_dossiers(filter=dossier_filter)
         dossier_zaak_nummers = set()
         for dossier in dossiers:
-            print('dossier.vetnummer: ', str(dossier.vetnummer))
+            print('dossier.nummer: ', str(dossier.nummer))
             for pd in dossier.parlementaire_documenten:
                 for zaak in pd.zaken:
                     dossier_zaak_nummers.add(zaak.nummer)
@@ -123,10 +123,10 @@ class TestDossierFilter(TKApiTestCase):
 
     def test_filter_kamerstuk(self):
         filter = Dossier.create_filter()
-        filter.filter_kamerstuk(vetnummer=33885, ondernummer=16)
+        filter.filter_kamerstuk(nummer=33885, ondernummer=16)
         dossiers = self.api.get_dossiers(filter=filter)
         for dossier in dossiers:
-            print(dossier.vetnummer, len(dossier.kamerstukken))
+            print(dossier.nummer, len(dossier.kamerstukken))
 
 
 class TestWetsvoorstelDossier(TKApiTestCase):
@@ -149,9 +149,9 @@ class TestWetsvoorstelDossier(TKApiTestCase):
         dossier_nrs = []
         pds_no_dossier_nr = []
         for pd in pds[:10]:
-            print(pd.dossier_vetnummer)
-            if pd.dossier_vetnummer:
-                dossier_nrs.append(pd.dossier_vetnummer)
+            print(pd.dossier_nummer)
+            if pd.dossier_nummer:
+                dossier_nrs.append(pd.dossier_nummer)
             else:
                 pds_no_dossier_nr.append(pd)
         for pd in pds_no_dossier_nr:
@@ -189,15 +189,15 @@ class TestWetsvoorstelDossier(TKApiTestCase):
     #             print('Dossier found for zaak: ' + str(zaak_nr))
     #         else:
     #             print('WARNING: No dossier found for zaak: ' + str(zaak_nr))
-    #     dossier_vetnummers = []
+    #     dossier_nummers = []
     #     for dossier in dossiers:
     #         print('\n=======')
-    #         print(dossier.vetnummer)
+    #         print(dossier.nummer)
     #         print(dossier.afgesloten)
     #         print(dossier.organisatie)
     #         print(dossier.titel)
-    #         dossier_vetnummers.append(dossier.vetnummer)
+    #         dossier_nummers.append(dossier.nummer)
     #         # dossier.print_json()
-    #     dossier_nrs = OrderedSet(sorted(dossier_vetnummers))
+    #     dossier_nrs = OrderedSet(sorted(dossier_nummers))
     #     print(dossier_nrs)
     #     print(len(dossier_nrs))

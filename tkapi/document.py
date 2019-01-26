@@ -98,9 +98,9 @@ class Document(tkapi.TKItemRelated, tkapi.TKItem):
         return 'Datum'
 
     @property
-    def dossier_vetnummer(self):
-        if self.kamerstuk and self.kamerstuk.dossier and self.kamerstuk.dossier.vetnummer:
-            return self.kamerstuk.dossier.vetnummer
+    def dossier_nummer(self):
+        if self.kamerstuk and self.kamerstuk.dossier and self.kamerstuk.dossier.nummer:
+            return self.kamerstuk.dossier.nummer
         return None
 
     @property
@@ -132,7 +132,7 @@ class VerslagAlgemeenOverleg(Document):
         url = ''
         if self.dossiers:
             dossier = self.dossiers[0]
-            kamerstuk_id = str(dossier.vetnummer)
+            kamerstuk_id = str(dossier.nummer)
             if dossier.toevoeging and '(' not in dossier.toevoeging:
                 kamerstuk_id += '-' + str(dossier.toevoeging)
             kamerstuk_id += '-' + str(self.kamerstuk.ondernummer)

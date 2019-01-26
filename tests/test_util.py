@@ -8,9 +8,9 @@ from .core import TKApiTestCase
 class TestUtilQueries(TKApiTestCase):
 
     def test_get_kamerstuk_stemmingen(self):
-        vetnummer = 33885
+        nummer = 33885
         ondernummer = 16
-        stemmingen = queries.get_kamerstuk_stemmingen(vetnummer=vetnummer, ondernummer=ondernummer)
+        stemmingen = queries.get_kamerstuk_stemmingen(nummer=nummer, ondernummer=ondernummer)
         total_votes = 0
         for stemming in stemmingen:
             print(stemming.fractie.naam, stemming.fractie_size, stemming.soort, stemming.besluit.soort)
@@ -18,12 +18,12 @@ class TestUtilQueries(TKApiTestCase):
         print('total votes', total_votes)
 
     def test_get_dossier_stemmingen(self):
-        vetnummer = 33885
-        dossier = queries.get_dossier(vetnummer=vetnummer)
+        nummer = 33885
+        dossier = queries.get_dossier(nummer=nummer)
         print('kamerstukken', len(dossier.kamerstukken))
         for kamerstuk in dossier.kamerstukken:
             print(kamerstuk.ondernummer, kamerstuk.document.onderwerp)
-            stemmingen = queries.get_kamerstuk_stemmingen(vetnummer=vetnummer, ondernummer=kamerstuk.ondernummer)
+            stemmingen = queries.get_kamerstuk_stemmingen(nummer=nummer, ondernummer=kamerstuk.ondernummer)
             total_votes = 0
             for stemming in stemmingen:
                 # print('\t', stemming.fractie.naam, stemming.fractie_size, stemming.soort, stemming.besluit.soort)
@@ -31,8 +31,8 @@ class TestUtilQueries(TKApiTestCase):
             print('total votes', total_votes)
 
     def test_get_dossier_besluiten(self):
-        vetnummer = 33885
-        besluiten = queries.get_dossier_besluiten_with_stemmingen(vetnummer=vetnummer)
+        nummer = 33885
+        besluiten = queries.get_dossier_besluiten_with_stemmingen(nummer=nummer)
         besluiten = besluiten[:5]
         for besluit in besluiten:
             if not besluit.stemmingen:

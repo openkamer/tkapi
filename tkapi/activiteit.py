@@ -8,22 +8,22 @@ class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
     def __init__(self):
         super().__init__()
 
-    def _filter_kamerstukdossier_str(self, vetnummer):
-        filter_str = super()._filter_kamerstukdossier_str(vetnummer=vetnummer)
+    def _filter_kamerstukdossier_str(self, numer):
+        filter_str = super()._filter_kamerstukdossier_str(numer=numer)
         filter_str += ' or '
-        filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Kamerstukdossier/any(d: d/Vetnummer eq {})))'.format(vetnummer)
+        filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Kamerstukdossier/any(d: d/Nummer eq {})))'.format(numer)
         return filter_str
 
-    def filter_kamerstukdossier(self, vetnummer):
-        filter_str = self._filter_kamerstukdossier_str(vetnummer=vetnummer)
+    def filter_kamerstukdossier(self, nummer):
+        filter_str = self._filter_kamerstukdossier_str(numer=nummer)
         self.add_filter_str(filter_str)
 
-    def filter_kamerstuk(self, vetnummer, ondernummer, is_or=False):
-        filter_str = super()._filter_kamerstukdossier_str(vetnummer=vetnummer)
+    def filter_kamerstuk(self, nummer, ondernummer, is_or=False):
+        filter_str = super()._filter_kamerstukdossier_str(numer=nummer)
         filter_str += ' and '
         filter_str += super()._filter_kamerstuk_str(ondernummer=ondernummer)
         filter_str += ' or '
-        filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Kamerstukdossier/any(d: d/Vetnummer eq {})))'.format(vetnummer)
+        filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Kamerstukdossier/any(d: d/Nummer eq {})))'.format(nummer)
         filter_str += ' and '
         filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Volgnummer eq {}))'.format(ondernummer)
         self.add_filter_str(filter_str)

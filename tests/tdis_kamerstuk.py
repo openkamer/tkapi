@@ -47,7 +47,7 @@ class TestWetsvoorstellenDossier(TKApiTestCase):
 
         # pds_no_dossier_nr = []
         # for pd in pds:
-        #     if not pd.dossier_vetnummer:
+        #     if not pd.dossier_nummer:
         #         pds_no_dossier_nr.append(pd)
         #
         # print('wetsvoorstellen without dossier: ' + str(len(pds_no_dossier_nr)))
@@ -58,6 +58,6 @@ class TestKamerstukFilters(TKApiTestCase):
 
     def test_filter_dossier(self):
         filter = Kamerstuk.create_filter()
-        filter.filter_kamerstukdossier(vetnummer=33885)
+        filter.filter_kamerstukdossier(nummer=33885)
         kamerstukken = self.api.get_kamerstukken(filter=filter)
         self.assertEqual(31, len(kamerstukken))

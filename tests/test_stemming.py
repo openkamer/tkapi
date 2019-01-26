@@ -25,12 +25,12 @@ class TestStemmingFilters(TKApiTestCase):
 
     def test_filter_kamerstukdossier(self):
         filter = Stemming.create_filter()
-        filter.filter_kamerstukdossier(vetnummer=33885)
+        filter.filter_kamerstukdossier(nummer=33885)
         stemmingen = self.api.get_stemmingen(filter=filter)
         self.assertEqual(208, len(stemmingen))
 
     def test_filter_kamerstuk(self):
         filter = Stemming.create_filter()
-        filter.filter_kamerstuk(vetnummer=33885, ondernummer=16)
+        filter.filter_kamerstuk(nummer=33885, ondernummer=16)
         stemmingen = self.api.get_stemmingen(filter=filter)
         self.assertEqual(16, len(stemmingen))

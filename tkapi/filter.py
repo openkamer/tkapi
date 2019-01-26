@@ -72,18 +72,18 @@ class ZaakRelationFilter(RelationFilter):
     def filter_non_empty_zaak(self):
         self._filter_non_empty()
 
-    def _filter_kamerstukdossier_str(self, vetnummer):
-        return '{}/any(z: z/Kamerstukdossier/any(d: d/Vetnummer eq {}))'.format(self.zaak_related_url, vetnummer)
+    def _filter_kamerstukdossier_str(self, numer):
+        return '{}/any(z: z/Kamerstukdossier/any(d: d/Nummer eq {}))'.format(self.zaak_related_url, numer)
 
-    def filter_kamerstukdossier(self, vetnummer):
-        filter_str = self._filter_kamerstukdossier_str(vetnummer)
+    def filter_kamerstukdossier(self, nummer):
+        filter_str = self._filter_kamerstukdossier_str(nummer)
         self.add_filter_str(filter_str)
 
     def _filter_kamerstuk_str(self, ondernummer):
         return '{}/any(z: z/Volgnummer eq {})'.format(self.zaak_related_url, ondernummer)
 
-    def filter_kamerstuk(self, vetnummer, ondernummer):
-        filter_str = self._filter_kamerstukdossier_str(vetnummer)
+    def filter_kamerstuk(self, nummer, ondernummer):
+        filter_str = self._filter_kamerstukdossier_str(nummer)
         filter_str += ' and '
         filter_str += self._filter_kamerstuk_str(ondernummer)
         self.add_filter_str(filter_str)

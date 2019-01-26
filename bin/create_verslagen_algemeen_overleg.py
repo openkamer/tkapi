@@ -31,7 +31,7 @@ def main():
                 toevoeging = verslag.dossier.toevoeging
             row = ','.join([
                 verslag.datum.strftime('%Y-%m-%d'),
-                str(verslag.dossier.vetnummer),
+                str(verslag.dossier.nummer),
                 toevoeging,
                 str(verslag.kamerstuk.ondernummer),
                 verslag.document_url

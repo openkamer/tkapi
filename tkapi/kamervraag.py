@@ -6,7 +6,6 @@ from tkapi.zaak import Zaak
 
 class Kamervraag(Document):
     filter_param = "Soort eq 'Schriftelijke vragen'"
-    # expand_param = 'Zaak'
 
     def __init__(self, json):
         super().__init__(json)

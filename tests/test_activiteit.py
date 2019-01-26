@@ -33,7 +33,7 @@ class TestActiviteit(TKApiTestCase):
         for activiteit in activiteiten:
             for pd in activiteit.parlementaire_documenten:
                 if pd.kamerstuk:
-                    print('dossier vetnummer:', pd.kamerstuk.dossier.vetnummer)
+                    print('dossier nummer:', pd.kamerstuk.dossier.nummer)
 
 
 class TestActiviteitFilters(TKApiTestCase):
@@ -41,7 +41,7 @@ class TestActiviteitFilters(TKApiTestCase):
 
     def test_kamerstuk_dossier_filter(self):
         filter = Activiteit.create_filter()
-        filter.filter_kamerstukdossier(vetnummer=31239)
+        filter.filter_kamerstukdossier(nummer=31239)
         activiteiten = self.api.get_activiteiten(filter=filter, max_items=self.N_ITEMS)
         print(len(activiteiten))
         self.assertEqual(self.N_ITEMS, len(activiteiten))
@@ -56,7 +56,7 @@ class TestActiviteitFilters(TKApiTestCase):
 
     def test_kamerstuk_filter(self):
         filter = Activiteit.create_filter()
-        filter.filter_kamerstuk(vetnummer=31239, ondernummer=16)
+        filter.filter_kamerstuk(nummer=31239, ondernummer=16)
         activiteiten = self.api.get_activiteiten(filter=filter, max_items=self.N_ITEMS)
         print(len(activiteiten))
         self.assertEqual(self.N_ITEMS, len(activiteiten))
