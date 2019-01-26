@@ -30,6 +30,8 @@ class TestKamervragen(TKApiTestCase):
         kamervragen_no_zaak = []
         for kamervraag in schriftelijke_vragen:
             print(kamervraag.id)
+            kamervraag.print_json()
+            print(kamervraag.zaken)
             if not kamervraag.zaken:
                 kamervragen_no_zaak.append(kamervraag)
         print('kamervragen without zaak: ' + str(len(kamervragen_no_zaak)))

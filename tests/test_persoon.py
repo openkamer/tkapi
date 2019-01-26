@@ -68,10 +68,10 @@ class TestPersoonFilters(TKApiTestCase):
         persoon = personen[0]
         self.assertEqual(achternaam, persoon.achternaam)
 
-    def test_filter_is_fractielid(self):
+    def test_filter_is_fractiezetel(self):
         n_items = 10
         filter = Persoon.create_filter()
-        filter.filter_is_fractielid()
+        filter.filter_is_fractiezetel()
         personen = self.api.get_personen(filter=filter, max_items=n_items)
         self.assertEqual(n_items, len(personen))
         for persoon in personen:

@@ -30,8 +30,8 @@ class Vergadering(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def verslagen(self):
-        from tkapi.verslag import Verslag
-        return self.related_items(Verslag)
+        from tkapi.document import Document
+        return self.related_items(Document)
 
     @property
     def activiteiten(self):

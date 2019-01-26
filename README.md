@@ -40,16 +40,15 @@ For more examples see the `examples` directory and the tests.
 | **Fractie**                | CommissieVastVacature      | **PersoonNevenfunctie**      |
 | **FractieOrganisatie**     | CommissieVervangerVacature | **PersoonNevenfunctieInkomsten** |
 | FractieAanvullendGegeven   | CommissieVervangerPersoon  | **PersoonOnderwijs**         |
-| **FractieLid**             |                            | **PersoonReis**              |
+| **FractieZetel**           |                            | **PersoonReis**              |
 | **Stemming**               |                            | **PersoonFunctie**           |
 | Zaal                       |                            |                              |
 | Reservering                |                            |                              |
 | **Vergadering**            |                            |                              |
-| **ParlementairDocument**   |                            |                              |
-| ParlementairDocumentVersie |                            |                              |
+| **Document**               |                            |                              |
+| DocumentVersie             |                            |                              |
 | Bestand                    |                            |                              |
 | **Kamerstuk**              |                            |                              |
-| **Verslag**                |                            |                              |
 | **Agendapunt**             |                            |                              |
 | **Besluit**                |                            |                              |
 

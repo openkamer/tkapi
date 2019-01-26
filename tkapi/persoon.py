@@ -2,10 +2,10 @@ import tkapi
 
 from tkapi.actor import Actor
 
-from tkapi.fractie import FractieLidRelationFilter, FractieZetel
+from tkapi.fractie import FractieZetelRelationFilter, FractieZetel
 
 
-class PersoonFilter(FractieLidRelationFilter):
+class PersoonFilter(FractieZetelRelationFilter):
 
     def filter_achternaam(self, achternaam):
         filter_str = 'Achternaam eq \'{}\''.format(achternaam)
@@ -27,7 +27,7 @@ class Persoon(Actor):
 
     @property
     def fractieleden(self):
-        return self.related_items(FractieZetel, item_key='Fractielid')
+        return self.related_items(FractieZetel, item_key='FractieZetel')
 
     @property
     def achternaam(self):

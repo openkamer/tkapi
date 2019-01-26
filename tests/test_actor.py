@@ -51,7 +51,7 @@ class TestFractie(TKApiTestCase):
         self.assertEqual(fractie.zetels, len(leden_actief))
 
 
-class TestFractieLid(TKApiTestCase):
+class TestFractieZetel(TKApiTestCase):
 
     def test_get_fractie_leden(self):
         leden = self.api.get_fractie_leden(max_items=10)

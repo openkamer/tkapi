@@ -10,7 +10,7 @@ class DossierFilter(tkapi.ZaakRelationFilter):
 
     def filter_zaak(self, zaak_number):
         # TODO BR: this is old?
-        filter_str = 'Kamerstuk/any(ks:ks/ParlementairDocument/Zaak/any(z:z/Nummer eq ' \
+        filter_str = 'Kamerstuk/any(ks:ks/Document/Zaak/any(z:z/Nummer eq ' \
                      + "'" + str(zaak_number) + "'" + '))'
         self._filters.append(filter_str)
 
@@ -21,7 +21,7 @@ class DossierFilter(tkapi.ZaakRelationFilter):
 
     def filter_zaken(self, zaak_numbers):
         # TODO BR: this is old?
-        filter_str = 'Kamerstuk/any(ks:ks/ParlementairDocument/Zaak/any(z:'
+        filter_str = 'Kamerstuk/any(ks:ks/Document/Zaak/any(z:'
         zaak_nummer_strs = []
         for nummer in zaak_numbers:
             zaak_nummer_strs.append('(z/Nummer eq ' + "'" + str(nummer) + "')")

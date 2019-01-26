@@ -11,7 +11,6 @@ class CommissieFilter(tkapi.SoortFilter):
 
 class Commissie(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Commissie'
-    # expand_param = 'Organisatie'
 
     @staticmethod
     def create_filter():

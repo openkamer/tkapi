@@ -1,3 +1,5 @@
+import requests
+
 import tkapi
 from tkapi.util import util
 
@@ -25,7 +27,6 @@ class DocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
 class Document(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Document'
-    # expand_param = 'Zaak'
     orderby_param = 'Datum'
 
     @staticmethod
@@ -107,3 +108,40 @@ class Document(tkapi.TKItemRelated, tkapi.TKItem):
         if self.kamerstuk and self.kamerstuk.dossier and self.kamerstuk.dossier.toevoeging:
             return self.kamerstuk.dossier.toevoeging
         return None
+
+
+class VerslagAlgemeenOverleg(Document):
+    filter_param = "Soort eq 'Verslag van een algemeen overleg'"
+
+    # @property
+    # def commissie(self):
+    #     if self.zaak and self.zaak['Voortouwcommissie']:
+    #         for commissie in self.zaak['Voortouwcommissie']:
+    #             print(commissie['Commissie'])
+    #         return self.zaak['Voortouwcommissie'][0]['Commissie']
+    #     return None
+    #
+    # @property
+    # def volgcommissie(self):
+    #     if self.activiteit and self.activiteit['Volgcommissie']:
+    #         return self.activiteit['Volgcommissie'][0]['Commissie']
+    #     return None
+
+    @property
+    def document_url(self):
+        url = ''
+        if self.dossiers:
+            dossier = self.dossiers[0]
+            kamerstuk_id = str(dossier.vetnummer)
+            if dossier.toevoeging and '(' not in dossier.toevoeging:
+                kamerstuk_id += '-' + str(dossier.toevoeging)
+            kamerstuk_id += '-' + str(self.kamerstuk.ondernummer)
+            url = 'https://zoek.officielebekendmakingen.nl/kst-' + kamerstuk_id
+            response = requests.get(url, timeout=60)
+            assert response.status_code == 200
+            if 'Errors/404.htm' in response.url:
+                print('WARNING: no verslag document url found')
+                url = ''
+        else:
+            print('no dossier or kamerstuk found')
+        return url

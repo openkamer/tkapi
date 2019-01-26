@@ -60,7 +60,7 @@ class Lid(tkapi.TKItemRelated, tkapi.TKItem):
 
     @staticmethod
     def create_filter():
-        return LidFilter()
+        return ZetelFilter()
 
     @property
     def persoon(self):
@@ -107,20 +107,20 @@ class FractieFilter(tkapi.Filter):
         self._filters.append("DatumActief ne null")
 
 
-class LidFilter(tkapi.Filter):
+class ZetelFilter(tkapi.Filter):
 
     def filter_actief(self):
         self._filters.append("TotEnMet eq null")
         self._filters.append("Verwijderd eq false")
 
 
-class FractieLidRelationFilter(tkapi.RelationFilter):
+class FractieZetelRelationFilter(tkapi.RelationFilter):
 
     @property
     def related_url(self):
-        return 'Fractielid'
+        return 'FractieZetel'
 
-    def filter_is_fractielid(self):
+    def filter_is_fractiezetel(self):
         self._filter_non_empty()
 
 

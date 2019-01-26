@@ -93,8 +93,8 @@ class TestCommissieInfo(TKApiTestCase):
 #             if activiteit.json['Voortouwcommissie']:
 #                 print('has Voortouwcommissie')
 #                 print(activiteit.json['Voortouwcommissie']['Commissie']['NaamNL'])
-#             if activiteit.json['ParlementairDocument']:
-#                 print('has ParlementairDocument')
+#             if activiteit.json['Document']:
+#                 print('has Document')
 #             # print(activiteit.json['Voortouwcommissie'])
-#             # print(activiteit.json['ParlementairDocument'])
+#             # print(activiteit.json['Document'])
 #         print(len(activiteiten))

@@ -57,7 +57,7 @@ class TestMetaData(TKApiTestCase):
     def test_persoon_metadata(self):
         self.print_entity_first_example(Persoon)
 
-    def test_fractielid_metadata(self):
+    def test_fractiezetel_metadata(self):
         self.print_entity_first_example(FractieZetel)
 
     def test_fractie_metadata(self):
