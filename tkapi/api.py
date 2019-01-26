@@ -24,6 +24,7 @@ class Api(object):
     _user = None
     _password = None
     _verbose = False
+    _max_items_per_page = 250
     api_root = 'https://gegevensmagazijn-a.tweedekamer.nl/OData/v4/1.0/'
 
     def __init__(self, user=None, password=None, api_root=None, verbose=None):
@@ -97,7 +98,7 @@ class Api(object):
         return cls.get_items(Besluit, filter, order, max_items)
 
     @classmethod
-    def get_fractie_leden(cls, filter=None, order=None, max_items=None):
+    def get_fractie_zetels(cls, filter=None, order=None, max_items=None):
         return cls.get_items(FractieZetel, filter, order, max_items)
 
     @classmethod
@@ -132,8 +133,8 @@ class Api(object):
             items.append(item)
             if max_items is not None and len(items) >= max_items:
                 return items
-        while 'odata.nextLink' in page:
-            page = cls.request_json(page['odata.nextLink'])
+        while '@odata.nextLink' in page:
+            page = cls.request_json(page['@odata.nextLink'])
             for item in page['value']:
                 items.append(item)
                 if max_items is not None and len(items) >= max_items:
@@ -145,7 +146,8 @@ class Api(object):
         url = url.strip()
         if not params:
             params = {}
-        params['$format'] = 'application/json;odata.metadata=full',
+        if '$format' not in url:
+            params['$format'] = 'application/json;odata.metadata=full',
         if max_items is not None:
             params['$top'] = max_items,
         if cls.api_root.strip().lower() not in url.lower():
@@ -180,7 +182,7 @@ class Api(object):
         if params is None:
             params = tkitem_related.get_param_expand()
         params = Api.add_filter_to_params(filter, params)
-        params = Api.add_non_deleted_filter(params)
+        # params = Api.add_non_deleted_filter(params)
         first_page = cls.request_json(related_url, params)
         related_items = []
         if 'value' in first_page:
@@ -195,7 +197,8 @@ class Api(object):
     def get_items(cls, item_class, filter=None, order=None, max_items=None):
         items = []
         params = cls.create_query_params(tkitem_class=item_class, filter=filter, order=order)
-        first_page = cls.request_json(item_class.url, params, max_items=max_items)
+        max_items_request = max_items if max_items <= cls._max_items_per_page else None
+        first_page = cls.request_json(item_class.url, params, max_items=max_items_request)
         items_json = cls.get_all_items(first_page, max_items=max_items)
         for item_json in items_json:
             item = item_class(item_json)
