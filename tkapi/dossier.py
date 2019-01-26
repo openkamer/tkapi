@@ -10,8 +10,7 @@ class DossierFilter(tkapi.ZaakRelationFilter):
 
     def filter_zaak(self, zaak_number):
         # TODO BR: this is old?
-        filter_str = 'Kamerstuk/any(ks:ks/Document/Zaak/any(z:z/Nummer eq ' \
-                     + "'" + str(zaak_number) + "'" + '))'
+        filter_str = "Zaak/any(z:z/Nummer eq '{}')".format(zaak_number)
         self._filters.append(filter_str)
 
     def filter_afgesloten(self, is_afgesloten):
@@ -21,12 +20,12 @@ class DossierFilter(tkapi.ZaakRelationFilter):
 
     def filter_zaken(self, zaak_numbers):
         # TODO BR: this is old?
-        filter_str = 'Kamerstuk/any(ks:ks/Document/Zaak/any(z:'
+        filter_str = 'Zaak/any(z:'
         zaak_nummer_strs = []
         for nummer in zaak_numbers:
-            zaak_nummer_strs.append('(z/Nummer eq ' + "'" + str(nummer) + "')")
+            zaak_nummer_strs.append("z/Nummer eq '{}'".format(nummer))
         filter_str += ' or '.join(zaak_nummer_strs)
-        filter_str += '))'
+        filter_str += ')'
         self._filters.append(filter_str)
 
 
@@ -48,7 +47,7 @@ class Dossier(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_items(Zaak)
 
     @property
-    def parlementaire_documenten(self):
+    def documenten(self):
         return [kamerstuk.document for kamerstuk in self.kamerstukken]
 
     @property

@@ -31,7 +31,7 @@ class TestActiviteit(TKApiTestCase):
         activiteiten = self.api.get_activiteiten(filter=None, max_items=10)
         self.assertEqual(10, len(activiteiten))
         for activiteit in activiteiten:
-            for pd in activiteit.parlementaire_documenten:
+            for pd in activiteit.documenten:
                 if pd.kamerstuk:
                     print('dossier nummer:', pd.kamerstuk.dossier.nummer)
 

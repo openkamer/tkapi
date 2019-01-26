@@ -95,16 +95,17 @@ class TestDossiersForZaken(TKApiTestCase):
         dossier_zaak_nummers = set()
         for dossier in dossiers:
             print('dossier.nummer: ', str(dossier.nummer))
-            for pd in dossier.parlementaire_documenten:
-                for zaak in pd.zaken:
-                    dossier_zaak_nummers.add(zaak.nummer)
+            for zaak in dossier.zaken:
+                dossier_zaak_nummers.add(zaak.nummer)
         print('dossier_zaak_nummers', dossier_zaak_nummers)
         for zaak in zaken:
             if zaak.nummer not in dossier_zaak_nummers:
                 print(zaak.nummer)
-                zaak.print_json()
+                # zaak.print_json()
             # self.assertTrue(zaak_nr in dossier_zaak_nummers)
         # print(zaken)
+        for zaak_nummer in zaak_nummers:
+            self.assertTrue(zaak_nummer in dossier_zaak_nummers)
 
 
 class TestDossierAfgesloten(TKApiTestCase):

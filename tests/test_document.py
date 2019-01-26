@@ -15,8 +15,8 @@ class TestSingleDocument(TKApiTestCase):
         self.assertEqual(1, len(pds))
         pd = pds[0]
         # pd.print_json()
-        for zaak in pd.zaken:
-            print(zaak)
+        # for zaak in pd.zaken:
+        #     print(zaak)
         print(pd.kamerstuk)
         for agendapunt in pd.agendapunten:
             print(agendapunt)

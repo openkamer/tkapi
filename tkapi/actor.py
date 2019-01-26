@@ -10,7 +10,7 @@ class Actor(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_items(Zaak)
 
     @property
-    def parlementaire_documenten(self):
+    def documenten(self):
         from tkapi.document import Document
         return self.related_items(Document)
 
