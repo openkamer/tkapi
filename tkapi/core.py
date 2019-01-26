@@ -3,7 +3,7 @@ from tkapi.util import util
 
 class TKItem(object):
     url = NotImplementedError
-    expand_param = ''
+    expand_param = None
     orderby_param = None
     filter_param = ''
 
@@ -36,7 +36,7 @@ class TKItem(object):
         params = {}
         if cls.expand_param:
             params['$expand'] = cls.expand_param
-        if cls.expand_param:
+        if cls.orderby_param:
             params['$orderby'] = cls.orderby_param
         elif cls.begin_date_key():
             params['$orderby'] = '{} {}'.format(cls.begin_date_key(), 'desc')
@@ -104,9 +104,9 @@ class TKItemRelated(object):
 
     def related_items(self, tkitem, filter=None, item_key=None):
         from tkapi.api import Api
-        if item_key is None and tkitem.url + '@odata.navigationLinkUrl' not in self.json:
+        if item_key is None and tkitem.url + '@odata.navigationLink' not in self.json:
             return []
-        elif item_key is not None and item_key + '@odata.navigationLinkUrl' not in self.json:
+        elif item_key is not None and item_key + '@odata.navigationLink' not in self.json:
             return []
         if item_key is None:
             item_key = tkitem.url
@@ -115,7 +115,8 @@ class TKItemRelated(object):
         cache_key = self.create_cache_key(tkitem, filter)
         if cache_key in self.items_cache:
             return self.items_cache[cache_key]
-        url = self.json[item_key + '@odata.navigationLinkUrl']
+        url = self.json[item_key + '@odata.navigationLink']
+        print('related_items url', url)
         items = Api().get_related(tkitem, related_url=url, filter=filter)
         self.set_cache(tkitem, filter, items)
         return items

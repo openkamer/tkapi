@@ -14,8 +14,7 @@ from .persoon import PersoonGeschenk
 from .persoon import PersoonReis
 from .stemming import Stemming
 from .vergadering import Vergadering
-from .verslag import Verslag
-from .verslag import VerslagAlgemeenOverleg
+from .document import VerslagAlgemeenOverleg
 from .zaak import Zaak
 
 from .filter import VerwijderdFilter
@@ -25,7 +24,7 @@ class Api(object):
     _user = None
     _password = None
     _verbose = False
-    api_root = 'https://gegevensmagazijn-a.tweedekamer.nl/OData/V4/1.0/'
+    api_root = 'https://gegevensmagazijn-a.tweedekamer.nl/OData/v4/1.0/'
 
     def __init__(self, user=None, password=None, api_root=None, verbose=None):
         if user is not None:
@@ -48,10 +47,6 @@ class Api(object):
     @classmethod
     def get_fracties(cls, filter=None, order=None, max_items=None):
         return cls.get_items(Fractie, filter, order, max_items)
-
-    @classmethod
-    def get_verslagen(cls, filter=None, order=None, max_items=None):
-        return cls.get_items(Verslag, filter, order, max_items)
 
     @classmethod
     def get_vergaderingen(cls, filter=None, order=None, max_items=None):
@@ -147,14 +142,16 @@ class Api(object):
 
     @classmethod
     def request_json(cls, url, params=None, max_items=None):
+        url = url.strip()
         if not params:
             params = {}
-        # params['$format'] = 'json',
         params['$format'] = 'application/json;odata.metadata=full',
         if max_items is not None:
             params['$top'] = max_items,
+        if cls.api_root.strip().lower() not in url.lower():
+            url = cls.api_root + url
         response = requests.get(
-            cls.api_root + url,
+            url=url,
             params=params,
             auth=(str(cls._user), str(cls._password)),
             timeout=60
@@ -166,7 +163,6 @@ class Api(object):
             return {}
         elif response.status_code != 200:
             print('HTTP STATUS CODE', response.status_code)
-            print('ODATA ERROR: ', response.json())
             print('ODATA ERROR: ', response.json()['error']['message'])
         # assert response.status_code == 200
         return response.json()
