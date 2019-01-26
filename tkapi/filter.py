@@ -51,11 +51,11 @@ class RelationFilter(Filter):
         raise NotImplementedError
 
     def filter_non_empty(self, related_entity):
-        filter_str = '{}/any(z: true)'.format(related_entity.url)
+        filter_str = '{}/any(z:z ne null)'.format(related_entity.url)
         self._filters.append(filter_str)
 
     def _filter_non_empty(self):
-        filter_str = self.related_url + '/any(z: true)'
+        filter_str = self.related_url + '/any(z:z ne null)'
         self._filters.append(filter_str)
 
 
