@@ -26,7 +26,7 @@ class TestKamervragen(TKApiTestCase):
         pd_filter = Document.create_filter()
         pd_filter.filter_date_range(start_datetime, end_datetime)
         pd_filter.filter_soort('Schriftelijke vragen')
-        schriftelijke_vragen = self.api.get_parlementaire_documenten(pd_filter)
+        schriftelijke_vragen = self.api.get_documenten(pd_filter)
         kamervragen_no_zaak = []
         for kamervraag in schriftelijke_vragen:
             print(kamervraag.id)
@@ -46,15 +46,15 @@ class TestKamervraagItem(TKApiTestCase):
         kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         kamervragen = self.api.get_kamervragen(kv_filter)
-        self.assertEqual(len(kamervragen), 11)
+        self.assertEqual(len(kamervragen), 17)
 
     def test_get_kamervragen_old(self):
-        start_datetime = datetime.datetime(year=2008, month=7, day=4)
-        end_datetime = datetime.datetime(year=2008, month=7, day=5)
+        start_datetime = datetime.datetime(year=2008, month=7, day=1)
+        end_datetime = datetime.datetime(year=2008, month=7, day=10)
         kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         kamervragen = self.api.get_kamervragen(kv_filter)
-        self.assertEqual(len(kamervragen), 3)
+        self.assertEqual(len(kamervragen), 20)
 
     def test_get_kamervragen_2013(self):
         start_datetime = datetime.datetime(year=2013, month=1, day=31)
