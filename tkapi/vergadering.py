@@ -65,11 +65,11 @@ class Vergadering(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def samenstelling(self):
         return self.get_property_or_empty_string('Samenstelling')
-
-    @staticmethod
-    def begin_date_key():
-        return 'Begin'
-
-    @staticmethod
-    def end_date_key():
-        return 'Einde'
+    #
+    # @staticmethod
+    # def begin_date_key():
+    #     return 'Begin'
+    #
+    # @staticmethod
+    # def end_date_key():
+    #     return 'Einde'
