@@ -182,7 +182,6 @@ class Api(object):
         if params is None:
             params = tkitem_related.get_param_expand()
         params = Api.add_filter_to_params(filter, params)
-        params = Api.add_non_deleted_filter(params)
         first_page = cls.request_json(related_url, params)
         related_items = []
         if 'value' in first_page:
