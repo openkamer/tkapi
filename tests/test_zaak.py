@@ -21,7 +21,7 @@ class TestZaak(TKApiTestCase):
         zaken = self.api.get_zaken(zaak_filter)
         # for zaak in zaken:
         #     zaak.print_json()
-        self.assertEqual(len(zaken), 27)
+        self.assertEqual(len(zaken), 28)
 
         zaak_filter.filter_afgedaan(True)
         zaken_afgedaan = self.api.get_zaken(zaak_filter)
