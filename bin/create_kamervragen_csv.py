@@ -9,8 +9,6 @@ import tkapi
 
 from tkapi.document import ParlementairDocument
 
-from local_settings import API_ROOT_URL
-
 
 def main():
     print('BEGIN')
@@ -21,7 +19,7 @@ def main():
 
     out_dir = os.path.join(parentdir, '../ok-tk-data/kamervragen/')
 
-    api = tkapi.Api(api_root=API_ROOT_URL, verbose=True)
+    api = tkapi.Api(verbose=True)
 
     for year in years:
         start_datetime = datetime.datetime(year=year, month=month, day=1)

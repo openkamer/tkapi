@@ -10,9 +10,7 @@ sys.path.append(parentdir)
 import tkapi
 from tkapi.zaak import Zaak, ZaakSoort
 
-from local_settings import API_ROOT_URL
-
-api = tkapi.Api(api_root=API_ROOT_URL, verbose=True)
+api = tkapi.Api(verbose=True)
 
 out_dir = os.path.join(parentdir, '../ok-tk-data/wetsvoorstellen/')
 

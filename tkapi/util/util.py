@@ -25,8 +25,5 @@ def odateyear_to_date(odate_date):
 
 def create_api(verbose=False):
     from tkapi.api import Api
-    try:
-        from local_settings import API_ROOT_URL
-        return Api(api_root=API_ROOT_URL, verbose=verbose)
-    except ModuleNotFoundError as error:
-        return Api(verbose=verbose)
+    return Api(verbose=verbose)
+
