@@ -37,8 +37,8 @@ class TestDocument(TKApiTestCase):
         pd_filter.filter_soort('Voorstel van wet', is_or=True)
         pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
         pds = self.api.get_documenten(pd_filter)
-        for pd in pds:
-            print(pd.titel)
+        # for pd in pds:
+        #     print(pd.titel)
         self.assertGreater(len(pds), 253)
 
 
@@ -58,9 +58,10 @@ class TestDocumentFilter(TKApiTestCase):
         for pd in pds:
             print(pd.titel)
             for zaak in pd.zaken:
-                print(zaak)
+                self.assertTrue(zaak.id)
+                # print(zaak)
         print(len(pds))
-        self.assertEqual(8, len(pds))
+        self.assertEqual(10, len(pds))
 
     def test_filter_empty_agendapunt(self):
         pd_filter = Document.create_filter()

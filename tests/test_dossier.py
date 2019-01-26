@@ -31,8 +31,8 @@ class TestDossier(TKApiTestCase):
         dossier_filter = Dossier.create_filter()
         dossier_filter.filter_zaak(zaak_nr)
         dossiers = self.api.get_dossiers(filter=dossier_filter)
-        for dossier in dossiers:
-            dossier.print_json()
+        # for dossier in dossiers:
+        #     dossier.print_json()
         self.assertEqual(len(dossiers), 1)
         # print(dossiers[0].vetnummer)
         self.assertEqual(dossiers[0].vetnummer, expected_dossier_vetnummer)
@@ -61,13 +61,15 @@ class TestDossierKamerstukken(TKApiTestCase):
             print(document.soort)
             print(document.titel)
             for agendapunt in document.agendapunten:
-                agendapunt.print_json()
+                self.assertTrue(agendapunt.id)
+                # agendapunt.print_json()
             for zaak in document.zaken:
                 if not zaak.afgedaan:
                     print('NIET GESLOTEN')
                 for besluit in zaak.besluiten:
                     for stemming in besluit.stemmingen:
-                        stemming.print_json()
+                        self.assertTrue(stemming.id)
+                        # stemming.print_json()
 
 
 class TestDossiersForZaken(TKApiTestCase):
