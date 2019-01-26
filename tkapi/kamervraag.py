@@ -1,10 +1,10 @@
 import requests
 
-from tkapi.document import ParlementairDocument
+from tkapi.document import Document
 from tkapi.zaak import Zaak
 
 
-class Kamervraag(ParlementairDocument):
+class Kamervraag(Document):
     filter_param = "Soort eq 'Schriftelijke vragen'"
     expand_param = 'Zaak'
 
@@ -69,7 +69,7 @@ class Kamervraag(ParlementairDocument):
         return url
 
 
-class Antwoord(ParlementairDocument):
+class Antwoord(Document):
     filter_param = "Soort eq 'Antwoord schriftelijke vragen'"
 
     def __init__(self, json):

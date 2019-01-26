@@ -2,7 +2,7 @@ from enum import Enum
 import requests
 
 import tkapi
-from tkapi.document import ParlementairDocument
+from tkapi.document import Document
 
 
 class VerslagSoort(Enum):
@@ -38,7 +38,7 @@ class Verslag(tkapi.TKItemRelated, tkapi.TKItem):
         return self.get_property_or_empty_string('Status')
 
 
-class VerslagAlgemeenOverleg(ParlementairDocument):
+class VerslagAlgemeenOverleg(Document):
     filter_param = "Soort eq 'Verslag van een algemeen overleg'"
     # expand_param = 'Zaak/Voortouwcommissie/Commissie, Activiteit/Voortouwcommissie/Commissie, Activiteit/Volgcommissie/Commissie, Kamerstuk/Kamerstukdossier'
 

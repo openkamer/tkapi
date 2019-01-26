@@ -1,7 +1,7 @@
 import datetime
 
 from tkapi.kamervraag import Kamervraag
-from tkapi.document import ParlementairDocument
+from tkapi.document import Document
 
 from .core import TKApiTestCase
 
@@ -23,7 +23,7 @@ class TestKamervragen(TKApiTestCase):
     def test_get_kamervragen_2013(self):
         start_datetime = datetime.datetime(year=2013, month=1, day=1)
         end_datetime = datetime.datetime(year=2013, month=1, day=7)
-        pd_filter = ParlementairDocument.create_filter()
+        pd_filter = Document.create_filter()
         pd_filter.filter_date_range(start_datetime, end_datetime)
         pd_filter.filter_soort('Schriftelijke vragen')
         schriftelijke_vragen = self.api.get_parlementaire_documenten(pd_filter)
@@ -41,7 +41,7 @@ class TestKamervraagItem(TKApiTestCase):
     def test_get_kamervragen_new(self):
         start_datetime = datetime.datetime(year=2015, month=1, day=1)
         end_datetime = datetime.datetime(year=2015, month=1, day=7)
-        kv_filter = ParlementairDocument.create_filter()
+        kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         kamervragen = self.api.get_kamervragen(kv_filter)
         self.assertEqual(len(kamervragen), 11)
@@ -49,7 +49,7 @@ class TestKamervraagItem(TKApiTestCase):
     def test_get_kamervragen_old(self):
         start_datetime = datetime.datetime(year=2008, month=7, day=4)
         end_datetime = datetime.datetime(year=2008, month=7, day=5)
-        kv_filter = ParlementairDocument.create_filter()
+        kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         kamervragen = self.api.get_kamervragen(kv_filter)
         self.assertEqual(len(kamervragen), 3)
@@ -57,7 +57,7 @@ class TestKamervraagItem(TKApiTestCase):
     def test_get_kamervragen_2013(self):
         start_datetime = datetime.datetime(year=2013, month=1, day=31)
         end_datetime = datetime.datetime(year=2013, month=2, day=1)
-        kv_filter = ParlementairDocument.create_filter()
+        kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         kamervragen = self.api.get_kamervragen(kv_filter)
 
@@ -67,7 +67,7 @@ class TestAntwoordItem(TKApiTestCase):
     def test_get_antwoorden_new(self):
         start_datetime = datetime.datetime(year=2015, month=1, day=1)
         end_datetime = datetime.datetime(year=2015, month=1, day=10)
-        kv_filter = ParlementairDocument.create_filter()
+        kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         antwoorden = self.api.get_antwoorden(kv_filter)
         self.assertEqual(len(antwoorden), 10)
@@ -75,7 +75,7 @@ class TestAntwoordItem(TKApiTestCase):
     def test_get_antwoorden_2010(self):
         start_datetime = datetime.datetime(year=2010, month=1, day=1)
         end_datetime = datetime.datetime(year=2010, month=1, day=10)
-        kv_filter = ParlementairDocument.create_filter()
+        kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         antwoorden = self.api.get_antwoorden(kv_filter)
         self.assertEqual(len(antwoorden), 2)

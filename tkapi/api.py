@@ -1,12 +1,12 @@
 import requests
 
-from tkapi.fractie import Fractie, FractieLid
+from tkapi.fractie import Fractie, FractieZetel
 from tkapi.persoon import Persoon
 from .activiteit import Activiteit
 from .agendapunt import Agendapunt
 from .besluit import Besluit
 from .commissie import Commissie
-from .document import ParlementairDocument
+from .document import Document
 from .dossier import Dossier
 from .kamerstuk import Kamerstuk
 from .kamervraag import Kamervraag, Antwoord
@@ -71,7 +71,7 @@ class Api(object):
 
     @classmethod
     def get_parlementaire_documenten(cls, filter=None, order=None, max_items=None):
-        return cls.get_items(ParlementairDocument, filter, order, max_items)
+        return cls.get_items(Document, filter, order, max_items)
 
     @classmethod
     def get_dossiers(cls, filter=None, order=None, max_items=None):
@@ -103,7 +103,7 @@ class Api(object):
 
     @classmethod
     def get_fractie_leden(cls, filter=None, order=None, max_items=None):
-        return cls.get_items(FractieLid, filter, order, max_items)
+        return cls.get_items(FractieZetel, filter, order, max_items)
 
     @classmethod
     def get_reizen(cls, filter=None, order=None, max_items=None):
@@ -166,7 +166,8 @@ class Api(object):
             return {}
         elif response.status_code != 200:
             print('HTTP STATUS CODE', response.status_code)
-            print('ODATA ERROR: ', response.json()['odata.error']['message']['value'])
+            print('ODATA ERROR: ', response.json())
+            print('ODATA ERROR: ', response.json()['error']['message'])
         # assert response.status_code == 200
         return response.json()
 

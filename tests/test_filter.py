@@ -1,4 +1,4 @@
-from tkapi.document import ParlementairDocument
+from tkapi.document import Document
 
 from .core import TKApiTestCase
 from tkapi.persoon import Persoon
@@ -7,7 +7,7 @@ from tkapi.persoon import Persoon
 class TestFilters(TKApiTestCase):
 
     def test_filter_mixin(self):
-        pd_filter = ParlementairDocument.create_filter()
+        pd_filter = Document.create_filter()
         pd_filter.filter_soort('test soort')
         pd_filter.filter_non_empty_zaak()
         self.assertEqual(len(pd_filter._filters), 2)

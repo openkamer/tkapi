@@ -11,8 +11,8 @@ class Actor(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def parlementaire_documenten(self):
-        from tkapi.document import ParlementairDocument
-        return self.related_items(ParlementairDocument)
+        from tkapi.document import Document
+        return self.related_items(Document)
 
     @property
     def stemming(self):

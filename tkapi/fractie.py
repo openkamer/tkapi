@@ -15,9 +15,9 @@ class Fractie(Actor):
 
     @property
     def leden_actief(self):
-        filter = FractieLid.create_filter()
+        filter = FractieZetel.create_filter()
         filter.filter_actief()
-        return self.related_items(FractieLid, filter=filter, item_key='Lid')
+        return self.related_items(FractieZetel, filter=filter, item_key='Lid')
 
     @property
     def naam(self):
@@ -79,13 +79,13 @@ class Lid(tkapi.TKItemRelated, tkapi.TKItem):
     def tot_en_met(self):
         return self.get_date_from_datetime_or_none('TotEnMet')
 
-    @staticmethod
-    def begin_date_key():
-        return 'Van'
-
-    @staticmethod
-    def end_date_key():
-        return 'TotEnMet'
+    # @staticmethod
+    # def begin_date_key():
+    #     return 'Van'
+    #
+    # @staticmethod
+    # def end_date_key():
+    #     return 'TotEnMet'
 
 
 class FractieOrganisatie(Lid):
@@ -124,8 +124,8 @@ class FractieLidRelationFilter(tkapi.RelationFilter):
         self._filter_non_empty()
 
 
-class FractieLid(Lid):
-    url = 'FractieLid'
+class FractieZetel(Lid):
+    url = 'FractieZetel'
 
     @property
     def fractie(self):

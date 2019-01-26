@@ -1,4 +1,4 @@
-from tkapi.document import ParlementairDocument
+from tkapi.document import Document
 from tkapi.kamerstuk import Kamerstuk
 
 from .core import TKApiTestCase
@@ -28,19 +28,19 @@ class TestKamerstuk(TKApiTestCase):
             self.assertEqual(kamerstuk.ondernummer, ondernummer)
         self.assertGreater(len(kamerstukken), 0)
 
-    def test_get_kamerstuk_parlementair_document(self):
+    def test_get_kamerstuk_document(self):
         ks_uid = '79471b03-156c-4124-9203-0041dee38963'
         kamerstuk = self.api.get_item(Kamerstuk, ks_uid)
         self.assertEqual(kamerstuk.id, ks_uid)
         self.assertEqual(kamerstuk.ondernummer, '2135')
-        pd = kamerstuk.parlementair_document
+        pd = kamerstuk.document
         pd.print_json()
 
 
 class TestWetsvoorstellenDossier(TKApiTestCase):
 
     def test_get_wetsvoorstel_document_without_kamerstuk_and_dossier(self):
-        pd_filter = ParlementairDocument.create_filter()
+        pd_filter = Document.create_filter()
         pd_filter.filter_soort('Voorstel van wet', is_or=True)
         pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
         pds = self.api.get_parlementaire_documenten(pd_filter)

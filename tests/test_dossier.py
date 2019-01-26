@@ -4,7 +4,7 @@ from orderedset import OrderedSet
 
 from tkapi.zaak import Zaak, ZaakSoort
 from tkapi.dossier import Dossier, DossierWetsvoorstel
-from tkapi.document import ParlementairDocument
+from tkapi.document import Document
 
 from .core import TKApiTestCase
 
@@ -56,7 +56,7 @@ class TestDossierKamerstukken(TKApiTestCase):
             print('\n============')
             # kamerstuk.print_json()
             print(kamerstuk.ondernummer)
-            document = kamerstuk.parlementair_document
+            document = kamerstuk.document
             # document.print_json()
             print(document.soort)
             print(document.titel)
@@ -135,7 +135,7 @@ class TestWetsvoorstelDossier(TKApiTestCase):
         self.assertEqual(max_items, len(wetsvoorstellen))
 
     def test_get_dossiers_via_documenten(self):
-        pd_filter = ParlementairDocument.create_filter()
+        pd_filter = Document.create_filter()
         # NOTE: this date filter does not seem to work in combination with the soort filter.
         # start_datetime = datetime.datetime(year=2016, month=1, day=1)
         # end_datetime = datetime.datetime(year=2016, month=2, day=1)

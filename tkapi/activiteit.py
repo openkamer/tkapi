@@ -38,8 +38,8 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def parlementaire_documenten(self):
-        from tkapi.document import ParlementairDocument
-        return self.related_items(ParlementairDocument)
+        from tkapi.document import Document
+        return self.related_items(Document)
 
     @property
     def zaken(self):
@@ -62,11 +62,11 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def begin(self):
-        return self.get_datetime_or_none('Begin')
+        return self.get_datetime_or_none('Aanvangstijd')
 
     @property
     def einde(self):
-        return self.get_datetime_or_none('Einde')
+        return self.get_datetime_or_none('Eindtijd')
 
     @property
     def soort(self):
@@ -78,11 +78,11 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
 
     @staticmethod
     def begin_date_key():
-        return 'Begin'
+        return 'Aanvangstijd'
 
     @staticmethod
     def end_date_key():
-        return 'Einde'
+        return 'Eindtijd'
 
 
 class ActiviteitSoort(Enum):

@@ -49,7 +49,7 @@ class Dossier(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def parlementaire_documenten(self):
-        return [kamerstuk.parlementair_document for kamerstuk in self.kamerstukken]
+        return [kamerstuk.document for kamerstuk in self.kamerstukken]
 
     @property
     def vetnummer(self):

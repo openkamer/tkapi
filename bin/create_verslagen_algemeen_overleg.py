@@ -6,7 +6,7 @@ parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parentdir)
 
 import tkapi
-from tkapi.document import ParlementairDocument
+from tkapi.document import Document
 
 api = tkapi.Api(verbose=True)
 
@@ -16,7 +16,7 @@ def main():
     year = 2016
     start_datetime = datetime.datetime(year=year, month=1, day=1)
     end_datetime = datetime.datetime(year=year+1, month=1, day=1)
-    pd_filter = ParlementairDocument.create_filter()
+    pd_filter = Document.create_filter()
     pd_filter.filter_date_range(start_datetime, end_datetime)
     verslagen = api.get_verslagen_van_algemeen_overleg(pd_filter)
     with open('verslagen_algemeen_overleg_' + str(year) + '.csv', 'w') as fileout:

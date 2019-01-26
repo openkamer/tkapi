@@ -1,6 +1,6 @@
 import datetime
 
-from tkapi.fractie import Fractie, FractieOrganisatie, FractieLid
+from tkapi.fractie import Fractie, FractieOrganisatie, FractieZetel
 
 from .core import TKApiTestCase
 
@@ -63,7 +63,7 @@ class TestFractieLid(TKApiTestCase):
                 self.assertTrue(lid.vacature)
 
     def test_get_fractie_leden_actief(self):
-        filter = FractieLid.create_filter()
+        filter = FractieZetel.create_filter()
         filter.filter_actief()
         leden = self.api.get_fractie_leden(max_items=10, filter=filter)
         print('fractieleden:', len(leden))

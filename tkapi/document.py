@@ -2,7 +2,7 @@ import tkapi
 from tkapi.util import util
 
 
-class ParlementairDocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
+class DocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
     def filter_date_range(self, start_datetime, end_datetime):
         filter_str = "Datum ge " + util.datetime_to_odata(start_datetime)
@@ -23,14 +23,14 @@ class ParlementairDocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
         self._filters.append(filter_str)
 
 
-class ParlementairDocument(tkapi.TKItemRelated, tkapi.TKItem):
-    url = 'ParlementairDocument'
+class Document(tkapi.TKItemRelated, tkapi.TKItem):
+    url = 'Document'
     # expand_param = 'Zaak'
     orderby_param = 'Datum'
 
     @staticmethod
     def create_filter():
-        return ParlementairDocumentFilter()
+        return DocumentFilter()
 
     @property
     def activiteiten(self):

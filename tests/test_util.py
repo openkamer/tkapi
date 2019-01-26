@@ -22,7 +22,7 @@ class TestUtilQueries(TKApiTestCase):
         dossier = queries.get_dossier(vetnummer=vetnummer)
         print('kamerstukken', len(dossier.kamerstukken))
         for kamerstuk in dossier.kamerstukken:
-            print(kamerstuk.ondernummer, kamerstuk.parlementair_document.onderwerp)
+            print(kamerstuk.ondernummer, kamerstuk.document.onderwerp)
             stemmingen = queries.get_kamerstuk_stemmingen(vetnummer=vetnummer, ondernummer=kamerstuk.ondernummer)
             total_votes = 0
             for stemming in stemmingen:

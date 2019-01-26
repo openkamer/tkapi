@@ -1,6 +1,6 @@
 import tkapi
 
-from tkapi.document import ParlementairDocument
+from tkapi.document import Document
 
 
 class KamerstukFilter(tkapi.Filter):
@@ -22,8 +22,8 @@ class Kamerstuk(tkapi.TKItemRelated, tkapi.TKItem):
         return KamerstukFilter()
 
     @property
-    def parlementair_document(self):
-        return self.related_item(ParlementairDocument)
+    def document(self):
+        return self.related_item(Document)
 
     @property
     def dossiers(self):

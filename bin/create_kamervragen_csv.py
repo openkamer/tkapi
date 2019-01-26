@@ -7,7 +7,7 @@ sys.path.append(parentdir)
 
 import tkapi
 
-from tkapi.document import ParlementairDocument
+from tkapi.document import Document
 
 
 def main():
@@ -24,7 +24,7 @@ def main():
     for year in years:
         start_datetime = datetime.datetime(year=year, month=month, day=1)
         end_datetime = datetime.datetime(year=year+1, month=month, day=1)
-        kv_filter = ParlementairDocument.create_filter()
+        kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         kamervragen = api.get_kamervragen(kv_filter)
         with open(os.path.join(out_dir, 'kamervragen_' + str(year) + '.csv'), 'w') as fileout:
