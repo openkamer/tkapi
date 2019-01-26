@@ -45,7 +45,7 @@ class TKItem(object):
     @classmethod
     def get_param_expand(cls):
         if not cls.expand_param:
-            return ''
+            return {}
         return {
             '$expand': cls.expand_param,
         }
@@ -119,6 +119,12 @@ class TKItemRelated(object):
             return self.items_cache[cache_key]
         url = self.json[item_key + '@odata.navigationLink']
         items = Api().get_related(tkitem, related_url=url, filter=filter)
+        self.set_cache(tkitem, filter, items)
+        return items
+
+    def related_items_deep(self, tkitem, filter):
+        from tkapi.api import Api
+        items = Api().get_related(tkitem, related_url=tkitem.url, filter=filter)
         self.set_cache(tkitem, filter, items)
         return items
 
