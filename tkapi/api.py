@@ -1,3 +1,4 @@
+import urllib
 import requests
 
 from tkapi.fractie import Fractie, FractieZetel
@@ -154,7 +155,7 @@ class Api(object):
             timeout=60
         )
         if cls._verbose:
-            print('url: ', response.url)
+            print('url: ', urllib.parse.unquote(response.url))
         if response.status_code in [204, 404, 500]:
             print('HTTP STATUS CODE', response.status_code)
             print('### WARNING: requested item does not exist:', url, '###')
