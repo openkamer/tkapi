@@ -206,7 +206,7 @@ class ZaakMetBesluitBase(Zaak):
         besluit = self.besluit
         if not besluit:
             return None
-        return besluit.slottekst
+        return besluit.tekst
 
     @property
     def stemmingen(self):

@@ -72,6 +72,19 @@ class ZaakRelationFilter(RelationFilter):
     def filter_non_empty_zaak(self):
         self._filter_non_empty()
 
+    def filter_zaak(self, nummer):
+        filter_str = "{}/any(z: z/Nummer eq '{}')".format(self.zaak_related_url, nummer)
+        self.add_filter_str(filter_str)
+
+    def filter_zaken(self, zaak_numbers):
+        filter_str = "{}/any(z:".format(self.zaak_related_url)
+        zaak_nummer_strs = []
+        for nummer in zaak_numbers:
+            zaak_nummer_strs.append("z/Nummer eq '{}'".format(nummer))
+        filter_str += ' or '.join(zaak_nummer_strs)
+        filter_str += ')'
+        self._filters.append(filter_str)
+
     def _filter_kamerstukdossier_str(self, numer):
         return '{}/any(z: z/Kamerstukdossier/any(d: d/Nummer eq {}))'.format(self.zaak_related_url, numer)
 

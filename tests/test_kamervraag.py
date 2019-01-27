@@ -11,11 +11,10 @@ class TestRawApiKamerVraag(TKApiTestCase):
     def test_me(self):
         self.assertTrue(True)
 
-    def test_raw_get_kamervraag_by_id(self):
-        id = "0d7cf75c-8bcc-40f5-ab12-ba856141160d"
-        kamervraag = self.api.get_item(Kamervraag, id, params={'$expand': 'Zaak', })
+    def test_kamervraag_first(self):
+        kamervraag = self.api.get_items(Kamervraag, max_items=1)[0]
         kamervraag.print_json()
-        self.assertEqual('2013D00041', kamervraag.nummer)
+        self.assertTrue(kamervraag.onderwerp)
 
 
 class TestKamervragen(TKApiTestCase):

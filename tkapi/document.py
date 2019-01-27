@@ -24,6 +24,10 @@ class DocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
         filter_str = 'Titel eq ' + "'" + titel.replace("'", "''") + "'"
         self._filters.append(filter_str)
 
+    def filter_dossier(self, nummer):
+        filter_str = "Kamerstukdossier/any(d: d/Nummer eq {})".format(nummer)
+        self._filters.append(filter_str)
+
 
 class Document(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Document'

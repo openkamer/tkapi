@@ -32,41 +32,41 @@ class TestMetaData(TKApiTestCase):
         item.print_json()
         print('\n\n')
 
-    def test_activiteit_metadata(self):
+    def test_activiteit(self):
         self.print_entity_first_example(Activiteit)
 
-    def test_zaak_metadata(self):
+    def test_zaak(self):
         self.print_entity_first_example(Zaak)
 
-    def test_dossier_metadata(self):
+    def test_dossier(self):
         self.print_entity_first_example(Dossier)
 
-    def test_document_metadata(self):
+    def test_document(self):
         self.print_entity_first_example(Document)
 
-    def test_commissie_metadata(self):
+    def test_commissie(self):
         self.print_entity_first_example(Commissie)
 
-    # def test_kamerstuk_metadata(self):
+    # def test_kamerstuk(self):
     #     self.print_entity_first_example(Kamerstuk)
 
-    def test_stemming_metadata(self):
+    def test_stemming(self):
         self.print_entity_first_example(Stemming)
 
-    def test_besluit_metadata(self):
+    def test_besluit(self):
         self.print_entity_first_example(Besluit)
 
-    def test_persoon_metadata(self):
+    def test_persoon(self):
         self.print_entity_first_example(Persoon)
 
-    def test_fractiezetel_metadata(self):
+    def test_fractiezetel(self):
         self.print_entity_first_example(FractieZetel)
 
     def test_fractiezetelpersoon(self):
         self.print_entity_first_example(FractieZetelPersoon)
 
-    def test_fractie_metadata(self):
+    def test_fractie(self):
         self.print_entity_first_example(Fractie)
 
-    # def test_vergadering_metadata(self):
+    # def test_vergadering(self):
     #     self.print_entity_first_example(Vergadering)

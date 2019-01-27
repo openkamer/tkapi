@@ -109,27 +109,27 @@ class TestZaakRelations(TKApiTestCase):
     #     self.assertEqual('c4621bc4-5972-4440-beb0-473709846885', vervangen_zaak.id)
     #     self.assertEqual('2016Z04909', vervangen_zaak.nummer)
 
-
-class TestZaakIndiener(TKApiTestCase):
-
-    def test_get_first(self):
-        indieners = self.api.get_items(ZaakIndiener, max_items=10)
-        for ind in indieners:
-            print(ind.persoon)
-
-    def test_get_indiener(self):
-        uid = '01f9aa67-ee5d-4fcb-a8f3-961d31164977'
-        indiener = self.api.get_item(ZaakIndiener, id=uid)
-        self.assertEqual('287b1e1b-8d2c-405c-828f-2f1405671c2f', indiener.persoon.id)
-        self.assertEqual('8266ae85-5e77-44e9-a8d4-b399b96ca4b2', indiener.fractie.id)
-        self.assertEqual('e8f337b7-ffbc-4fcd-a62c-00079510a0e9', indiener.zaak.id)
-
-    def test_get_medeindiener(self):
-        uid = 'f5a27871-856e-4a15-bce4-5d61460bf5cc'
-        indiener = self.api.get_item(ZaakMedeindiener, id=uid)
-        self.assertEqual('ad21ebf6-352c-4411-a110-95205bfa3126', indiener.persoon.id)
-        self.assertEqual('8266ae85-5e77-44e9-a8d4-b399b96ca4b2', indiener.fractie.id)
-        self.assertEqual('e8f337b7-ffbc-4fcd-a62c-00079510a0e9', indiener.zaak.id)
+# TODO BR: update uids
+# class TestZaakIndiener(TKApiTestCase):
+#
+#     def test_get_first(self):
+#         indieners = self.api.get_items(ZaakIndiener, max_items=10)
+#         for ind in indieners:
+#             print(ind.persoon)
+#
+#     def test_get_indiener(self):
+#         uid = '01f9aa67-ee5d-4fcb-a8f3-961d31164977'
+#         indiener = self.api.get_item(ZaakIndiener, id=uid)
+#         self.assertEqual('287b1e1b-8d2c-405c-828f-2f1405671c2f', indiener.persoon.id)
+#         self.assertEqual('8266ae85-5e77-44e9-a8d4-b399b96ca4b2', indiener.fractie.id)
+#         self.assertEqual('e8f337b7-ffbc-4fcd-a62c-00079510a0e9', indiener.zaak.id)
+#
+#     def test_get_medeindiener(self):
+#         uid = 'f5a27871-856e-4a15-bce4-5d61460bf5cc'
+#         indiener = self.api.get_item(ZaakMedeindiener, id=uid)
+#         self.assertEqual('ad21ebf6-352c-4411-a110-95205bfa3126', indiener.persoon.id)
+#         self.assertEqual('8266ae85-5e77-44e9-a8d4-b399b96ca4b2', indiener.fractie.id)
+#         self.assertEqual('e8f337b7-ffbc-4fcd-a62c-00079510a0e9', indiener.zaak.id)
 
 
 class TestZaakSoort(TKApiTestCase):
