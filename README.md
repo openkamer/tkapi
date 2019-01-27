@@ -38,7 +38,7 @@ For more examples see the `examples` directory and the tests.
 | ZaakActor                  | **CommissieZetel**         | **PersoonGeschenk**          |
 | **Kamerstukdossier**       | **CommissieVastPersoon**   | **PersoonLoopbaan**          |
 | **Fractie**                | CommissieVastVacature      | **PersoonNevenfunctie**      |
-| **FractieOrganisatie**     | CommissieVervangerVacature | **PersoonNevenfunctieInkomsten** |
+|                            | CommissieVervangerVacature | **PersoonNevenfunctieInkomsten** |
 | FractieAanvullendGegeven   | CommissieVervangerPersoon  | **PersoonOnderwijs**         |
 | **FractieZetel**           |                            | **PersoonReis**              |
 | **Stemming**               |                            | **PersoonFunctie**           |
@@ -48,7 +48,6 @@ For more examples see the `examples` directory and the tests.
 | **Document**               |                            |                              |
 | DocumentVersie             |                            |                              |
 | Bestand                    |                            |                              |
-| **Kamerstuk**              |                            |                              |
 | **Agendapunt**             |                            |                              |
 | **Besluit**                |                            |                              |
 

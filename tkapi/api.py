@@ -8,7 +8,6 @@ from .besluit import Besluit
 from .commissie import Commissie
 from .document import Document
 from .dossier import Dossier
-from .kamerstuk import Kamerstuk
 from .kamervraag import Kamervraag, Antwoord
 from .persoon import PersoonGeschenk
 from .persoon import PersoonReis
@@ -80,10 +79,6 @@ class Api(object):
     @classmethod
     def get_activiteiten(cls, filter, order=None, max_items=None):
         return cls.get_items(Activiteit, filter, order, max_items)
-
-    @classmethod
-    def get_kamerstukken(cls, filter=None, order=None, max_items=None):
-        return cls.get_items(Kamerstuk, filter, order, max_items)
 
     @classmethod
     def get_stemmingen(cls, filter=None, order=None, max_items=None):
