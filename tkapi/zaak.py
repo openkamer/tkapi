@@ -34,11 +34,15 @@ class ZaakFilter(tkapi.SoortFilter):
         self.add_filter_str(filter_str)
 
     def filter_nummer(self, nummer):
-        filter_str = "Nummer eq " + "'" + nummer.replace("'", "''") + "'"
+        filter_str = "Nummer eq '{}'".format(nummer)
+        self._filters.append(filter_str)
+
+    def filter_volgnummer(self, nummer):
+        filter_str = "Volgnummer eq {}".format(nummer)
         self._filters.append(filter_str)
 
     def filter_onderwerp(self, onderwerp):
-        filter_str = "Onderwerp eq " + "'" + onderwerp.replace("'", "''") + "'"
+        filter_str = "Onderwerp eq '{}'".format(onderwerp)
         self._filters.append(filter_str)
 
     def filter_empty_besluit(self):

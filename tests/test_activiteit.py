@@ -58,7 +58,7 @@ class TestActiviteitFilters(TKApiTestCase):
     # TODO BR: too many nested any/all query
     # def test_kamerstuk_filter(self):
     #     filter = Activiteit.create_filter()
-    #     filter.filter_kamerstuk(nummer=31239, ondernummer=16)
+    #     filter.filter_kamerstuk(nummer=31239, volgnummer=16)
     #     activiteiten = self.api.get_activiteiten(filter=filter, max_items=self.N_ITEMS)
     #     print(len(activiteiten))
     #     self.assertEqual(self.N_ITEMS, len(activiteiten))

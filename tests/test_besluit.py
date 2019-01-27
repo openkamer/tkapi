@@ -34,7 +34,7 @@ class TestBesluit(TKApiTestCase):
 #         nummer = 33885
 #         volgnummer = 16
 #         filter = Besluit.create_filter()
-#         filter.filter_kamerstuk(nummer=nummer, ondernummer=volgnummer)
+#         filter.filter_kamerstuk(nummer=nummer, volgnummer=volgnummer)
 #         besluiten = self.api.get_besluiten(filter=filter, max_items=n_items)
 #         self.assertEqual(1, len(besluiten))
 #         for besluit in besluiten:

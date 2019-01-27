@@ -9,7 +9,6 @@ class Kamervraag(Document):
 
     def __init__(self, json):
         super().__init__(json)
-        self.document_url = self.get_document_url()
 
     @staticmethod
     def nearest(zaken, pivot):
@@ -23,7 +22,9 @@ class Kamervraag(Document):
     def onderwerp(self):
         return self.get_property_or_empty_string('Onderwerp')
 
-    def get_document_url(self):
+    @property
+    def document_url(self):
+        print('get officielebekendmakingen.nl document url')
         url = ''
         # kamervragen have two url types at officielebekendmakingen, one starting with 'kv-tk' an old ones with 'kv-'
         # TODO: determine date at which this format is switched to reduce the number of requests
@@ -39,6 +40,7 @@ class Kamervraag(Document):
         if not url:
             print('no zaak found')
             # self.print_json()
+        print('url found:', url)
         return url
 
 

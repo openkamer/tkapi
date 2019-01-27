@@ -2,6 +2,7 @@ import datetime
 
 from orderedset import OrderedSet
 
+from tkapi.util import queries
 from tkapi.zaak import Zaak, ZaakSoort
 from tkapi.dossier import Dossier, DossierWetsvoorstel
 from tkapi.document import Document
@@ -86,15 +87,12 @@ class TestDossierAfgesloten(TKApiTestCase):
         self.assertEqual(len(dossiers), 0)
 
 
-# TODO BR: disabled because only 1 nested query allowed
-# class TestDossierFilter(TKApiTestCase):
-#
-#     def test_filter_kamerstuk(self):
-#         filter = Dossier.create_filter()
-#         filter.filter_kamerstuk(nummer=33885, ondernummer=16)
-#         dossiers = self.api.get_dossiers(filter=filter)
-#         for dossier in dossiers:
-#             print(dossier.nummer, len(dossier.kamerstukken))
+class TestDossierFilter(TKApiTestCase):
+
+    def test_filter_dossier_nummer(self):
+        nummer = 33885
+        dossier = queries.get_dossier(nummer)
+        self.assertEqual(nummer, dossier.nummer)
 
 
 class TestWetsvoorstelDossier(TKApiTestCase):

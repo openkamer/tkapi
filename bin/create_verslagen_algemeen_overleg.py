@@ -20,7 +20,7 @@ def main():
     pd_filter.filter_date_range(start_datetime, end_datetime)
     verslagen = api.get_verslagen_van_algemeen_overleg(pd_filter)
     with open('verslagen_algemeen_overleg_' + str(year) + '.csv', 'w') as fileout:
-        header = ','.join(['datum gepubliceerd', 'dossier nr', 'dossier toevoeging', 'kamerstuk ondernummer', 'url'])
+        header = ','.join(['datum gepubliceerd', 'dossier nr', 'dossier toevoeging', 'kamerstuk volgnummer', 'url'])
         fileout.write(header + '\n')
         for verslag in verslagen:
             if not verslag.kamerstuk or not verslag.dossier:
@@ -33,7 +33,7 @@ def main():
                 verslag.datum.strftime('%Y-%m-%d'),
                 str(verslag.dossier.nummer),
                 toevoeging,
-                str(verslag.kamerstuk.ondernummer),
+                str(verslag.kamerstuk.volgnummer),
                 verslag.document_url
             ])
             fileout.write(row + '\n')

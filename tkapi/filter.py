@@ -58,6 +58,10 @@ class RelationFilter(Filter):
         filter_str = self.related_url + '/any(z:z ne null)'
         self._filters.append(filter_str)
 
+    def _filter_empty(self):
+        filter_str = self.related_url + '/any(z:z eq null)'
+        self._filters.append(filter_str)
+
 
 class ZaakRelationFilter(RelationFilter):
 
@@ -72,6 +76,9 @@ class ZaakRelationFilter(RelationFilter):
     def filter_non_empty_zaak(self):
         self._filter_non_empty()
 
+    def filter_empty_zaak(self):
+        self._filter_empty()
+
     def filter_zaak(self, nummer):
         filter_str = "{}/any(z: z/Nummer eq '{}')".format(self.zaak_related_url, nummer)
         self.add_filter_str(filter_str)
@@ -85,20 +92,20 @@ class ZaakRelationFilter(RelationFilter):
         filter_str += ')'
         self._filters.append(filter_str)
 
-    def _filter_kamerstukdossier_str(self, numer):
-        return '{}/any(z: z/Kamerstukdossier/any(d: d/Nummer eq {}))'.format(self.zaak_related_url, numer)
+    def _filter_kamerstukdossier_str(self, nummer):
+        return '{}/any(z: z/Kamerstukdossier/any(d: d/Nummer eq {}))'.format(self.zaak_related_url, nummer)
 
     def filter_kamerstukdossier(self, nummer):
         filter_str = self._filter_kamerstukdossier_str(nummer)
         self.add_filter_str(filter_str)
 
-    def _filter_kamerstuk_str(self, ondernummer):
-        return '{}/any(z: z/Volgnummer eq {})'.format(self.zaak_related_url, ondernummer)
+    def _filter_kamerstuk_str(self, volgnummer):
+        return '{}/any(z: z/Volgnummer eq {})'.format(self.zaak_related_url, volgnummer)
 
-    def filter_kamerstuk(self, nummer, ondernummer):
+    def filter_kamerstuk(self, nummer, volgnummer):
         filter_str = self._filter_kamerstukdossier_str(nummer)
         filter_str += ' and '
-        filter_str += self._filter_kamerstuk_str(ondernummer)
+        filter_str += self._filter_kamerstuk_str(volgnummer)
         self.add_filter_str(filter_str)
 
     def filter_moties(self):

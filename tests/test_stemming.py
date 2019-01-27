@@ -35,7 +35,7 @@ class TestStemmingFilters(TKApiTestCase):
         n_stemmingen = 0
         for zaak in zaken:
             print('=========================================')
-            print('zaak', zaak.nummer, zaak.dossier.nummer)
+            print('zaak', zaak.nummer, zaak.dossier.nummer, zaak.volgnummer)
             filter = Besluit.create_filter()
             filter.filter_zaak(zaak.nummer)
             besluiten = self.api.get_besluiten(filter=filter)
@@ -50,6 +50,6 @@ class TestStemmingFilters(TKApiTestCase):
     # TODO BR: disabled because only 1 nested query allowed
     # def test_filter_kamerstuk(self):
     #     filter = Stemming.create_filter()
-    #     filter.filter_kamerstuk(nummer=33885, ondernummer=16)
+    #     filter.filter_kamerstuk(nummer=33885, volgnummer=16)
     #     stemmingen = self.api.get_stemmingen(filter=filter)
     #     self.assertEqual(16, len(stemmingen))

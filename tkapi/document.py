@@ -56,7 +56,6 @@ class Document(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def dossiers(self):
-        # TODO BR: can there be more than one dossier?
         from tkapi.dossier import Dossier
         return self.related_items(Dossier)
 

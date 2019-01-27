@@ -18,14 +18,14 @@ class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
         filter_str = self._filter_kamerstukdossier_str(numer=nummer)
         self.add_filter_str(filter_str)
 
-    def filter_kamerstuk(self, nummer, ondernummer, is_or=False):
+    def filter_kamerstuk(self, nummer, volgnummer, is_or=False):
         filter_str = super()._filter_kamerstukdossier_str(numer=nummer)
         filter_str += ' and '
-        filter_str += super()._filter_kamerstuk_str(ondernummer=ondernummer)
+        filter_str += super()._filter_kamerstuk_str(volgnummer=volgnummer)
         filter_str += ' or '
         filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Kamerstukdossier/any(d: d/Nummer eq {})))'.format(nummer)
         filter_str += ' and '
-        filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Volgnummer eq {}))'.format(ondernummer)
+        filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Volgnummer eq {}))'.format(volgnummer)
         self.add_filter_str(filter_str)
 
 

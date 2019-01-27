@@ -61,6 +61,7 @@ class TestKamervraagItem(TKApiTestCase):
         kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         kamervragen = self.api.get_kamervragen(kv_filter)
+        self.assertEqual(len(kamervragen), 23)
 
 
 class TestAntwoordItem(TKApiTestCase):
@@ -80,12 +81,3 @@ class TestAntwoordItem(TKApiTestCase):
         kv_filter.filter_date_range(start_datetime, end_datetime)
         antwoorden = self.api.get_antwoorden(kv_filter)
         self.assertEqual(len(antwoorden), 2)
-
-    # NOTE: this test fails because there is no 'Aanhanselnummer' in the document to create the url
-    # def test_get_antwoorden_2008(self):
-    #     start_datetime = datetime.datetime(year=2008, month=7, day=1)
-    #     end_datetime = datetime.datetime(year=2008, month=12, day=1)
-    #     antwoorden = get_antwoorden(start_datetime, end_datetime)
-    #     print(len(antwoorden))
-    #     for antwoord in antwoorden:
-    #         print(antwoord.document_url)

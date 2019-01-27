@@ -6,6 +6,7 @@ from tkapi.stemming import Stemming
 from tkapi.dossier import Dossier
 from tkapi.besluit import Besluit
 from tkapi.activiteit import Activiteit
+from tkapi.zaak import Zaak
 
 
 def get_fractieleden_actief():
@@ -36,14 +37,6 @@ def do_load_stemmingen(stemmingen):
     return stemmingen_loaded
 
 
-def get_kamerstuk_stemmingen(nummer, ondernummer):
-    filter = Stemming.create_filter()
-    filter.filter_kamerstuk(nummer=nummer, ondernummer=ondernummer)
-    stemmingen = Api().get_stemmingen(filter=filter)
-    stemmingen = do_load_stemmingen(stemmingen)
-    return stemmingen
-
-
 def get_dossier(nummer):
     filter = Dossier.create_filter()
     filter.filter_nummer(nummer)
@@ -52,17 +45,44 @@ def get_dossier(nummer):
     return dossier
 
 
+def get_dossier_zaken(nummer):
+    zaak_filter = Zaak.create_filter()
+    zaak_filter.filter_kamerstukdossier(nummer=nummer)
+    return Api().get_zaken(filter=zaak_filter)
+
+
+def get_kamerstuk_zaken(nummer, volgnummer):
+    zaak_filter = Zaak.create_filter()
+    zaak_filter.filter_kamerstukdossier(nummer)
+    zaak_filter.filter_volgnummer(volgnummer)
+    return Api().get_zaken(zaak_filter)
+
+
 def get_dossier_besluiten(nummer):
-    filter = Besluit.create_filter()
-    filter.filter_kamerstukdossier(nummer=nummer)
-    return Api().get_besluiten(filter=filter)
+    zaken = get_dossier_zaken(nummer)
+    besluiten = []
+    for zaak in zaken:
+        besluiten += zaak.besluiten
+    return besluiten
 
 
 def get_dossier_besluiten_with_stemmingen(nummer):
-    filter = Besluit.create_filter()
-    filter.filter_kamerstukdossier(nummer=nummer)
-    filter.filter_non_empty(Stemming)
-    return Api().get_besluiten(filter=filter)
+    zaken = get_dossier_zaken(nummer)
+    besluiten = []
+    for zaak in zaken:
+        filter = Besluit.create_filter()
+        filter.filter_zaak(zaak.nummer)
+        filter.filter_non_empty(Stemming)
+        besluiten += Api().get_besluiten(filter=filter)
+    return besluiten
+
+
+def get_kamerstuk_besluiten(nummer, volgnummer):
+    zaken = get_kamerstuk_zaken(nummer, volgnummer)
+    besluiten = []
+    for zaak in zaken:
+        besluiten += zaak.besluiten
+    return besluiten
 
 
 def get_dossier_activiteiten(nummer):
