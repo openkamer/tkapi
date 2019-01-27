@@ -6,6 +6,7 @@ from .core import TKApiTestCase
 
 
 class TestUtilQueries(TKApiTestCase):
+    pass
 
     # TODO BR: disabled because only 1 nested query allowed
     # def test_get_kamerstuk_stemmingen(self):

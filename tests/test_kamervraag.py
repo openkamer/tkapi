@@ -2,6 +2,7 @@ import datetime
 
 from tkapi.kamervraag import Kamervraag
 from tkapi.document import Document
+from tkapi.zaak import ZaakSoort
 
 from .core import TKApiTestCase
 
@@ -24,7 +25,7 @@ class TestKamervragen(TKApiTestCase):
         end_datetime = datetime.datetime(year=2013, month=1, day=7)
         pd_filter = Document.create_filter()
         pd_filter.filter_date_range(start_datetime, end_datetime)
-        pd_filter.filter_soort('Schriftelijke vragen')
+        pd_filter.filter_soort(ZaakSoort.SCHRIFTELIJKE_VRAGEN.value)
         schriftelijke_vragen = self.api.get_documenten(pd_filter)
         kamervragen_no_zaak = []
         for kamervraag in schriftelijke_vragen:
