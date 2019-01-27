@@ -74,7 +74,11 @@ class Document(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def nummer(self):
-        return self.get_property_or_empty_string('Nummer')
+        return self.get_property_or_empty_string('DocumentNummer')
+
+    @property
+    def volgnummer(self):
+        return self.get_property_or_empty_string('Volgnummer')
 
     @property
     def soort(self):
@@ -123,10 +127,10 @@ class VerslagAlgemeenOverleg(Document):
         url = ''
         if self.dossiers:
             dossier = self.dossiers[0]
-            kamerstuk_id = str(dossier.nummer)
+            dossier_nr = str(dossier.nummer)
             if dossier.toevoeging and '(' not in dossier.toevoeging:
-                kamerstuk_id += '-' + str(dossier.toevoeging)
-            kamerstuk_id += '-' + str(self.kamerstuk.ondernummer)
+                dossier_nr += '-' + str(dossier.toevoeging)
+                dossier_nr += '-' + str(self.volgnummer)
             url = 'https://zoek.officielebekendmakingen.nl/kst-' + kamerstuk_id
             response = requests.get(url, timeout=60)
             assert response.status_code == 200

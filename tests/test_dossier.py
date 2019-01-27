@@ -117,13 +117,13 @@ class TestWetsvoorstelDossier(TKApiTestCase):
         dossier_nrs = []
         pds_no_dossier_nr = []
         for pd in pds[:10]:
-            print(pd.dossier_nummer)
-            if pd.dossier_nummer:
-                dossier_nrs.append(pd.dossier_nummer)
+            print(pd.dossier_nummers)
+            if pd.dossier_nummers:
+                dossier_nrs += pd.dossier_nummers
             else:
                 pds_no_dossier_nr.append(pd)
         for pd in pds_no_dossier_nr:
-            print(pd.nummer)
+            print(pd.dossier_nummers)
             print(pd.onderwerp)
 
         dossier_nrs = OrderedSet(sorted(dossier_nrs))

@@ -32,8 +32,8 @@ class TestActiviteit(TKApiTestCase):
         self.assertEqual(10, len(activiteiten))
         for activiteit in activiteiten:
             for pd in activiteit.documenten:
-                if pd.kamerstuk:
-                    print('dossier nummer:', pd.kamerstuk.dossier.nummer)
+                for dossier in pd.dossiers:
+                    print('dossier nummer:', dossier.nummer)
 
 
 class TestActiviteitFilters(TKApiTestCase):

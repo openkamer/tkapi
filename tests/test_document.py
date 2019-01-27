@@ -17,7 +17,6 @@ class TestSingleDocument(TKApiTestCase):
         # pd.print_json()
         # for zaak in pd.zaken:
         #     print(zaak)
-        print(pd.kamerstuk)
         for agendapunt in pd.agendapunten:
             print(agendapunt)
         for dossier in pd.dossiers:
@@ -121,9 +120,6 @@ class TestVerslagAlgemeenOverleg(TKApiTestCase):
         self.assertEqual(18, len(verslagen))
         for verslag in verslagen:
             print(verslag.onderwerp)
-            if verslag.kamerstuk:
-                print(str(verslag.kamerstuk.dossier.nummer) + ', ' + str(verslag.kamerstuk.ondernummer))
-                print(verslag.document_url)
             # print(verslag.document_url)
             # verslag.kamerstuk.print_json()
             # print(verslag.dossier.titel)
