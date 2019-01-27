@@ -38,40 +38,6 @@ class TestDossier(TKApiTestCase):
         self.assertEqual(dossiers[0].nummer, expected_dossier_nummer)
 
 
-class TestDossierKamerstukken(TKApiTestCase):
-
-    def test_dossier_kamerstukken(self):
-        # nummer = 34693
-        # nummer = 34374
-        # nummer = 34051
-        # nummer = 22139
-        nummer = 34723
-        dossier_filter = Dossier.create_filter()
-        dossier_filter.filter_nummer(nummer)
-        dossiers = self.api.get_dossiers(filter=dossier_filter)
-        self.assertEqual(len(dossiers), 1)
-        dossier = dossiers[0]
-        kamerstukken = dossier.kamerstukken
-        for kamerstuk in kamerstukken:
-            print('\n============')
-            # kamerstuk.print_json()
-            print(kamerstuk.ondernummer)
-            document = kamerstuk.document
-            # document.print_json()
-            print(document.soort)
-            print(document.titel)
-            for agendapunt in document.agendapunten:
-                self.assertTrue(agendapunt.id)
-                # agendapunt.print_json()
-            for zaak in document.zaken:
-                if not zaak.afgedaan:
-                    print('NIET GESLOTEN')
-                for besluit in zaak.besluiten:
-                    for stemming in besluit.stemmingen:
-                        self.assertTrue(stemming.id)
-                        # stemming.print_json()
-
-
 class TestDossiersForZaken(TKApiTestCase):
     start_datetime = datetime.datetime(year=2016, month=1, day=1)
     end_datetime = datetime.datetime(year=2016, month=1, day=14)

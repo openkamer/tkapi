@@ -56,9 +56,9 @@ class Document(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def dossiers(self):
-        if self.kamerstuk:
-            return self.kamerstuk.dossiers
-        return []
+        # TODO BR: can there be more than one dossier?
+        from tkapi.dossier import Dossier
+        return self.related_items(Dossier)
 
     @property
     def aanhangselnummer(self):
@@ -97,16 +97,8 @@ class Document(tkapi.TKItemRelated, tkapi.TKItem):
         return 'Datum'
 
     @property
-    def dossier_nummer(self):
-        if self.kamerstuk and self.kamerstuk.dossier and self.kamerstuk.dossier.nummer:
-            return self.kamerstuk.dossier.nummer
-        return None
-
-    @property
-    def dossier_toevoeging(self):
-        if self.kamerstuk and self.kamerstuk.dossier and self.kamerstuk.dossier.toevoeging:
-            return self.kamerstuk.dossier.toevoeging
-        return None
+    def dossier_nummers(self):
+        return [dossier.nummer for dossier in self.dossiers]
 
 
 class VerslagAlgemeenOverleg(Document):
