@@ -26,18 +26,14 @@ class Dossier(tkapi.TKItemRelated, tkapi.TKItem):
         return DossierFilter()
 
     @property
-    def kamerstukken(self):
-        from tkapi.kamerstuk import Kamerstuk
-        return self.related_items(Kamerstuk)
-
-    @property
     def zaken(self):
         from tkapi.zaak import Zaak
         return self.related_items(Zaak)
 
     @property
     def documenten(self):
-        return [kamerstuk.document for kamerstuk in self.kamerstukken]
+        from tkapi.document import Document
+        return self.related_items(Document)
 
     @property
     def nummer(self):

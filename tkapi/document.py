@@ -61,11 +61,6 @@ class Document(tkapi.TKItemRelated, tkapi.TKItem):
         return []
 
     @property
-    def kamerstuk(self):
-        from tkapi.kamerstuk import Kamerstuk
-        return self.related_item(Kamerstuk)
-
-    @property
     def aanhangselnummer(self):
         return self.get_property_or_empty_string('Aanhangselnummer')
 
