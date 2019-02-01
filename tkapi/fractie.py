@@ -138,7 +138,7 @@ class FractieZetelFilter(tkapi.Filter):
         self._filters.append("Fractie/Id eq {}".format(uid))
 
 
-class FractieZetelPersoonRelationFilter(tkapi.RelationFilter):
+class FractieZetelPersoonRelationFilter(tkapi.RelationsFilter):
 
     @property
     def related_url(self):

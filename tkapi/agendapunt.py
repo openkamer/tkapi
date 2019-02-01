@@ -1,7 +1,7 @@
 import tkapi
 
 
-class AgendaPuntRelationFilter(tkapi.RelationFilter):
+class AgendaPuntRelationFilter(tkapi.RelationsFilter):
 
     @property
     def related_url(self):

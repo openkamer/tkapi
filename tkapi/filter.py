@@ -44,7 +44,7 @@ class VerwijderdFilter(Filter):
         self._filters.append(filter_str)
 
 
-class RelationFilter(Filter):
+class RelationsFilter(Filter):
 
     @property
     def related_url(self):
@@ -54,6 +54,7 @@ class RelationFilter(Filter):
         filter_str = '{}/any(z:z ne null)'.format(related_entity.url)
         self._filters.append(filter_str)
 
+    # TODO BR: should this not be the public function
     def _filter_non_empty(self):
         filter_str = self.related_url + '/any(z:z ne null)'
         self._filters.append(filter_str)
@@ -63,7 +64,22 @@ class RelationFilter(Filter):
         self._filters.append(filter_str)
 
 
-class ZaakRelationFilter(RelationFilter):
+class RelationFilter(Filter):
+
+    @property
+    def related_url(self):
+        raise NotImplementedError
+
+    def filter_non_empty(self):
+        filter_str = self.related_url + ' ne null'
+        self._filters.append(filter_str)
+
+    def filter_empty(self):
+        filter_str = self.related_url + 'eq null'
+        self._filters.append(filter_str)
+
+
+class ZaakRelationFilter(RelationsFilter):
 
     @property
     def related_url(self):
@@ -92,21 +108,8 @@ class ZaakRelationFilter(RelationFilter):
         filter_str += ')'
         self._filters.append(filter_str)
 
-    def _filter_kamerstukdossier_str(self, nummer):
-        return '{}/any(z: z/Kamerstukdossier/any(d: d/Nummer eq {}))'.format(self.zaak_related_url, nummer)
-
-    def filter_kamerstukdossier(self, nummer):
-        filter_str = self._filter_kamerstukdossier_str(nummer)
-        self.add_filter_str(filter_str)
-
     def _filter_kamerstuk_str(self, volgnummer):
         return '{}/any(z: z/Volgnummer eq {})'.format(self.zaak_related_url, volgnummer)
-
-    def filter_kamerstuk(self, nummer, volgnummer):
-        filter_str = self._filter_kamerstukdossier_str(nummer)
-        filter_str += ' and '
-        filter_str += self._filter_kamerstuk_str(volgnummer)
-        self.add_filter_str(filter_str)
 
     def filter_moties(self):
         filter_str = '{}/any(z: z/Soort eq \'{}\')'.format(self.zaak_related_url, 'Motie')

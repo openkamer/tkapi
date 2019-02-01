@@ -8,26 +8,6 @@ class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
     def __init__(self):
         super().__init__()
 
-    def _filter_kamerstukdossier_str(self, numer):
-        filter_str = super()._filter_kamerstukdossier_str(numer=numer)
-        filter_str += ' or '
-        filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Kamerstukdossier/any(d: d/Nummer eq {})))'.format(numer)
-        return filter_str
-
-    def filter_kamerstukdossier(self, nummer):
-        filter_str = self._filter_kamerstukdossier_str(numer=nummer)
-        self.add_filter_str(filter_str)
-
-    def filter_kamerstuk(self, nummer, volgnummer, is_or=False):
-        filter_str = super()._filter_kamerstukdossier_str(numer=nummer)
-        filter_str += ' and '
-        filter_str += super()._filter_kamerstuk_str(volgnummer=volgnummer)
-        filter_str += ' or '
-        filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Kamerstukdossier/any(d: d/Nummer eq {})))'.format(nummer)
-        filter_str += ' and '
-        filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Volgnummer eq {}))'.format(volgnummer)
-        self.add_filter_str(filter_str)
-
 
 class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Activiteit'

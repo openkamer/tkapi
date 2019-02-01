@@ -1,7 +1,7 @@
 import tkapi
 
 
-class BesluitRelationFilter(tkapi.RelationFilter):
+class BesluitRelationFilter(tkapi.RelationsFilter):
 
     @property
     def related_url(self):
