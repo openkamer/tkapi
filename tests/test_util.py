@@ -31,3 +31,9 @@ class TestUtilQueries(TKApiTestCase):
         self.assertEqual(1, len(besluiten))
         for besluit in besluiten:
             print(besluit.tekst, besluit.soort, besluit.stemming_soort, besluit.opmerking, len(besluit.stemmingen))
+
+    def test_get_kamerstuk_zaken(self):
+        nummer = 33885
+        volgnummer = 16
+        zaken = queries.get_kamerstuk_zaken(nummer, volgnummer)
+        print(len(zaken))

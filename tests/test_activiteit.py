@@ -1,6 +1,7 @@
 import datetime
 
 from tkapi.activiteit import Activiteit, ActiviteitSoort
+from tkapi.util import queries
 
 from .core import TKApiTestCase
 
@@ -39,37 +40,45 @@ class TestActiviteit(TKApiTestCase):
 class TestActiviteitFilters(TKApiTestCase):
     N_ITEMS = 15
 
-    # TODO BR: too many nested any/all query
-    # def test_kamerstuk_dossier_filter(self):
-    #     filter = Activiteit.create_filter()
-    #     filter.filter_kamerstukdossier(nummer=31239)
-    #     activiteiten = self.api.get_activiteiten(filter=filter, max_items=self.N_ITEMS)
-    #     print(len(activiteiten))
-    #     self.assertEqual(self.N_ITEMS, len(activiteiten))
-    #     ids = set()
-    #     for activiteit in activiteiten:
-    #         ids.add(activiteit.id)
-    #         print(
-    #             'Activiteit: {} ({} - {})'
-    #             .format(activiteit.onderwerp, activiteit.begin, activiteit.einde)
-    #         )
-    #     self.assertEqual(len(activiteiten), len(ids))
+    def test_dossier_filter(self):
+        dosser_nr = 31239
+        activiteiten_expected = 8
+        activiteiten = queries.get_dossier_activiteiten(dosser_nr)
+        print('activiteiten found:', len(activiteiten))
+        for activiteit in activiteiten:
+            print('Activiteit: {} ({} - {})' .format(activiteit.onderwerp, activiteit.begin, activiteit.einde))
+        self.assertEqual(activiteiten_expected, len(activiteiten))
 
-    # TODO BR: too many nested any/all query
-    # def test_kamerstuk_filter(self):
-    #     filter = Activiteit.create_filter()
-    #     filter.filter_kamerstuk(nummer=31239, volgnummer=16)
-    #     activiteiten = self.api.get_activiteiten(filter=filter, max_items=self.N_ITEMS)
-    #     print(len(activiteiten))
-    #     self.assertEqual(self.N_ITEMS, len(activiteiten))
-    #     ids = set()
-    #     for activiteit in activiteiten:
-    #         ids.add(activiteit.id)
-    #         print(
-    #             'Activiteit: {} ({} - {})'
-    #             .format(activiteit.onderwerp, activiteit.begin, activiteit.einde)
-    #         )
-    #     self.assertEqual(len(activiteiten), len(ids))
+    # TODO BR: should return results
+    def test_dossier_filter_2(self):
+        dosser_nr = 34986
+        activiteiten_expected = 8
+        activiteiten = queries.get_dossier_activiteiten(dosser_nr)
+        print('activiteiten found:', len(activiteiten))
+        for activiteit in activiteiten:
+            print('Activiteit: {} ({} - {})' .format(activiteit.onderwerp, activiteit.begin, activiteit.einde))
+        self.assertEqual(activiteiten_expected, len(activiteiten))
+
+    # TODO BR: should return results
+    def test_kamerstuk_filter(self):
+        dossier_nr = 34986
+        volgnummer = 16
+        activiteiten = queries.get_dossier_activiteiten(nummer=dossier_nr)
+        print(len(activiteiten))
+        for activiteit in activiteiten:
+            for zaak in activiteit.zaken:
+                print(zaak.volgnummer)
+        activiteiten = queries.get_kamerstuk_activiteiten(nummer=dossier_nr, volgnummer=volgnummer)
+        print(len(activiteiten))
+        self.assertGreater(len(activiteiten), 0)
+        ids = set()
+        for activiteit in activiteiten:
+            ids.add(activiteit.id)
+            print(
+                'Activiteit: {} ({} - {})'
+                .format(activiteit.onderwerp, activiteit.begin, activiteit.einde)
+            )
+        self.assertEqual(len(activiteiten), len(ids))
 
     def test_soort_filter(self):
         soorten = [

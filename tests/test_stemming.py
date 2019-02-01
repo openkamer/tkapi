@@ -6,6 +6,8 @@ from tkapi.besluit import Besluit
 from tkapi.document import Document
 from tkapi.zaak import Zaak
 
+from tkapi.util import queries
+
 from .core import TKApiTestCase
 
 
@@ -47,9 +49,8 @@ class TestStemmingFilters(TKApiTestCase):
         print('stemmingen', n_stemmingen)
         self.assertEqual(208, n_stemmingen)
 
-    # TODO BR: disabled because only 1 nested query allowed
-    # def test_filter_kamerstuk(self):
-    #     filter = Stemming.create_filter()
-    #     filter.filter_kamerstuk(nummer=33885, volgnummer=16)
-    #     stemmingen = self.api.get_stemmingen(filter=filter)
-    #     self.assertEqual(16, len(stemmingen))
+    def test_filter_kamerstuk(self):
+        dossier_nr = 33885
+        volgnummer = 16
+        stemmingen = queries.get_kamerstuk_stemmingen(nummer=dossier_nr, volgnummer=volgnummer)
+        self.assertEqual(16, len(stemmingen))

@@ -39,6 +39,8 @@ class TestCommissie(TKApiTestCase):
         print('\n=====Commissies Incomplete=====')
         print('commissies without soort: ' + str(len(commissies_without_soort)))
         print('commissies without name: ' + str(len(commissies_without_name)))
+        self.assertEqual(0, len(commissies_without_name))
+        self.assertGreaterEqual(60, len(commissies_without_soort))
 
     #TODO BR: update uid
     # def test_get_leden(self):
