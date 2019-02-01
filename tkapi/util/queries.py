@@ -5,8 +5,18 @@ from tkapi.fractie import Fractie
 from tkapi.stemming import Stemming
 from tkapi.dossier import Dossier
 from tkapi.besluit import Besluit
-from tkapi.activiteit import Activiteit
 from tkapi.zaak import Zaak
+
+
+def filter_duplicates(items):
+    # NOTE: this must be a python default function
+    items_ids = set()
+    items_unique = []
+    for item in items:
+        if item.id not in items_ids:
+            items_unique.append(item)
+            items_ids.add(item.id)
+    return items_unique
 
 
 def get_fractieleden_actief():
@@ -63,7 +73,7 @@ def get_dossier_besluiten(nummer):
     besluiten = []
     for zaak in zaken:
         besluiten += zaak.besluiten
-    return besluiten
+    return filter_duplicates(besluiten)
 
 
 def get_dossier_besluiten_with_stemmingen(nummer):
@@ -74,7 +84,7 @@ def get_dossier_besluiten_with_stemmingen(nummer):
         filter.filter_zaak(zaak.nummer)
         filter.filter_non_empty(Stemming)
         besluiten += Api().get_besluiten(filter=filter)
-    return besluiten
+    return filter_duplicates(besluiten)
 
 
 def get_kamerstuk_besluiten(nummer, volgnummer):
@@ -82,10 +92,38 @@ def get_kamerstuk_besluiten(nummer, volgnummer):
     besluiten = []
     for zaak in zaken:
         besluiten += zaak.besluiten
-    return besluiten
+    return filter_duplicates(besluiten)
+
+
+def get_dossier_zaken_with_activiteit(nummer):
+    zaak_filter = Zaak.create_filter()
+    zaak_filter.filter_empty_activiteit()
+    zaak_filter.filter_kamerstukdossier(nummer=nummer)
+    return Api().get_zaken(filter=zaak_filter)
+
+
+def get_kamerstuk_activiteiten(nummer, volgnummer):
+    zaken = get_kamerstuk_zaken(nummer, volgnummer)
+    print('zaken', len(zaken))
+    return get_zaken_activiteiten(zaken)
 
 
 def get_dossier_activiteiten(nummer):
-    filter = Activiteit.create_filter()
-    filter.filter_kamerstukdossier(nummer=nummer)
-    return Api().get_activiteiten(filter=filter)
+    zaken = get_dossier_zaken_with_activiteit(nummer)
+    return get_zaken_activiteiten(zaken)
+
+
+def get_zaken_activiteiten(zaken):
+    activiteiten = []
+    for zaak in zaken:
+        for activiteit in zaak.activiteiten:
+            activiteiten.append(activiteit)
+    return filter_duplicates(activiteiten)
+
+
+def get_kamerstuk_stemmingen(nummer, volgnummer):
+    besluiten = get_kamerstuk_besluiten(nummer, volgnummer)
+    stemmingen = []
+    for besluit in besluiten:
+        stemmingen += besluit.stemmingen
+    return filter_duplicates(stemmingen)
