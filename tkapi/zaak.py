@@ -1,6 +1,7 @@
 from enum import Enum
 
 import tkapi
+from tkapi.persoon import Persoon
 from tkapi.util import util
 
 
@@ -37,6 +38,10 @@ class ZaakFilter(tkapi.SoortFilter):
         filter_str = "Nummer eq '{}'".format(nummer)
         self._filters.append(filter_str)
 
+    def filter_document(self, volgnummer):
+        filter_str = 'Document/any(d: d/Volgnummer eq {})'.format(volgnummer)
+        self.add_filter_str(filter_str)
+
     def filter_volgnummer(self, nummer):
         filter_str = "Volgnummer eq {}".format(nummer)
         self._filters.append(filter_str)
@@ -46,15 +51,15 @@ class ZaakFilter(tkapi.SoortFilter):
         self._filters.append(filter_str)
 
     def filter_empty_besluit(self):
-        filter_str = 'Besluit/any(b: true)'
+        filter_str = 'Besluit/any(b:b ne null)'
         self._filters.append(filter_str)
 
     def filter_empty_activiteit(self):
-        filter_str = 'Activiteit/any(b: true)'
+        filter_str = 'Activiteit/any(a:a ne null)'
         self._filters.append(filter_str)
 
     def filter_empty_agendapunt(self):
-        filter_str = 'Agendapunt/any(b: true)'
+        filter_str = 'Agendapunt/any(a:a ne null)'
         self._filters.append(filter_str)
 
 
@@ -139,8 +144,19 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
         return 'GestartOp'
 
 
+class ZaakIndienerFilter(tkapi.RelationFilter):
+
+    @property
+    def related_url(self):
+        return Persoon.url
+
+
 class ZaakIndiener(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'ZaakActor'
+
+    @staticmethod
+    def create_filter():
+        return ZaakIndienerFilter()
 
     @property
     def persoon(self):
