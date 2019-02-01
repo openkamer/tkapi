@@ -64,7 +64,7 @@ python -m unittest discover
 
 Run all tests,
 ```bash
-coverage -m unittest discover
+coverage run -m unittest discover
 ```
 
 Create coverage report,
