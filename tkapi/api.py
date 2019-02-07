@@ -1,5 +1,6 @@
 import urllib
 import requests
+from typing import List
 
 from tkapi.fractie import Fractie, FractieZetel
 from tkapi.persoon import Persoon
@@ -38,71 +39,71 @@ class Api(object):
             Api._verbose = verbose
 
     @classmethod
-    def get_commissies(cls, filter=None, order=None, max_items=None):
+    def get_commissies(cls, filter=None, order=None, max_items=None) -> List[Commissie]:
         return cls.get_items(Commissie, filter, order, max_items)
 
     @classmethod
-    def get_personen(cls, filter=None, order=None, max_items=None):
+    def get_personen(cls, filter=None, order=None, max_items=None) -> List[Persoon]:
         return cls.get_items(Persoon, filter, order, max_items)
 
     @classmethod
-    def get_fracties(cls, filter=None, order=None, max_items=None):
+    def get_fracties(cls, filter=None, order=None, max_items=None) -> List[Fractie]:
         return cls.get_items(Fractie, filter, order, max_items)
 
     @classmethod
-    def get_vergaderingen(cls, filter=None, order=None, max_items=None):
+    def get_vergaderingen(cls, filter=None, order=None, max_items=None) -> List[Vergadering]:
         return cls.get_items(Vergadering, filter, order, max_items)
 
     @classmethod
-    def get_verslagen_van_algemeen_overleg(cls, filter=None, order=None, max_items=None):
+    def get_verslagen_van_algemeen_overleg(cls, filter=None, order=None, max_items=None) -> List[VerslagAlgemeenOverleg]:
         return cls.get_items(VerslagAlgemeenOverleg, filter, order, max_items)
 
     @classmethod
-    def get_kamervragen(cls, filter=None, order=None, max_items=None):
+    def get_kamervragen(cls, filter=None, order=None, max_items=None) -> List[Kamervraag]:
         return cls.get_items(Kamervraag, filter, order, max_items)
 
     @classmethod
-    def get_antwoorden(cls, filter=None, order=None, max_items=None):
+    def get_antwoorden(cls, filter=None, order=None, max_items=None) -> List[Antwoord]:
         return cls.get_items(Antwoord, filter, order, max_items)
 
     @classmethod
-    def get_documenten(cls, filter=None, order=None, max_items=None):
+    def get_documenten(cls, filter=None, order=None, max_items=None) -> List[Document]:
         return cls.get_items(Document, filter, order, max_items)
 
     @classmethod
-    def get_dossiers(cls, filter=None, order=None, max_items=None):
+    def get_dossiers(cls, filter=None, order=None, max_items=None) -> List[Dossier]:
         return cls.get_items(Dossier, filter, order, max_items)
 
     @classmethod
-    def get_zaken(cls, filter=None, order=None, max_items=None):
+    def get_zaken(cls, filter=None, order=None, max_items=None) -> List[Zaak]:
         return cls.get_items(Zaak, filter, order, max_items)
 
     @classmethod
-    def get_activiteiten(cls, filter, order=None, max_items=None):
+    def get_activiteiten(cls, filter, order=None, max_items=None) -> List[Commissie]:
         return cls.get_items(Activiteit, filter, order, max_items)
 
     @classmethod
-    def get_stemmingen(cls, filter=None, order=None, max_items=None):
+    def get_stemmingen(cls, filter=None, order=None, max_items=None) -> List[Stemming]:
         return cls.get_items(Stemming, filter, order, max_items)
 
     @classmethod
-    def get_agendapunten(cls, filter=None, order=None, max_items=None):
+    def get_agendapunten(cls, filter=None, order=None, max_items=None) -> List[Agendapunt]:
         return cls.get_items(Agendapunt, filter, order, max_items)
 
     @classmethod
-    def get_besluiten(cls, filter=None, order=None, max_items=None):
+    def get_besluiten(cls, filter=None, order=None, max_items=None) -> List[Besluit]:
         return cls.get_items(Besluit, filter, order, max_items)
 
     @classmethod
-    def get_fractie_zetels(cls, filter=None, order=None, max_items=None):
+    def get_fractie_zetels(cls, filter=None, order=None, max_items=None) -> List[FractieZetel]:
         return cls.get_items(FractieZetel, filter, order, max_items)
 
     @classmethod
-    def get_reizen(cls, filter=None, order=None, max_items=None):
+    def get_reizen(cls, filter=None, order=None, max_items=None) -> List[PersoonReis]:
         return cls.get_items(PersoonReis, filter, order, max_items)
 
     @classmethod
-    def get_geschenken(cls, filter=None, order=None, max_items=None):
+    def get_geschenken(cls, filter=None, order=None, max_items=None) -> List[PersoonGeschenk]:
         return cls.get_items(PersoonGeschenk, filter, order, max_items)
 
     @staticmethod
