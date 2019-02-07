@@ -2,7 +2,7 @@
 [![PyPI version](https://badge.fury.io/py/tkapi.svg)](https://badge.fury.io/py/tkapi)  
 Python bindings for the [Tweede Kamer](https://tweedekamer.nl) [Open Data Portaal](https://opendata.tweedekamer.nl) OData API.
 
-Requires Python 3.3+
+Requires Python 3.5+
 
 You are welcome to open an issue if you have any problems, questions or suggestions.
 
