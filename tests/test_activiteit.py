@@ -42,43 +42,24 @@ class TestActiviteitFilters(TKApiTestCase):
 
     def test_dossier_filter(self):
         dosser_nr = 31239
-        activiteiten_expected = 8
+        activiteiten_expected = 18
         activiteiten = queries.get_dossier_activiteiten(dosser_nr)
         print('activiteiten found:', len(activiteiten))
-        for activiteit in activiteiten:
-            print('Activiteit: {} ({} - {})' .format(activiteit.onderwerp, activiteit.begin, activiteit.einde))
         self.assertEqual(activiteiten_expected, len(activiteiten))
 
-    # TODO BR: should return results
     def test_dossier_filter_2(self):
         dosser_nr = 34986
-        activiteiten_expected = 8
-        activiteiten = queries.get_dossier_activiteiten(dosser_nr)
+        activiteiten_expected = 13
+        activiteiten = queries.get_dossier_activiteiten(dosser_nr, include_agendapunten=True)
         print('activiteiten found:', len(activiteiten))
-        for activiteit in activiteiten:
-            print('Activiteit: {} ({} - {})' .format(activiteit.onderwerp, activiteit.begin, activiteit.einde))
         self.assertEqual(activiteiten_expected, len(activiteiten))
 
-    # TODO BR: should return results
     def test_kamerstuk_filter(self):
         dossier_nr = 34986
-        volgnummer = 16
-        activiteiten = queries.get_dossier_activiteiten(nummer=dossier_nr)
-        print(len(activiteiten))
-        for activiteit in activiteiten:
-            for zaak in activiteit.zaken:
-                print(zaak.volgnummer)
-        activiteiten = queries.get_kamerstuk_activiteiten(nummer=dossier_nr, volgnummer=volgnummer)
-        print(len(activiteiten))
-        self.assertGreater(len(activiteiten), 0)
-        ids = set()
-        for activiteit in activiteiten:
-            ids.add(activiteit.id)
-            print(
-                'Activiteit: {} ({} - {})'
-                .format(activiteit.onderwerp, activiteit.begin, activiteit.einde)
-            )
-        self.assertEqual(len(activiteiten), len(ids))
+        volgnummer = 9
+        activiteiten_expected = 11
+        activiteiten = queries.get_kamerstuk_activiteiten(nummer=dossier_nr, volgnummer=volgnummer, include_agendapunten=True)
+        self.assertGreaterEqual(len(activiteiten), activiteiten_expected)
 
     def test_soort_filter(self):
         soorten = [
@@ -98,9 +79,5 @@ class TestActiviteitFilters(TKApiTestCase):
             ids = set()
             for activiteit in activiteiten:
                 ids.add(activiteit.id)
-                # print(
-                #     'Activiteit: {} ({} - {})'
-                #     .format(activiteit.soort, activiteit.begin, activiteit.einde)
-                # )
             self.assertEqual(self.N_ITEMS, len(activiteiten))
             self.assertEqual(len(activiteiten), len(ids))

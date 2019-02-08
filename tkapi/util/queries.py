@@ -1,6 +1,10 @@
 import multiprocessing as mp
+from typing import List
 
 from tkapi import Api
+from tkapi.agendapunt import Agendapunt
+from tkapi.activiteit import Activiteit
+from tkapi.document import Document
 from tkapi.fractie import Fractie
 from tkapi.stemming import Stemming
 from tkapi.dossier import Dossier
@@ -55,20 +59,33 @@ def get_dossier(nummer):
     return dossier
 
 
-def get_dossier_zaken(nummer):
+def get_dossier_zaken(nummer) -> List[Zaak]:
     zaak_filter = Zaak.create_filter()
     zaak_filter.filter_kamerstukdossier(nummer=nummer)
     return Api().get_zaken(filter=zaak_filter)
 
 
-def get_kamerstuk_zaken(nummer, volgnummer):
+def get_dossier_documenten(nummer) -> List[Document]:
+    document_filter = Document.create_filter()
+    document_filter.filter_dossier(nummer)
+    return Api().get_documenten(document_filter)
+
+
+def get_dossier_documenten_with_activiteit(nummer) -> List[Document]:
+    document_filter = Document.create_filter()
+    document_filter.filter_dossier(nummer)
+    document_filter.filter_has_activiteit()
+    return Api().get_documenten(document_filter)
+
+
+def get_kamerstuk_zaken(nummer, volgnummer) -> List[Zaak]:
     zaak_filter = Zaak.create_filter()
     zaak_filter.filter_kamerstukdossier(nummer)
-    zaak_filter.filter_volgnummer(volgnummer)
+    zaak_filter.filter_document(volgnummer)
     return Api().get_zaken(zaak_filter)
 
 
-def get_dossier_besluiten(nummer):
+def get_dossier_besluiten(nummer) -> List[Besluit]:
     zaken = get_dossier_zaken(nummer)
     besluiten = []
     for zaak in zaken:
@@ -76,7 +93,7 @@ def get_dossier_besluiten(nummer):
     return filter_duplicates(besluiten)
 
 
-def get_dossier_besluiten_with_stemmingen(nummer):
+def get_dossier_besluiten_with_stemmingen(nummer) -> List[Besluit]:
     zaken = get_dossier_zaken(nummer)
     besluiten = []
     for zaak in zaken:
@@ -87,7 +104,7 @@ def get_dossier_besluiten_with_stemmingen(nummer):
     return filter_duplicates(besluiten)
 
 
-def get_kamerstuk_besluiten(nummer, volgnummer):
+def get_kamerstuk_besluiten(nummer, volgnummer) -> List[Besluit]:
     zaken = get_kamerstuk_zaken(nummer, volgnummer)
     besluiten = []
     for zaak in zaken:
@@ -95,25 +112,44 @@ def get_kamerstuk_besluiten(nummer, volgnummer):
     return filter_duplicates(besluiten)
 
 
-def get_dossier_zaken_with_activiteit(nummer):
+def get_dossier_zaken_with_activiteit(nummer) -> List[Zaak]:
     zaak_filter = Zaak.create_filter()
-    zaak_filter.filter_empty_activiteit()
+    zaak_filter.filter_has_activiteit()
     zaak_filter.filter_kamerstukdossier(nummer=nummer)
     return Api().get_zaken(filter=zaak_filter)
 
 
-def get_kamerstuk_activiteiten(nummer, volgnummer):
+def get_dossier_zaken_with_agendapunt(nummer) -> List[Zaak]:
+    zaak_filter = Zaak.create_filter()
+    zaak_filter.filter_has_agendapunt()
+    zaak_filter.filter_kamerstukdossier(nummer=nummer)
+    return Api().get_zaken(filter=zaak_filter)
+
+
+def get_kamerstuk_activiteiten(nummer, volgnummer, include_agendapunten=False) -> List[Activiteit]:
     zaken = get_kamerstuk_zaken(nummer, volgnummer)
-    print('zaken', len(zaken))
-    return get_zaken_activiteiten(zaken)
+    activiteiten = get_zaken_activiteiten(zaken)
+    documenten = get_dossier_documenten_with_activiteit(nummer)
+    for document in documenten:
+        activiteiten += document.activiteiten
+    if include_agendapunten:
+        activiteiten += get_zaken_agendapunten_activiteiten(zaken)
+    return filter_duplicates(activiteiten)
 
 
-def get_dossier_activiteiten(nummer):
+def get_dossier_activiteiten(nummer, include_agendapunten=False) -> List[Activiteit]:
     zaken = get_dossier_zaken_with_activiteit(nummer)
-    return get_zaken_activiteiten(zaken)
+    activiteiten = get_zaken_activiteiten(zaken)
+    documenten = get_dossier_documenten_with_activiteit(nummer)
+    for document in documenten:
+        activiteiten += document.activiteiten
+    if include_agendapunten:
+        zaken_dossier = get_dossier_zaken(nummer)
+        activiteiten += get_zaken_agendapunten_activiteiten(zaken_dossier)
+    return filter_duplicates(activiteiten)
 
 
-def get_zaken_activiteiten(zaken):
+def get_zaken_activiteiten(zaken) -> List[Activiteit]:
     activiteiten = []
     for zaak in zaken:
         for activiteit in zaak.activiteiten:
@@ -121,7 +157,25 @@ def get_zaken_activiteiten(zaken):
     return filter_duplicates(activiteiten)
 
 
-def get_kamerstuk_stemmingen(nummer, volgnummer):
+def get_zaken_agendapunten(zaken) -> List[Agendapunt]:
+    agendapunten = []
+    for zaak in zaken:
+        for agendapunt in zaak.agendapunten:
+            agendapunten.append(agendapunt)
+    return filter_duplicates(agendapunten)
+
+
+# TODO BR: improve performance, this is slow
+def get_zaken_agendapunten_activiteiten(zaken) -> List[Activiteit]:
+    activiteiten = []
+    agendapunten = get_zaken_agendapunten(zaken)
+    for agendapunt in agendapunten:
+        if agendapunt.activiteit:
+            activiteiten.append(agendapunt.activiteit)
+    return activiteiten
+
+
+def get_kamerstuk_stemmingen(nummer, volgnummer) -> List[Stemming]:
     besluiten = get_kamerstuk_besluiten(nummer, volgnummer)
     stemmingen = []
     for besluit in besluiten:

@@ -1,7 +1,7 @@
 import tkapi
 
 
-class AgendaPuntRelationFilter(tkapi.RelationsFilter):
+class AgendapuntRelationFilter(tkapi.RelationsFilter):
 
     @property
     def related_url(self):
@@ -12,6 +12,10 @@ class AgendapuntFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
     def __init__(self):
         super().__init__()
+
+    def filter_has_activiteit(self):
+        filter_str = 'Activiteit/any(a:a ne null)'
+        self._filters.append(filter_str)
 
 
 class Agendapunt(tkapi.TKItemRelated, tkapi.TKItem):

@@ -4,6 +4,7 @@ from orderedset import OrderedSet
 
 from tkapi.document import Document
 from tkapi.document import VerslagAlgemeenOverleg
+from tkapi.util import queries
 
 from .core import TKApiTestCase
 
@@ -70,7 +71,7 @@ class TestDocumentFilter(TKApiTestCase):
             start_datetime,
             end_datetime
         )
-        pd_filter.filter_empty_agendapunt()
+        pd_filter.filter_has_agendapunt()
         pds = self.api.get_documenten(pd_filter)
         for pd in pds:
             print(pd.titel)
@@ -78,6 +79,18 @@ class TestDocumentFilter(TKApiTestCase):
                 print(zaak)
         print(len(pds))
         self.assertEqual(4, len(pds))
+
+    def test_filter_dossier(self):
+        dossier_nummer = 31239
+        expected = 262
+        documenten = queries.get_dossier_documenten(dossier_nummer)
+        self.assertGreaterEqual(len(documenten), expected)
+
+    def test_filter_dossier_with_activiteit(self):
+        dossier_nummer = 31239
+        expected = 10
+        documenten = queries.get_dossier_documenten_with_activiteit(dossier_nummer)
+        self.assertGreaterEqual(len(documenten), expected)
 
 
 class TestDocumentSoorten(TKApiTestCase):
