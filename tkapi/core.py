@@ -63,7 +63,7 @@ class TKItem(object):
         return None
 
     def get_property_or_empty_string(self, property_key):
-        if property_key in self.json and self.json[property_key]:
+        if property_key in self.json and self.json[property_key] is not None:
             return str(self.json[property_key]).strip()
         return ''
 
