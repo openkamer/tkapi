@@ -84,7 +84,7 @@ class TestZaakRelations(TKApiTestCase):
         end_datetime = datetime.datetime(year=2016, month=2, day=1)
         zaak_filter = Zaak.create_filter()
         zaak_filter.filter_date_range(start_datetime, end_datetime)
-        zaak_filter.filter_empty_activiteit()
+        zaak_filter.filter_has_activiteit()
         # zaak_filter.filter_soort('Wetgeving')
         zaken = self.api.get_zaken(zaak_filter)
         print('Zaken without activiteit', len(zaken))
@@ -95,7 +95,7 @@ class TestZaakRelations(TKApiTestCase):
         end_datetime = datetime.datetime(year=2016, month=1, day=10)
         zaak_filter = Zaak.create_filter()
         zaak_filter.filter_date_range(start_datetime, end_datetime)
-        zaak_filter.filter_empty_agendapunt()
+        zaak_filter.filter_has_agendapunt()
         # zaak_filter.filter_soort('Wetgeving')
         zaken = self.api.get_zaken(zaak_filter)
         print('Zaken without agendapunt', len(zaken))
@@ -152,7 +152,7 @@ class TestZaakMotie(TKApiTestCase):
     def test_get_motie_zaken(self):
         max_items = 10
         zaak_filter = ZaakMotie.create_filter()
-        zaak_filter.filter_empty_besluit()
+        zaak_filter.filter_has_besluit()
         motie_zaken = self.api.get_items(ZaakMotie, filter=zaak_filter, max_items=max_items)
         for zaak in motie_zaken:
             self.assertEqual(zaak.soort, ZaakSoort.MOTIE.value)
@@ -166,7 +166,7 @@ class TestZaakAmendement(TKApiTestCase):
     def test_get_amendement_zaken(self):
         max_items = 10
         zaak_filter = ZaakAmendement.create_filter()
-        zaak_filter.filter_empty_besluit()
+        zaak_filter.filter_has_besluit()
         motie_zaken = self.api.get_items(ZaakAmendement, filter=zaak_filter, max_items=max_items)
         for zaak in motie_zaken:
             self.assertEqual(zaak.soort, ZaakSoort.AMENDEMENT.value)

@@ -12,8 +12,12 @@ class DocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
         filter_str = "Datum lt " + util.datetime_to_odata(end_datetime)
         self._filters.append(filter_str)
 
-    def filter_empty_agendapunt(self):
-        filter_str = 'Agendapunt/any(a: true)'
+    def filter_has_agendapunt(self):
+        filter_str = 'Agendapunt/any(a:a ne null)'
+        self._filters.append(filter_str)
+
+    def filter_has_activiteit(self):
+        filter_str = 'Activiteit/any(a:a ne null)'
         self._filters.append(filter_str)
 
     def filter_onderwerp(self, onderwerp):

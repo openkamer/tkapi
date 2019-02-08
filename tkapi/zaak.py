@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import List
 
 import tkapi
 from tkapi.persoon import Persoon
@@ -50,15 +51,15 @@ class ZaakFilter(tkapi.SoortFilter):
         filter_str = "Onderwerp eq '{}'".format(onderwerp)
         self._filters.append(filter_str)
 
-    def filter_empty_besluit(self):
+    def filter_has_besluit(self):
         filter_str = 'Besluit/any(b:b ne null)'
         self._filters.append(filter_str)
 
-    def filter_empty_activiteit(self):
+    def filter_has_activiteit(self):
         filter_str = 'Activiteit/any(a:a ne null)'
         self._filters.append(filter_str)
 
-    def filter_empty_agendapunt(self):
+    def filter_has_agendapunt(self):
         filter_str = 'Agendapunt/any(a:a ne null)'
         self._filters.append(filter_str)
 
@@ -73,6 +74,11 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
     @staticmethod
     def create_filter():
         return ZaakFilter()
+
+    @property
+    def documenten(self):
+        from tkapi.document import Document
+        return self.related_items(Document)
 
     @property
     def agendapunten(self):
