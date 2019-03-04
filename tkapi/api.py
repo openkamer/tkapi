@@ -26,7 +26,7 @@ class Api(object):
     _password = None
     _verbose = False
     _max_items_per_page = 250
-    api_root = 'https://gegevensmagazijn-a.tweedekamer.nl/OData/v4/1.0/'
+    api_root = 'https://gegevensmagazijn-a.tweedekamer.nl/OData/v4/2.0/'
 
     def __init__(self, user=None, password=None, api_root=None, verbose=None):
         if user is not None:
