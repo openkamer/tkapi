@@ -12,9 +12,9 @@ from tkapi.document import Document
 
 def main():
     print('BEGIN')
-    # years = [2010, 2011, 2012, 2013, 2014, 2015, 2016]
+    # years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
     # years = [2017, 2018]
-    years = [2018, 2019]
+    years = [2019]
     month = 1
 
     out_dir = os.path.join(parentdir, '../ok-tk-data/kamervragen/')
