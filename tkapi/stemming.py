@@ -49,3 +49,7 @@ class Stemming(tkapi.TKItemRelated, tkapi.TKItem):
     @property
     def actor_fractie(self):
         return self.get_property_or_none('ActorFractie')
+
+    @property
+    def is_hoofdelijk(self):
+        return 'hoofdelijk' in self.besluit.tekst.lower()
