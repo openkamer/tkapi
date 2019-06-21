@@ -31,11 +31,12 @@ class Kamervraag(Document):
         for zaak in self.zaken:
             url = 'https://zoek.officielebekendmakingen.nl/kv-tk-' + zaak.nummer
             response = requests.get(url, timeout=60)
-            assert response.status_code == 200
-            if 'Errors/404.htm' in response.url and zaak.alias:
+            if response.status_code != 200:
+                print('ERROR {} getting url {}'.format(response.status_code, url))
+            if response.status_code == 404 or 'Errors/404.htm' in response.url and zaak.alias:
                 url = 'https://zoek.officielebekendmakingen.nl/kv-' + zaak.alias
                 response = requests.get(url, timeout=60)
-            if 'Errors/404.htm' in response.url:
+            if response.status_code == 404 or 'Errors/404.htm' in response.url:
                 url = ''
         if not url:
             print('no zaak found')
