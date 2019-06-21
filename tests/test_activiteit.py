@@ -90,12 +90,12 @@ class TestActiviteitFilters(TKApiTestCase):
             activiteiten = self.api.get_activiteiten(filter=filter, max_items=max_items)
             if not activiteiten:
                 print('No activiteit found for soort enum: {}'.format(soort))
-            ignor_soorten = [
+            # No results available at the moment for the soorten below (or enum is wrong?)
+            ingore_soorten = [
                 ActiviteitSoort.HOORZITTING, ActiviteitSoort.MEDEDELINGEN, ActiviteitSoort.OPENING, ActiviteitSoort.OVERIG,
                 ActiviteitSoort.RONDETAFELGESPREK, ActiviteitSoort.SLUITING
             ]
-            if soort in ignor_soorten:
-                # No results available at the moment (or enum is wrong?)
+            if soort in ingore_soorten:
                 continue
             self.assertEqual(max_items, len(activiteiten))
             self.assertEqual(soort, activiteiten[0].soort)
