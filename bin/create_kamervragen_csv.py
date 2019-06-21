@@ -28,9 +28,11 @@ def main():
         kv_filter.filter_date_range(start_datetime, end_datetime)
         kamervragen = api.get_kamervragen(kv_filter)
         with open(os.path.join(out_dir, 'kamervragen_' + str(year) + '.csv'), 'w') as fileout:
-            fileout.write('datum' + ',' + 'vraag nummer' + ',' + 'url' + '\n')
+            fileout.write(','.join(['datum', 'vraag nummer', 'url']) + '\n')
             for vraag in kamervragen:
-                fileout.write(vraag.datum.strftime('%Y-%m-%d') + ',' + vraag.nummer + ',' + vraag.document_url + '\n')
+                row = ','.join([vraag.datum.strftime('%Y-%m-%d'), vraag.nummer, vraag.document_url])
+                print(row)
+                fileout.write(row + '\n')
     print('END')
 
 
