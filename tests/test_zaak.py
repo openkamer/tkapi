@@ -146,6 +146,7 @@ class TestZaakSoort(TKApiTestCase):
             zaak_filter.filter_soort(soort)
             zaken = self.api.get_zaken(filter=zaak_filter, max_items=max_items)
             self.assertEqual(max_items, len(zaken))
+            self.assertEqual(soort, zaken[0].soort)
 
 
 class TestZaakMotie(TKApiTestCase):
@@ -156,7 +157,7 @@ class TestZaakMotie(TKApiTestCase):
         zaak_filter.filter_has_besluit()
         motie_zaken = self.api.get_items(ZaakMotie, filter=zaak_filter, max_items=max_items)
         for zaak in motie_zaken:
-            self.assertEqual(zaak.soort, ZaakSoort.MOTIE.value)
+            self.assertEqual(zaak.soort, ZaakSoort.MOTIE)
             print(zaak.besluit_text)
             if zaak.stemmingen:
                 print('number of stemmingen:', len(zaak.stemmingen))
@@ -170,7 +171,7 @@ class TestZaakAmendement(TKApiTestCase):
         zaak_filter.filter_has_besluit()
         motie_zaken = self.api.get_items(ZaakAmendement, filter=zaak_filter, max_items=max_items)
         for zaak in motie_zaken:
-            self.assertEqual(zaak.soort, ZaakSoort.AMENDEMENT.value)
+            self.assertEqual(zaak.soort, ZaakSoort.AMENDEMENT)
             print(zaak.besluit_text)
             if zaak.stemmingen:
                 print('number of stemmingen:', len(zaak.stemmingen))

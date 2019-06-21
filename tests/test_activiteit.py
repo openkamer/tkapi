@@ -81,3 +81,17 @@ class TestActiviteitFilters(TKApiTestCase):
                 ids.add(activiteit.id)
             self.assertEqual(self.N_ITEMS, len(activiteiten))
             self.assertEqual(len(activiteiten), len(ids))
+
+    def test_activiteit_soort_enum(self):
+        max_items = 1
+        for soort in ActiviteitSoort:
+            filter = Activiteit.create_filter()
+            filter.filter_soort(soort)
+            activiteiten = self.api.get_activiteiten(filter=filter, max_items=max_items)
+            if not activiteiten:
+                print('No activiteit found for soort enum: {}'.format(soort))
+            if soort in [ActiviteitSoort.HOORZITTING, ActiviteitSoort.MEDEDELINGEN]:
+                # No results available at the moment (or enum is wrong?)
+                continue
+            self.assertEqual(max_items, len(activiteiten))
+            self.assertEqual(soort, activiteiten[0].soort)

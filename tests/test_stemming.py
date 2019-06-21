@@ -1,10 +1,9 @@
 import datetime
 
 from tkapi.stemming import Stemming
-from tkapi.dossier import Dossier
 from tkapi.besluit import Besluit
-from tkapi.document import Document
 from tkapi.zaak import Zaak
+from tkapi.zaak import ZaakSoort
 
 from tkapi.util import queries
 
@@ -27,7 +26,7 @@ class TestStemmingFilters(TKApiTestCase):
         stemmingen = self.api.get_stemmingen(filter=filter, max_items=n_items)
         self.assertEqual(n_items, len(stemmingen))
         for stemming in stemmingen:
-            self.assertEqual('Motie', stemming.besluit.zaken[0].soort)
+            self.assertEqual(ZaakSoort.MOTIE, stemming.besluit.zaken[0].soort)
 
     def test_filter_kamerstukdossier(self):
         dossier_nr = 33885

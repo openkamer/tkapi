@@ -65,7 +65,9 @@ class ZaakFilter(tkapi.SoortFilter):
         self._filters.append(filter_str)
 
     def filter_kabinetsappreciatie(self, kabinetsappreciatie):
-        filter_str = "Kabinetsappreciatie eq '{}'".format(kabinetsappreciatie.name)
+        if isinstance(kabinetsappreciatie, Enum):
+            kabinetsappreciatie = kabinetsappreciatie.value
+        filter_str = "Kabinetsappreciatie eq '{}'".format(kabinetsappreciatie)
         self._filters.append(filter_str)
 
 
@@ -74,7 +76,7 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
     orderby_param = 'GestartOp'
 
     def __str__(self):
-        return 'Zaak: ' + str(self.nummer) + ', soort: ' + self.soort + ', onderwerp: ' + self.onderwerp + ', afgedaan: ' + str(self.afgedaan)
+        return 'Zaak: ' + str(self.nummer) + ', soort: ' + self.soort.value + ', onderwerp: ' + self.onderwerp + ', afgedaan: ' + str(self.afgedaan)
 
     @staticmethod
     def create_filter():
@@ -124,7 +126,7 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def soort(self):
-        return self.get_property_or_empty_string('Soort')
+        return self.get_property_enum_or_none('Soort', ZaakSoort)
 
     @property
     def nummer(self):
@@ -199,7 +201,7 @@ class ZaakSoort(Enum):
     BRIEF_COMMISSIE = 'Brief commissie'
     BRIEF_EUROPESE_COMMISSIE = 'Brief Europese Commissie'
     BRIEF_KAMER = 'Brief Kamer'
-    BRIEF_REGERING = 'Brief Regering'
+    BRIEF_REGERING = 'Brief regering'
     BRIEF_LID = 'Brief van lid/fractie/commissie'
     EU_VOORSTEL = 'EU-voorstel'
     INITIATIEF_NOTA = 'Initiatiefnota'

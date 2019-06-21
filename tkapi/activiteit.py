@@ -50,7 +50,7 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def soort(self):
-        return self.get_property_or_empty_string('Soort')
+        return self.get_property_enum_or_none('Soort', ActiviteitSoort)
 
     @property
     def nummer(self):
