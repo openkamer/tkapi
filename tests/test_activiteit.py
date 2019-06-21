@@ -49,7 +49,7 @@ class TestActiviteitFilters(TKApiTestCase):
 
     def test_dossier_filter_2(self):
         dosser_nr = 34986
-        activiteiten_expected = 13
+        activiteiten_expected = 17
         activiteiten = queries.get_dossier_activiteiten(dosser_nr, include_agendapunten=True)
         print('activiteiten found:', len(activiteiten))
         self.assertEqual(activiteiten_expected, len(activiteiten))
@@ -90,7 +90,11 @@ class TestActiviteitFilters(TKApiTestCase):
             activiteiten = self.api.get_activiteiten(filter=filter, max_items=max_items)
             if not activiteiten:
                 print('No activiteit found for soort enum: {}'.format(soort))
-            if soort in [ActiviteitSoort.HOORZITTING, ActiviteitSoort.MEDEDELINGEN]:
+            ignor_soorten = [
+                ActiviteitSoort.HOORZITTING, ActiviteitSoort.MEDEDELINGEN, ActiviteitSoort.OPENING, ActiviteitSoort.OVERIG,
+                ActiviteitSoort.RONDETAFELGESPREK, ActiviteitSoort.SLUITING
+            ]
+            if soort in ignor_soorten:
                 # No results available at the moment (or enum is wrong?)
                 continue
             self.assertEqual(max_items, len(activiteiten))
