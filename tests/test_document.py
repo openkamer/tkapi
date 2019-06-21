@@ -145,3 +145,19 @@ class TestVerslagAlgemeenOverleg(TKApiTestCase):
             #     verslag.print_json()
                 # print(activiteit.begin.isoformat())
                 # print(activiteit.einde.isoformat())
+
+    def test_get_verslagen_algemeen_overleg_commissie_namen(self):
+        expected_verslagen = 6
+        start_datetime = datetime.datetime(year=2018, month=1, day=1)
+        end_datetime = datetime.datetime(year=2018, month=1, day=10)
+        filter = VerslagAlgemeenOverleg.create_filter()
+        filter.filter_date_range(start_datetime, end_datetime)
+        verslagen = self.api.get_verslagen_van_algemeen_overleg(filter)
+        print('verslagen gevonden:', len(verslagen))
+        self.assertEqual(expected_verslagen, len(verslagen))
+        for verslag in verslagen:
+            self.assertEqual(1, len(verslag.voortouwcommissie_namen))
+            for naam in verslag.voortouwcommissie_namen:
+                print(naam)
+                self.assertNotEqual('', naam)
+                self.assertNotEqual(None, naam)

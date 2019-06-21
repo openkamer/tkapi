@@ -48,7 +48,7 @@ class Commissie(tkapi.TKItemRelated, tkapi.TKItem):
         return pretty_print
 
 
-class VoortouwCommissie(tkapi.TKItemRelated, tkapi.TKItem):
+class VoortouwCommissie(Commissie):
     url = 'Voortouwcommissie'
 
 

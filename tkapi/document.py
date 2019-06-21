@@ -111,14 +111,26 @@ class Document(tkapi.TKItemRelated, tkapi.TKItem):
 class VerslagAlgemeenOverleg(Document):
     filter_param = "Soort eq 'Verslag van een algemeen overleg'"
 
-    # @property
-    # def commissie(self):
-    #     if self.zaak and self.zaak['Voortouwcommissie']:
-    #         for commissie in self.zaak['Voortouwcommissie']:
-    #             print(commissie['Commissie'])
-    #         return self.zaak['Voortouwcommissie'][0]['Commissie']
-    #     return None
-    #
+    @property
+    def voortouwcommissies(self):
+        # NOTE BR: this currently return a commissie without any useful properties
+        # TODO BR: fix this
+        voortouwcommissies = []
+        for zaak in self.zaken:
+            for zaak_actor in zaak.zaak_actors:
+                if zaak_actor.is_voortouwcommissie:
+                    voortouwcommissies.append(zaak_actor.commissie)
+        return voortouwcommissies
+
+    @property
+    def voortouwcommissie_namen(self):
+        names = []
+        for zaak in self.zaken:
+            for zaak_actor in zaak.zaak_actors:
+                if zaak_actor.is_voortouwcommissie:
+                    names.append(zaak_actor.naam)
+        return names
+
     # @property
     # def volgcommissie(self):
     #     if self.activiteit and self.activiteit['Volgcommissie']:
@@ -127,19 +139,15 @@ class VerslagAlgemeenOverleg(Document):
 
     @property
     def document_url(self):
-        url = ''
-        if self.dossiers:
-            dossier = self.dossiers[0]
-            dossier_nr = str(dossier.nummer)
-            if dossier.toevoeging and '(' not in dossier.toevoeging:
-                dossier_nr += '-' + str(dossier.toevoeging)
-                dossier_nr += '-' + str(self.volgnummer)
-            url = 'https://zoek.officielebekendmakingen.nl/kst-' + kamerstuk_id
-            response = requests.get(url, timeout=60)
-            assert response.status_code == 200
-            if 'Errors/404.htm' in response.url:
-                print('WARNING: no verslag document url found')
-                url = ''
-        else:
-            print('no dossier or kamerstuk found')
+        if not self.dossiers:
+            return ''
+        dossier = self.dossiers[0]
+        dossier_nr = str(dossier.nummer)
+        if dossier.toevoeging and '(' not in dossier.toevoeging:
+            dossier_nr += '-' + str(dossier.toevoeging)
+        dossier_nr += '-' + str(self.volgnummer)
+        url = 'https://zoek.officielebekendmakingen.nl/kst-' + dossier_nr
+        response = requests.get(url, timeout=60)
+        if response.status_code != 200 or'404: Pagina niet gevonden' in response.text:
+            return ''
         return url

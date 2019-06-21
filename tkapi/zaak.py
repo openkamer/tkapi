@@ -2,6 +2,7 @@ from enum import Enum
 from typing import List
 
 import tkapi
+from tkapi.actor import ZaakActor
 from tkapi.persoon import Persoon
 from tkapi.util import util
 
@@ -104,9 +105,9 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_items(ZaakMedeindiener, item_key='Medeindiener')
 
     @property
-    def voortouwcommissies(self):
-        from tkapi.commissie import VoortouwCommissie
-        return self.related_items(VoortouwCommissie)
+    def zaak_actors(self):
+        from tkapi.actor import ZaakActor
+        return self.related_items(ZaakActor)
 
     @property
     def dossier(self):
