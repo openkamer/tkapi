@@ -64,6 +64,10 @@ class ZaakFilter(tkapi.SoortFilter):
         filter_str = 'Agendapunt/any(a:a ne null)'
         self._filters.append(filter_str)
 
+    def filter_kabinetsappreciatie(self, kabinetsappreciatie):
+        filter_str = "Kabinetsappreciatie eq '{}'".format(kabinetsappreciatie.name)
+        self._filters.append(filter_str)
+
 
 class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Zaak'
@@ -146,6 +150,10 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
     def gestart_op(self):
         return self.get_date_from_datetime_or_none('GestartOp')
 
+    @property
+    def kabinetsappreciatie(self):
+        return self.get_property_enum_or_none('Kabinetsappreciatie', KabinetsAppreciatie)
+
     @staticmethod
     def begin_date_key():
         return 'GestartOp'
@@ -217,6 +225,19 @@ class ZaakSoort(Enum):
     WETGEVING = 'Wetgeving'
     WIJZIGING_RVO = 'Wijziging RvO'
     WIJZIGING_VOORGESTELD_REGERING = 'Wijzigingen voorgesteld door de regering'
+
+
+class KabinetsAppreciatie(Enum):
+    OVERGENOMEN = 'Overgenomen'
+    ONTRADEN = 'Ontraden'
+    ONTRADEN_TENZIJ_GEWIJZGID = 'Ontraden, tenzij gewijzigd'
+    OORDEEL_KAMER = 'Oordeel Kamer'
+    VERZOCHT_AAN_TE_HOUDEN = 'Verzocht motie aan te houden'
+    GEEN_APPRECIATIE = 'Geen (expliciete) appreciatie'
+    NIET_BESCHIKBAAR_BIJ_WIJZIGING = 'Niet beschikbaar bij gewijzigde moties en/of amendementen'
+    NIET_BESCHIKBAAR = 'Niet beschikbaar bij moties en/of amendementen vóór 1 april 2019'
+    NOG_NIET_BEKEND = 'Nog niet bekend'
+    NOG_TE_ONTVANGEN = 'Nog te ontvangen'
 
 
 class ZaakMetBesluitBase(Zaak):

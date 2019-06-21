@@ -87,6 +87,11 @@ class TKItem(object):
             return util.odatedatetime_to_datetime(self.json[property_key])
         return None
 
+    def get_property_enum_or_none(self, property_key, enum):
+        if property_key in self.json and self.json[property_key] is not None:
+            return enum(self.json[property_key].strip())
+        return None
+
 
 class TKItemRelated(object):
 

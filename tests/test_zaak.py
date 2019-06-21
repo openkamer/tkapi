@@ -6,6 +6,7 @@ from tkapi.zaak import ZaakMedeindiener
 from tkapi.zaak import ZaakSoort
 from tkapi.zaak import ZaakMotie
 from tkapi.zaak import ZaakAmendement
+from tkapi.zaak import KabinetsAppreciatie
 
 from .core import TKApiTestCase
 
@@ -173,3 +174,30 @@ class TestZaakAmendement(TKApiTestCase):
             print(zaak.besluit_text)
             if zaak.stemmingen:
                 print('number of stemmingen:', len(zaak.stemmingen))
+
+
+class TestZaakKabinetsappreciatie(TKApiTestCase):
+
+    def test_get_zaak_with_kabinetsappreciatie(self):
+        max_items = 10
+        zaak_filter = ZaakMotie.create_filter()
+        begin_datetime = datetime.datetime(year=2019, month=4, day=1)
+        end_datetime = datetime.datetime(year=2019, month=6, day=1)
+        zaak_filter.filter_date_range(start_datetime=begin_datetime, end_datetime=end_datetime)
+        zaken = self.api.get_items(ZaakMotie, filter=zaak_filter, max_items=max_items)
+        self.assertEqual(max_items, len(zaken))
+        for zaak in zaken:
+            self.assertIsNotNone(zaak.kabinetsappreciatie)
+
+    def test_filter_zaak_kabinetsappreciatie(self):
+        max_items = 10
+        zaak_filter = ZaakMotie.create_filter()
+        begin_datetime = datetime.datetime(year=2019, month=4, day=1)
+        end_datetime = datetime.datetime(year=2019, month=6, day=1)
+        zaak_filter.filter_date_range(start_datetime=begin_datetime, end_datetime=end_datetime)
+        zaak_filter.filter_kabinetsappreciatie(KabinetsAppreciatie.ONTRADEN)
+        zaken = self.api.get_items(ZaakMotie, filter=zaak_filter, max_items=max_items)
+        self.assertEqual(max_items, len(zaken))
+        for zaak in zaken:
+            self.assertIsNotNone(zaak.kabinetsappreciatie)
+            self.assertEqual(zaak.kabinetsappreciatie, KabinetsAppreciatie.ONTRADEN)
