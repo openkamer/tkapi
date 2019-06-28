@@ -1,11 +1,49 @@
+from enum import Enum
+
 import tkapi
-from tkapi.persoon import Persoon
+
+
+class CommissieFunctie(Enum):
+    VOORZITTER = 'Voorzitter'
+    ONDERVOORZITTER = 'Ondervoorzitter'
+    FNG_ONDERVOORZITTER = 'Fng ondervoorzitter'
+    LID = 'Lid'
+    PLAATSVERVANGEND_LID = 'Plv. lid'
+    VERVANGER_AMBTELIJK_LID = 'Vervanger (ambtelijk lid)'
+    EERSTE_ONDERVOORZITTER_TK = 'Eerste ondervoorzitter Tweede Kamer'
 
 
 class CommissieFilter(tkapi.SoortFilter):
 
     def filter_naam(self, naam):
         filter_str = "NaamNL eq " + "'" + naam.replace("'", "''") + "'"
+        self._filters.append(filter_str)
+
+
+class CommissieZetelFilter(tkapi.Filter):
+
+    def filter_commissie(self, commissie):
+        filter_str = "Commissie_Id eq {}".format(commissie.id)
+        self._filters.append(filter_str)
+
+    def filter_active(self):
+        """Filters CommissieZetels with at least one active CommissieZetelPersoon."""
+        filter_str = "(CommissieZetelVastPersoon/any(p:p/TotEnMet eq null) or CommissieZetelVervangerPersoon/any(p:p/TotEnMet eq null))"
+        self._filters.append(filter_str)
+
+
+class CommissieZetelPersoonFilter(tkapi.Filter):
+
+    def filter_active(self):
+        filter_str = "{} eq null".format(CommissieZetelPersoon.end_date_key())
+        self._filters.append(filter_str)
+
+    def filter_commissie(self, commissie):
+        filter_str = "CommissieZetel/Commissie/Id eq {}".format(commissie.id)
+        self._filters.append(filter_str)
+
+    def filter_functie(self, functie: CommissieFunctie):
+        filter_str = "Functie eq '{}'".format(functie.value)
         self._filters.append(filter_str)
 
 
@@ -55,33 +93,40 @@ class VoortouwCommissie(Commissie):
 class CommissieZetel(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'CommissieZetel'
 
+    @staticmethod
+    def create_filter():
+        return CommissieZetelFilter()
+
     @property
     def personen_vast(self):
-        return self.related_items(CommissieVastPersoon)
+        return self.related_items(CommissieZetelVastPersoon)
+
+    @property
+    def personen_vast_active(self):
+        filter = tkapi.Filter()
+        filter.add_filter_str('{} eq null'.format(CommissieZetelPersoon.end_date_key()))
+        return self.related_items(CommissieZetelVastPersoon, filter=filter)
+
+    @property
+    def personen_vervangend(self):
+        return self.related_items(CommissieZetelVervangerPersoon)
+
+    @property
+    def personen_vervangend_active(self):
+        filter = tkapi.Filter()
+        filter.add_filter_str('{} eq null'.format(CommissieZetelPersoon.end_date_key()))
+        return self.related_items(CommissieZetelVervangerPersoon, filter=filter)
 
     @property
     def commissie(self):
         return self.related_item(Commissie)
 
-    @property
-    def vast_van(self):
-        return self.get_date_from_datetime_or_none('VastVan')
 
-    @property
-    def vast_tot_en_met(self):
-        return self.get_date_from_datetime_or_none('VastTotEnMet')
+class CommissieZetelPersoon(tkapi.TKItemRelated, tkapi.TKItem):
 
     @staticmethod
-    def begin_date_key():
-        return 'VastVan'
-
-    @staticmethod
-    def end_date_key():
-        return 'VastTotEnMet'
-
-
-class CommissieVastPersoon(tkapi.TKItemRelated, tkapi.TKItem):
-    url = 'CommissieVastPersoon'
+    def create_filter():
+        return CommissieZetelPersoonFilter()
 
     @property
     def persoon(self):
@@ -94,7 +139,7 @@ class CommissieVastPersoon(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def functie(self):
-        return self.get_property_or_empty_string('Functie')
+        return self.get_property_enum_or_none('Functie', CommissieFunctie)
 
     @property
     def van(self):
@@ -111,3 +156,11 @@ class CommissieVastPersoon(tkapi.TKItemRelated, tkapi.TKItem):
     @staticmethod
     def end_date_key():
         return 'TotEnMet'
+
+
+class CommissieZetelVastPersoon(CommissieZetelPersoon):
+    url = 'CommissieZetelVastPersoon'
+
+
+class CommissieZetelVervangerPersoon(CommissieZetelPersoon):
+    url = 'CommissieZetelVervangerPersoon'
