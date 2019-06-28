@@ -33,13 +33,13 @@ For more examples see the `examples` directory and the tests.
 |                            |                            |                              |
 |----------------------------|----------------------------|------------------------------|
 | **Activiteit**             | **Commissie**              | **Persoon**                  |
-| ActiviteitActor            | CommissieOrganisatie       | PersoonAdres                 |
-| **Zaak**                   | CommissieAanvullendGegeven | PersoonContactinformatie     |
+| ActiviteitActor            |                            | PersoonAdres                 |
+| **Zaak**                   |                            | PersoonContactinformatie     |
 | ZaakActor                  | **CommissieZetel**         | **PersoonGeschenk**          |
 | **Kamerstukdossier**       | **CommissieVastPersoon**   | **PersoonLoopbaan**          |
-| **Fractie**                | CommissieVastVacature      | **PersoonNevenfunctie**      |
-|                            | CommissieVervangerVacature | **PersoonNevenfunctieInkomsten** |
-| FractieAanvullendGegeven   | CommissieVervangerPersoon  | **PersoonOnderwijs**         |
+| **Fractie**                | **CommissieVervangerPersoon** | **PersoonNevenfunctie**      |
+|                            | CommissieVastVacature      | **PersoonNevenfunctieInkomsten** |
+| FractieAanvullendGegeven   | CommissieVervangerVacature | **PersoonOnderwijs**         |
 | **FractieZetel**           |                            | **PersoonReis**              |
 | **Stemming**               |                            | **PersoonFunctie**           |
 | Zaal                       |                            |                              |
