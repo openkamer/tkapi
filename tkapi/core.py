@@ -111,18 +111,16 @@ class TKItemRelated(object):
 
     def related_items(self, tkitem, filter=None, item_key=None):
         from tkapi.api import Api
-        if item_key is None and tkitem.url + '@odata.navigationLink' not in self.json:
+        item_key = item_key if item_key is not None else tkitem.url
+        navigation_key = item_key + '@odata.navigationLink'
+        if navigation_key not in self.json:
             return []
-        elif item_key is not None and item_key + '@odata.navigationLink' not in self.json:
-            return []
-        if item_key is None:
-            item_key = tkitem.url
         if item_key in self.json and self.json[item_key] is None:
             return []
         cache_key = self.create_cache_key(tkitem, filter)
         if cache_key in self.items_cache:
             return self.items_cache[cache_key]
-        url = self.json[item_key + '@odata.navigationLink']
+        url = self.json[navigation_key]
         items = Api().get_related(tkitem, related_url=url, filter=filter)
         self.set_cache(tkitem, filter, items)
         return items
