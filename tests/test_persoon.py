@@ -3,10 +3,6 @@ import datetime
 from tkapi.persoon import Persoon
 from tkapi.persoon import PersoonReis
 from tkapi.persoon import PersoonOnderwijs
-from tkapi.persoon import PersoonFunctie
-from tkapi.persoon import PersoonLoopbaan
-from tkapi.persoon import PersoonGeschenk
-from tkapi.persoon import PersoonNevenfunctie
 
 from .core import TKApiTestCase
 
@@ -42,22 +38,62 @@ class TestPersoon(TKApiTestCase):
             print(fractie.naam)
         self.assertEqual(4, len(persoon.fracties))
 
-    def test_get_functies(self):
+    def test_get_attributes(self):
         persoon = self.get_fred_teeven()
-        functies = persoon.functies
-        for functie in functies:
-            print(functie.omschrijving)
+        persoon.print_json()
+        self.assertEqual('Teeven', persoon.achternaam)
+        self.assertEqual('F.', persoon.initialen)
+        self.assertEqual('Fred', persoon.roepnaam)
+        self.assertEqual('Fredrik', persoon.voornamen)
+        self.assertEqual('Oud Kamerlid', persoon.functie)
+        self.assertEqual('man', persoon.geslacht)
+        self.assertEqual('Nederland', persoon.geboorteland)
+        self.assertEqual('Haarlem', persoon.geboorteplaats)
+        self.assertEqual(datetime.date(year=1958, month=8, day=5), persoon.geboortedatum)
+        self.assertEqual('Hillegom', persoon.woonplaats)
+        self.assertEqual('mr.', persoon.titels)
 
-    # TODO BR: enable if available in v2 (OData v4)
-    # def test_get_reizen(self):
-    #     persoon = self.get_fred_teeven()
-    #     print(persoon)
-    #     reizen = persoon.reizen
-    #     self.assertEqual(5, len(reizen))
-    #     self.assertEqual('Duitsland', reizen[0].bestemming)
-    #     self.assertEqual('Ministerie van Defensie.', reizen[0].betaald_door)
-    #     for reis in reizen:
-    #         print(reis.bestemming)
+    def test_get_reizen(self):
+        persoon = self.get_fred_teeven()
+        reizen = persoon.reizen
+        self.assertEqual(5, len(reizen))
+        self.assertEqual('Helsinki, Finland', reizen[0].bestemming)
+        self.assertEqual('Tweede Kamer der Staten-Generaal.', reizen[0].betaald_door)
+        for reis in reizen:
+            self.assertIsNotNone(reis.bestemming)
+
+    def test_get_onderwijs(self):
+        persoon = self.get_fred_teeven()
+        onderwijs = persoon.onderwijs
+        self.assertEqual(4, len(onderwijs))
+        self.assertEqual('Nederlands- en notarieel recht', onderwijs[0].opleiding_nl)
+        for o in onderwijs:
+            self.assertIsNotNone(o.opleiding_nl)
+
+    def test_get_loopbaan(self):
+        persoon = self.get_fred_teeven()
+        loopbaan = persoon.loopbaan
+        self.assertEqual(6, len(loopbaan))
+        self.assertEqual('Officier van Justitie', loopbaan[0].functie)
+        for o in loopbaan:
+            self.assertIsNotNone(o.functie)
+
+    def test_get_geschenken(self):
+        persoon = self.get_fred_teeven()
+        geschenken = persoon.geschenken
+        self.assertEqual(10, len(geschenken))
+        self.assertEqual('Ontvangen van de Irakese ambassade een doros je wijn ter waarde van ongeveer €60,--.', geschenken[0].omschrijving)
+        for o in geschenken:
+            self.assertIsNotNone(o.datum)
+
+    def test_get_nevenfuncties(self):
+        persoon = self.get_fred_teeven()
+        nevenfuncties = persoon.nevenfuncties
+        self.assertEqual(4, len(nevenfuncties))
+        self.assertEqual('Deelname in de Raad van advies van het Comité ter vervolging van oorlogsmisdadigers', nevenfuncties[0].omschrijving)
+        for o in nevenfuncties:
+            self.assertIsNotNone(o.inkomsten)
+
 
 
 class TestPersoonFilters(TKApiTestCase):
@@ -118,51 +154,3 @@ class TestPersoonOnderwijs(TKApiTestCase):
         self.assertTrue(onderwijs.instelling)
         self.assertGreaterEqual(onderwijs.tot_en_met, onderwijs.van)
         self.assertTrue(onderwijs.persoon.id)
-
-
-# TODO BR: enable if available in v2 (OData v4) or remove
-# class TestPersoonFunctie(TKApiTestCase):
-#
-#     def test_get_functie(self):
-#         functie = self.api.get_items(PersoonFunctie, max_items=1)[0]
-#         self.assertTrue(functie.omschrijving)
-#         self.assertTrue(functie.persoon.id)
-
-
-class TestPersoonLoopbaan(TKApiTestCase):
-
-    def test_get_loopbaan(self):
-        loopbaan = self.api.get_items(PersoonLoopbaan, max_items=1)[0]
-        self.assertTrue(loopbaan.functie)
-        # self.assertTrue(loopbaan.werkgever)
-        # self.assertTrue(loopbaan.omschrijving)
-        # self.assertTrue(loopbaan.omschrijving_en)
-        self.assertTrue(loopbaan.plaats)
-        print(loopbaan.van, loopbaan.tot_en_met, loopbaan.werkgever, loopbaan.omschrijving)
-        # self.assertGreater(loopbaan.tot_en_met, loopbaan.van)
-        self.assertTrue(loopbaan.persoon.id)
-
-
-# class TestPersoonGeschenk(TKApiTestCase):
-#
-#     def test_get_geschenk(self):
-#         uid = '1650fba4-5979-44d3-a591-0ff90c0736c4'
-#         geschenk = self.api.get_item(PersoonGeschenk, id=uid)
-#         self.assertEqual('Ontvangen van de Irakese ambassade een doros je wijn ter waarde van ongeveer €60,--.', geschenk.omschrijving)
-#         self.assertEqual(2009, geschenk.datum.year)
-#         self.assertEqual('355337af-a30f-48b8-882a-002ce35f9d07', geschenk.persoon.id)
-#
-#
-# class TestPersoonNevenfunctie(TKApiTestCase):
-#
-#     def test_get_nevenfunctie(self):
-#         uid = '9ef1fb14-395c-44da-b378-089f7c1b5a1f'
-#         nevenfunctie = self.api.get_item(PersoonNevenfunctie, id=uid)
-#         self.assertEqual('Deelname in de Raad van advies van het Comité ter vervolging van oorlogsmisdadigers', nevenfunctie.omschrijving)
-#         self.assertEqual(None, nevenfunctie.van)
-#         self.assertEqual(None, nevenfunctie.tot_en_met)
-#         print(nevenfunctie.is_actief)
-#         self.assertEqual(False, nevenfunctie.is_actief)
-#         self.assertEqual('Onbezoldigd', nevenfunctie.soort)
-#         self.assertEqual('', nevenfunctie.toelichting)
-#         self.assertEqual('355337af-a30f-48b8-882a-002ce35f9d07', nevenfunctie.persoon.id)
