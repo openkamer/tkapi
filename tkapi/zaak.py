@@ -2,7 +2,6 @@ from enum import Enum
 from typing import List
 
 import tkapi
-from tkapi.actor import ZaakActor
 from tkapi.persoon import Persoon
 from tkapi.util import util
 
@@ -104,11 +103,11 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def indiener(self):
-        return self.related_item(ZaakIndiener, item_key='Indiener')
+        return self.related_item(ZaakActor, item_key='Indiener')
 
     @property
     def medeindieners(self):
-        return self.related_items(ZaakMedeindiener, item_key='Medeindiener')
+        return self.related_items(ZaakActor, item_key='Medeindiener')
 
     @property
     def zaak_actors(self):
@@ -161,19 +160,32 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
         return 'GestartOp'
 
 
-class ZaakIndienerFilter(tkapi.RelationFilter):
-
-    @property
-    def related_url(self):
-        return Persoon.url
+class ZaakActorFilter(tkapi.Filter):
+    pass
 
 
-class ZaakIndiener(tkapi.TKItemRelated, tkapi.TKItem):
+class ZaakActor(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'ZaakActor'
 
     @staticmethod
     def create_filter():
-        return ZaakIndienerFilter()
+        return ZaakActorFilter()
+
+    @property
+    def naam(self):
+        return self.get_property_or_empty_string('ActorNaam')
+
+    @property
+    def afkorting(self):
+        return self.get_property_or_empty_string('ActorAfkorting')
+
+    @property
+    def functie(self):
+        return self.get_property_or_empty_string('Functie')
+
+    @property
+    def relatie(self):
+        return self.get_property_or_empty_string('Relatie')
 
     @property
     def persoon(self):
@@ -189,9 +201,10 @@ class ZaakIndiener(tkapi.TKItemRelated, tkapi.TKItem):
         from tkapi.fractie import Fractie
         return self.related_item(Fractie)
 
-
-class ZaakMedeindiener(ZaakIndiener):
-    url = 'ZaakActor'
+    @property
+    def commissie(self):
+        from tkapi.commissie import Commissie
+        return self.related_item(Commissie)
 
 
 class ZaakSoort(Enum):

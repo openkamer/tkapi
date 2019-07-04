@@ -1,8 +1,7 @@
 import datetime
 
 from tkapi.zaak import Zaak
-from tkapi.zaak import ZaakIndiener
-from tkapi.zaak import ZaakMedeindiener
+from tkapi.zaak import ZaakActor
 from tkapi.zaak import ZaakSoort
 from tkapi.zaak import ZaakMotie
 from tkapi.zaak import ZaakAmendement
@@ -111,30 +110,28 @@ class TestZaakRelations(TKApiTestCase):
     #     self.assertEqual('2016Z04909', vervangen_zaak.nummer)
 
 
-class TestZaakIndiener(TKApiTestCase):
+class TestZaakActor(TKApiTestCase):
 
-    def test_get_first(self):
-        ind_filter = ZaakIndiener.create_filter()
-        ind_filter.filter_non_empty()
-        indieners = self.api.get_items(ZaakMedeindiener, filter=ind_filter, max_items=10)
-        # for indiender in indieners:
-        #     indiender.print_json()
-        for indiender in indieners:
-            self.assertTrue(indiender.id)
+    def test_get_item(self):
+        max_items = 1
+        actors = self.api.get_items(ZaakActor, max_items=max_items)
+        self.assertEqual(max_items, len(actors))
+        actor = actors[0]
+        self.assertIsNotNone(actor.id)
+
+    def test_filter(self):
+        max_items = 10
+        ind_filter = ZaakActor.create_filter()
+        actors = self.api.get_items(ZaakActor, filter=ind_filter, max_items=max_items)
 
     def test_get_indiener(self):
-        uid = 'c52afcd8-f9b9-4c50-b3e7-e2aa95a1d8d9'
-        indiener = self.api.get_item(ZaakIndiener, id=uid)
-        self.assertEqual('2a6929b2-58a7-4d5e-9ede-3c877633f96a', indiener.persoon.id)
-        self.assertEqual('b00c4984-06f1-44b5-b82c-bd47281ccfb1', indiener.fractie.id)
-        self.assertEqual('6d4f0f5e-0ade-4bce-b3cc-9eeb3b5ff988', indiener.zaak.id)
-
-    def test_get_medeindiener(self):
-        uid = 'afd0ae9e-d181-4e57-9466-00a4353f2078'
-        indiener = self.api.get_item(ZaakMedeindiener, id=uid)
-        self.assertEqual('593c7e62-af83-4b59-910e-97ac667a2f49', indiener.persoon.id)
-        self.assertEqual('b00c4984-06f1-44b5-b82c-bd47281ccfb1', indiener.fractie.id)
-        self.assertEqual('3bdf2c95-0779-4957-be6c-ee26e2394f6c', indiener.zaak.id)
+        max_items = 10
+        actors = self.api.get_items(ZaakActor, max_items=max_items)
+        self.assertEqual(max_items, len(actors))
+        actor = actors[0]
+        self.assertEqual(max_items, len(actors))
+        for actor in actors:
+            print(' | '.join([actor.naam, actor.afkorting, actor.relatie]))
 
 
 class TestZaakSoort(TKApiTestCase):
