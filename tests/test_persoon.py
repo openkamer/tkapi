@@ -120,13 +120,17 @@ class TestPersoonFilters(TKApiTestCase):
 class TestPersoonReis(TKApiTestCase):
 
     def test_get_reis(self):
-        uid = '78cda327-8ab0-4cce-96ed-4de669356fc6'
+        max_items = 1
+        reizen = self.api.get_reizen(max_items=max_items)
+        print(reizen[0].id)
+        self.assertEqual(max_items, len(reizen))
+        uid = '059ac7ec-c871-4ac4-a604-aaca1d8641a2'
         reis = self.api.get_item(PersoonReis, id=uid)
-        self.assertEqual('Katowice, Polen', reis.bestemming)
-        self.assertEqual('Werkbezoek aan de 24ste Klimaatconferentie met de vaste commissie voor Economische Zaken en Klimaat', reis.doel)
-        self.assertEqual('Tweede Kamer der Staten-Generaal', reis.betaald_door)
-        self.assertGreater(reis.tot_en_met, reis.van)
-        self.assertEqual('046383b9-4c9e-4037-ad9f-ad8925cf75c4', reis.persoon.id)
+        self.assertEqual('Londen, Engeland, Stockholm, Zweden en Berlijn, Duitsland', reis.bestemming)
+        self.assertEqual('Werkbezoek vaste commissie voor Verkeer en Waterstaat.', reis.doel)
+        self.assertEqual('Tweede Kamer der Staten-Generaal.', reis.betaald_door)
+        self.assertEqual(datetime.date(2008, 5, 9), reis.tot_en_met)
+        self.assertEqual('3f57c8c6-117b-4ef4-a240-d621a8ae7dfb', reis.persoon.id)
 
     def test_get_reizen(self):
         n_items = 20
