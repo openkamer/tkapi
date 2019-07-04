@@ -11,7 +11,7 @@ class TestFractie(TKApiTestCase):
     # end_datetime = datetime.datetime(year=2017, month=2, day=1)
 
     def test_get_fractie(self):
-        fractie = self.api.get_item(Fractie, id='203057fb-2f1c-4188-bd35-3e30e740cefc')
+        fractie = self.api.get_item(Fractie, id='8fd1a907-0355-4d27-8dc1-fd5a531b471e')
         print('fractie:', fractie.naam)
         self.assertEqual('GroenLinks', fractie.naam)
         self.assertEqual('GL', fractie.afkorting)
