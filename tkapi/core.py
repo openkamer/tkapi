@@ -132,6 +132,8 @@ class TKItemRelated(object):
         return items
 
     def related_item(self, tkitem, item_key=None):
+        if tkitem.url in self.json:  # check if related item is already available due to 'expand' query param
+            return tkitem(self.json[tkitem.url])
         related_items = self.related_items(tkitem, item_key=item_key)
         if related_items:
             return related_items[0]

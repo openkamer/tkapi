@@ -123,6 +123,7 @@ class CommissieZetel(tkapi.TKItemRelated, tkapi.TKItem):
 
 
 class CommissieZetelPersoon(tkapi.TKItemRelated, tkapi.TKItem):
+    expand_param = 'Persoon'
 
     @staticmethod
     def create_filter():

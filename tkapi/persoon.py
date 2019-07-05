@@ -105,6 +105,7 @@ class Persoon(tkapi.TKItemRelated, tkapi.TKItem):
 
 
 class PersoonEntity(tkapi.TKItemRelated, tkapi.TKItem):
+    expand_param = 'Persoon'
 
     @property
     def persoon(self):

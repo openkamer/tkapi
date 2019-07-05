@@ -65,6 +65,7 @@ class Fractie(Actor):
 
 class Lid(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Lid'
+    expand_param = 'Persoon'
 
     @staticmethod
     def create_filter():
