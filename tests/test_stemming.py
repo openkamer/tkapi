@@ -53,3 +53,13 @@ class TestStemmingFilters(TKApiTestCase):
         volgnummer = 16
         stemmingen = queries.get_kamerstuk_stemmingen(nummer=dossier_nr, volgnummer=volgnummer)
         self.assertEqual(16, len(stemmingen))
+
+
+class TestStemmingFractie(TKApiTestCase):
+
+    # NOTE: this currently fails because stemming.fractie relations give empty fracties
+    def test_get_stemmingen(self):
+        stemmingen = queries.get_kamerstuk_stemmingen(nummer=33885, volgnummer=16)
+        for stemming in stemmingen:
+            print(stemming.fractie.naam)
+            self.assertTrue(stemming.fractie.naam)
