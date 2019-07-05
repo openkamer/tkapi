@@ -1,11 +1,11 @@
 import datetime
 
 from tkapi.zaak import Zaak
-from tkapi.zaak import ZaakIndiener
-from tkapi.zaak import ZaakMedeindiener
+from tkapi.zaak import ZaakActor
 from tkapi.zaak import ZaakSoort
 from tkapi.zaak import ZaakMotie
 from tkapi.zaak import ZaakAmendement
+from tkapi.zaak import KabinetsAppreciatie
 
 from .core import TKApiTestCase
 
@@ -21,7 +21,7 @@ class TestZaak(TKApiTestCase):
         zaken = self.api.get_zaken(zaak_filter)
         # for zaak in zaken:
         #     zaak.print_json()
-        self.assertEqual(len(zaken), 27)
+        self.assertEqual(len(zaken), 28)
 
         zaak_filter.filter_afgedaan(True)
         zaken_afgedaan = self.api.get_zaken(zaak_filter)
@@ -84,7 +84,7 @@ class TestZaakRelations(TKApiTestCase):
         end_datetime = datetime.datetime(year=2016, month=2, day=1)
         zaak_filter = Zaak.create_filter()
         zaak_filter.filter_date_range(start_datetime, end_datetime)
-        zaak_filter.filter_empty_activiteit()
+        zaak_filter.filter_has_activiteit()
         # zaak_filter.filter_soort('Wetgeving')
         zaken = self.api.get_zaken(zaak_filter)
         print('Zaken without activiteit', len(zaken))
@@ -95,35 +95,43 @@ class TestZaakRelations(TKApiTestCase):
         end_datetime = datetime.datetime(year=2016, month=1, day=10)
         zaak_filter = Zaak.create_filter()
         zaak_filter.filter_date_range(start_datetime, end_datetime)
-        zaak_filter.filter_empty_agendapunt()
+        zaak_filter.filter_has_agendapunt()
         # zaak_filter.filter_soort('Wetgeving')
         zaken = self.api.get_zaken(zaak_filter)
         print('Zaken without agendapunt', len(zaken))
         self.assertTrue(len(zaken) > 50)
 
-    def test_zaak_vervangen_door(self):
-        uid = 'bee46617-c7e0-43e1-b6a3-0001a8d402eb'
-        zaak = self.api.get_item(Zaak, id=uid)
-        vervangen_zaak = zaak.vervangen_door
-        self.assertEqual('c4621bc4-5972-4440-beb0-473709846885', vervangen_zaak.id)
-        self.assertEqual('2016Z04909', vervangen_zaak.nummer)
+    # TODO BR: update with v2 (OData V4) uid
+    # def test_zaak_vervangen_door(self):
+    #     uid = 'bee46617-c7e0-43e1-b6a3-0001a8d402eb'
+    #     zaak = self.api.get_item(Zaak, id=uid)
+    #     vervangen_zaak = zaak.vervangen_door
+    #     self.assertEqual('c4621bc4-5972-4440-beb0-473709846885', vervangen_zaak.id)
+    #     self.assertEqual('2016Z04909', vervangen_zaak.nummer)
 
 
-class TestZaakIndiener(TKApiTestCase):
+class TestZaakActor(TKApiTestCase):
+
+    def test_get_item(self):
+        max_items = 1
+        actors = self.api.get_items(ZaakActor, max_items=max_items)
+        self.assertEqual(max_items, len(actors))
+        actor = actors[0]
+        self.assertIsNotNone(actor.id)
+
+    def test_filter(self):
+        max_items = 10
+        ind_filter = ZaakActor.create_filter()
+        actors = self.api.get_items(ZaakActor, filter=ind_filter, max_items=max_items)
 
     def test_get_indiener(self):
-        uid = '01f9aa67-ee5d-4fcb-a8f3-961d31164977'
-        indiener = self.api.get_item(ZaakIndiener, id=uid)
-        self.assertEqual('287b1e1b-8d2c-405c-828f-2f1405671c2f', indiener.persoon.id)
-        self.assertEqual('8266ae85-5e77-44e9-a8d4-b399b96ca4b2', indiener.fractie.id)
-        self.assertEqual('e8f337b7-ffbc-4fcd-a62c-00079510a0e9', indiener.zaak.id)
-
-    def test_get_medeindiener(self):
-        uid = 'f5a27871-856e-4a15-bce4-5d61460bf5cc'
-        indiener = self.api.get_item(ZaakMedeindiener, id=uid)
-        self.assertEqual('ad21ebf6-352c-4411-a110-95205bfa3126', indiener.persoon.id)
-        self.assertEqual('8266ae85-5e77-44e9-a8d4-b399b96ca4b2', indiener.fractie.id)
-        self.assertEqual('e8f337b7-ffbc-4fcd-a62c-00079510a0e9', indiener.zaak.id)
+        max_items = 10
+        actors = self.api.get_items(ZaakActor, max_items=max_items)
+        self.assertEqual(max_items, len(actors))
+        actor = actors[0]
+        self.assertEqual(max_items, len(actors))
+        for actor in actors:
+            print(' | '.join([actor.naam, actor.afkorting, actor.relatie]))
 
 
 class TestZaakSoort(TKApiTestCase):
@@ -135,6 +143,7 @@ class TestZaakSoort(TKApiTestCase):
             zaak_filter.filter_soort(soort)
             zaken = self.api.get_zaken(filter=zaak_filter, max_items=max_items)
             self.assertEqual(max_items, len(zaken))
+            self.assertEqual(soort, zaken[0].soort)
 
 
 class TestZaakMotie(TKApiTestCase):
@@ -142,10 +151,10 @@ class TestZaakMotie(TKApiTestCase):
     def test_get_motie_zaken(self):
         max_items = 10
         zaak_filter = ZaakMotie.create_filter()
-        zaak_filter.filter_empty_besluit()
+        zaak_filter.filter_has_besluit()
         motie_zaken = self.api.get_items(ZaakMotie, filter=zaak_filter, max_items=max_items)
         for zaak in motie_zaken:
-            self.assertEqual(zaak.soort, ZaakSoort.MOTIE.value)
+            self.assertEqual(zaak.soort, ZaakSoort.MOTIE)
             print(zaak.besluit_text)
             if zaak.stemmingen:
                 print('number of stemmingen:', len(zaak.stemmingen))
@@ -156,10 +165,37 @@ class TestZaakAmendement(TKApiTestCase):
     def test_get_amendement_zaken(self):
         max_items = 10
         zaak_filter = ZaakAmendement.create_filter()
-        zaak_filter.filter_empty_besluit()
+        zaak_filter.filter_has_besluit()
         motie_zaken = self.api.get_items(ZaakAmendement, filter=zaak_filter, max_items=max_items)
         for zaak in motie_zaken:
-            self.assertEqual(zaak.soort, ZaakSoort.AMENDEMENT.value)
+            self.assertEqual(zaak.soort, ZaakSoort.AMENDEMENT)
             print(zaak.besluit_text)
             if zaak.stemmingen:
                 print('number of stemmingen:', len(zaak.stemmingen))
+
+
+class TestZaakKabinetsappreciatie(TKApiTestCase):
+
+    def test_get_zaak_with_kabinetsappreciatie(self):
+        max_items = 10
+        zaak_filter = ZaakMotie.create_filter()
+        begin_datetime = datetime.datetime(year=2019, month=4, day=1)
+        end_datetime = datetime.datetime(year=2019, month=6, day=1)
+        zaak_filter.filter_date_range(start_datetime=begin_datetime, end_datetime=end_datetime)
+        zaken = self.api.get_items(ZaakMotie, filter=zaak_filter, max_items=max_items)
+        self.assertEqual(max_items, len(zaken))
+        for zaak in zaken:
+            self.assertIsNotNone(zaak.kabinetsappreciatie)
+
+    def test_filter_zaak_kabinetsappreciatie(self):
+        max_items = 10
+        zaak_filter = ZaakMotie.create_filter()
+        begin_datetime = datetime.datetime(year=2019, month=4, day=1)
+        end_datetime = datetime.datetime(year=2019, month=6, day=1)
+        zaak_filter.filter_date_range(start_datetime=begin_datetime, end_datetime=end_datetime)
+        zaak_filter.filter_kabinetsappreciatie(KabinetsAppreciatie.ONTRADEN)
+        zaken = self.api.get_items(ZaakMotie, filter=zaak_filter, max_items=max_items)
+        self.assertEqual(max_items, len(zaken))
+        for zaak in zaken:
+            self.assertIsNotNone(zaak.kabinetsappreciatie)
+            self.assertEqual(zaak.kabinetsappreciatie, KabinetsAppreciatie.ONTRADEN)

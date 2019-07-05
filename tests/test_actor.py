@@ -1,6 +1,7 @@
 import datetime
 
-from tkapi.fractie import Fractie, FractieOrganisatie, FractieLid
+from tkapi.fractie import Fractie, FractieZetel
+from tkapi.fractie import FractieZetelPersoon
 
 from .core import TKApiTestCase
 
@@ -10,27 +11,22 @@ class TestFractie(TKApiTestCase):
     # end_datetime = datetime.datetime(year=2017, month=2, day=1)
 
     def test_get_fractie(self):
-        fractie = self.api.get_item(Fractie, id='97d432a7-8a64-4db9-9189-cc9f70a4109b')
+        fractie = self.api.get_item(Fractie, id='8fd1a907-0355-4d27-8dc1-fd5a531b471e')
         print('fractie:', fractie.naam)
         self.assertEqual('GroenLinks', fractie.naam)
         self.assertEqual('GL', fractie.afkorting)
         self.assertEqual(datetime.date(year=1990, month=11, day=24), fractie.datum_actief)
         self.assertEqual(None, fractie.datum_inactief)
         # fractie.print_json()
-        leden = fractie.leden
-        for lid in leden:
-            # lid.print_json()
-            print(lid.van, '-', lid.tot_en_met)
-            if lid.persoon:
-                print(lid.persoon)
+        leden = fractie.leden_actief
         print('fractieleden:', len(leden))
-        self.assertGreater(len(leden), 53)
+        self.assertGreaterEqual(len(leden), 14)
 
     def test_get_fracties(self):
         fracties = self.api.get_fracties(max_items=50)
         for fractie in fracties:
             # fractie.print_json()
-            print('fractie:', fractie.naam, '| zetels:', fractie.zetels)
+            print('id', fractie.id, 'fractie:', fractie.naam, '| zetels:', fractie.zetels_aantal)
         self.assertEqual(39, len(fracties))
 
     def test_filter_fracties_actief(self):
@@ -39,44 +35,61 @@ class TestFractie(TKApiTestCase):
         fracties = self.api.get_fracties(max_items=50, filter=filter)
         for fractie in fracties:
             # fractie.print_json()
-            print('fractie:', fractie.naam, '| zetels:', fractie.zetels)
+            print('fractie:', fractie.naam, '| zetels:', fractie.zetels_aantal)
         self.assertEqual(13, len(fracties))
 
     def test_filter_actieve_leden(self):
-        fractie = self.api.get_item(Fractie, id='97d432a7-8a64-4db9-9189-cc9f70a4109b')
+        filter = Fractie.create_filter()
+        filter.filter_fractie('GroenLinks')
+        fractie = self.api.get_items(Fractie, filter=filter)[0]
         leden_actief = fractie.leden_actief
-        print(fractie.naam, fractie.zetels)
-        for lid in leden_actief:
-            print('\t', lid.persoon)
-        self.assertEqual(fractie.zetels, len(leden_actief))
+        print(fractie.naam, fractie.zetels_aantal)
+        # for lid in leden_actief:
+        #     print('\t', lid.persoon)
+        self.assertEqual(fractie.zetels_aantal, len(leden_actief))
 
 
-class TestFractieLid(TKApiTestCase):
+class TestFractieZetel(TKApiTestCase):
 
-    def test_get_fractie_leden(self):
-        leden = self.api.get_fractie_leden(max_items=10)
-        self.assertEqual(10, len(leden))
-        for lid in leden:
-            if lid.persoon:
-                print(lid.persoon.voornamen, lid.persoon.achternaam)
-            else:
-                self.assertTrue(lid.vacature)
+    def test_get_fractie_zetels(self):
+        zetels = self.api.get_fractie_zetels(max_items=10)
+        self.assertEqual(10, len(zetels))
+        for zetel in zetels:
+            if zetel.fractie_zetel_persoon:
+                persoon = zetel.fractie_zetel_persoon.persoon
+                print(persoon.voornamen, persoon.achternaam)
+            # else:
+            #     self.assertTrue(lid.vacature)
 
-    def test_get_fractie_leden_actief(self):
-        filter = FractieLid.create_filter()
+    def test_filter_fractie(self):
+        filter = FractieZetel.create_filter()
+        filter.filter_fractie('GroenLinks')
+        zetels = self.api.get_items(FractieZetel, filter)
+        self.assertEqual(48, len(zetels))
+
+    # TODO BR: move to fractie_zetel_persoon
+    # def test_get_fractie_zetels_actief(self):
+    #     filter = FractieZetel.create_filter()
+    #     filter.filter_actief()
+    #     zetels = self.api.get_fractie_zetels(max_items=10, filter=filter)
+    #     print('fractiezetels:', len(zetels))
+    #     for zetel in zetels:
+    #         # lid.print_json()
+    #         self.assertEqual(zetel.fractie_zetel_persoon.tot_en_met, None)
+    #         self.assertEqual(zetel.fractie_zetel_persoon.is_actief, True)
+
+
+class TestFractieZetelPersoon(TKApiTestCase):
+
+    def test_filter_fractie(self):
+        filter = FractieZetelPersoon.create_filter()
+        filter.filter_fractie('GroenLinks')
+        zetel_personen = self.api.get_items(FractieZetelPersoon, filter=filter)
+        self.assertGreaterEqual(len(zetel_personen), 51)
+
+    def test_filter_fractie_actief(self):
+        filter = FractieZetelPersoon.create_filter()
+        filter.filter_fractie('GroenLinks')
         filter.filter_actief()
-        leden = self.api.get_fractie_leden(max_items=10, filter=filter)
-        print('fractieleden:', len(leden))
-        for lid in leden:
-            # lid.print_json()
-            self.assertEqual(lid.tot_en_met, None)
-            self.assertEqual(lid.is_actief, True)
-
-
-class TestFractieOrganisatie(TKApiTestCase):
-
-    def test_get_organisatie(self):
-        uid = '96cd98f6-7cd5-408d-b699-2af03404be7b'
-        organisatie = self.api.get_item(FractieOrganisatie, id=uid)
-        self.assertEqual('Tweede Kamer der Staten-Generaal', organisatie.naam)
-        self.assertEqual('7682ced0-84ea-46f1-8e27-294b272af931', organisatie.fractie.id)
+        zetel_personen = self.api.get_items(FractieZetelPersoon, filter=filter)
+        self.assertGreaterEqual(len(zetel_personen), 14)

@@ -8,26 +8,6 @@ class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
     def __init__(self):
         super().__init__()
 
-    def _filter_kamerstukdossier_str(self, vetnummer):
-        filter_str = super()._filter_kamerstukdossier_str(vetnummer=vetnummer)
-        filter_str += ' or '
-        filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Kamerstukdossier/any(d: d/Vetnummer eq {})))'.format(vetnummer)
-        return filter_str
-
-    def filter_kamerstukdossier(self, vetnummer):
-        filter_str = self._filter_kamerstukdossier_str(vetnummer=vetnummer)
-        self.add_filter_str(filter_str)
-
-    def filter_kamerstuk(self, vetnummer, ondernummer, is_or=False):
-        filter_str = super()._filter_kamerstukdossier_str(vetnummer=vetnummer)
-        filter_str += ' and '
-        filter_str += super()._filter_kamerstuk_str(ondernummer=ondernummer)
-        filter_str += ' or '
-        filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Kamerstukdossier/any(d: d/Vetnummer eq {})))'.format(vetnummer)
-        filter_str += ' and '
-        filter_str += 'Agendapunt/any(a: a/Zaak/any(z: z/Volgnummer eq {}))'.format(ondernummer)
-        self.add_filter_str(filter_str)
-
 
 class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Activiteit'
@@ -37,9 +17,9 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
         return ActiviteitFilter()
 
     @property
-    def parlementaire_documenten(self):
-        from tkapi.document import ParlementairDocument
-        return self.related_items(ParlementairDocument)
+    def documenten(self):
+        from tkapi.document import Document
+        return self.related_items(Document)
 
     @property
     def zaken(self):
@@ -62,15 +42,15 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def begin(self):
-        return self.get_datetime_or_none('Begin')
+        return self.get_datetime_or_none('Aanvangstijd')
 
     @property
     def einde(self):
-        return self.get_datetime_or_none('Einde')
+        return self.get_datetime_or_none('Eindtijd')
 
     @property
     def soort(self):
-        return self.get_property_or_empty_string('Soort')
+        return self.get_property_enum_or_none('Soort', ActiviteitSoort)
 
     @property
     def nummer(self):
@@ -78,11 +58,11 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
 
     @staticmethod
     def begin_date_key():
-        return 'Begin'
+        return 'Aanvangstijd'
 
     @staticmethod
     def end_date_key():
-        return 'Einde'
+        return 'Eindtijd'
 
 
 class ActiviteitSoort(Enum):

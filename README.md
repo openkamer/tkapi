@@ -2,7 +2,7 @@
 [![PyPI version](https://badge.fury.io/py/tkapi.svg)](https://badge.fury.io/py/tkapi)  
 Python bindings for the [Tweede Kamer](https://tweedekamer.nl) [Open Data Portaal](https://opendata.tweedekamer.nl) OData API.
 
-Requires Python 3.3+
+Requires Python 3.5+
 
 You are welcome to open an issue if you have any problems, questions or suggestions.
 
@@ -33,23 +33,21 @@ For more examples see the `examples` directory and the tests.
 |                            |                            |                              |
 |----------------------------|----------------------------|------------------------------|
 | **Activiteit**             | **Commissie**              | **Persoon**                  |
-| ActiviteitActor            | CommissieOrganisatie       | PersoonAdres                 |
-| **Zaak**                   | CommissieAanvullendGegeven | PersoonContactinformatie     |
+| ActiviteitActor            |                            | PersoonAdres                 |
+| **Zaak**                   |                            | PersoonContactinformatie     |
 | ZaakActor                  | **CommissieZetel**         | **PersoonGeschenk**          |
 | **Kamerstukdossier**       | **CommissieVastPersoon**   | **PersoonLoopbaan**          |
-| **Fractie**                | CommissieVastVacature      | **PersoonNevenfunctie**      |
-| **FractieOrganisatie**     | CommissieVervangerVacature | **PersoonNevenfunctieInkomsten** |
-| FractieAanvullendGegeven   | CommissieVervangerPersoon  | **PersoonOnderwijs**         |
-| **FractieLid**             |                            | **PersoonReis**              |
+| **Fractie**                | **CommissieVervangerPersoon** | **PersoonNevenfunctie**      |
+|                            | CommissieVastVacature      | **PersoonNevenfunctieInkomsten** |
+| FractieAanvullendGegeven   | CommissieVervangerVacature | **PersoonOnderwijs**         |
+| **FractieZetel**           |                            | **PersoonReis**              |
 | **Stemming**               |                            | **PersoonFunctie**           |
 | Zaal                       |                            |                              |
 | Reservering                |                            |                              |
 | **Vergadering**            |                            |                              |
-| **ParlementairDocument**   |                            |                              |
-| ParlementairDocumentVersie |                            |                              |
+| **Document**               |                            |                              |
+| DocumentVersie             |                            |                              |
 | Bestand                    |                            |                              |
-| **Kamerstuk**              |                            |                              |
-| **Verslag**                |                            |                              |
 | **Agendapunt**             |                            |                              |
 | **Besluit**                |                            |                              |
 
@@ -66,7 +64,7 @@ python -m unittest discover
 
 Run all tests,
 ```bash
-coverage -m unittest discover
+coverage run -m unittest discover
 ```
 
 Create coverage report,

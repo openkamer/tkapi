@@ -1,5 +1,7 @@
 from tkapi.besluit import Besluit
 
+from tkapi.util import  queries
+
 from .core import TKApiTestCase
 
 
@@ -12,29 +14,46 @@ class TestBesluit(TKApiTestCase):
         besluiten = self.api.get_besluiten(filter=besluit_filter, max_items=n_items)
         for besluit in besluiten:
             self.assertEqual(1, len(besluit.zaken))
-            self.assertIsNotNone(besluit.agendapunt.activiteit.begin)
+            self.assertIsNotNone(besluit.agendapunt.activiteit)
         self.assertEqual(n_items, len(besluiten))
 
 
 class TestBesluitFilters(TKApiTestCase):
 
-    def test_kamerstukdossier_filter(self):
-        n_items = 4
-        vetnummer = 34822
-        filter = Besluit.create_filter()
-        filter.filter_kamerstukdossier(vetnummer=vetnummer)
-        besluiten = self.api.get_besluiten(filter=filter, max_items=n_items)
-        self.assertEqual(n_items, len(besluiten))
-        for besluit in besluiten:
-            self.assertEqual(vetnummer, besluit.zaak.dossier.vetnummer)
+    def test_kamerstukdossier_filter_34822(self):
+        nummer = 34822
+        expected_besluiten = 12
+        expected_with_stemmen = 1
+        self.check_dossier_besluiten(nummer, expected_besluiten, expected_with_stemmen)
+
+    def test_kamerstukdossier_filter_34819(self):
+        nummer = 34819
+        expected_besluiten = 36
+        expected_with_stemmen = 7
+        self.check_dossier_besluiten(nummer, expected_besluiten, expected_with_stemmen)
+
+    def test_kamerstukdossier_filter_34792(self):
+        nummer = 34792
+        expected_besluiten = 14
+        expected_with_stemmen = 6
+        self.check_dossier_besluiten(nummer, expected_besluiten, expected_with_stemmen)
+
+    def check_dossier_besluiten(self, nummer, expected_besluiten, expected_with_stemmen):
+        besluiten = queries.get_dossier_besluiten(nummer=nummer)
+        besluiten_with_stemmen = queries.get_dossier_besluiten_with_stemmingen(nummer=nummer)
+        self.assertEqual(expected_besluiten, len(besluiten))
+        self.assertEqual(expected_with_stemmen, len(besluiten_with_stemmen))
+        # for besluit in besluiten:
+        #     print(besluit.status, besluit.soort, len(besluit.stemmingen))
+        #     self.assertEqual(nummer, besluit.zaak.dossier.nummer)
+        for besluit in besluiten_with_stemmen:
+            print(besluit.status, besluit.soort, len(besluit.stemmingen))
+            self.assertEqual(nummer, besluit.zaak.dossier.nummer)
 
     def test_kamerstuk_filter(self):
-        n_items = 5
-        vetnummer = 33885
+        nummer = 33885
         volgnummer = 16
-        filter = Besluit.create_filter()
-        filter.filter_kamerstuk(vetnummer=vetnummer, ondernummer=volgnummer)
-        besluiten = self.api.get_besluiten(filter=filter, max_items=n_items)
+        besluiten = queries.get_kamerstuk_besluiten(nummer=nummer, volgnummer=volgnummer)
         self.assertEqual(1, len(besluiten))
         for besluit in besluiten:
-            self.assertEqual(vetnummer, besluit.zaken[0].dossier.vetnummer)
+            self.assertEqual(nummer, besluit.zaken[0].dossier.nummer)

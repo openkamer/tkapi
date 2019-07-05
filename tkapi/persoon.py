@@ -2,17 +2,17 @@ import tkapi
 
 from tkapi.actor import Actor
 
-from tkapi.fractie import FractieLidRelationFilter, FractieLid
+from tkapi.fractie import FractieZetelPersoonRelationFilter, FractieZetel
 
 
-class PersoonFilter(FractieLidRelationFilter):
+class PersoonFilter(FractieZetelPersoonRelationFilter):
 
     def filter_achternaam(self, achternaam):
         filter_str = 'Achternaam eq \'{}\''.format(achternaam)
         self.add_filter_str(filter_str)
 
 
-class Persoon(Actor):
+class Persoon(tkapi.TKItemRelated, tkapi.TKItem):
     url = 'Persoon'
     orderby_param = 'Achternaam'
     filter_param = 'Achternaam ne null'
@@ -27,7 +27,8 @@ class Persoon(Actor):
 
     @property
     def fractieleden(self):
-        return self.related_items(FractieLid, item_key='Fractielid')
+        from .fractie import FractieZetelPersoon
+        return self.related_items(FractieZetelPersoon)
 
     @property
     def achternaam(self):
@@ -46,32 +47,52 @@ class Persoon(Actor):
         return self.get_property_or_empty_string('Voornamen')
 
     @property
-    def reizen(self):
-        return self.related_items(PersoonReis, item_key='Reis')
+    def functie(self):
+        return self.get_property_or_empty_string('Functie')
 
     @property
-    def onderwijs(self):
-        return self.related_items(PersoonOnderwijs, item_key='Onderwijs')
+    def geboorteland(self):
+        return self.get_property_or_empty_string('Geboorteland')
 
     @property
-    def functies(self):
-        return self.related_items(PersoonFunctie, item_key='Functie')
+    def geboorteplaats(self):
+        return self.get_property_or_empty_string('Geboorteplaats')
 
     @property
-    def loopbaan(self):
-        return self.related_items(PersoonLoopbaan, item_key='Loopbaan')
-
-    @property
-    def geschenken(self):
-        return self.related_items(PersoonGeschenk, item_key='Geschenk')
-
-    @property
-    def nevenfuncties(self):
-        return self.related_items(PersoonNevenfunctie, item_key='Nevenfunctie')
+    def geslacht(self):
+        return self.get_property_or_empty_string('Geslacht')
 
     @property
     def geboortedatum(self):
-        return self.get_property_or_empty_string('Geboortedatum')
+        return self.get_date_from_datetime_or_none('Geboortedatum')
+
+    @property
+    def woonplaats(self):
+        return self.get_property_or_empty_string('Woonplaats')
+
+    @property
+    def titels(self):
+        return self.get_property_or_empty_string('Titels')
+
+    @property
+    def reizen(self):
+        return self.related_items(PersoonReis)
+
+    @property
+    def onderwijs(self):
+        return self.related_items(PersoonOnderwijs)
+
+    @property
+    def loopbaan(self):
+        return self.related_items(PersoonLoopbaan)
+
+    @property
+    def geschenken(self):
+        return self.related_items(PersoonGeschenk)
+
+    @property
+    def nevenfuncties(self):
+        return self.related_items(PersoonNevenfunctie)
 
     def __str__(self):
         pretty_print = ''
@@ -158,14 +179,6 @@ class PersoonOnderwijs(PersoonEntity):
         return 'TotEnMet'
 
 
-class PersoonFunctie(PersoonEntity):
-    url = 'PersoonFunctie'
-
-    @property
-    def omschrijving(self):
-        return self.get_property_or_empty_string('Waarde')
-
-
 class PersoonLoopbaan(PersoonEntity):
     url = 'PersoonLoopbaan'
 
@@ -191,14 +204,14 @@ class PersoonLoopbaan(PersoonEntity):
 
     @property
     def van(self):
-        return self.get_year_or_none('Van')
+        return self.get_date_or_none('Van')
 
     @property
     def tot_en_met(self):
-        return self.get_year_or_none('TotEnMet')
+        return self.get_date_or_none('TotEnMet')
 
-    @property
-    def begin_date_key(self):
+    @staticmethod
+    def begin_date_key():
         return 'Van'
 
     @staticmethod
@@ -217,8 +230,8 @@ class PersoonGeschenk(PersoonEntity):
     def datum(self):
         return self.get_datetime_or_none('Datum')
 
-    @property
-    def begin_date_key(self):
+    @staticmethod
+    def begin_date_key():
         return 'Datum'
 
 

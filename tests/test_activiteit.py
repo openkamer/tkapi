@@ -1,6 +1,7 @@
 import datetime
 
 from tkapi.activiteit import Activiteit, ActiviteitSoort
+from tkapi.util import queries
 
 from .core import TKApiTestCase
 
@@ -31,43 +32,34 @@ class TestActiviteit(TKApiTestCase):
         activiteiten = self.api.get_activiteiten(filter=None, max_items=10)
         self.assertEqual(10, len(activiteiten))
         for activiteit in activiteiten:
-            for pd in activiteit.parlementaire_documenten:
-                if pd.kamerstuk:
-                    print('dossier vetnummer:', pd.kamerstuk.dossier.vetnummer)
+            for pd in activiteit.documenten:
+                for dossier in pd.dossiers:
+                    print('dossier nummer:', dossier.nummer)
 
 
 class TestActiviteitFilters(TKApiTestCase):
     N_ITEMS = 15
 
-    def test_kamerstuk_dossier_filter(self):
-        filter = Activiteit.create_filter()
-        filter.filter_kamerstukdossier(vetnummer=31239)
-        activiteiten = self.api.get_activiteiten(filter=filter, max_items=self.N_ITEMS)
-        print(len(activiteiten))
-        self.assertEqual(self.N_ITEMS, len(activiteiten))
-        ids = set()
-        for activiteit in activiteiten:
-            ids.add(activiteit.id)
-            print(
-                'Activiteit: {} ({} - {})'
-                .format(activiteit.onderwerp, activiteit.begin, activiteit.einde)
-            )
-        self.assertEqual(len(activiteiten), len(ids))
+    def test_dossier_filter(self):
+        dosser_nr = 31239
+        activiteiten_expected = 18
+        activiteiten = queries.get_dossier_activiteiten(dosser_nr)
+        print('activiteiten found:', len(activiteiten))
+        self.assertEqual(activiteiten_expected, len(activiteiten))
+
+    def test_dossier_filter_2(self):
+        dosser_nr = 34986
+        activiteiten_expected = 17
+        activiteiten = queries.get_dossier_activiteiten(dosser_nr, include_agendapunten=True)
+        print('activiteiten found:', len(activiteiten))
+        self.assertEqual(activiteiten_expected, len(activiteiten))
 
     def test_kamerstuk_filter(self):
-        filter = Activiteit.create_filter()
-        filter.filter_kamerstuk(vetnummer=31239, ondernummer=16)
-        activiteiten = self.api.get_activiteiten(filter=filter, max_items=self.N_ITEMS)
-        print(len(activiteiten))
-        self.assertEqual(self.N_ITEMS, len(activiteiten))
-        ids = set()
-        for activiteit in activiteiten:
-            ids.add(activiteit.id)
-            print(
-                'Activiteit: {} ({} - {})'
-                .format(activiteit.onderwerp, activiteit.begin, activiteit.einde)
-            )
-        self.assertEqual(len(activiteiten), len(ids))
+        dossier_nr = 34986
+        volgnummer = 9
+        activiteiten_expected = 11
+        activiteiten = queries.get_kamerstuk_activiteiten(nummer=dossier_nr, volgnummer=volgnummer, include_agendapunten=True)
+        self.assertGreaterEqual(len(activiteiten), activiteiten_expected)
 
     def test_soort_filter(self):
         soorten = [
@@ -87,9 +79,23 @@ class TestActiviteitFilters(TKApiTestCase):
             ids = set()
             for activiteit in activiteiten:
                 ids.add(activiteit.id)
-                # print(
-                #     'Activiteit: {} ({} - {})'
-                #     .format(activiteit.soort, activiteit.begin, activiteit.einde)
-                # )
             self.assertEqual(self.N_ITEMS, len(activiteiten))
             self.assertEqual(len(activiteiten), len(ids))
+
+    def test_activiteit_soort_enum(self):
+        max_items = 1
+        for soort in ActiviteitSoort:
+            filter = Activiteit.create_filter()
+            filter.filter_soort(soort)
+            activiteiten = self.api.get_activiteiten(filter=filter, max_items=max_items)
+            if not activiteiten:
+                print('No activiteit found for soort enum: {}'.format(soort))
+            # No results available at the moment for the soorten below (or enum is wrong?)
+            ingore_soorten = [
+                ActiviteitSoort.HOORZITTING, ActiviteitSoort.MEDEDELINGEN, ActiviteitSoort.OPENING, ActiviteitSoort.OVERIG,
+                ActiviteitSoort.RONDETAFELGESPREK, ActiviteitSoort.SLUITING
+            ]
+            if soort in ingore_soorten:
+                continue
+            self.assertEqual(max_items, len(activiteiten))
+            self.assertEqual(soort, activiteiten[0].soort)

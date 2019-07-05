@@ -11,7 +11,7 @@ def example_fracties_leden_actief():
     filter.filter_actief()
     fracties_actief = api.get_fracties(filter=filter)
     for fractie in fracties_actief:
-        print('{} ({}) ({} zetels)'.format(fractie.naam, fractie.afkorting, fractie.zetels))
+        print('{} ({}) ({} zetels)'.format(fractie.naam, fractie.afkorting, fractie.zetels_aantal))
         leden = fractie.leden_actief
         for lid in leden:
             print('  ', lid.persoon, lid.van)

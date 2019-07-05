@@ -1,6 +1,10 @@
 from orderedset import OrderedSet
 
 from tkapi.commissie import Commissie
+from tkapi.commissie import CommissieZetel
+from tkapi.commissie import CommissieZetelVastPersoon
+from tkapi.commissie import CommissieZetelVervangerPersoon
+from tkapi.commissie import CommissieFunctie
 from tkapi.info import get_commissie_namen
 from tkapi.info import get_commissie_soorten
 
@@ -39,14 +43,17 @@ class TestCommissie(TKApiTestCase):
         print('\n=====Commissies Incomplete=====')
         print('commissies without soort: ' + str(len(commissies_without_soort)))
         print('commissies without name: ' + str(len(commissies_without_name)))
+        self.assertEqual(0, len(commissies_without_name))
+        self.assertGreaterEqual(60, len(commissies_without_soort))
 
-    def test_get_leden(self):
-        uid = '1349488c-8474-4704-bdad-26fa54ea9789'
-        commissie = self.api.get_item(Commissie, id=uid)
-        zetels = commissie.zetels
-        self.assertEqual(319, len(zetels))
-        self.assertEqual(2, len(zetels[1].personen_vast))
-        self.assertEqual('Oosten', zetels[1].personen_vast[0].persoon.achternaam)
+    #TODO BR: update uid
+    # def test_get_leden(self):
+    #     uid = '1349488c-8474-4704-bdad-26fa54ea9789'
+    #     commissie = self.api.get_item(Commissie, id=uid)
+    #     zetels = commissie.zetels_aantal
+    #     self.assertEqual(319, len(zetels))
+    #     self.assertEqual(2, len(zetels[1].personen_vast))
+    #     self.assertEqual('Oosten', zetels[1].personen_vast[0].persoon.achternaam)
 
     def test_soort_filter(self):
         soort = 'Algemeen'
@@ -60,13 +67,20 @@ class TestCommissie(TKApiTestCase):
 
     def test_naam_filter(self):
         naam = 'Vaste commissie voor Binnenlandse Zaken'
-        com_filter = Commissie.create_filter()
-        com_filter.filter_naam(naam)
-        commissies_algemeen = self.api.get_commissies(com_filter)
-        commissies_algemeen[0].print_json()
-        self.assertTrue(len(commissies_algemeen), 1)
-        for commissie in commissies_algemeen:
-            self.assertEqual(commissie.naam, naam)
+        filter = Commissie.create_filter()
+        filter.filter_naam(naam)
+        commissies = self.api.get_commissies(filter=filter)
+        self.assertTrue(len(commissies), 1)
+        commissie = commissies[0]
+        self.assertEqual(naam, commissie.naam)
+
+    def test_get_commissies_zetels(self):
+        max_items = 5
+        commissies = self.api.get_commissies(max_items=max_items)
+        self.assertEqual(max_items, len(commissies))
+        for commissie in commissies:
+            print(len(commissie.zetels))
+            self.assertNotEqual(0, len(commissie.zetels))
 
 
 class TestCommissieInfo(TKApiTestCase):
@@ -74,14 +88,118 @@ class TestCommissieInfo(TKApiTestCase):
     def test_commissie_namen(self):
         namen = get_commissie_namen()
         print('\n=== NAMEN ===')
+        self.assertGreater(len(namen), 50)
         for naam in OrderedSet(sorted(namen)):
             print(naam)
 
     def test_commissie_soorten(self):
         namen = get_commissie_soorten()
+        self.assertGreater(len(namen), 6)
         print('\n=== SOORTEN ===')
         for naam in OrderedSet(sorted(namen)):
             print(naam)
+
+
+class TestCommissieZetels(TKApiTestCase):
+
+    def get_commissie_binnenlandse_zaken(self):
+        naam = 'Vaste commissie voor Binnenlandse Zaken'
+        com_filter = Commissie.create_filter()
+        com_filter.filter_naam(naam)
+        commissies = self.api.get_commissies(com_filter)
+        self.assertEqual(1, len(commissies))
+        return commissies[0]
+
+    def test_get_commissie_zetels(self):
+        max_items = 10
+        zetels = self.api.get_items(CommissieZetel, max_items=max_items)
+        self.assertEqual(max_items, len(zetels))
+        for zetel in zetels:
+            self.assertIsNotNone(zetel.commissie)
+
+    def test_get_commissie_zetels_active(self):
+        commissie = self.get_commissie_binnenlandse_zaken()
+        filter = CommissieZetel.create_filter()
+        filter.filter_commissie(commissie)
+        filter.filter_active()
+        zetels = self.api.get_items(CommissieZetel, filter=filter)
+        personen = set()
+        for zetel in zetels:
+            for persoon in zetel.personen_vast_active:
+                print('vast: {} | tot en met: {}'.format(persoon.persoon.achternaam, persoon.tot_en_met))
+                personen.add(persoon.persoon.achternaam)
+                self.assertIsNone(persoon.tot_en_met)
+            for persoon in zetel.personen_vervangend_active:
+                print('vervangend: {} | tot en met: {}'.format(persoon.persoon.achternaam, persoon.tot_en_met))
+                personen.add(persoon.persoon.achternaam)
+                self.assertIsNone(persoon.tot_en_met)
+        self.assertGreater(len(zetels), 10)
+        self.assertGreater(len(personen), 20)
+        print('zetels: {}'.format(len(zetels)))
+        print('personen: {}'.format(len(personen)))
+
+    def test_filter_commissie(self):
+        max_items = 10
+        commissie = self.get_commissie_binnenlandse_zaken()
+        filter = CommissieZetel.create_filter()
+        filter.filter_commissie(commissie)
+        zetels = self.api.get_items(CommissieZetel, filter=filter, max_items=max_items)
+        self.assertEqual(len(zetels), max_items)
+        for zetel in zetels:
+            self.assertEqual(commissie.id, zetel.commissie.id)
+
+
+class TestCommissieZetelPersoon(TKApiTestCase):
+
+    def get_commissie_binnenlandse_zaken(self):
+        naam = 'Vaste commissie voor Binnenlandse Zaken'
+        com_filter = Commissie.create_filter()
+        com_filter.filter_naam(naam)
+        commissies = self.api.get_commissies(com_filter)
+        self.assertEqual(1, len(commissies))
+        return commissies[0]
+
+    def test_get_items_vast(self):
+        max_items = 5
+        vasts = self.api.get_items(CommissieZetelVastPersoon, max_items=max_items)
+        self.assertEqual(max_items, len(vasts))
+        for vast in vasts:
+            self.assertIsNotNone(vast.persoon.achternaam)
+            self.assertIsNotNone(vast.van)
+            self.assertIsNotNone(vast.functie)
+
+    def test_get_items_vervangend(self):
+        max_items = 5
+        vervangend = self.api.get_items(CommissieZetelVervangerPersoon, max_items=max_items)
+        self.assertEqual(max_items, len(vervangend))
+
+    def test_filter_active(self):
+        max_items = 20
+        filter = CommissieZetelVastPersoon.create_filter()
+        filter.filter_active()
+        vast_personen = self.api.get_items(CommissieZetelVastPersoon, filter=filter, max_items=max_items)
+        self.assertEqual(max_items, len(vast_personen))
+        for vast_persoon in vast_personen:
+            self.assertIsNone(vast_persoon.tot_en_met)
+
+    def test_filter_functie(self):
+        max_items = 20
+        functie_expected = CommissieFunctie.VOORZITTER
+        filter = CommissieZetelVastPersoon.create_filter()
+        filter.filter_functie(functie_expected)
+        vast_personen = self.api.get_items(CommissieZetelVastPersoon, filter=filter, max_items=max_items)
+        self.assertEqual(max_items, len(vast_personen))
+        for vast_persoon in vast_personen:
+            self.assertEqual(functie_expected, vast_persoon.functie)
+
+    def test_filter_commissie(self):
+        max_items = 5
+        commissie = self.get_commissie_binnenlandse_zaken()
+        filter = CommissieZetelVastPersoon.create_filter()
+        filter.filter_commissie(commissie)
+        vast_personen = self.api.get_items(CommissieZetelVastPersoon, filter=filter, max_items=max_items)
+        for vast_persoon in vast_personen:
+            self.assertEqual(commissie.id, vast_persoon.zetel.commissie.id)
 
 
 # class TestCommissieActiviteit(TKApiTestCase):
@@ -93,8 +211,8 @@ class TestCommissieInfo(TKApiTestCase):
 #             if activiteit.json['Voortouwcommissie']:
 #                 print('has Voortouwcommissie')
 #                 print(activiteit.json['Voortouwcommissie']['Commissie']['NaamNL'])
-#             if activiteit.json['ParlementairDocument']:
-#                 print('has ParlementairDocument')
+#             if activiteit.json['Document']:
+#                 print('has Document')
 #             # print(activiteit.json['Voortouwcommissie'])
-#             # print(activiteit.json['ParlementairDocument'])
+#             # print(activiteit.json['Document'])
 #         print(len(activiteiten))

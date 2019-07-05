@@ -1,7 +1,7 @@
 import tkapi
 
 
-class BesluitRelationFilter(tkapi.RelationFilter):
+class BesluitRelationFilter(tkapi.RelationsFilter):
 
     @property
     def related_url(self):
@@ -43,12 +43,20 @@ class Besluit(tkapi.TKItemRelated, tkapi.TKItem):
 
     @property
     def soort(self):
-        return self.get_property_or_empty_string('Soort')
+        return self.get_property_or_empty_string('BesluitSoort')
 
     @property
     def status(self):
         return self.get_property_or_empty_string('Status')
 
     @property
-    def slottekst(self):
-        return self.get_property_or_empty_string('Slottekst')
+    def tekst(self):
+        return self.get_property_or_empty_string('BesluitTekst')
+
+    @property
+    def stemming_soort(self):
+        return self.get_property_or_empty_string('StemmingsSoort')
+
+    @property
+    def opmerking(self):
+        return self.get_property_or_empty_string('Opmerking')

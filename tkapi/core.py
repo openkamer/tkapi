@@ -3,7 +3,7 @@ from tkapi.util import util
 
 class TKItem(object):
     url = NotImplementedError
-    expand_param = ''
+    expand_param = None
     orderby_param = None
     filter_param = ''
 
@@ -36,7 +36,7 @@ class TKItem(object):
         params = {}
         if cls.expand_param:
             params['$expand'] = cls.expand_param
-        if cls.expand_param:
+        if cls.orderby_param:
             params['$orderby'] = cls.orderby_param
         elif cls.begin_date_key():
             params['$orderby'] = '{} {}'.format(cls.begin_date_key(), 'desc')
@@ -44,6 +44,8 @@ class TKItem(object):
 
     @classmethod
     def get_param_expand(cls):
+        if not cls.expand_param:
+            return {}
         return {
             '$expand': cls.expand_param,
         }
@@ -61,8 +63,8 @@ class TKItem(object):
         return None
 
     def get_property_or_empty_string(self, property_key):
-        if property_key in self.json and self.json[property_key]:
-            return str(self.json[property_key])
+        if property_key in self.json and self.json[property_key] is not None:
+            return str(self.json[property_key]).strip()
         return ''
 
     def get_date_from_datetime_or_none(self, property_key):
@@ -85,6 +87,11 @@ class TKItem(object):
             return util.odatedatetime_to_datetime(self.json[property_key])
         return None
 
+    def get_property_enum_or_none(self, property_key, enum):
+        if property_key in self.json and self.json[property_key] is not None:
+            return enum(self.json[property_key].strip())
+        return None
+
 
 class TKItemRelated(object):
 
@@ -104,19 +111,23 @@ class TKItemRelated(object):
 
     def related_items(self, tkitem, filter=None, item_key=None):
         from tkapi.api import Api
-        if item_key is None and tkitem.url + '@odata.navigationLinkUrl' not in self.json:
+        item_key = item_key if item_key is not None else tkitem.url
+        navigation_key = item_key + '@odata.navigationLink'
+        if navigation_key not in self.json:
             return []
-        elif item_key is not None and item_key + '@odata.navigationLinkUrl' not in self.json:
-            return []
-        if item_key is None:
-            item_key = tkitem.url
         if item_key in self.json and self.json[item_key] is None:
             return []
         cache_key = self.create_cache_key(tkitem, filter)
         if cache_key in self.items_cache:
             return self.items_cache[cache_key]
-        url = self.json[item_key + '@odata.navigationLinkUrl']
+        url = self.json[navigation_key]
         items = Api().get_related(tkitem, related_url=url, filter=filter)
+        self.set_cache(tkitem, filter, items)
+        return items
+
+    def related_items_deep(self, tkitem, filter):
+        from tkapi.api import Api
+        items = Api().get_related(tkitem, related_url=tkitem.url, filter=filter)
         self.set_cache(tkitem, filter, items)
         return items
 
