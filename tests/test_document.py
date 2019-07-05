@@ -131,20 +131,6 @@ class TestVerslagAlgemeenOverleg(TKApiTestCase):
         verslagen = self.api.get_verslagen_van_algemeen_overleg(v_filter)
         print('verslagen found:',  len(verslagen))
         self.assertEqual(18, len(verslagen))
-        for verslag in verslagen:
-            print(verslag.onderwerp)
-            # print(verslag.document_url)
-            # verslag.kamerstuk.print_json()
-            # print(verslag.dossier.titel)
-            # for zaak in verslag.zaken:
-                # zaak.print_json()
-                # print(zaak)
-                # for commissie in zaak.voortouwcommissies:
-                #     print(commissie.naam)
-            # for activiteit in verslag.activiteiten:
-            #     verslag.print_json()
-                # print(activiteit.begin.isoformat())
-                # print(activiteit.einde.isoformat())
 
     def test_get_verslagen_algemeen_overleg_commissie_namen(self):
         expected_verslagen = 6

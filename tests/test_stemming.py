@@ -16,6 +16,20 @@ class TestStemming(TKApiTestCase):
         stemmingen = self.api.get_stemmingen(filter=None, max_items=10)
         self.assertEqual(10, len(stemmingen))
 
+    def test_get_stemming_attributes(self):
+        dossier_nr = 33885
+        volgnummer = 16
+        stemmingen = queries.get_kamerstuk_stemmingen(nummer=dossier_nr, volgnummer=volgnummer)
+        self.assertEqual(16, len(stemmingen))
+        stemming = stemmingen[0]
+        self.assertFalse(stemming.vergissing)
+        self.assertTrue(stemming.actor_naam)
+        self.assertTrue(stemming.actor_fractie)
+        self.assertFalse(stemming.is_hoofdelijk)
+        # TODO: change if available in OData
+        self.assertIsNone(stemming.persoon)
+        self.assertIsNotNone(stemming.fractie_size)
+
 
 class TestStemmingFilters(TKApiTestCase):
 

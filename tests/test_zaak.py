@@ -39,13 +39,34 @@ class TestZaak(TKApiTestCase):
         print('afgedaan: ' + str(n_afgedaan))
         self.assertEqual(n_aanhangig + n_afgedaan, len(zaken))
 
-    def test_zaak_for_onderwerp(self):
+    def test_zaak_attributes(self):
+        onderwerp = "Selectie aan de poort bij steeds meer universitaire studies"
+        zaak_filter = Zaak.create_filter()
+        zaak_filter.filter_onderwerp(onderwerp)
+        zaken = self.api.get_zaken(zaak_filter)
+        self.assertGreaterEqual(len(zaken), 1)
+        zaak = zaken[0]
+        self.assertEqual(zaak.onderwerp, onderwerp)
+        self.assertGreaterEqual(len(zaak.documenten), 3)
+        self.assertTrue(zaak.zaak_actors)
+        self.assertEqual('', zaak.alias)
+        self.assertIsNone(zaak.vervangen_door)
+
+    def test_zaak_filter_onderwerp(self):
         onderwerp = "Selectie aan de poort bij steeds meer universitaire studies"
         zaak_filter = Zaak.create_filter()
         zaak_filter.filter_onderwerp(onderwerp)
         zaken = self.api.get_zaken(zaak_filter)
         self.assertEqual(len(zaken), 1)
         self.assertEqual(zaken[0].onderwerp, onderwerp)
+        zaken[0].print_json()
+
+    def test_zaak_filter_volgnummer(self):
+        volgnummer = 60
+        zaak_filter = Zaak.create_filter()
+        zaak_filter.filter_volgnummer(volgnummer=volgnummer)
+        zaken = self.api.get_zaken(zaak_filter)
+        self.assertGreaterEqual(len(zaken), 368)
         zaken[0].print_json()
 
     def test_zaken_for_date_range(self):
@@ -118,13 +139,19 @@ class TestZaakActor(TKApiTestCase):
         self.assertEqual(max_items, len(actors))
         actor = actors[0]
         self.assertIsNotNone(actor.id)
+        self.assertTrue(actor.functie)
+        self.assertTrue(actor.persoon.id)
+        self.assertTrue(actor.zaak.id)
+        # TODO: enable if available
+        # self.assertTrue(actor.commissie.id)
+        # self.assertTrue(actor.fractie.id)
 
     def test_filter(self):
         max_items = 10
         ind_filter = ZaakActor.create_filter()
         actors = self.api.get_items(ZaakActor, filter=ind_filter, max_items=max_items)
 
-    def test_get_indiener(self):
+    def test_get_items(self):
         max_items = 10
         actors = self.api.get_items(ZaakActor, max_items=max_items)
         self.assertEqual(max_items, len(actors))
@@ -132,6 +159,7 @@ class TestZaakActor(TKApiTestCase):
         self.assertEqual(max_items, len(actors))
         for actor in actors:
             print(' | '.join([actor.naam, actor.afkorting, actor.relatie]))
+
 
 
 class TestZaakSoort(TKApiTestCase):

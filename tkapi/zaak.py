@@ -1,8 +1,6 @@
 from enum import Enum
-from typing import List
 
 import tkapi
-from tkapi.persoon import Persoon
 from tkapi.util import util
 
 
@@ -43,8 +41,8 @@ class ZaakFilter(tkapi.SoortFilter):
         filter_str = 'Document/any(d: d/Volgnummer eq {})'.format(volgnummer)
         self.add_filter_str(filter_str)
 
-    def filter_volgnummer(self, nummer):
-        filter_str = "Volgnummer eq {}".format(nummer)
+    def filter_volgnummer(self, volgnummer):
+        filter_str = "Volgnummer eq {}".format(volgnummer)
         self._filters.append(filter_str)
 
     def filter_onderwerp(self, onderwerp):
@@ -102,16 +100,7 @@ class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_items(Besluit)
 
     @property
-    def indiener(self):
-        return self.related_item(ZaakActor, item_key='Indiener')
-
-    @property
-    def medeindieners(self):
-        return self.related_items(ZaakActor, item_key='Medeindiener')
-
-    @property
     def zaak_actors(self):
-        from tkapi.actor import ZaakActor
         return self.related_items(ZaakActor)
 
     @property

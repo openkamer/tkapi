@@ -23,24 +23,3 @@ class Actor(tkapi.TKItemRelated, tkapi.TKItem):
     def commissie(self):
         from tkapi.commissie import Commissie
         return self.related_item(Commissie)
-
-
-class ZaakActor(Actor):
-    url = 'ZaakActor'
-
-    @property
-    def relatie(self):
-        return self.get_property_or_empty_string('Relatie')
-
-    @property
-    def naam(self):
-        return self.get_property_or_empty_string('ActorNaam')
-
-    @property
-    def is_voortouwcommissie(self):
-        return self.relatie == 'Voortouwcommissie'
-
-    @property
-    def voortouwcommissie(self):
-        if self.is_voortouwcommissie:
-            return self.commissie

@@ -6,10 +6,12 @@ from tkapi.besluit import Besluit
 from tkapi.commissie import Commissie
 from tkapi.dossier import Dossier
 from tkapi.document import Document
-# from tkapi.kamerstuk import Kamerstuk
+from tkapi.document import VerslagAlgemeenOverleg
 from tkapi.stemming import Stemming
-# from tkapi.vergadering import Vergadering
+from tkapi.vergadering import Vergadering
 from tkapi.zaak import Zaak
+from tkapi.zaak import ZaakActor
+from tkapi.kamervraag import Kamervraag
 
 from .core import TKApiTestCase
 
@@ -38,17 +40,20 @@ class TestMetaData(TKApiTestCase):
     def test_zaak(self):
         self.print_entity_first_example(Zaak)
 
+    def test_zaak_actor(self):
+        self.print_entity_first_example(ZaakActor)
+
     def test_dossier(self):
         self.print_entity_first_example(Dossier)
 
     def test_document(self):
         self.print_entity_first_example(Document)
 
+    def test_kamervraag(self):
+        self.print_entity_first_example(Kamervraag)
+
     def test_commissie(self):
         self.print_entity_first_example(Commissie)
-
-    # def test_kamerstuk(self):
-    #     self.print_entity_first_example(Kamerstuk)
 
     def test_stemming(self):
         self.print_entity_first_example(Stemming)
@@ -68,5 +73,8 @@ class TestMetaData(TKApiTestCase):
     def test_fractie(self):
         self.print_entity_first_example(Fractie)
 
-    # def test_vergadering(self):
-    #     self.print_entity_first_example(Vergadering)
+    def test_vergadering(self):
+        self.print_entity_first_example(Vergadering)
+
+    def test_verslag_algemeen_overleg(self):
+        self.print_entity_first_example(VerslagAlgemeenOverleg)
