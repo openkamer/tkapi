@@ -112,6 +112,15 @@ class VerslagAlgemeenOverleg(Document):
     filter_param = "Soort eq 'Verslag van een algemeen overleg'"
 
     @property
+    def voortouwcommissie_namen(self):
+        names = []
+        for zaak in self.zaken:
+            for zaak_actor in zaak.zaak_actors:
+                if zaak_actor.is_voortouwcommissie:
+                    names.append(zaak_actor.naam)
+        return names
+
+    @property
     def document_url(self):
         if not self.dossiers:
             return ''

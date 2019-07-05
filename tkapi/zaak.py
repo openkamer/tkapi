@@ -195,6 +195,10 @@ class ZaakActor(tkapi.TKItemRelated, tkapi.TKItem):
         from tkapi.commissie import Commissie
         return self.related_item(Commissie)
 
+    @property
+    def is_voortouwcommissie(self):
+        return self.relatie == 'Voortouwcommissie'
+
 
 class ZaakSoort(Enum):
     AMENDEMENT = 'Amendement'

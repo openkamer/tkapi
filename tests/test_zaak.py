@@ -94,12 +94,6 @@ class TestZaak(TKApiTestCase):
 
 class TestZaakRelations(TKApiTestCase):
 
-    # def test_zaak_filter_empty_besluiten(self):
-    #     zaak_filter = Zaak.create_filter()
-    #     zaak_filter.filter_empty_besluit()
-    #     zaken = self.api.get_zaken(zaak_filter)
-    #     self.assertEqual(len(zaken), 0)
-
     def test_zaak_filter_empty_activiteit(self):
         start_datetime = datetime.datetime(year=2016, month=1, day=1)
         end_datetime = datetime.datetime(year=2016, month=2, day=1)
@@ -121,14 +115,6 @@ class TestZaakRelations(TKApiTestCase):
         zaken = self.api.get_zaken(zaak_filter)
         print('Zaken without agendapunt', len(zaken))
         self.assertTrue(len(zaken) > 50)
-
-    # TODO BR: update with v2 (OData V4) uid
-    # def test_zaak_vervangen_door(self):
-    #     uid = 'bee46617-c7e0-43e1-b6a3-0001a8d402eb'
-    #     zaak = self.api.get_item(Zaak, id=uid)
-    #     vervangen_zaak = zaak.vervangen_door
-    #     self.assertEqual('c4621bc4-5972-4440-beb0-473709846885', vervangen_zaak.id)
-    #     self.assertEqual('2016Z04909', vervangen_zaak.nummer)
 
 
 class TestZaakActor(TKApiTestCase):
