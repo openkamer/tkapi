@@ -9,6 +9,7 @@ from tkapi.fractie import Fractie
 from tkapi.stemming import Stemming
 from tkapi.dossier import Dossier
 from tkapi.besluit import Besluit
+from tkapi.persoon import Persoon
 from tkapi.zaak import Zaak
 
 
@@ -181,3 +182,10 @@ def get_kamerstuk_stemmingen(nummer, volgnummer) -> List[Stemming]:
     for besluit in besluiten:
         stemmingen += besluit.stemmingen
     return filter_duplicates(stemmingen)
+
+
+def get_kamerleden_active() -> List[Persoon]:
+    leden = get_fractieleden_actief()
+    persons = [lid.persoon for lid in leden]
+    return persons
+

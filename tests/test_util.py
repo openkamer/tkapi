@@ -37,3 +37,7 @@ class TestUtilQueries(TKApiTestCase):
         volgnummer = 16
         zaken = queries.get_kamerstuk_zaken(nummer, volgnummer)
         print(len(zaken))
+
+    def test_get_kamerleden_active(self):
+        persons = queries.get_kamerleden_active()
+        self.assertEqual(150, len(persons))

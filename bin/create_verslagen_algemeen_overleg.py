@@ -13,7 +13,7 @@ api = tkapi.Api(verbose=True)
 
 def main():
     print('BEGIN')
-    start_year = 2008
+    start_year = 2019
     years = []
     for year in range(start_year, datetime.date.today().year + 1):
         years.append(year)
