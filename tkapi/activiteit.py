@@ -41,6 +41,10 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
         return self.get_property_or_empty_string('Onderwerp')
 
     @property
+    def status(self):
+        return self.get_property_enum_or_none('Status', ActiviteitStatus)
+
+    @property
     def begin(self):
         return self.get_datetime_or_none('Aanvangstijd')
 
@@ -104,3 +108,10 @@ class ActiviteitSoort(Enum):
     WERKBEZOEK = 'Werkbezoek'
     WETGEVINGSOVERLEG = 'Wetgevingsoverleg'
     WETSVOORSTEL_INBRENG_VERSLAG = 'Inbreng verslag (wetsvoorstel)'
+
+
+class ActiviteitStatus(Enum):
+    GEANNULEERD = 'Geannuleerd'
+    GEPLAND = 'Gepland'
+    UITGEVOERD = 'Uitgevoerd'
+    VERPLAATS = 'Verplaatst'

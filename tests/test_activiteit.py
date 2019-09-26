@@ -1,6 +1,8 @@
 import datetime
 
-from tkapi.activiteit import Activiteit, ActiviteitSoort
+from tkapi.activiteit import Activiteit
+from tkapi.activiteit import ActiviteitSoort
+from tkapi.activiteit import ActiviteitStatus
 from tkapi.util import queries
 
 from .core import TKApiTestCase
@@ -35,6 +37,12 @@ class TestActiviteit(TKApiTestCase):
             for pd in activiteit.documenten:
                 for dossier in pd.dossiers:
                     print('dossier nummer:', dossier.nummer)
+
+    def test_activiteit_status(self):
+        activiteiten = self.api.get_activiteiten(filter=None, max_items=10)
+        self.assertEqual(10, len(activiteiten))
+        for activiteit in activiteiten:
+            self.assertIn(activiteit.status, ActiviteitStatus)
 
 
 class TestActiviteitFilters(TKApiTestCase):
