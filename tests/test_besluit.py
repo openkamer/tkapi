@@ -1,6 +1,6 @@
 from tkapi.besluit import Besluit
 
-from tkapi.util import  queries
+from tkapi.util import queries
 
 from .core import TKApiTestCase
 
@@ -22,7 +22,7 @@ class TestBesluitFilters(TKApiTestCase):
 
     def test_kamerstukdossier_filter_34822(self):
         nummer = 34822
-        expected_besluiten = 12
+        expected_besluiten = 13
         expected_with_stemmen = 1
         self.check_dossier_besluiten(nummer, expected_besluiten, expected_with_stemmen)
 

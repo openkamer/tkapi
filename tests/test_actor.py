@@ -27,7 +27,7 @@ class TestFractie(TKApiTestCase):
         for fractie in fracties:
             # fractie.print_json()
             print('id', fractie.id, 'fractie:', fractie.naam, '| zetels:', fractie.zetels_aantal)
-        self.assertEqual(39, len(fracties))
+        self.assertEqual(41, len(fracties))
 
     def test_filter_fracties_actief(self):
         filter = Fractie.create_filter()
@@ -36,7 +36,8 @@ class TestFractie(TKApiTestCase):
         for fractie in fracties:
             # fractie.print_json()
             print('fractie:', fractie.naam, '| zetels:', fractie.zetels_aantal)
-        self.assertEqual(13, len(fracties))
+        # TODO: this will change if current fracties change
+        self.assertEqual(15, len(fracties))
 
     def test_filter_actieve_leden(self):
         filter = Fractie.create_filter()
