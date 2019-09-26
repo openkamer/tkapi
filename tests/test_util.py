@@ -12,7 +12,6 @@ class TestUtilQueries(TKApiTestCase):
         for besluit in besluiten:
             self.assertGreaterEqual(len(besluit.stemmingen), 1)
 
-    # TODO BR: improve performance
     def test_get_dossier_besluiten(self):
         nummer = 33885
         besluiten = queries.get_dossier_besluiten(nummer=nummer)

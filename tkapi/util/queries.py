@@ -166,7 +166,6 @@ def get_zaken_agendapunten(zaken) -> List[Agendapunt]:
     return filter_duplicates(agendapunten)
 
 
-# TODO BR: improve performance, this is slow
 def get_zaken_agendapunten_activiteiten(zaken) -> List[Activiteit]:
     activiteiten = []
     agendapunten = get_zaken_agendapunten(zaken)
