@@ -117,6 +117,12 @@ class TKItemRelated(object):
             return []
         if item_key in self.json and self.json[item_key] is None:
             return []
+        if tkitem.url in self.json:
+            items = [tkitem(item_json) for item_json in self.json[item_key]]
+            self.set_cache(tkitem, filter, items)
+        if item_key in self.json:
+            items = [tkitem(item_json) for item_json in self.json[item_key]]
+            self.set_cache(tkitem, filter, items)
         cache_key = self.create_cache_key(tkitem, filter)
         if cache_key in self.items_cache:
             return self.items_cache[cache_key]
@@ -132,8 +138,6 @@ class TKItemRelated(object):
         return items
 
     def related_item(self, tkitem, item_key=None):
-        if tkitem.url in self.json:  # check if related item is already available due to 'expand' query param
-            return tkitem(self.json[tkitem.url])
         related_items = self.related_items(tkitem, item_key=item_key)
         if related_items:
             return related_items[0]
