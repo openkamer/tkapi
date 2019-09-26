@@ -117,12 +117,11 @@ class TKItemRelated(object):
             return []
         if item_key in self.json and self.json[item_key] is None:
             return []
-        if tkitem.url in self.json:
-            items = [tkitem(item_json) for item_json in self.json[tkitem.url]]
-            self.set_cache(tkitem, filter, items)
-            return items
         if item_key in self.json:
-            items = [tkitem(item_json) for item_json in self.json[item_key]]
+            if isinstance(self.json[item_key], (list, tuple)):
+                items = [tkitem(item_json) for item_json in self.json[item_key]]
+            else:
+                items = [tkitem(self.json[tkitem.url])]
             self.set_cache(tkitem, filter, items)
             return items
         cache_key = self.create_cache_key(tkitem, filter)

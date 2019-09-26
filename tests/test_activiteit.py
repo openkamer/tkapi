@@ -57,9 +57,8 @@ class TestActiviteitFilters(TKApiTestCase):
 
     def test_dossier_filter_2(self):
         dosser_nr = 34986
-        activiteiten_expected = 17
+        activiteiten_expected = 16
         activiteiten = queries.get_dossier_activiteiten(dosser_nr, include_agendapunten=True)
-        print('activiteiten found:', len(activiteiten))
         self.assertEqual(activiteiten_expected, len(activiteiten))
 
     def test_kamerstuk_filter(self):
