@@ -45,6 +45,10 @@ class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
         return self.get_property_enum_or_none('Status', ActiviteitStatus)
 
     @property
+    def datum(self):
+        return self.get_datetime_or_none('Datum')
+
+    @property
     def begin(self):
         return self.get_datetime_or_none('Aanvangstijd')
 
