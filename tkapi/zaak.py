@@ -4,6 +4,54 @@ import tkapi
 from tkapi.util import util
 
 
+class ZaakSoort(Enum):
+    AMENDEMENT = 'Amendement'
+    ARTIKELEN_WETSVOORSTEL = 'Artikelen/onderdelen (wetsvoorstel)'
+    BEGROTING = 'Begroting'
+    BRIEF_COMMISSIE = 'Brief commissie'
+    BRIEF_EUROPESE_COMMISSIE = 'Brief Europese Commissie'
+    BRIEF_KAMER = 'Brief Kamer'
+    BRIEF_REGERING = 'Brief regering'
+    BRIEF_LID = 'Brief van lid/fractie/commissie'
+    EU_VOORSTEL = 'EU-voorstel'
+    INITIATIEF_NOTA = 'Initiatiefnota'
+    INITIATIEF_WETGEVING = 'Initiatiefwetgeving'
+    LIJST_EU_VOORSTELLEN = 'Lijst met EU-voorstellen'
+    MONDELINGE_VRAGEN = 'Mondelinge vragen'
+    MOTIE = 'Motie'
+    NATIONALE_OMBUDSMAN = 'Nationale ombudsman'
+    NETWERKVERKENNING = 'Netwerkverkenning'
+    NOTA_VAN_VERSLAG = 'Nota naar aanleiding van het (nader) verslag'
+    NOTA_VAN_WIJZIGING = 'Nota van wijziging'
+    OVERIG = 'Overig'
+    PARLEMENTAIR_ONDERZOEKSRAPPORT = 'Parlementair onderzoeksrapport'
+    PKB_STRUCTUURVISIE = 'PKB/Structuurvisie'
+    POSITION_PAPER = 'Position paper'
+    RAPPORT_ALGEMENE_REKENKAMER = 'Rapport/brief Algemene Rekenkamer'
+    RONDVRAAGPUNT_PROCEDUREVERGADERING = 'Rondvraagpunt procedurevergadering'
+    SCHRIFTELIJKE_VRAGEN = 'Schriftelijke vragen'
+    VERDRAG = 'Verdrag'
+    VERZOEK_REGELING_WERKZAAMHEDEN = 'Verzoek bij regeling van werkzaamheden'
+    VERZOEKSCHRIFT = 'Verzoekschrift'
+    VOORDRACHTEN_EN_BENOEMINGEN = 'Voordrachten en benoemingen'
+    WETGEVING = 'Wetgeving'
+    WIJZIGING_RVO = 'Wijziging RvO'
+    WIJZIGING_VOORGESTELD_REGERING = 'Wijzigingen voorgesteld door de regering'
+
+
+class KabinetsAppreciatie(Enum):
+    OVERGENOMEN = 'Overgenomen'
+    ONTRADEN = 'Ontraden'
+    ONTRADEN_TENZIJ_GEWIJZGID = 'Ontraden, tenzij gewijzigd'
+    OORDEEL_KAMER = 'Oordeel Kamer'
+    VERZOCHT_AAN_TE_HOUDEN = 'Verzocht motie aan te houden'
+    GEEN_APPRECIATIE = 'Geen (expliciete) appreciatie'
+    NIET_BESCHIKBAAR_BIJ_WIJZIGING = 'Niet beschikbaar bij gewijzigde moties en/of amendementen'
+    NIET_BESCHIKBAAR = 'Niet beschikbaar bij moties en/of amendementen vóór 1 april 2019'
+    NOG_NIET_BEKEND = 'Nog niet bekend'
+    NOG_TE_ONTVANGEN = 'Nog te ontvangen'
+
+
 class ZaakFilter(tkapi.SoortFilter):
 
     def filter_date_range(self, start_datetime, end_datetime):
@@ -113,7 +161,7 @@ class Zaak(tkapi.TKItem):
         return self.get_property_or_empty_string('Onderwerp')
 
     @property
-    def soort(self):
+    def soort(self) -> ZaakSoort:
         return self.get_property_enum_or_none('Soort', ZaakSoort)
 
     @property
@@ -141,7 +189,7 @@ class Zaak(tkapi.TKItem):
         return self.get_date_from_datetime_or_none('GestartOp')
 
     @property
-    def kabinetsappreciatie(self):
+    def kabinetsappreciatie(self) -> KabinetsAppreciatie:
         return self.get_property_enum_or_none('Kabinetsappreciatie', KabinetsAppreciatie)
 
     @staticmethod
@@ -198,54 +246,6 @@ class ZaakActor(tkapi.TKItem):
     @property
     def is_voortouwcommissie(self):
         return self.relatie == 'Voortouwcommissie'
-
-
-class ZaakSoort(Enum):
-    AMENDEMENT = 'Amendement'
-    ARTIKELEN_WETSVOORSTEL = 'Artikelen/onderdelen (wetsvoorstel)'
-    BEGROTING = 'Begroting'
-    BRIEF_COMMISSIE = 'Brief commissie'
-    BRIEF_EUROPESE_COMMISSIE = 'Brief Europese Commissie'
-    BRIEF_KAMER = 'Brief Kamer'
-    BRIEF_REGERING = 'Brief regering'
-    BRIEF_LID = 'Brief van lid/fractie/commissie'
-    EU_VOORSTEL = 'EU-voorstel'
-    INITIATIEF_NOTA = 'Initiatiefnota'
-    INITIATIEF_WETGEVING = 'Initiatiefwetgeving'
-    LIJST_EU_VOORSTELLEN = 'Lijst met EU-voorstellen'
-    MONDELINGE_VRAGEN = 'Mondelinge vragen'
-    MOTIE = 'Motie'
-    NATIONALE_OMBUDSMAN = 'Nationale ombudsman'
-    NETWERKVERKENNING = 'Netwerkverkenning'
-    NOTA_VAN_VERSLAG = 'Nota naar aanleiding van het (nader) verslag'
-    NOTA_VAN_WIJZIGING = 'Nota van wijziging'
-    OVERIG = 'Overig'
-    PARLEMENTAIR_ONDERZOEKSRAPPORT = 'Parlementair onderzoeksrapport'
-    PKB_STRUCTUURVISIE = 'PKB/Structuurvisie'
-    POSITION_PAPER = 'Position paper'
-    RAPPORT_ALGEMENE_REKENKAMER = 'Rapport/brief Algemene Rekenkamer'
-    RONDVRAAGPUNT_PROCEDUREVERGADERING = 'Rondvraagpunt procedurevergadering'
-    SCHRIFTELIJKE_VRAGEN = 'Schriftelijke vragen'
-    VERDRAG = 'Verdrag'
-    VERZOEK_REGELING_WERKZAAMHEDEN = 'Verzoek bij regeling van werkzaamheden'
-    VERZOEKSCHRIFT = 'Verzoekschrift'
-    VOORDRACHTEN_EN_BENOEMINGEN = 'Voordrachten en benoemingen'
-    WETGEVING = 'Wetgeving'
-    WIJZIGING_RVO = 'Wijziging RvO'
-    WIJZIGING_VOORGESTELD_REGERING = 'Wijzigingen voorgesteld door de regering'
-
-
-class KabinetsAppreciatie(Enum):
-    OVERGENOMEN = 'Overgenomen'
-    ONTRADEN = 'Ontraden'
-    ONTRADEN_TENZIJ_GEWIJZGID = 'Ontraden, tenzij gewijzigd'
-    OORDEEL_KAMER = 'Oordeel Kamer'
-    VERZOCHT_AAN_TE_HOUDEN = 'Verzocht motie aan te houden'
-    GEEN_APPRECIATIE = 'Geen (expliciete) appreciatie'
-    NIET_BESCHIKBAAR_BIJ_WIJZIGING = 'Niet beschikbaar bij gewijzigde moties en/of amendementen'
-    NIET_BESCHIKBAAR = 'Niet beschikbaar bij moties en/of amendementen vóór 1 april 2019'
-    NOG_NIET_BEKEND = 'Nog niet bekend'
-    NOG_TE_ONTVANGEN = 'Nog te ontvangen'
 
 
 class ZaakMetBesluitBase(Zaak):

@@ -1,3 +1,5 @@
+import datetime
+
 from tkapi.util import util
 
 
@@ -68,27 +70,27 @@ class TKItem:
             return self.json[property_key]
         return None
 
-    def get_property_or_empty_string(self, property_key):
+    def get_property_or_empty_string(self, property_key) -> str:
         if property_key in self.json and self.json[property_key] is not None:
             return str(self.json[property_key]).strip()
         return ''
 
-    def get_date_from_datetime_or_none(self, property_key):
+    def get_date_from_datetime_or_none(self, property_key) -> datetime.date:
         if property_key in self.json and self.json[property_key]:
             return util.odatedatetime_to_datetime(self.json[property_key]).date()
         return None
 
-    def get_date_or_none(self, property_key):
+    def get_date_or_none(self, property_key) -> datetime.date:
         if property_key in self.json and self.json[property_key]:
             return util.odatedate_to_date(self.json[property_key]).date()
         return None
 
-    def get_year_or_none(self, property_key):
+    def get_year_or_none(self, property_key) -> datetime.date:
         if property_key in self.json and self.json[property_key]:
             return util.odateyear_to_date(self.json[property_key]).date()
         return None
 
-    def get_datetime_or_none(self, property_key):
+    def get_datetime_or_none(self, property_key) -> datetime.datetime:
         if property_key in self.json and self.json[property_key]:
             return util.odatedatetime_to_datetime(self.json[property_key])
         return None

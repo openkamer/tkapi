@@ -168,13 +168,13 @@ class Api:
         return response.json()
 
     @classmethod
-    def get_item(cls, tkitem, id):
+    def get_item(cls, tkitem, id: str):
         url = '{}({})'.format(tkitem.url, id)
         params = tkitem.get_param_expand()
         return tkitem(cls.request_json(url, params))
 
     @classmethod
-    def get_related(cls, tkitem_related, related_url, filter=None):
+    def get_related(cls, tkitem_related, related_url: str, filter=None):
         params = tkitem_related.get_param_expand()
         params = Api.add_filter_to_params(filter, params)
         first_page = cls.request_json(related_url, params)
@@ -188,26 +188,26 @@ class Api:
         return related_items
 
     @classmethod
-    def get_items(cls, item_class, filter=None, order=None, max_items=None):
+    def get_items(cls, tkitem, filter=None, order=None, max_items=None):
         items = []
-        params = cls.create_query_params(tkitem_class=item_class, filter=filter, order=order)
+        params = cls.create_query_params(tkitem=tkitem, filter=filter, order=order)
         max_items_request = max_items if max_items is not None and max_items <= cls._max_items_per_page else None
-        first_page = cls.request_json(item_class.url, params, max_items=max_items_request)
+        first_page = cls.request_json(tkitem.url, params, max_items=max_items_request)
         items_json = cls.get_all_items(first_page, max_items=max_items)
         for item_json in items_json:
-            item = item_class(item_json)
+            item = tkitem(item_json)
             items.append(item)
         return items
 
     @staticmethod
-    def create_query_params(tkitem_class, filter=None, order=None):
-        params = tkitem_class.get_params_default()
+    def create_query_params(tkitem, filter=None, order=None):
+        params = tkitem.get_params_default()
         params = Api.add_filter_to_params(filter, params)
         params = Api.add_non_deleted_filter(params)
-        if tkitem_class.filter_param:
+        if tkitem.filter_param:
             if params['$filter']:
                 params['$filter'] += ' and '
-            params['$filter'] += tkitem_class.filter_param
+            params['$filter'] += tkitem.filter_param
         if order:
             params['$orderby'] = order.order_by_str
         return params

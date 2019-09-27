@@ -35,11 +35,6 @@ class TestStemming(TKApiTestCase):
 
 class TestStemmingFilters(TKApiTestCase):
 
-    def get_fred_teeven(self):
-        filter = Persoon.create_filter()
-        filter.filter_achternaam('Teeven')
-        return self.api.get_personen(filter=filter)[0]
-
     def get_pechtold(self):
         filter = Persoon.create_filter()
         filter.filter_achternaam('Pechtold')

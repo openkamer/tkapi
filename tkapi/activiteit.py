@@ -3,84 +3,6 @@ from enum import Enum
 import tkapi
 
 
-class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
-
-    def __init__(self):
-        super().__init__()
-
-
-class Activiteit(tkapi.TKItem):
-    url = 'Activiteit'
-
-    @staticmethod
-    def create_filter():
-        return ActiviteitFilter()
-
-    @staticmethod
-    def begin_date_key():
-        return 'Aanvangstijd'
-
-    @staticmethod
-    def end_date_key():
-        return 'Eindtijd'
-
-    @property
-    def documenten(self):
-        from tkapi.document import Document
-        return self.related_items(Document)
-
-    @property
-    def zaken(self):
-        from tkapi.zaak import Zaak
-        return self.related_items(Zaak)
-
-    @property
-    def agendapunten(self):
-        from tkapi.agendapunt import Agendapunt
-        return self.related_items(Agendapunt)
-
-    @property
-    def voortouwcommissies(self):
-        from tkapi.commissie import VoortouwCommissie
-        return self.related_items(VoortouwCommissie)
-
-    @property
-    def onderwerp(self):
-        return self.get_property_or_empty_string('Onderwerp')
-
-    @property
-    def status(self):
-        return self.get_property_enum_or_none('Status', ActiviteitStatus)
-
-    @property
-    def datum(self):
-        return self.get_datetime_or_none('Datum')
-
-    @property
-    def datum_soort(self):
-        return self.get_property_enum_or_none('DatumSoort', DatumSoort)
-
-    @property
-    def begin(self):
-        return self.get_datetime_or_none('Aanvangstijd')
-
-    @property
-    def einde(self):
-        return self.get_datetime_or_none('Eindtijd')
-
-    @property
-    def soort(self):
-        return self.get_property_enum_or_none('Soort', ActiviteitSoort)
-
-    @property
-    def nummer(self):
-        return self.get_property_or_empty_string('Nummer')
-
-    @property
-    def vergaderjaar(self):
-        return self.get_property_or_empty_string('Vergaderjaar')
-
-
 class ActiviteitSoort(Enum):
     AANBIEDING = 'Aanbieding'
     AFSCHEID = 'Afscheid'
@@ -134,3 +56,81 @@ class DatumSoort(Enum):
     MEERDAAGS = 'Meerdaags'
     ONBEKEND = 'Nog geen datum bekend'
     WEEKNUMMER = 'Weeknummer'
+
+
+class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
+
+    def __init__(self):
+        super().__init__()
+
+
+class Activiteit(tkapi.TKItem):
+    url = 'Activiteit'
+
+    @staticmethod
+    def create_filter() -> ActiviteitFilter:
+        return ActiviteitFilter()
+
+    @staticmethod
+    def begin_date_key():
+        return 'Aanvangstijd'
+
+    @staticmethod
+    def end_date_key():
+        return 'Eindtijd'
+
+    @property
+    def documenten(self):
+        from tkapi.document import Document
+        return self.related_items(Document)
+
+    @property
+    def zaken(self):
+        from tkapi.zaak import Zaak
+        return self.related_items(Zaak)
+
+    @property
+    def agendapunten(self):
+        from tkapi.agendapunt import Agendapunt
+        return self.related_items(Agendapunt)
+
+    @property
+    def voortouwcommissies(self):
+        from tkapi.commissie import VoortouwCommissie
+        return self.related_items(VoortouwCommissie)
+
+    @property
+    def onderwerp(self):
+        return self.get_property_or_empty_string('Onderwerp')
+
+    @property
+    def status(self) -> ActiviteitStatus:
+        return self.get_property_enum_or_none('Status', ActiviteitStatus)
+
+    @property
+    def datum(self):
+        return self.get_datetime_or_none('Datum')
+
+    @property
+    def datum_soort(self) -> DatumSoort:
+        return self.get_property_enum_or_none('DatumSoort', DatumSoort)
+
+    @property
+    def begin(self):
+        return self.get_datetime_or_none('Aanvangstijd')
+
+    @property
+    def einde(self):
+        return self.get_datetime_or_none('Eindtijd')
+
+    @property
+    def soort(self) -> ActiviteitSoort:
+        return self.get_property_enum_or_none('Soort', ActiviteitSoort)
+
+    @property
+    def nummer(self):
+        return self.get_property_or_empty_string('Nummer')
+
+    @property
+    def vergaderjaar(self):
+        return self.get_property_or_empty_string('Vergaderjaar')

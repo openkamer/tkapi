@@ -3,6 +3,13 @@ from enum import Enum
 import tkapi
 
 
+class BesluitStatus(Enum):
+    BESLUIT = 'Besluit'
+    CONCEPT = 'Concept voorstel'
+    VOORSTEL = 'Voorstel'
+    TE_VERWERKEN = 'Nog te verwerken besluit'
+
+
 class BesluitRelationFilter(tkapi.RelationsFilter):
 
     @property
@@ -49,7 +56,7 @@ class Besluit(tkapi.TKItem):
         return self.get_property_or_empty_string('BesluitSoort')
 
     @property
-    def status(self):
+    def status(self) -> BesluitStatus:
         return self.get_property_enum_or_none('Status', BesluitStatus)
 
     @property
@@ -63,10 +70,3 @@ class Besluit(tkapi.TKItem):
     @property
     def opmerking(self):
         return self.get_property_or_empty_string('Opmerking')
-
-
-class BesluitStatus(Enum):
-    BESLUIT = 'Besluit'
-    CONCEPT = 'Concept voorstel'
-    VOORSTEL = 'Voorstel'
-    TE_VERWERKEN = 'Nog te verwerken besluit'

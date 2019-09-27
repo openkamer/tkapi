@@ -139,7 +139,7 @@ class CommissieZetelPersoon(tkapi.TKItem):
         return self.related_item(CommissieZetel)
 
     @property
-    def functie(self):
+    def functie(self) -> CommissieFunctie:
         return self.get_property_enum_or_none('Functie', CommissieFunctie)
 
     @property
