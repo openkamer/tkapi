@@ -97,6 +97,16 @@ class TestPersoon(TKApiTestCase):
 
 class TestPersoonFilters(TKApiTestCase):
 
+    def get_pechtold(self):
+        filter = Persoon.create_filter()
+        filter.filter_achternaam('Pechtold')
+        return self.api.get_personen(filter=filter)[0]
+
+    def get_teeven(self):
+        filter = Persoon.create_filter()
+        filter.filter_achternaam('Teeven')
+        return self.api.get_personen(filter=filter)[0]
+
     def test_filter_achternaam(self):
         achternaam = 'Pechtold'
         filter = Persoon.create_filter()
@@ -106,14 +116,23 @@ class TestPersoonFilters(TKApiTestCase):
         persoon = personen[0]
         self.assertEqual(achternaam, persoon.achternaam)
 
-    def test_filter_is_fractiezetel(self):
+    def test_filter_has_fractiezetel(self):
         n_items = 10
         filter = Persoon.create_filter()
-        filter.filter_is_fractiezetel()
+        filter.filter_has_fractiezetel()
         personen = self.api.get_personen(filter=filter, max_items=n_items)
         self.assertEqual(n_items, len(personen))
         for persoon in personen:
             self.assertTrue(persoon.fractieleden)
+
+    def test_filter_ids(self):
+        filter = Persoon.create_filter()
+        persoon_a = self.get_pechtold()
+        persoon_b = self.get_teeven()
+        personen_ids = [persoon_a.id, persoon_b.id]
+        filter.filter_ids(ids=personen_ids)
+        personen = self.api.get_personen(filter=filter)
+        self.assertEqual(2, len(personen))
 
 
 class TestPersoonReis(TKApiTestCase):

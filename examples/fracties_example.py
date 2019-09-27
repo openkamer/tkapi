@@ -1,7 +1,6 @@
 import tkapi
 from tkapi.fractie import Fractie
 
-
 api = tkapi.Api(verbose=False)
 
 

@@ -139,16 +139,6 @@ class FractieZetelFilter(tkapi.Filter):
         self._filters.append("Fractie/Id eq {}".format(uid))
 
 
-class FractieZetelPersoonRelationFilter(tkapi.RelationsFilter):
-
-    @property
-    def related_url(self):
-        return 'FractieZetelPersoon'
-
-    def filter_is_fractiezetel(self):
-        self._filter_non_empty()
-
-
 class FractieZetel(tkapi.TKItem):
     url = 'FractieZetel'
 

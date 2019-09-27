@@ -1,14 +1,18 @@
 import tkapi
 
-from tkapi.actor import Actor
 
-from tkapi.fractie import FractieZetelPersoonRelationFilter, FractieZetel
+class PersoonFilter(tkapi.Filter):
 
-
-class PersoonFilter(FractieZetelPersoonRelationFilter):
+    def filter_has_fractiezetel(self):
+        filter_str = 'FractieZetelPersoon/any(z:z ne null)'
+        self._filters.append(filter_str)
 
     def filter_achternaam(self, achternaam):
         filter_str = 'Achternaam eq \'{}\''.format(achternaam)
+        self.add_filter_str(filter_str)
+
+    def filter_ids(self, ids):
+        filter_str = 'Id in ({})'.format(','.join(ids))
         self.add_filter_str(filter_str)
 
 
@@ -18,7 +22,7 @@ class Persoon(tkapi.TKItem):
     filter_param = 'Achternaam ne null'
 
     @staticmethod
-    def create_filter():
+    def create_filter() -> PersoonFilter:
         return PersoonFilter()
 
     @property
@@ -104,8 +108,20 @@ class Persoon(tkapi.TKItem):
         return pretty_print
 
 
+class PersoonEntityFilter(tkapi.Filter):
+
+    def filter_ids(self, persoon_ids):
+        assert len(persoon_ids) <= 25, 'too many ids to filter for, filter params is too long'
+        filter_str = 'PersoonId in ({})'.format(','.join(persoon_ids))
+        self.add_filter_str(filter_str)
+
+
 class PersoonEntity(tkapi.TKItem):
     expand_params = ['Persoon']
+
+    @staticmethod
+    def create_filter() -> PersoonEntityFilter:
+        return PersoonEntityFilter()
 
     @property
     def persoon(self):
@@ -241,7 +257,7 @@ class PersoonNevenfunctie(PersoonEntity):
 
     @property
     def inkomsten(self):
-        return self.related_items(PersoonNevenfunctieInkomsten)
+        return self.related_item(PersoonNevenfunctieInkomsten)
 
     @property
     def omschrijving(self):
