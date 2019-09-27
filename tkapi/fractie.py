@@ -1,13 +1,16 @@
 import tkapi
-from tkapi.actor import Actor
 
 
-class Fractie(Actor):
+class Fractie(tkapi.TKItem):
     url = 'Fractie'
 
     @staticmethod
     def create_filter():
         return FractieFilter()
+
+    @property
+    def zetels(self):
+        return self.related_items(FractieZetel)
 
     @property
     def leden(self):
@@ -17,15 +20,17 @@ class Fractie(Actor):
         return leden
 
     @property
-    def zetels(self):
-        return self.related_items(FractieZetel)
-
-    @property
     def leden_actief(self):
         filter = FractieZetelPersoon.create_filter()
         filter.filter_fractie_id(uid=self.id)
         filter.filter_actief()
         return self.related_items_deep(FractieZetelPersoon, filter=filter)
+
+    @property
+    def stemmingen(self):
+        # WARNING: this may take long
+        from tkapi.stemming import Stemming
+        return self.related_items(Stemming)
 
     @property
     def naam(self):
