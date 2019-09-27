@@ -117,7 +117,7 @@ class ZaakFilter(tkapi.SoortFilter):
 
 
 class Zaak(tkapi.TKItem):
-    url = 'Zaak'
+    type = 'Zaak'
     orderby_param = 'GestartOp'
 
     def __str__(self):
@@ -202,7 +202,7 @@ class ZaakActorFilter(tkapi.Filter):
 
 
 class ZaakActor(tkapi.TKItem):
-    url = 'ZaakActor'
+    type = 'ZaakActor'
 
     @staticmethod
     def create_filter():

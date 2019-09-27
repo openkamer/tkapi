@@ -174,7 +174,7 @@ class Api:
 
     @classmethod
     def get_item(cls, tkitem, id: str):
-        url = '{}({})'.format(tkitem.url, id)
+        url = '{}({})'.format(tkitem.type, id)
         params = tkitem.get_param_expand()
         return tkitem(cls.request_json(url, params))
 
@@ -197,7 +197,7 @@ class Api:
         items = []
         params = cls.create_query_params(tkitem=tkitem, filter=filter, order=order)
         max_items_request = max_items if max_items is not None and max_items <= cls._max_items_per_page else None
-        first_page = cls.request_json(tkitem.url, params, max_items=max_items_request)
+        first_page = cls.request_json(tkitem.type, params, max_items=max_items_request)
         items_json = cls.get_all_items(first_page, max_items=max_items)
         for item_json in items_json:
             item = tkitem(item_json)

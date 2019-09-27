@@ -34,7 +34,7 @@ class DocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
 
 class Document(tkapi.TKItem):
-    url = 'Document'
+    type = 'Document'
     orderby_param = 'Datum'
 
     @staticmethod

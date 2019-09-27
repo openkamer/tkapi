@@ -27,7 +27,7 @@ class TestActiviteit(TKApiTestCase):
         activiteiten = self.api.get_activiteiten(filter=None, max_items=10)
         for activiteit in activiteiten:
             for vtcommissie in activiteit.voortouwcommissies:
-                print('### ', vtcommissie.url, ' ###')
+                print('### ', vtcommissie.type, ' ###')
                 # vtcommissie.print_json()
 
     def test_activiteit_documenten(self):

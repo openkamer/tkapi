@@ -17,7 +17,7 @@ class PersoonFilter(tkapi.Filter):
 
 
 class Persoon(tkapi.TKItem):
-    url = 'Persoon'
+    type = 'Persoon'
     orderby_param = 'Achternaam'
     filter_param = 'Achternaam ne null'
 
@@ -129,7 +129,7 @@ class PersoonEntity(tkapi.TKItem):
 
 
 class PersoonReis(PersoonEntity):
-    url = 'PersoonReis'
+    type = 'PersoonReis'
 
     @property
     def doel(self):
@@ -161,7 +161,7 @@ class PersoonReis(PersoonEntity):
 
 
 class PersoonOnderwijs(PersoonEntity):
-    url = 'PersoonOnderwijs'
+    type = 'PersoonOnderwijs'
 
     @property
     def opleiding_nl(self):
@@ -197,7 +197,7 @@ class PersoonOnderwijs(PersoonEntity):
 
 
 class PersoonLoopbaan(PersoonEntity):
-    url = 'PersoonLoopbaan'
+    type = 'PersoonLoopbaan'
 
     @property
     def functie(self):
@@ -237,7 +237,7 @@ class PersoonLoopbaan(PersoonEntity):
 
 
 class PersoonGeschenk(PersoonEntity):
-    url = 'PersoonGeschenk'
+    type = 'PersoonGeschenk'
 
     @property
     def omschrijving(self):
@@ -253,7 +253,7 @@ class PersoonGeschenk(PersoonEntity):
 
 
 class PersoonNevenfunctie(PersoonEntity):
-    url = 'PersoonNevenfunctie'
+    type = 'PersoonNevenfunctie'
 
     @property
     def inkomsten(self):
@@ -293,7 +293,7 @@ class PersoonNevenfunctie(PersoonEntity):
 
 
 class PersoonNevenfunctieInkomsten(tkapi.TKItem):
-    url = 'PersoonNevenfunctieInkomsten'
+    type = 'PersoonNevenfunctieInkomsten'
 
     @property
     def nevenfunctie(self):

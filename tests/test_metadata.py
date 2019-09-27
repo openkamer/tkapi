@@ -22,7 +22,7 @@ class TestMetaData(TKApiTestCase):
     def print_entity_example(cls, item_class, uid):
         item_class.expand_param = ''
         item = cls.api.get_item(item_class, uid)
-        print('\n=== ' + item.url + ' ===')
+        print('\n=== ' + item.type + ' ===')
         item.print_json()
         print('\n\n')
 
@@ -30,7 +30,7 @@ class TestMetaData(TKApiTestCase):
     def print_entity_first_example(cls, item_class):
         item_class.expand_param = ''
         item = cls.api.get_items(item_class, max_items=1)[0]
-        print('\n=== ' + item.url + ' ===')
+        print('\n=== ' + item.type + ' ===')
         item.print_json()
         print('\n\n')
 

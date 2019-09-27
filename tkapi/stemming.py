@@ -25,7 +25,7 @@ class StemmingFilter(tkapi.ZaakRelationFilter):
 
 
 class Stemming(tkapi.TKItem):
-    url = 'Stemming'
+    type = 'Stemming'
 
     @staticmethod
     def create_filter():

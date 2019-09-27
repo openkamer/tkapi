@@ -4,7 +4,7 @@ from tkapi.util import util
 
 
 class TKItem:
-    url = NotImplementedError
+    type = NotImplementedError
     expand_params = None
     orderby_param = None
     filter_param = ''
@@ -59,6 +59,10 @@ class TKItem:
         return self.get_property_or_empty_string('Id')
 
     @property
+    def url(self):
+        return self.get_property_or_empty_string('@odata.id')
+
+    @property
     def gewijzigd_op(self):
         return self.get_datetime_or_none('GewijzigdOp')
 
@@ -108,7 +112,7 @@ class TKItem:
 
     def related_items(self, tkitem, filter=None, item_key=None):
         from tkapi.api import Api
-        item_key = item_key if item_key is not None else tkitem.url
+        item_key = item_key if item_key is not None else tkitem.type
         navigation_key = item_key + '@odata.navigationLink'
         if navigation_key not in self.json:
             return []
@@ -118,7 +122,7 @@ class TKItem:
             if isinstance(self.json[item_key], (list, tuple)):
                 items = [tkitem(item_json) for item_json in self.json[item_key]]
             else:
-                items = [tkitem(self.json[tkitem.url])]
+                items = [tkitem(self.json[tkitem.type])]
             self._set_cache(tkitem, filter, items)
             return items
         cache_key = self._create_cache_key(tkitem, filter)
@@ -131,7 +135,7 @@ class TKItem:
 
     def related_items_deep(self, tkitem, filter):
         from tkapi.api import Api
-        items = Api().get_related(tkitem, related_url=tkitem.url, filter=filter)
+        items = Api().get_related(tkitem, related_url=tkitem.type, filter=filter)
         self._set_cache(tkitem, filter, items)
         return items
 

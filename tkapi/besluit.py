@@ -14,7 +14,7 @@ class BesluitRelationFilter(tkapi.RelationsFilter):
 
     @property
     def related_url(self):
-        return Besluit.url
+        return Besluit.type
 
 
 class BesluitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
@@ -24,7 +24,7 @@ class BesluitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
 
 class Besluit(tkapi.TKItem):
-    url = 'Besluit'
+    type = 'Besluit'
     expand_params = ['Stemming']
 
     @staticmethod

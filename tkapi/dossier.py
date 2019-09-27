@@ -19,7 +19,7 @@ class DossierFilter(tkapi.ZaakRelationFilter):
 
 
 class Dossier(tkapi.TKItem):
-    url = 'Kamerstukdossier'
+    type = 'Kamerstukdossier'
 
     @staticmethod
     def create_filter():

@@ -57,7 +57,7 @@ class RelationsFilter(Filter):
         raise NotImplementedError
 
     def filter_non_empty(self, related_entity):
-        filter_str = '{}/any(z:z ne null)'.format(related_entity.url)
+        filter_str = '{}/any(z:z ne null)'.format(related_entity.type)
         self._filters.append(filter_str)
 
     # TODO BR: should this not be the public function

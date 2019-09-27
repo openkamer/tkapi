@@ -48,7 +48,7 @@ class CommissieZetelPersoonFilter(tkapi.Filter):
 
 
 class Commissie(tkapi.TKItem):
-    url = 'Commissie'
+    type = 'Commissie'
 
     @staticmethod
     def create_filter():
@@ -87,11 +87,11 @@ class Commissie(tkapi.TKItem):
 
 
 class VoortouwCommissie(Commissie):
-    url = 'Voortouwcommissie'
+    type = 'Voortouwcommissie'
 
 
 class CommissieZetel(tkapi.TKItem):
-    url = 'CommissieZetel'
+    type = 'CommissieZetel'
 
     @staticmethod
     def create_filter():
@@ -160,8 +160,8 @@ class CommissieZetelPersoon(tkapi.TKItem):
 
 
 class CommissieZetelVastPersoon(CommissieZetelPersoon):
-    url = 'CommissieZetelVastPersoon'
+    type = 'CommissieZetelVastPersoon'
 
 
 class CommissieZetelVervangerPersoon(CommissieZetelPersoon):
-    url = 'CommissieZetelVervangerPersoon'
+    type = 'CommissieZetelVervangerPersoon'

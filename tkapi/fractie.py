@@ -2,7 +2,7 @@ import tkapi
 
 
 class Fractie(tkapi.TKItem):
-    url = 'Fractie'
+    type = 'Fractie'
 
     @staticmethod
     def create_filter():
@@ -69,7 +69,7 @@ class Fractie(tkapi.TKItem):
 
 
 class Lid(tkapi.TKItem):
-    url = 'Lid'
+    type = 'Lid'
     expand_params = ['Persoon']
 
     @staticmethod
@@ -145,7 +145,7 @@ class FractieZetelFilter(tkapi.Filter):
 
 
 class FractieZetel(tkapi.TKItem):
-    url = 'FractieZetel'
+    type = 'FractieZetel'
 
     @staticmethod
     def create_filter():
@@ -169,7 +169,7 @@ class FractieZetel(tkapi.TKItem):
 
 
 class FractieZetelPersoon(Lid):
-    url = 'FractieZetelPersoon'
+    type = 'FractieZetelPersoon'
 
     @staticmethod
     def create_filter():

@@ -65,7 +65,7 @@ class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
 
 class Activiteit(tkapi.TKItem):
-    url = 'Activiteit'
+    type = 'Activiteit'
 
     @staticmethod
     def create_filter() -> ActiviteitFilter:

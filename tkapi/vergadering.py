@@ -22,7 +22,7 @@ class VergaderingFilter(tkapi.SoortFilter):
 
 
 class Vergadering(tkapi.TKItem):
-    url = 'Vergadering'
+    type = 'Vergadering'
     expand_params = ['Verslag']
 
     @staticmethod

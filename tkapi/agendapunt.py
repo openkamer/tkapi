@@ -5,7 +5,7 @@ class AgendapuntRelationFilter(tkapi.RelationsFilter):
 
     @property
     def related_url(self):
-        return Agendapunt.url
+        return Agendapunt.type
 
 
 class AgendapuntFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
@@ -19,7 +19,7 @@ class AgendapuntFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
 
 class Agendapunt(tkapi.TKItem):
-    url = 'Agendapunt'
+    type = 'Agendapunt'
     expand_params = ['Activiteit', 'Besluit', 'Document']
 
     @staticmethod
