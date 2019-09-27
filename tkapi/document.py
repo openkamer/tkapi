@@ -42,6 +42,10 @@ class Document(tkapi.TKItem):
         return DocumentFilter()
 
     @property
+    def bestand_url(self):
+        return self.get_resource_url_or_none()
+
+    @property
     def activiteiten(self):
         from tkapi.activiteit import Activiteit
         return self.related_items(Activiteit)

@@ -100,6 +100,12 @@ class TKItem:
             return enum(self.json[property_key].strip())
         return None
 
+    def get_resource_url_or_none(self):
+        resource_key = '#TK.DA.GGM.OData.Resource'
+        if resource_key in self.json and self.json[resource_key] is not None:
+            return self.json[resource_key]['target']
+        return None
+
     def related_items(self, tkitem, filter=None, item_key=None):
         from tkapi.api import Api
         item_key = item_key if item_key is not None else tkitem.url

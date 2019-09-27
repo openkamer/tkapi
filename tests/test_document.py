@@ -15,13 +15,20 @@ class TestSingleDocument(TKApiTestCase):
         pds = self.api.get_documenten(max_items=1)
         self.assertEqual(1, len(pds))
         pd = pds[0]
-        # pd.print_json()
-        # for zaak in pd.zaken:
-        #     print(zaak)
+        print(pd.bestand_url)
         for agendapunt in pd.agendapunten:
             print(agendapunt)
         for dossier in pd.dossiers:
             print(dossier)
+
+
+class TestDocumentResource(TKApiTestCase):
+
+    def test_get_resource_url(self):
+        pds = self.api.get_documenten(max_items=1)
+        self.assertEqual(1, len(pds))
+        pd = pds[0]
+        self.assertTrue('TK.DA.GGM.OData.Resource()' in pd.bestand_url)
 
 
 class TestDocument(TKApiTestCase):
@@ -37,8 +44,8 @@ class TestDocument(TKApiTestCase):
         pd_filter.filter_soort('Voorstel van wet', is_or=True)
         pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
         pds = self.api.get_documenten(pd_filter)
-        # for pd in pds:
-        #     print(pd.titel)
+        for pd in pds:
+            print(pd.titel)
         self.assertGreater(len(pds), 253)
 
 
