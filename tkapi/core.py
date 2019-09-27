@@ -1,7 +1,7 @@
 from tkapi.util import util
 
 
-class TKItem(object):
+class TKItem:
     url = NotImplementedError
     expand_param = None
     orderby_param = None
@@ -93,7 +93,7 @@ class TKItem(object):
         return None
 
 
-class TKItemRelated(object):
+class TKItemRelated:
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

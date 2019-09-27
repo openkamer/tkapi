@@ -21,7 +21,7 @@ from .zaak import Zaak
 from .filter import VerwijderdFilter
 
 
-class Api(object):
+class Api:
     _user = None
     _password = None
     _verbose = False

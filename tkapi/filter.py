@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Filter(object):
+class Filter:
 
     def __init__(self):
         super().__init__()

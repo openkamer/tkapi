@@ -6,7 +6,7 @@ class OrderDirection(Enum):
     DESC = 'desc'
 
 
-class Order(object):
+class Order:
 
     def __init__(self):
         super().__init__()
