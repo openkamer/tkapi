@@ -28,28 +28,32 @@ for persoon in personen:
 For more examples see the `examples` directory and the tests.
 
 ## Entities
-**Bold** entities are implemented.
+Implemented:
 
-|                            |                            |                              |
+| Algemeen                   | Commissie                  | Persoon                      |
 |----------------------------|----------------------------|------------------------------|
 | **Activiteit**             | **Commissie**              | **Persoon**                  |
-| ActiviteitActor            |                            | PersoonAdres                 |
-| **Zaak**                   |                            | PersoonContactinformatie     |
-| ZaakActor                  | **CommissieZetel**         | **PersoonGeschenk**          |
+| **Zaak**                   | **CommissieZetel**         | **PersoonGeschenk**          |
 | **Kamerstukdossier**       | **CommissieVastPersoon**   | **PersoonLoopbaan**          |
 | **Fractie**                | **CommissieVervangerPersoon** | **PersoonNevenfunctie**      |
-|                            | CommissieVastVacature      | **PersoonNevenfunctieInkomsten** |
-| FractieAanvullendGegeven   | CommissieVervangerVacature | **PersoonOnderwijs**         |
-| **FractieZetel**           |                            | **PersoonReis**              |
-| **Stemming**               |                            | **PersoonFunctie**           |
-| Zaal                       |                            |                              |
-| Reservering                |                            |                              |
-| **Vergadering**            |                            |                              |
-| **Document**               |                            |                              |
-| DocumentVersie             |                            |                              |
-| Bestand                    |                            |                              |
+| **FractieZetel**           |                            | **PersoonNevenfunctieInkomsten** |
+| **Stemming**               |                            | **PersoonOnderwijs**         |
+| **Vergadering**            |                            | **PersoonReis**              |
+| **Document**               |                            | **PersoonFunctie**           |
 | **Agendapunt**             |                            |                              |
 | **Besluit**                |                            |                              |
+| **Verslag**                |                            |                              |
+
+TODO:
+
+| Algemeen                   | Commissie                  | Persoon                      |
+|----------------------------|----------------------------|------------------------------|
+| ActiviteitActor            | CommissieVastVacature      | PersoonAdres                 |
+| ZaakActor                  | CommissieVervangerVacature | PersoonContactinformatie     |
+| FractieAanvullendGegeven   |                            |                              |
+| Zaal                       |                            |                              |
+| Reservering                |                            |                              |
+| DocumentVersie             |                            |                              |
 
 ## Development
 

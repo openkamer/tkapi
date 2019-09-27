@@ -23,24 +23,20 @@ class VergaderingFilter(tkapi.SoortFilter):
 
 class Vergadering(tkapi.TKItem):
     url = 'Vergadering'
+    expand_params = ['Verslag']
 
     @staticmethod
-    def create_filter():
+    def create_filter() -> VergaderingFilter:
         return VergaderingFilter()
 
     @property
-    def verslagen(self):
-        from tkapi.document import Document
-        return self.related_items(Document)
-
-    @property
-    def activiteiten(self):
-        from tkapi.activiteit import Activiteit
-        return self.related_items(Activiteit)
+    def verslag(self):
+        from tkapi.verslag import Verslag
+        return self.related_item(Verslag)
 
     @property
     def soort(self):
-        return self.get_property_or_empty_string('Soort')
+        return self.get_property_enum_or_none('Soort', VergaderingSoort)
 
     @property
     def titel(self):
@@ -48,28 +44,24 @@ class Vergadering(tkapi.TKItem):
 
     @property
     def nummer(self):
-        return self.get_property_or_none('Nummer')
+        return self.get_property_or_none('VergaderingNummer')
 
     @property
     def zaal(self):
         return self.get_property_or_empty_string('Zaal')
 
     @property
+    def datum(self):
+        return self.get_datetime_or_none('Datum')
+
+    @property
     def begin(self):
-        return self.get_datetime_or_none('Begin')
+        return self.get_datetime_or_none('Aanvangstijd')
 
     @property
     def einde(self):
-        return self.get_datetime_or_none('Einde')
+        return self.get_datetime_or_none('Sluiting')
 
     @property
     def samenstelling(self):
         return self.get_property_or_empty_string('Samenstelling')
-    #
-    # @staticmethod
-    # def begin_date_key():
-    #     return 'Begin'
-    #
-    # @staticmethod
-    # def end_date_key():
-    #     return 'Einde'

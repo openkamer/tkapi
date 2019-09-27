@@ -28,13 +28,19 @@ class Filter:
         return filter_str
 
 
-class SoortFilter(Filter):
+class PropertyFilter(Filter):
+
+    def filter_property(self, property_name, value, is_or=False):
+        if isinstance(value, Enum):
+            value = value.value
+        filter_str = "{} eq '{}'".format(property_name, value.replace("'", "''"))
+        self.add_filter_str(filter_str, is_or)
+
+
+class SoortFilter(PropertyFilter):
 
     def filter_soort(self, soort, is_or=False):
-        if isinstance(soort, Enum):
-            soort = soort.value
-        filter_str = "Soort eq " + "'" + soort.replace("'", "''") + "'"
-        self.add_filter_str(filter_str, is_or)
+        self.filter_property(property_name='Soort', value=soort, is_or=is_or)
 
 
 class VerwijderdFilter(Filter):

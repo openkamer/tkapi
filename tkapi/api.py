@@ -9,13 +9,14 @@ from .agendapunt import Agendapunt
 from .besluit import Besluit
 from .commissie import Commissie
 from .document import Document
+from .document import VerslagAlgemeenOverleg
 from .dossier import Dossier
 from .kamervraag import Kamervraag, Antwoord
 from .persoon import PersoonGeschenk
 from .persoon import PersoonReis
 from .stemming import Stemming
 from .vergadering import Vergadering
-from .document import VerslagAlgemeenOverleg
+from .verslag import Verslag
 from .zaak import Zaak
 
 from .filter import VerwijderdFilter
@@ -105,6 +106,10 @@ class Api:
     @classmethod
     def get_geschenken(cls, filter=None, order=None, max_items=None) -> List[PersoonGeschenk]:
         return cls.get_items(PersoonGeschenk, filter, order, max_items)
+
+    @classmethod
+    def get_verslagen(cls, filter=None, order=None, max_items=None) -> List[Verslag]:
+        return cls.get_items(Verslag, filter, order, max_items)
 
     @staticmethod
     def add_filter_to_params(filter, params):
