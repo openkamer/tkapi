@@ -91,8 +91,6 @@ class TestPersoon(TKApiTestCase):
         nevenfuncties = persoon.nevenfuncties
         self.assertEqual(4, len(nevenfuncties))
         self.assertEqual('Deelname in de Raad van advies van het Comité ter vervolging van oorlogsmisdadigers', nevenfuncties[0].omschrijving)
-        for o in nevenfuncties:
-            self.assertIsNotNone(o.inkomsten)
 
 
 class TestPersoonFilters(TKApiTestCase):

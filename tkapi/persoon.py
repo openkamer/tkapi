@@ -257,7 +257,7 @@ class PersoonNevenfunctie(PersoonEntity):
 
     @property
     def inkomsten(self):
-        return self.related_item(PersoonNevenfunctieInkomsten)
+        return self.related_items(PersoonNevenfunctieInkomsten)
 
     @property
     def omschrijving(self):
