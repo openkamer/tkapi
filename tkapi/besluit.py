@@ -66,7 +66,7 @@ class Besluit(tkapi.TKItem):
 
 
 class BesluitStatus(Enum):
-    BESLUIT = 'Besluit',
-    CONCEPT = 'Concept voorstel',
+    BESLUIT = 'Besluit'
+    CONCEPT = 'Concept voorstel'
     VOORSTEL = 'Voorstel'
-    TE_VERWERKEN = 'Nog te verwerken besluit',
+    TE_VERWERKEN = 'Nog te verwerken besluit'

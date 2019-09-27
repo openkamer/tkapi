@@ -130,7 +130,7 @@ class ActiviteitStatus(Enum):
 
 
 class DatumSoort(Enum):
-    DAG = 'Dag',
-    MEERDAAGS = 'Meerdaags',
-    ONBEKEND = 'Nog geen datum bekend',
+    DAG = 'Dag'
+    MEERDAAGS = 'Meerdaags'
+    ONBEKEND = 'Nog geen datum bekend'
     WEEKNUMMER = 'Weeknummer'
