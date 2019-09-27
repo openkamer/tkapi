@@ -16,6 +16,14 @@ class Activiteit(tkapi.TKItem):
     def create_filter():
         return ActiviteitFilter()
 
+    @staticmethod
+    def begin_date_key():
+        return 'Aanvangstijd'
+
+    @staticmethod
+    def end_date_key():
+        return 'Eindtijd'
+
     @property
     def documenten(self):
         from tkapi.document import Document
@@ -49,6 +57,10 @@ class Activiteit(tkapi.TKItem):
         return self.get_datetime_or_none('Datum')
 
     @property
+    def datum_soort(self):
+        return self.get_property_enum_or_none('DatumSoort', DatumSoort)
+
+    @property
     def begin(self):
         return self.get_datetime_or_none('Aanvangstijd')
 
@@ -64,13 +76,9 @@ class Activiteit(tkapi.TKItem):
     def nummer(self):
         return self.get_property_or_empty_string('Nummer')
 
-    @staticmethod
-    def begin_date_key():
-        return 'Aanvangstijd'
-
-    @staticmethod
-    def end_date_key():
-        return 'Eindtijd'
+    @property
+    def vergaderjaar(self):
+        return self.get_property_or_empty_string('Vergaderjaar')
 
 
 class ActiviteitSoort(Enum):
@@ -119,3 +127,10 @@ class ActiviteitStatus(Enum):
     GEPLAND = 'Gepland'
     UITGEVOERD = 'Uitgevoerd'
     VERPLAATS = 'Verplaatst'
+
+
+class DatumSoort(Enum):
+    DAG = 'Dag',
+    MEERDAAGS = 'Meerdaags',
+    ONBEKEND = 'Nog geen datum bekend',
+    WEEKNUMMER = 'Weeknummer'

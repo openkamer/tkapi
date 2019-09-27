@@ -56,6 +56,10 @@ class TKItem:
     def id(self):
         return self.get_property_or_empty_string('Id')
 
+    @property
+    def gewijzigd_op(self):
+        return self.get_datetime_or_none('GewijzigdOp')
+
     def print_json(self):
         util.print_pretty(self.json)
 

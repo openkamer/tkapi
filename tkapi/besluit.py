@@ -1,3 +1,5 @@
+from enum import Enum
+
 import tkapi
 
 
@@ -48,7 +50,7 @@ class Besluit(tkapi.TKItem):
 
     @property
     def status(self):
-        return self.get_property_or_empty_string('Status')
+        return self.get_property_enum_or_none('Status', BesluitStatus)
 
     @property
     def tekst(self):
@@ -61,3 +63,10 @@ class Besluit(tkapi.TKItem):
     @property
     def opmerking(self):
         return self.get_property_or_empty_string('Opmerking')
+
+
+class BesluitStatus(Enum):
+    BESLUIT = 'Besluit',
+    CONCEPT = 'Concept voorstel',
+    VOORSTEL = 'Voorstel'
+    TE_VERWERKEN = 'Nog te verwerken besluit',
