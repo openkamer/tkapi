@@ -8,7 +8,7 @@ class StemmingFilter(tkapi.ZaakRelationFilter):
         return 'Besluit/Zaak'
 
 
-class Stemming(tkapi.TKItemRelated, tkapi.TKItem):
+class Stemming(tkapi.TKItem):
     url = 'Stemming'
 
     @staticmethod

@@ -68,7 +68,7 @@ class ZaakFilter(tkapi.SoortFilter):
         self._filters.append(filter_str)
 
 
-class Zaak(tkapi.TKItemRelated, tkapi.TKItem):
+class Zaak(tkapi.TKItem):
     url = 'Zaak'
     orderby_param = 'GestartOp'
 
@@ -153,7 +153,7 @@ class ZaakActorFilter(tkapi.Filter):
     pass
 
 
-class ZaakActor(tkapi.TKItemRelated, tkapi.TKItem):
+class ZaakActor(tkapi.TKItem):
     url = 'ZaakActor'
 
     @staticmethod

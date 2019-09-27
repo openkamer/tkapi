@@ -1,9 +1,5 @@
-import datetime
-
 from tkapi import Api
 from tkapi.agendapunt import Agendapunt
-
-from tkapi.util import queries
 
 from .core import TKApiTestCase
 

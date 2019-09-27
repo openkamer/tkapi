@@ -3,12 +3,13 @@ from tkapi.util import util
 
 class TKItem:
     url = NotImplementedError
-    expand_param = None
+    expand_params = None
     orderby_param = None
     filter_param = ''
 
     def __init__(self, item_json, *args, **kwargs):
         self.json = item_json
+        self._items_cache = {}
 
     def __dict__(self):
         return self.json
@@ -34,8 +35,8 @@ class TKItem:
     @classmethod
     def get_params_default(cls):
         params = {}
-        if cls.expand_param:
-            params['$expand'] = cls.expand_param
+        if cls.expand_params:
+            params['$expand'] = ','.join([param for param in cls.expand_params])
         if cls.orderby_param:
             params['$orderby'] = cls.orderby_param
         elif cls.begin_date_key():
@@ -44,10 +45,11 @@ class TKItem:
 
     @classmethod
     def get_param_expand(cls):
-        if not cls.expand_param:
+        if not cls.expand_params:
             return {}
+        params = ','.join([param for param in cls.expand_params])
         return {
-            '$expand': cls.expand_param,
+            '$expand': params
         }
 
     @property
@@ -92,23 +94,6 @@ class TKItem:
             return enum(self.json[property_key].strip())
         return None
 
-
-class TKItemRelated:
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.items_cache = {}
-
-    @staticmethod
-    def create_cache_key(tkitem, filter):
-        cache_key = tkitem.__name__
-        if filter is not None:
-            cache_key += filter.filter_str
-        return cache_key
-
-    def set_cache(self, tkitem, filter, items):
-        self.items_cache[self.create_cache_key(tkitem, filter)] = items
-
     def related_items(self, tkitem, filter=None, item_key=None):
         from tkapi.api import Api
         item_key = item_key if item_key is not None else tkitem.url
@@ -122,20 +107,20 @@ class TKItemRelated:
                 items = [tkitem(item_json) for item_json in self.json[item_key]]
             else:
                 items = [tkitem(self.json[tkitem.url])]
-            self.set_cache(tkitem, filter, items)
+            self._set_cache(tkitem, filter, items)
             return items
-        cache_key = self.create_cache_key(tkitem, filter)
-        if cache_key in self.items_cache:
-            return self.items_cache[cache_key]
+        cache_key = self._create_cache_key(tkitem, filter)
+        if cache_key in self._items_cache:
+            return self._items_cache[cache_key]
         url = self.json[navigation_key]
         items = Api().get_related(tkitem, related_url=url, filter=filter)
-        self.set_cache(tkitem, filter, items)
+        self._set_cache(tkitem, filter, items)
         return items
 
     def related_items_deep(self, tkitem, filter):
         from tkapi.api import Api
         items = Api().get_related(tkitem, related_url=tkitem.url, filter=filter)
-        self.set_cache(tkitem, filter, items)
+        self._set_cache(tkitem, filter, items)
         return items
 
     def related_item(self, tkitem, item_key=None):
@@ -143,3 +128,13 @@ class TKItemRelated:
         if related_items:
             return related_items[0]
         return None
+
+    @staticmethod
+    def _create_cache_key(tkitem, filter):
+        cache_key = tkitem.__name__
+        if filter is not None:
+            cache_key += filter.filter_str
+        return cache_key
+
+    def _set_cache(self, tkitem, filter, items):
+        self._items_cache[self._create_cache_key(tkitem, filter)] = items

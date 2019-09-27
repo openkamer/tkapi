@@ -1,7 +1,7 @@
 import tkapi
 
 
-class Actor(tkapi.TKItemRelated, tkapi.TKItem):
+class Actor(tkapi.TKItem):
     url = NotImplementedError
 
     @property

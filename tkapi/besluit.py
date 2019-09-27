@@ -14,9 +14,9 @@ class BesluitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
         super().__init__()
 
 
-class Besluit(tkapi.TKItemRelated, tkapi.TKItem):
+class Besluit(tkapi.TKItem):
     url = 'Besluit'
-    expand_param = 'Stemming'
+    expand_params = ['Stemming']
 
     @staticmethod
     def create_filter():

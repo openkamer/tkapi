@@ -12,7 +12,7 @@ class PersoonFilter(FractieZetelPersoonRelationFilter):
         self.add_filter_str(filter_str)
 
 
-class Persoon(tkapi.TKItemRelated, tkapi.TKItem):
+class Persoon(tkapi.TKItem):
     url = 'Persoon'
     orderby_param = 'Achternaam'
     filter_param = 'Achternaam ne null'
@@ -104,8 +104,8 @@ class Persoon(tkapi.TKItemRelated, tkapi.TKItem):
         return pretty_print
 
 
-class PersoonEntity(tkapi.TKItemRelated, tkapi.TKItem):
-    expand_param = 'Persoon'
+class PersoonEntity(tkapi.TKItem):
+    expand_params = ['Persoon']
 
     @property
     def persoon(self):
@@ -276,7 +276,7 @@ class PersoonNevenfunctie(PersoonEntity):
         return self.get_property_or_empty_string('VergoedingToelichting')
 
 
-class PersoonNevenfunctieInkomsten(tkapi.TKItemRelated, tkapi.TKItem):
+class PersoonNevenfunctieInkomsten(tkapi.TKItem):
     url = 'PersoonNevenfunctieInkomsten'
 
     @property

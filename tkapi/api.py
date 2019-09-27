@@ -168,16 +168,14 @@ class Api:
         return response.json()
 
     @classmethod
-    def get_item(cls, tkitem, id, params=None):
-        url = tkitem.url + '('+ id + ')'
-        if params is None:
-            params = tkitem.get_param_expand()
+    def get_item(cls, tkitem, id):
+        url = '{}({})'.format(tkitem.url, id)
+        params = tkitem.get_param_expand()
         return tkitem(cls.request_json(url, params))
 
     @classmethod
-    def get_related(cls, tkitem_related, related_url, filter=None, params=None):
-        if params is None:
-            params = tkitem_related.get_param_expand()
+    def get_related(cls, tkitem_related, related_url, filter=None):
+        params = tkitem_related.get_param_expand()
         params = Api.add_filter_to_params(filter, params)
         first_page = cls.request_json(related_url, params)
         related_items = []

@@ -47,7 +47,7 @@ class CommissieZetelPersoonFilter(tkapi.Filter):
         self._filters.append(filter_str)
 
 
-class Commissie(tkapi.TKItemRelated, tkapi.TKItem):
+class Commissie(tkapi.TKItem):
     url = 'Commissie'
 
     @staticmethod
@@ -90,7 +90,7 @@ class VoortouwCommissie(Commissie):
     url = 'Voortouwcommissie'
 
 
-class CommissieZetel(tkapi.TKItemRelated, tkapi.TKItem):
+class CommissieZetel(tkapi.TKItem):
     url = 'CommissieZetel'
 
     @staticmethod
@@ -122,8 +122,8 @@ class CommissieZetel(tkapi.TKItemRelated, tkapi.TKItem):
         return self.related_item(Commissie)
 
 
-class CommissieZetelPersoon(tkapi.TKItemRelated, tkapi.TKItem):
-    expand_param = 'Persoon'
+class CommissieZetelPersoon(tkapi.TKItem):
+    expand_params = ['Persoon']
 
     @staticmethod
     def create_filter():

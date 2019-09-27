@@ -33,7 +33,7 @@ class DocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
         self._filters.append(filter_str)
 
 
-class Document(tkapi.TKItemRelated, tkapi.TKItem):
+class Document(tkapi.TKItem):
     url = 'Document'
     orderby_param = 'Datum'
 

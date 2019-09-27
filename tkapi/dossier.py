@@ -18,7 +18,7 @@ class DossierFilter(tkapi.ZaakRelationFilter):
         self._filters.append(filter_str)
 
 
-class Dossier(tkapi.TKItemRelated, tkapi.TKItem):
+class Dossier(tkapi.TKItem):
     url = 'Kamerstukdossier'
 
     @staticmethod

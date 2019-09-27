@@ -21,7 +21,7 @@ class VergaderingFilter(tkapi.SoortFilter):
         self._filters.append(filter_str)
 
 
-class Vergadering(tkapi.TKItemRelated, tkapi.TKItem):
+class Vergadering(tkapi.TKItem):
     url = 'Vergadering'
 
     @staticmethod

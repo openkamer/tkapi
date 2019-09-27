@@ -1,5 +1,4 @@
 from .core import TKItem
-from .core import TKItemRelated
 from .filter import Filter
 from .filter import SoortFilter
 from .filter import VerwijderdFilter

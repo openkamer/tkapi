@@ -18,9 +18,9 @@ class AgendapuntFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
         self._filters.append(filter_str)
 
 
-class Agendapunt(tkapi.TKItemRelated, tkapi.TKItem):
+class Agendapunt(tkapi.TKItem):
     url = 'Agendapunt'
-    expand_param = 'Activiteit'
+    expand_params = ['Activiteit']
 
     @staticmethod
     def create_filter():

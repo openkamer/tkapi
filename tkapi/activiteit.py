@@ -9,7 +9,7 @@ class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
         super().__init__()
 
 
-class Activiteit(tkapi.TKItemRelated, tkapi.TKItem):
+class Activiteit(tkapi.TKItem):
     url = 'Activiteit'
 
     @staticmethod

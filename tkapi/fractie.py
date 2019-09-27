@@ -63,9 +63,9 @@ class Fractie(Actor):
         return '{} ({}) ({} zetels)'.format(self.naam, self.afkorting, self.zetels_aantal)
 
 
-class Lid(tkapi.TKItemRelated, tkapi.TKItem):
+class Lid(tkapi.TKItem):
     url = 'Lid'
-    expand_param = 'Persoon'
+    expand_params = ['Persoon']
 
     @staticmethod
     def create_filter():
@@ -149,7 +149,7 @@ class FractieZetelPersoonRelationFilter(tkapi.RelationsFilter):
         self._filter_non_empty()
 
 
-class FractieZetel(tkapi.TKItemRelated, tkapi.TKItem):
+class FractieZetel(tkapi.TKItem):
     url = 'FractieZetel'
 
     @staticmethod
