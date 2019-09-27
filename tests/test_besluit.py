@@ -38,6 +38,14 @@ class TestBesluitFilters(TKApiTestCase):
         expected_with_stemmen = 6
         self.check_dossier_besluiten(nummer, expected_besluiten, expected_with_stemmen)
 
+    def test_kamerstuk_filter_33885(self):
+        nummer = 33885
+        volgnummer = 16
+        besluiten = queries.get_kamerstuk_besluiten(nummer=nummer, volgnummer=volgnummer)
+        self.assertEqual(1, len(besluiten))
+        for besluit in besluiten:
+            self.assertEqual(nummer, besluit.zaken[0].dossier.nummer)
+
     def check_dossier_besluiten(self, nummer, expected_besluiten, expected_with_stemmen):
         besluiten = queries.get_dossier_besluiten(nummer=nummer)
         besluiten_with_stemmen = queries.get_dossier_besluiten_with_stemmingen(nummer=nummer)
@@ -49,11 +57,3 @@ class TestBesluitFilters(TKApiTestCase):
         for besluit in besluiten_with_stemmen:
             print(besluit.status, besluit.soort, len(besluit.stemmingen))
             self.assertEqual(nummer, besluit.zaak.dossier.nummer)
-
-    def test_kamerstuk_filter(self):
-        nummer = 33885
-        volgnummer = 16
-        besluiten = queries.get_kamerstuk_besluiten(nummer=nummer, volgnummer=volgnummer)
-        self.assertEqual(1, len(besluiten))
-        for besluit in besluiten:
-            self.assertEqual(nummer, besluit.zaken[0].dossier.nummer)

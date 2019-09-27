@@ -92,12 +92,16 @@ class Document(tkapi.TKItem):
         return self.get_property_or_empty_string('Titel')
 
     @property
-    def vergaderjaar(self):
-        return self.get_property_or_empty_string('Vergaderjaar')
+    def titel_citeer(self):
+        return self.get_property_or_empty_string('Citeertitel')
 
     @property
     def alias(self):
         return self.get_property_or_empty_string('Alias')
+
+    @property
+    def vergaderjaar(self):
+        return self.get_property_or_empty_string('Vergaderjaar')
 
     @staticmethod
     def begin_date_key():

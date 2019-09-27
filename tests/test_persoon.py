@@ -95,7 +95,6 @@ class TestPersoon(TKApiTestCase):
             self.assertIsNotNone(o.inkomsten)
 
 
-
 class TestPersoonFilters(TKApiTestCase):
 
     def test_filter_achternaam(self):
@@ -154,6 +153,7 @@ class TestPersoonOnderwijs(TKApiTestCase):
 
     def test_get_first(self):
         onderwijs = self.api.get_items(PersoonOnderwijs, max_items=1)[0]
+        onderwijs.print_json()
         self.assertTrue(onderwijs.opleiding_nl)
         self.assertTrue(onderwijs.instelling)
         self.assertGreaterEqual(onderwijs.tot_en_met, onderwijs.van)
