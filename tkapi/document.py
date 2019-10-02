@@ -1,7 +1,106 @@
+from enum import Enum
 import requests
 
 import tkapi
 from tkapi.util import util
+
+
+class DocumentSoort(Enum):
+    AANBIEDINGSBRIEF = 'Aanbiedingsbrief'
+    AANHANGSEL_VAN_DE_HANDELINGEN = 'Aanhangsel van de Handelingen'
+    ADVIES_AAN_PRESIDIUM = 'Advies aan Presidium'
+    ADVIES_AFDELING_ADVISERING_RAAD_VAN_STATE = 'Advies Afdeling advisering Raad van State'
+    ADVIES_AFDELING_ADVISERING_RAAD_VAN_STATE_EN_NADER_RAPPORT = 'Advies Afdeling advisering Raad van State en Nader rapport'
+    ADVIES_AFDELING_ADVISERING_RAAD_VAN_STATE_EN_REACTIE_VAN_DE_INITIATIEFNEMERS = 'Advies Afdeling advisering Raad van State en Reactie van de initiatiefnemer(s)'
+    ADVIES_COMMISSIE = 'Advies commissie'
+    ADVIES_VAN_ANDERE_ADVIESORGANEN = 'Advies van andere adviesorganen'
+    ADVIESAANVRAAG_AFDELING_ADVISERING_RAAD_VAN_STATE = 'Adviesaanvraag Afdeling advisering Raad van State'
+    AGENDA_PLENAIRE_VERGADERING = 'Agenda plenaire vergadering'
+    AGENDA_PROCEDUREVERGADERING = 'Agenda procedurevergadering'
+    AMENDEMENT = 'Amendement'
+    ANTWOORD_SCHRIFTELIJKE_VRAGEN = 'Antwoord schriftelijke vragen'
+    ANTWOORD_SCHRIFTELIJKE_VRAGEN_NADER = 'Antwoord schriftelijke vragen (nader)'
+    BEGROTINGSTOELICHTING = 'Begrotingstoelichting'
+    BESLUITENLIJST_PROCEDUREVERGADERING = 'Besluitenlijst procedurevergadering'
+    BIJGEWERKTE_TEKST = 'Bijgewerkte tekst'
+    BIJLAGE = 'Bijlage'
+    BRIEF_AFDELING_ADVISERING_RAAD_VAN_STATE = 'Brief Afdeling advisering Raad van State'
+    BRIEF_ALGEMENE_REKENKAMER = 'Brief Algemene Rekenkamer'
+    BRIEF_COMMISSIE = 'Brief commissie'
+    BRIEF_COMMISSIE_AAN_BEWINDSPERSOON = 'Brief commissie aan bewindspersoon'
+    BRIEF_CTIVD = 'Brief CTIVD'
+    BRIEF_EERSTE_KAMER = 'Brief Eerste Kamer'
+    BRIEF_EUROPESE_COMMISSIE = 'Brief Europese Commissie'
+    BRIEF_FORMATEUR = 'Brief formateur'
+    BRIEF_INFORMATEUR = 'Brief informateur'
+    BRIEF_KAMER = 'Brief Kamer'
+    BRIEF_LID__FRACTIE = 'Brief lid / fractie'
+    BRIEF_NATIONALE_OMBUDSMAN = 'Brief Nationale ombudsman'
+    BRIEF_PRESIDENT_HOGE_RAAD = 'Brief president Hoge Raad'
+    BRIEF_PRESIDIUM = 'Brief Presidium'
+    BRIEF_REGERING = 'Brief regering'
+    BRIEF_VERKENNER = 'Brief verkenner'
+    CONVOCATIE_COMMISSIEACTIVITEIT = 'Convocatie commissieactiviteit'
+    CONVOCATIE_INBRENG = 'Convocatie inbreng'
+    EINDTEKST = 'Eindtekst'
+    EU_VOORSTEL = 'EU-voorstel'
+    GELEIDENDE_BRIEF = 'Geleidende brief'
+    GROENBOEKWITBOEK = 'Groenboek/witboek'
+    INBRENG_VERSLAG_SCHRIFTELIJK_OVERLEG = 'Inbreng verslag schriftelijk overleg'
+    INITIATIEFNOTA = 'Initiatiefnota'
+    INTERPELLATIEVRAGEN = 'Interpellatievragen'
+    JAARVERSLAG = 'Jaarverslag'
+    KONINKLIJKE_BOODSCHAP = 'Koninklijke boodschap'
+    LIJST_MET_EU_VOORSTELLEN = 'Lijst met EU-voorstellen'
+    LIJST_VAN_INGEKOMEN_STUKKEN = 'Lijst van ingekomen stukken'
+    LIJST_VAN_VRAGEN = 'Lijst van vragen'
+    LIJST_VAN_VRAGEN_EN_ANTWOORDEN = 'Lijst van vragen en antwoorden'
+    MEDEDELING = 'Mededeling'
+    MEDEDELING_UITSTEL_ANTWOORD = 'Mededeling (uitstel antwoord)'
+    MEMORIE_VAN_TOELICHTING = 'Memorie van toelichting'
+    MEMORIE_VAN_TOELICHTING_INITIATIEFVOORSTEL = 'Memorie van toelichting (initiatiefvoorstel)'
+    MONDELINGE_VRAGEN = 'Mondelinge vragen'
+    MOTIE = 'Motie'
+    MOTIE_GEWIJZIGDNADER = 'Motie (gewijzigd/nader)'
+    NADER_RAPPORT = 'Nader rapport'
+    NOTA = 'Nota'
+    NOTA_NAV_HET_NADERTWEEDE_NADERENZ_VERSLAG = 'Nota n.a.v. het (nader/tweede nader/enz.) verslag'
+    NOTA_VAN_VERBETERING = 'Nota van verbetering'
+    NOTA_VAN_WIJZIGING = 'Nota van wijziging'
+    NOTA_VAN_WIJZIGING_INITIATIEFVOORSTEL = 'Nota van wijziging (initiatiefvoorstel)'
+    ONDERZOEKSVOORSTEL = 'Onderzoeksvoorstel'
+    OORSPRONKELIJKE_TEKST = 'Oorspronkelijke tekst'
+    OVERIG = 'Overig'
+    POSITION_PAPER = 'Position paper'
+    RAMING_VAN_DE_UITGAVEN = 'Raming van de uitgaven'
+    RAPPORT = 'Rapport'
+    RAPPORT_ALGEMENE_REKENKAMER = 'Rapport Algemene Rekenkamer'
+    REACTIE_INITIATIEFNEMERS = 'Reactie initiatiefnemer(s)'
+    SCHRIFTELIJKE_VRAGEN = 'Schriftelijke vragen'
+    SPREKERSLIJST = 'Sprekerslijst'
+    STEMMINGSLIJST = 'Stemmingslijst'
+    STEMMINGSUITSLAGEN = 'Stemmingsuitslagen'
+    STENOGRAM = 'Stenogram'
+    VERSLAG_INITIATIEFWETSVOORSTEL_NADER = 'Verslag (initiatief)wetsvoorstel (nader)'
+    VERSLAG_COMMISSIE_VERZOEKSCHRIFTEN_EN_DE_BURGERINITIATIEVEN = 'Verslag commissie Verzoekschriften en de Burgerinitiatieven'
+    VERSLAG_HOUDENDE_EEN_LIJST_VAN_VRAGEN_EN_ANTWOORDEN = 'Verslag houdende een lijst van vragen en antwoorden'
+    VERSLAG_VAN_EEN_ALGEMEEN_OVERLEG = 'Verslag van een algemeen overleg'
+    VERSLAG_VAN_EEN_BIJEENKOMST = 'Verslag van een bijeenkomst'
+    VERSLAG_VAN_EEN_HOORZITTING__RONDETAFELGESPREK = 'Verslag van een hoorzitting / rondetafelgesprek'
+    VERSLAG_VAN_EEN_NOTAOVERLEG = 'Verslag van een notaoverleg'
+    VERSLAG_VAN_EEN_POLITIEKE_DIALOOG = 'Verslag van een politieke dialoog'
+    VERSLAG_VAN_EEN_RAPPORTEUR = 'Verslag van een rapporteur'
+    VERSLAG_VAN_EEN_SCHRIFTELIJK_OVERLEG = 'Verslag van een schriftelijk overleg'
+    VERSLAG_VAN_EEN_WERKBEZOEK = 'Verslag van een werkbezoek'
+    VERSLAG_VAN_EEN_WETGEVINGSOVERLEG = 'Verslag van een wetgevingsoverleg'
+    VOORDRACHT = 'Voordracht'
+    VOORLICHTING_AFDELING_ADVISERING_RAAD_VAN_STATE = 'Voorlichting Afdeling advisering Raad van State'
+    VOORSTEL_TOT_WIJZIGING_REGLEMENT_VAN_ORDE = 'Voorstel tot wijziging Reglement van Orde'
+    VOORSTEL_VAN_WET = 'Voorstel van wet'
+    VOORSTEL_VAN_WET_INITIATIEFVOORSTEL = 'Voorstel van wet (initiatiefvoorstel)'
+    VOORSTEL_VAN_WET_TWEEDE_LEZING = 'Voorstel van wet (tweede lezing)'
+    WETENSCHAPPELIJKE_FACTSHEET = 'Wetenschappelijke factsheet'
+    WIJZIGINGEN_VOORGESTELD_DOOR_DE_REGERING = 'Wijzigingen voorgesteld door de regering'
 
 
 class DocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
@@ -40,6 +139,10 @@ class Document(tkapi.TKItem):
     @staticmethod
     def create_filter():
         return DocumentFilter()
+
+    @staticmethod
+    def begin_date_key():
+        return 'Datum'
 
     @property
     def bestand_url(self):
@@ -89,7 +192,7 @@ class Document(tkapi.TKItem):
 
     @property
     def soort(self):
-        return self.get_property_or_empty_string('Soort')
+        return self.get_property_enum_or_none('Soort', DocumentSoort)
 
     @property
     def titel(self):
@@ -106,10 +209,6 @@ class Document(tkapi.TKItem):
     @property
     def vergaderjaar(self):
         return self.get_property_or_empty_string('Vergaderjaar')
-
-    @staticmethod
-    def begin_date_key():
-        return 'Datum'
 
     @property
     def dossier_nummers(self):

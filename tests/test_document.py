@@ -3,6 +3,7 @@ import datetime
 from orderedset import OrderedSet
 
 from tkapi.document import Document
+from tkapi.document import DocumentSoort
 from tkapi.document import VerslagAlgemeenOverleg
 from tkapi.util import queries
 
@@ -41,8 +42,8 @@ class TestDocument(TKApiTestCase):
             TestDocument.start_datetime,
             TestDocument.end_datetime
         )
-        pd_filter.filter_soort('Voorstel van wet', is_or=True)
-        pd_filter.filter_soort('Voorstel van wet (initiatiefvoorstel)', is_or=True)
+        pd_filter.filter_soort(DocumentSoort.VOORSTEL_VAN_WET, is_or=True)
+        pd_filter.filter_soort(DocumentSoort.VOORSTEL_VAN_WET_INITIATIEFVOORSTEL, is_or=True)
         pds = self.api.get_documenten(pd_filter)
         for pd in pds:
             print(pd.titel)
@@ -59,7 +60,7 @@ class TestDocumentFilter(TKApiTestCase):
             start_datetime,
             end_datetime
         )
-        pd_filter.filter_soort('Voorstel van wet')
+        pd_filter.filter_soort(DocumentSoort.VOORSTEL_VAN_WET)
         pd_filter.filter_non_empty_zaak()
         pds = self.api.get_documenten(pd_filter)
         for pd in pds:

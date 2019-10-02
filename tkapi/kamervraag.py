@@ -1,26 +1,15 @@
 import requests
 
 from tkapi.document import Document
-from tkapi.zaak import ZaakSoort
+from tkapi.document import DocumentSoort
 
 
 class Kamervraag(Document):
-    filter_param = "Soort eq '{}'".format(ZaakSoort.SCHRIFTELIJKE_VRAGEN.value)
-
-    def __init__(self, json):
-        super().__init__(json)
+    filter_param = "Soort eq '{}'".format(DocumentSoort.SCHRIFTELIJKE_VRAGEN.value)
 
     @staticmethod
     def nearest(zaken, pivot):
         return min(zaken, key=lambda zaak: abs(zaak.gestart_op - pivot))
-
-    @property
-    def datum(self):
-        return self.get_date_from_datetime_or_none('Datum')
-
-    @property
-    def onderwerp(self):
-        return self.get_property_or_empty_string('Onderwerp')
 
     @property
     def document_url(self):
@@ -46,15 +35,7 @@ class Kamervraag(Document):
 
 
 class Antwoord(Document):
-    filter_param = "Soort eq 'Antwoord schriftelijke vragen'"
-
-    def __init__(self, json):
-        super().__init__(json)
-        self.document_url = self.get_document_url()
-
-    @property
-    def datum(self):
-        return self.get_date_from_datetime_or_none('Datum')
+    filter_param = "Soort eq '{}'".format(DocumentSoort.ANTWOORD_SCHRIFTELIJKE_VRAGEN.value)
 
     def get_document_url(self):
         if not self.vergaderjaar:

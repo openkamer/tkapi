@@ -21,7 +21,7 @@ def main():
     with open('antwoorden_' + str(year) + '.csv', 'w') as fileout:
         fileout.write('datum' + ',' + 'antwoord nummer' + ',' + 'url' + '\n')
         for antwoord in antwoorden:
-            fileout.write(antwoord.datum.strftime('%Y-%m-%d') + ',' + antwoord.nummer + ',' + antwoord.document_url + '\n')
+            fileout.write(antwoord.datum.strftime('%Y-%m-%d') + ',' + antwoord.nummer + ',' + antwoord.get_document_url() + '\n')
     print('END')
 
 

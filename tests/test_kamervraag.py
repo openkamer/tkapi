@@ -45,7 +45,7 @@ class TestKamervraagItem(TKApiTestCase):
         kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         kamervragen = self.api.get_kamervragen(kv_filter)
-        self.assertEqual(len(kamervragen), 17)
+        self.assertEqual(17, len(kamervragen))
 
     def test_get_kamervragen_old(self):
         start_datetime = datetime.datetime(year=2008, month=7, day=1)
@@ -53,7 +53,7 @@ class TestKamervraagItem(TKApiTestCase):
         kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         kamervragen = self.api.get_kamervragen(kv_filter)
-        self.assertEqual(len(kamervragen), 20)
+        self.assertEqual(20, len(kamervragen))
 
     def test_get_kamervragen_2013(self):
         start_datetime = datetime.datetime(year=2013, month=1, day=31)
@@ -61,7 +61,7 @@ class TestKamervraagItem(TKApiTestCase):
         kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         kamervragen = self.api.get_kamervragen(kv_filter)
-        self.assertEqual(len(kamervragen), 23)
+        self.assertEqual(23, len(kamervragen))
 
 
 class TestAntwoordItem(TKApiTestCase):
@@ -72,7 +72,7 @@ class TestAntwoordItem(TKApiTestCase):
         kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         antwoorden = self.api.get_antwoorden(kv_filter)
-        self.assertEqual(len(antwoorden), 10)
+        self.assertEqual(10, len(antwoorden))
 
     def test_get_antwoorden_2010(self):
         start_datetime = datetime.datetime(year=2010, month=1, day=1)
@@ -80,4 +80,4 @@ class TestAntwoordItem(TKApiTestCase):
         kv_filter = Document.create_filter()
         kv_filter.filter_date_range(start_datetime, end_datetime)
         antwoorden = self.api.get_antwoorden(kv_filter)
-        self.assertEqual(len(antwoorden), 2)
+        self.assertEqual(2, len(antwoorden))
