@@ -109,9 +109,9 @@ class TestDocumentSoorten(TKApiTestCase):
         end_datetime = datetime.datetime(year=2010, month=2, day=1)
         pd_filter.filter_date_range(start_datetime, end_datetime)
         pds = self.api.get_documenten(pd_filter)
-        soorten = [pd.soort for pd in pds]
-        soorten = OrderedSet(sorted(soorten))
+        soorten = set([pd.soort for pd in pds])
         for soort in soorten:
+            self.assertIn(soort, DocumentSoort)
             print(soort)
 
 
