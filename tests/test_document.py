@@ -1,7 +1,5 @@
 import datetime
 
-from orderedset import OrderedSet
-
 from tkapi.document import Document
 from tkapi.document import DocumentSoort
 from tkapi.document import VerslagAlgemeenOverleg

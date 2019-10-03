@@ -1,5 +1,4 @@
 from tkapi import Api
-from orderedset import OrderedSet
 
 
 def get_commissie_namen():
@@ -8,7 +7,7 @@ def get_commissie_namen():
     for commissie in commissies:
         if commissie.naam:
             namen.append(commissie.naam)
-    return OrderedSet(sorted(namen))
+    return sorted(set(namen))
 
 
 def get_soorten(items):
@@ -16,7 +15,7 @@ def get_soorten(items):
     for item in items:
         if item.soort:
             soorten.append(item.soort)
-    return OrderedSet(sorted(soorten))
+    return sorted(set(soorten))
 
 
 def get_commissie_soorten():

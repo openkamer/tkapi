@@ -21,7 +21,7 @@ setup(
     ],
     packages=['tkapi', 'tkapi.util'],
     install_requires=[
-        'requests>=2.13.0', 'orderedset>=2.0', 'python-dateutil>=2.0'
+        'requests>=2.13.0', 'python-dateutil>=2.0'
     ],
     test_suite="tests",
 )

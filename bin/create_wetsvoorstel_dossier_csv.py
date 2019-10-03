@@ -2,8 +2,6 @@ import datetime
 import sys
 import os
 
-from orderedset import OrderedSet
-
 parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parentdir)
 
@@ -32,7 +30,7 @@ def main():
         print(dossier_nr)
         dossier_nrs.add(dossier_nr)
 
-    dossier_nrs = OrderedSet(sorted(dossier_nrs))
+    dossier_nrs = sorted(dossier_nrs)
     print(dossier_nrs)
     for dossier_nr in dossier_nrs:
         print(dossier_nr)

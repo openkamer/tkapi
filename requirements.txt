@@ -1,3 +1,2 @@
 requests==2.20.0
-orderedset==2.0.1
 python-dateutil==2.7.5

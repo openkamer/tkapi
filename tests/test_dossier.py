@@ -1,7 +1,5 @@
 import datetime
 
-from orderedset import OrderedSet
-
 from tkapi.util import queries
 from tkapi.zaak import Zaak, ZaakSoort
 from tkapi.dossier import Dossier, DossierWetsvoorstel
@@ -124,7 +122,7 @@ class TestWetsvoorstelDossier(TKApiTestCase):
             print(pd.dossier_nummers)
             print(pd.onderwerp)
 
-        dossier_nrs = OrderedSet(sorted(dossier_nrs))
+        dossier_nrs = sorted(set(dossier_nrs))
         print(dossier_nrs)
         for dossier_nr in dossier_nrs:
             print(dossier_nr)
@@ -164,6 +162,6 @@ class TestWetsvoorstelDossier(TKApiTestCase):
     #         print(dossier.titel)
     #         dossier_nummers.append(dossier.nummer)
     #         # dossier.print_json()
-    #     dossier_nrs = OrderedSet(sorted(dossier_nummers))
+    #     dossier_nrs = sorted(set(dossier_nummers))
     #     print(dossier_nrs)
     #     print(len(dossier_nrs))

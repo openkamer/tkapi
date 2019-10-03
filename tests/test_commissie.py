@@ -1,5 +1,3 @@
-from orderedset import OrderedSet
-
 from tkapi.commissie import Commissie
 from tkapi.commissie import CommissieZetel
 from tkapi.commissie import CommissieZetelVastPersoon
@@ -89,14 +87,14 @@ class TestCommissieInfo(TKApiTestCase):
         namen = get_commissie_namen()
         print('\n=== NAMEN ===')
         self.assertGreater(len(namen), 50)
-        for naam in OrderedSet(sorted(namen)):
+        for naam in sorted(set(namen)):
             print(naam)
 
     def test_commissie_soorten(self):
         namen = get_commissie_soorten()
         self.assertGreater(len(namen), 6)
         print('\n=== SOORTEN ===')
-        for naam in OrderedSet(sorted(namen)):
+        for naam in sorted(set(namen)):
             print(naam)
 
 
