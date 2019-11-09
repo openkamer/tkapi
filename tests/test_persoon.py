@@ -165,6 +165,26 @@ class TestPersoonReis(TKApiTestCase):
             self.assertIsNotNone(reis.tot_en_met)
             self.assertIsNotNone(reis.betaald_door)
 
+    def test_get_reizen_count(self):
+        n_items = 1000
+        reizen = self.api.get_reizen(max_items=n_items)
+        print('reizen:', len(reizen))
+        self.assertEqual(n_items, len(reizen))
+
+
+class TestPersoonGeschenk(TKApiTestCase):
+
+    def test_get_geschenk(self):
+        max_items = 1
+        geschenken = self.api.get_geschenken(max_items=max_items)
+        print(geschenken[0].id)
+
+    def test_get_geschenken_count(self):
+        n_items = 1000
+        geschenken = self.api.get_geschenken(max_items=n_items)
+        print('geschenken:', len(geschenken))
+        self.assertEqual(n_items, len(geschenken))
+
 
 class TestPersoonOnderwijs(TKApiTestCase):
 
