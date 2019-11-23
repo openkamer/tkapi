@@ -125,12 +125,8 @@ class TestZaakActor(TKApiTestCase):
         self.assertEqual(max_items, len(actors))
         actor = actors[0]
         self.assertIsNotNone(actor.id)
-        self.assertTrue(actor.functie)
-        self.assertTrue(actor.persoon.id)
+        self.assertTrue(actor.naam)
         self.assertTrue(actor.zaak.id)
-        # TODO: enable if available
-        # self.assertTrue(actor.commissie.id)
-        # self.assertTrue(actor.fractie.id)
 
     def test_filter(self):
         max_items = 10
@@ -145,7 +141,6 @@ class TestZaakActor(TKApiTestCase):
         self.assertEqual(max_items, len(actors))
         for actor in actors:
             print(' | '.join([actor.naam, actor.afkorting, actor.relatie]))
-
 
 
 class TestZaakSoort(TKApiTestCase):

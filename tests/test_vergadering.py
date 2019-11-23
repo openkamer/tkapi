@@ -15,7 +15,6 @@ class TestVergadering(TKApiTestCase):
             self.assertIsNotNone(vergadering.verslag)
             self.assertIsNotNone(vergadering.datum)
             self.assertIsNotNone(vergadering.begin)
-            self.assertIsNotNone(vergadering.einde)
             self.assertIsNotNone(vergadering.nummer)
 
     def test_get_vergadering_soorten(self):

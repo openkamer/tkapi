@@ -39,4 +39,10 @@ class TestUtilQueries(TKApiTestCase):
 
     def test_get_kamerleden_active(self):
         persons = queries.get_kamerleden_active()
-        self.assertEqual(150, len(persons))
+        self.assertGreaterEqual(len(persons), 148)  # some seats may be open for a while
+
+    def test_fractie_leden_actief(self):
+        leden = queries.get_fractieleden_actief()
+        self.assertGreaterEqual(len(leden), 100)
+        for lid in leden:
+            print(lid.persoon, lid.fractie)
