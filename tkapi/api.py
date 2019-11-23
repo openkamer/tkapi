@@ -161,7 +161,10 @@ class Api:
             timeout=60
         )
         if cls._verbose:
-            print('url: ', urllib.parse.unquote(response.url))
+            print('url ({} ms): {}'.format(
+                int(response.elapsed.total_seconds() * 1000),
+                urllib.parse.unquote(response.url))
+            )
         if response.status_code in [204, 404, 500]:
             print('HTTP STATUS CODE', response.status_code)
             print('### WARNING: requested item does not exist:', url, '###')
