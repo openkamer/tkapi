@@ -107,29 +107,32 @@ class DocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
 
     def filter_date_range(self, start_datetime, end_datetime):
         filter_str = "Datum ge " + util.datetime_to_odata(start_datetime)
-        self._filters.append(filter_str)
+        self.add_filter_str(filter_str)
         filter_str = "Datum lt " + util.datetime_to_odata(end_datetime)
-        self._filters.append(filter_str)
+        self.add_filter_str(filter_str)
 
     def filter_has_agendapunt(self):
         filter_str = 'Agendapunt/any(a:a ne null)'
-        self._filters.append(filter_str)
+        self.add_filter_str(filter_str)
 
     def filter_has_activiteit(self):
         filter_str = 'Activiteit/any(a:a ne null)'
-        self._filters.append(filter_str)
+        self.add_filter_str(filter_str)
 
     def filter_onderwerp(self, onderwerp):
         filter_str = 'Onderwerp eq ' + "'" + onderwerp.replace("'", "''") + "'"
-        self._filters.append(filter_str)
+        self.add_filter_str(filter_str)
 
     def filter_titel(self, titel):
         filter_str = 'Titel eq ' + "'" + titel.replace("'", "''") + "'"
-        self._filters.append(filter_str)
+        self.add_filter_str(filter_str)
 
-    def filter_dossier(self, nummer):
+    def filter_dossier(self, nummer, toevoeging=None):
         filter_str = "Kamerstukdossier/any(d: d/Nummer eq {})".format(nummer)
-        self._filters.append(filter_str)
+        self.add_filter_str(filter_str)
+        if toevoeging:
+            filter_str = "Kamerstukdossier/any(d: d/Toevoeging eq '{}')".format(toevoeging)
+            self.add_filter_str(filter_str)
 
 
 class Document(tkapi.TKItem):

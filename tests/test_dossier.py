@@ -92,6 +92,13 @@ class TestDossierFilter(TKApiTestCase):
         dossier = queries.get_dossier(nummer)
         self.assertEqual(nummer, dossier.nummer)
 
+    def test_filter_dossier_nummer_toevoeging(self):
+        nummer = 35300
+        toevoeging = 'XVI'
+        dossier = queries.get_dossier(nummer, toevoeging=toevoeging)
+        self.assertEqual(nummer, dossier.nummer)
+        self.assertEqual(toevoeging, dossier.toevoeging)
+
 
 class TestWetsvoorstelDossier(TKApiTestCase):
 

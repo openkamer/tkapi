@@ -52,50 +52,52 @@ def do_load_stemmingen(stemmingen):
     return stemmingen_loaded
 
 
-def get_dossier(nummer):
+def get_dossier(nummer, toevoeging=None):
     filter = Dossier.create_filter()
     filter.filter_nummer(nummer)
+    if toevoeging:
+        filter.filter_toevoeging(toevoeging)
     dossiers = Api().get_dossiers(filter=filter)
     dossier = dossiers[0]
     return dossier
 
 
-def get_dossier_zaken(nummer) -> List[Zaak]:
+def get_dossier_zaken(nummer, toevoeging=None) -> List[Zaak]:
     zaak_filter = Zaak.create_filter()
-    zaak_filter.filter_kamerstukdossier(nummer=nummer)
+    zaak_filter.filter_kamerstukdossier(nummer=nummer, toevoeging=toevoeging)
     return Api().get_zaken(filter=zaak_filter)
 
 
-def get_dossier_documenten(nummer) -> List[Document]:
+def get_dossier_documenten(nummer, toevoeging=None) -> List[Document]:
     document_filter = Document.create_filter()
-    document_filter.filter_dossier(nummer)
+    document_filter.filter_dossier(nummer, toevoeging=toevoeging)
     return Api().get_documenten(document_filter)
 
 
-def get_dossier_documenten_with_activiteit(nummer) -> List[Document]:
+def get_dossier_documenten_with_activiteit(nummer, toevoeging=None) -> List[Document]:
     document_filter = Document.create_filter()
-    document_filter.filter_dossier(nummer)
+    document_filter.filter_dossier(nummer, toevoeging=toevoeging)
     document_filter.filter_has_activiteit()
     return Api().get_documenten(document_filter)
 
 
-def get_kamerstuk_zaken(nummer, volgnummer) -> List[Zaak]:
+def get_kamerstuk_zaken(nummer, volgnummer, toevoeging=None) -> List[Zaak]:
     zaak_filter = Zaak.create_filter()
-    zaak_filter.filter_kamerstukdossier(nummer)
+    zaak_filter.filter_kamerstukdossier(nummer, toevoeging=toevoeging)
     zaak_filter.filter_document(volgnummer)
     return Api().get_zaken(zaak_filter)
 
 
-def get_dossier_besluiten(nummer) -> List[Besluit]:
-    zaken = get_dossier_zaken(nummer)
+def get_dossier_besluiten(nummer, toevoeging=None) -> List[Besluit]:
+    zaken = get_dossier_zaken(nummer, toevoeging=toevoeging)
     besluiten = []
     for zaak in zaken:
         besluiten += zaak.besluiten
     return filter_duplicates(besluiten)
 
 
-def get_dossier_besluiten_with_stemmingen(nummer) -> List[Besluit]:
-    zaken = get_dossier_zaken(nummer)
+def get_dossier_besluiten_with_stemmingen(nummer, toevoeging=None) -> List[Besluit]:
+    zaken = get_dossier_zaken(nummer, toevoeging=toevoeging)
     besluiten = []
     for zaak in zaken:
         filter = Besluit.create_filter()
@@ -105,32 +107,32 @@ def get_dossier_besluiten_with_stemmingen(nummer) -> List[Besluit]:
     return filter_duplicates(besluiten)
 
 
-def get_kamerstuk_besluiten(nummer, volgnummer) -> List[Besluit]:
-    zaken = get_kamerstuk_zaken(nummer, volgnummer)
+def get_kamerstuk_besluiten(nummer, volgnummer, toevoeging=None) -> List[Besluit]:
+    zaken = get_kamerstuk_zaken(nummer, volgnummer, toevoeging=toevoeging)
     besluiten = []
     for zaak in zaken:
         besluiten += zaak.besluiten
     return filter_duplicates(besluiten)
 
 
-def get_dossier_zaken_with_activiteit(nummer) -> List[Zaak]:
+def get_dossier_zaken_with_activiteit(nummer, toevoeging=None) -> List[Zaak]:
     zaak_filter = Zaak.create_filter()
     zaak_filter.filter_has_activiteit()
-    zaak_filter.filter_kamerstukdossier(nummer=nummer)
+    zaak_filter.filter_kamerstukdossier(nummer=nummer, toevoeging=toevoeging)
     return Api().get_zaken(filter=zaak_filter)
 
 
-def get_dossier_zaken_with_agendapunt(nummer) -> List[Zaak]:
+def get_dossier_zaken_with_agendapunt(nummer, toevoeging=None) -> List[Zaak]:
     zaak_filter = Zaak.create_filter()
     zaak_filter.filter_has_agendapunt()
-    zaak_filter.filter_kamerstukdossier(nummer=nummer)
+    zaak_filter.filter_kamerstukdossier(nummer=nummer, toevoeging=toevoeging)
     return Api().get_zaken(filter=zaak_filter)
 
 
-def get_kamerstuk_activiteiten(nummer, volgnummer, include_agendapunten=False) -> List[Activiteit]:
-    zaken = get_kamerstuk_zaken(nummer, volgnummer)
+def get_kamerstuk_activiteiten(nummer, volgnummer, toevoeging=None, include_agendapunten=False) -> List[Activiteit]:
+    zaken = get_kamerstuk_zaken(nummer, volgnummer, toevoeging=toevoeging)
     activiteiten = get_zaken_activiteiten(zaken)
-    documenten = get_dossier_documenten_with_activiteit(nummer)
+    documenten = get_dossier_documenten_with_activiteit(nummer, toevoeging=toevoeging)
     for document in documenten:
         activiteiten += document.activiteiten
     if include_agendapunten:
@@ -138,14 +140,14 @@ def get_kamerstuk_activiteiten(nummer, volgnummer, include_agendapunten=False) -
     return filter_duplicates(activiteiten)
 
 
-def get_dossier_activiteiten(nummer, include_agendapunten=False) -> List[Activiteit]:
-    zaken = get_dossier_zaken_with_activiteit(nummer)
+def get_dossier_activiteiten(nummer, toevoeging=None, include_agendapunten=False) -> List[Activiteit]:
+    zaken = get_dossier_zaken_with_activiteit(nummer, toevoeging=toevoeging)
     activiteiten = get_zaken_activiteiten(zaken)
-    documenten = get_dossier_documenten_with_activiteit(nummer)
+    documenten = get_dossier_documenten_with_activiteit(nummer, toevoeging=toevoeging)
     for document in documenten:
         activiteiten += document.activiteiten
     if include_agendapunten:
-        zaken_dossier = get_dossier_zaken(nummer)
+        zaken_dossier = get_dossier_zaken(nummer, toevoeging=toevoeging)
         activiteiten += get_zaken_agendapunten_activiteiten(zaken_dossier)
     return filter_duplicates(activiteiten)
 
@@ -175,8 +177,8 @@ def get_zaken_agendapunten_activiteiten(zaken) -> List[Activiteit]:
     return activiteiten
 
 
-def get_kamerstuk_stemmingen(nummer, volgnummer) -> List[Stemming]:
-    besluiten = get_kamerstuk_besluiten(nummer, volgnummer)
+def get_kamerstuk_stemmingen(nummer, volgnummer, toevoeging=None) -> List[Stemming]:
+    besluiten = get_kamerstuk_besluiten(nummer, volgnummer, toevoeging=toevoeging)
     stemmingen = []
     for besluit in besluiten:
         stemmingen += besluit.stemmingen
