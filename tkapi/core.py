@@ -120,9 +120,10 @@ class TKItem:
             return []
         if item_key in self.json:
             if isinstance(self.json[item_key], (list, tuple)):
-                items = [tkitem(item_json) for item_json in self.json[item_key]]
+                items = [tkitem(item_json) for item_json in self.json[item_key] if not item_json.get('Verwijderd', True)]
             else:
-                items = [tkitem(self.json[tkitem.type])]
+                item_json = self.json[tkitem.type]
+                items = [tkitem(item_json)] if not item_json.get('Verwijderd', True) else []
             self._set_cache(tkitem, filter, items)
             return items
         cache_key = self._create_cache_key(tkitem, filter)
