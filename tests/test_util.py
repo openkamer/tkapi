@@ -18,9 +18,9 @@ class TestUtilQueries(TKApiTestCase):
         self.assertEqual(activiteiten_expected, len(activiteiten))
 
     def test_get_dossier_activiteiten_toevoeging(self):
-        nummer = 35300
-        toevoeging = 'XVI'
-        activiteiten_expected = 0
+        nummer = 33000
+        toevoeging = 'XV'
+        activiteiten_expected = 1
         activiteiten = queries.get_dossier_activiteiten(nummer, toevoeging=toevoeging)
         self.assertEqual(activiteiten_expected, len(activiteiten))
 
@@ -32,10 +32,10 @@ class TestUtilQueries(TKApiTestCase):
             self.assertGreaterEqual(len(besluit.stemmingen), 1)
 
     def test_get_dossier_besluiten_with_stemmingen_toevoeging(self):
-        nummer = 35300
-        toevoeging = 'XVI'
+        nummer = 33000
+        toevoeging = 'XV'
         besluiten = queries.get_dossier_besluiten_with_stemmingen(nummer=nummer, toevoeging=toevoeging)
-        self.assertEqual(52, len(besluiten))
+        self.assertEqual(43, len(besluiten))
         for besluit in besluiten:
             self.assertGreaterEqual(len(besluit.stemmingen), 1)
 
@@ -51,10 +51,10 @@ class TestUtilQueries(TKApiTestCase):
                 print('\t', stemming.fractie.naam, stemming.fractie_size, stemming.soort, besluit.soort)
 
     def test_get_dossier_besluiten_toevoeging(self):
-        nummer = 35300
-        toevoeging = 'XVI'
+        nummer = 33000
+        toevoeging = 'XV'
         besluiten = queries.get_dossier_besluiten(nummer=nummer, toevoeging=toevoeging)
-        self.assertEqual(199, len(besluiten))
+        self.assertEqual(238, len(besluiten))
 
     def test_get_kamerstuk_besluiten(self):
         nummer = 33885
@@ -65,13 +65,13 @@ class TestUtilQueries(TKApiTestCase):
             print(besluit.tekst, besluit.soort, besluit.stemming_soort, besluit.opmerking, len(besluit.stemmingen))
 
     def test_get_kamerstuk_besluiten_toevoeging(self):
-        nummer = 35300
+        nummer = 33000
         volgnummer = 10
-        toevoeging = 'XVI'
+        toevoeging = 'XV'
         besluiten = queries.get_kamerstuk_besluiten(nummer=nummer, volgnummer=volgnummer)
-        self.assertEqual(51, len(besluiten))
+        self.assertEqual(42, len(besluiten))
         besluiten = queries.get_kamerstuk_besluiten(nummer=nummer, volgnummer=volgnummer, toevoeging=toevoeging)
-        self.assertEqual(10, len(besluiten))
+        self.assertEqual(2, len(besluiten))
 
     def test_get_kamerstuk_zaken(self):
         nummer = 33885
@@ -83,13 +83,13 @@ class TestUtilQueries(TKApiTestCase):
         self.assertEqual(volgnummer, zaak.volgnummer)
 
     def test_get_kamerstuk_begroting_zaken(self):
-        nummer = 35300
-        toevoeging = 'XVI'
+        nummer = 33000
+        toevoeging = 'XV'
         volgnummer = 10
         zaken = queries.get_kamerstuk_zaken(nummer, volgnummer)
-        self.assertEqual(18, len(zaken))
+        self.assertEqual(15, len(zaken))
         zaken = queries.get_kamerstuk_zaken(nummer, volgnummer, toevoeging)
-        self.assertEqual(2, len(zaken))
+        self.assertEqual(1, len(zaken))
 
     def test_get_kamerleden_active(self):
         persons = queries.get_kamerleden_active()
@@ -107,10 +107,10 @@ class TestUtilQueries(TKApiTestCase):
         self.assertEqual(27, len(zaken))
 
     def test_get_dossier_zaken_toevoeging(self):
-        nummer = 35300
-        toevoeging = 'XVI'
+        nummer = 33000
+        toevoeging = 'XV'
         zaken = queries.get_dossier_zaken(nummer, toevoeging)
-        self.assertEqual(115, len(zaken))
+        self.assertEqual(76, len(zaken))
 
     def test_filter_dossier(self):
         nummer = 31239
@@ -119,12 +119,12 @@ class TestUtilQueries(TKApiTestCase):
         self.assertGreaterEqual(len(documenten), expected)
 
     def test_filter_dossier_toevoeging(self):
-        nummer = 35300
-        toevoeging = 'XVI'
+        nummer = 33000
+        toevoeging = 'XV'
         documenten = queries.get_dossier_documenten(nummer)
-        self.assertEqual(925, len(documenten))
+        self.assertEqual(1704, len(documenten))
         documenten = queries.get_dossier_documenten(nummer, toevoeging=toevoeging)
-        self.assertEqual(117, len(documenten))
+        self.assertEqual(79, len(documenten))
 
     def test_filter_dossier_with_activiteit(self):
         nummer = 31239
