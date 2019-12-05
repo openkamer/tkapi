@@ -88,7 +88,7 @@ class Persoon(tkapi.TKItem):
 
     @property
     def overlijdensplaats(self):
-        return self.get_date_from_datetime_or_none('Overlijdensplaats')
+        return self.get_property_or_empty_string('Overlijdensplaats')
 
     @property
     def titels(self):
