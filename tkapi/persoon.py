@@ -39,6 +39,10 @@ class Persoon(tkapi.TKItem):
         return self.get_property_or_empty_string('Achternaam')
 
     @property
+    def tussenvoegsel(self):
+        return self.get_property_or_empty_string('Tussenvoegsel')
+
+    @property
     def initialen(self):
         return self.get_property_or_empty_string('Initialen')
 
@@ -55,6 +59,22 @@ class Persoon(tkapi.TKItem):
         return self.get_property_or_empty_string('Functie')
 
     @property
+    def geslacht(self):
+        return self.get_property_or_empty_string('Geslacht')
+
+    @property
+    def woonplaats(self):
+        return self.get_property_or_empty_string('Woonplaats')
+
+    @property
+    def land(self):
+        return self.get_property_or_empty_string('Land')
+
+    @property
+    def geboortedatum(self):
+        return self.get_date_from_datetime_or_none('Geboortedatum')
+
+    @property
     def geboorteland(self):
         return self.get_property_or_empty_string('Geboorteland')
 
@@ -63,16 +83,12 @@ class Persoon(tkapi.TKItem):
         return self.get_property_or_empty_string('Geboorteplaats')
 
     @property
-    def geslacht(self):
-        return self.get_property_or_empty_string('Geslacht')
+    def overlijdensdatum(self):
+        return self.get_date_from_datetime_or_none('Overlijdensdatum')
 
     @property
-    def geboortedatum(self):
-        return self.get_date_from_datetime_or_none('Geboortedatum')
-
-    @property
-    def woonplaats(self):
-        return self.get_property_or_empty_string('Woonplaats')
+    def overlijdensplaats(self):
+        return self.get_date_from_datetime_or_none('Overlijdensplaats')
 
     @property
     def titels(self):
