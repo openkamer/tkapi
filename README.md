@@ -1,6 +1,6 @@
 # tkapi
 [![PyPI version](https://badge.fury.io/py/tkapi.svg)](https://badge.fury.io/py/tkapi)  
-Python bindings for the [Tweede Kamer](https://tweedekamer.nl) [Open Data Portaal](https://opendata.tweedekamer.nl) OData API.
+Python ORM and bindings for the [Tweede Kamer](https://tweedekamer.nl) [Open Data Portaal](https://opendata.tweedekamer.nl) OData API.
 
 Requires Python 3.5+
 
@@ -13,6 +13,9 @@ pip install tkapi
 
 ## Authentication
 You need to whitelist your IP by registering at https://opendata.tweedekamer.nl.
+
+## Data model
+See https://opendata.tweedekamer.nl/documentatie/informatiemodel-20 for the data model that is mapped to Python classes.
 
 ## Usage
 A simple first example,
@@ -40,6 +43,7 @@ Implemented:
 | **Stemming**               |                            | **PersoonOnderwijs**         |
 | **Vergadering**            |                            | **PersoonReis**              |
 | **Document**               |                            | **PersoonFunctie**           |
+| **DocumentActor**          |                            |                              |
 | **Agendapunt**             |                            |                              |
 | **Besluit**                |                            |                              |
 | **Verslag**                |                            |                              |

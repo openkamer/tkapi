@@ -119,11 +119,11 @@ class DocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
         filter_str = 'Activiteit/any(a:a ne null)'
         self.add_filter_str(filter_str)
 
-    def filter_onderwerp(self, onderwerp):
+    def filter_onderwerp(self, onderwerp: str):
         filter_str = 'Onderwerp eq ' + "'" + onderwerp.replace("'", "''") + "'"
         self.add_filter_str(filter_str)
 
-    def filter_titel(self, titel):
+    def filter_titel(self, titel: str):
         filter_str = 'Titel eq ' + "'" + titel.replace("'", "''") + "'"
         self.add_filter_str(filter_str)
 
@@ -150,6 +150,10 @@ class Document(tkapi.TKItem):
     @property
     def bestand_url(self):
         return self.get_resource_url_or_none()
+
+    @property
+    def actors(self):
+        return self.related_items(DocumentActor)
 
     @property
     def activiteiten(self):
@@ -216,6 +220,51 @@ class Document(tkapi.TKItem):
     @property
     def dossier_nummers(self):
         return [dossier.nummer for dossier in self.dossiers]
+
+
+class DocumentActorFilter(tkapi.Filter):
+
+    def filter_document_id(self, document_id):
+        self.add_filter_str('Document_Id eq {}'.format(document_id))
+
+
+class DocumentActor(tkapi.TKItem):
+    type = 'DocumentActor'
+
+    @staticmethod
+    def create_filter():
+        return DocumentFilter()
+
+    @property
+    def document(self) -> Document:
+        return self.related_items(Document)
+
+    @property
+    def naam(self):
+        return self.get_property_or_empty_string('ActorNaam')
+
+    @property
+    def naam_fractie(self):
+        return self.get_property_or_empty_string('ActorFractie')
+
+    @property
+    def functie(self):
+        return self.get_property_or_empty_string('Functie')
+
+    @property
+    def persoon(self):
+        from tkapi.persoon import Persoon
+        return self.related_item(Persoon)
+
+    @property
+    def fractie(self):
+        from tkapi.fractie import Fractie
+        return self.related_item(Fractie)
+
+    @property
+    def commissie(self):
+        from tkapi.commissie import Commissie
+        return self.related_item(Commissie)
 
 
 class VerslagAlgemeenOverleg(Document):

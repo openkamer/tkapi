@@ -6,6 +6,7 @@ from tkapi.besluit import Besluit
 from tkapi.commissie import Commissie
 from tkapi.dossier import Dossier
 from tkapi.document import Document
+from tkapi.document import DocumentActor
 from tkapi.document import VerslagAlgemeenOverleg
 from tkapi.stemming import Stemming
 from tkapi.vergadering import Vergadering
@@ -48,6 +49,9 @@ class TestMetaData(TKApiTestCase):
 
     def test_document(self):
         self.print_entity_first_example(Document)
+
+    def test_document_actor(self):
+        self.print_entity_first_example(DocumentActor)
 
     def test_kamervraag(self):
         self.print_entity_first_example(Kamervraag)

@@ -3,6 +3,7 @@ import datetime
 from tkapi.document import Document
 from tkapi.document import DocumentSoort
 from tkapi.document import VerslagAlgemeenOverleg
+from tkapi.document import DocumentActor
 
 from .core import TKApiTestCase
 
@@ -18,6 +19,16 @@ class TestSingleDocument(TKApiTestCase):
             print(agendapunt)
         for dossier in pd.dossiers:
             print(dossier)
+
+    def test_document_actors(self):
+        max_items = 10
+        docs = self.api.get_documenten(max_items=max_items)
+        self.assertEqual(max_items, len(docs))
+        for doc in docs:
+            for actor in doc.actors:
+                print(actor.naam)
+                print('persoon', actor.persoon)
+                print('fractie', actor.fractie)
 
 
 class TestDocumentResource(TKApiTestCase):
@@ -140,3 +151,22 @@ class TestVerslagAlgemeenOverleg(TKApiTestCase):
                 print(naam)
                 self.assertNotEqual('', naam)
                 self.assertNotEqual(None, naam)
+
+
+class TestDocumentActor(TKApiTestCase):
+
+    def test_get_item(self):
+        max_items = 1
+        actors = self.api.get_items(DocumentActor, max_items=max_items)
+        actor = actors[0]
+        print(actor.naam, actor.naam_fractie, actor.functie)
+        self.assertEqual(max_items, len(actors))
+
+    def test_get_items(self):
+        max_items = 10
+        actors = self.api.get_items(DocumentActor, max_items=max_items)
+        self.assertEqual(max_items, len(actors))
+        for actor in actors:
+            print(actor.naam, actor.naam_fractie)
+            print(actor.persoon.achternaam)
+            print(actor.fractie)
