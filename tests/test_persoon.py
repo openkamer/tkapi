@@ -132,6 +132,19 @@ class TestPersoonFilters(TKApiTestCase):
         personen = self.api.get_personen(filter=filter)
         self.assertEqual(2, len(personen))
 
+    def test_filter_name_non_unicode(self):
+        filter = Persoon.create_filter()
+        filter.filter_achternaam("Koşer Kaya")
+        personen = self.api.get_personen(filter=filter)
+        self.assertEqual(1, len(personen))
+
+    def test_filter_name_bijsterveldt(self):
+        filter = Persoon.create_filter()
+        filter.filter_achternaam("Bijsterveldt")
+        personen = self.api.get_personen(filter=filter)
+        self.assertEqual(1, len(personen))
+        print(personen[0].achternaam)
+
 
 class TestPersoonReis(TKApiTestCase):
 

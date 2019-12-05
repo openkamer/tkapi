@@ -1,3 +1,5 @@
+import urllib.parse
+
 import tkapi
 
 
@@ -8,7 +10,7 @@ class PersoonFilter(tkapi.Filter):
         self._filters.append(filter_str)
 
     def filter_achternaam(self, achternaam):
-        filter_str = 'Achternaam eq \'{}\''.format(achternaam)
+        filter_str = 'contains(Achternaam, \'{}\')'.format(achternaam)
         self.add_filter_str(filter_str)
 
     def filter_ids(self, ids):
@@ -118,6 +120,8 @@ class Persoon(tkapi.TKItem):
         pretty_print = ''
         if self.roepnaam:
             pretty_print = str(self.roepnaam) + ' '
+        if self.tussenvoegsel:
+            pretty_print += str(self.tussenvoegsel) + ' '
         pretty_print += str(self.achternaam) + ' '
         if self.initialen:
             pretty_print += '(' + str(self.initialen) + ')'
