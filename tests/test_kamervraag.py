@@ -2,7 +2,10 @@ import datetime
 
 from tkapi.kamervraag import Kamervraag
 from tkapi.document import Document
+from tkapi.document import DocumentSoort
 from tkapi.zaak import ZaakSoort
+from tkapi.util.document import get_kamervraag_overheidnl_url
+from tkapi.util.document import get_kamerantwoord_overheidnl_url
 
 from .core import TKApiTestCase
 
@@ -35,6 +38,21 @@ class TestKamervragen(TKApiTestCase):
                 kamervragen_no_zaak.append(kamervraag)
         print('kamervragen without zaak: ' + str(len(kamervragen_no_zaak)))
         self.assertEqual(0, len(kamervragen_no_zaak))
+
+    def test_get_kamervraag_antwoord(self):
+        begin_datetime = datetime.datetime(year=2015, month=1, day=1)
+        end_datetime = datetime.datetime(year=2015, month=1, day=5)
+        kv_filter = Document.create_filter()
+        kv_filter.filter_date_range(begin_datetime, end_datetime)
+        kamervragen = self.api.get_kamervragen(kv_filter)
+        for kamervraag in kamervragen:
+            self.assertEqual(DocumentSoort.ANTWOORD_SCHRIFTELIJKE_VRAGEN, kamervraag.antwoord.soort)
+            if kamervraag.mededeling_uitstel:
+                self.assertEqual(DocumentSoort.MEDEDELING_UITSTEL_ANTWOORD, kamervraag.mededeling_uitstel.soort)
+        content_html_url = get_kamervraag_overheidnl_url(kamervragen[0])
+        self.assertTrue(content_html_url)
+        content_html_url = get_kamerantwoord_overheidnl_url(kamervragen[0].antwoord)
+        self.assertTrue(content_html_url)
 
 
 class TestKamervraagItem(TKApiTestCase):
