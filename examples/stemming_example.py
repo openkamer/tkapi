@@ -1,8 +1,4 @@
-import tkapi
-
 from tkapi.util import queries
-
-api = tkapi.Api(verbose=False)
 
 
 def example_stemming():

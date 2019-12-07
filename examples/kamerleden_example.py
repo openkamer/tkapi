@@ -2,7 +2,7 @@ import tkapi
 from tkapi.util import queries
 
 
-api = tkapi.Api(verbose=False)
+api = tkapi.Api()
 
 
 def example_kamerleden_actief():

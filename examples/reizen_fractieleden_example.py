@@ -1,7 +1,4 @@
-import tkapi
 from tkapi.util import queries
-
-api = tkapi.Api(verbose=False)
 
 
 def example_reizen_fractieleden_actief():
@@ -9,8 +6,7 @@ def example_reizen_fractieleden_actief():
     for lid in leden_actief:
         persoon = lid.persoon
         print('{} ({})'.format(persoon, lid.fractie.afkorting))
-        reizen = lid.persoon.reizen
-        for reis in reizen:
+        for reis in lid.persoon.reizen:
             print('\t', reis.bestemming, '|', reis.doel, '|', reis.van)
 
 

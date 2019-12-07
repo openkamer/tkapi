@@ -5,8 +5,6 @@ import tkapi
 from tkapi.util import queries
 from tkapi.persoon import PersoonNevenfunctie
 
-api = tkapi.Api(verbose=False)
-
 
 def example_kamerleden_nevenfuncties():
     print('BEGIN')
