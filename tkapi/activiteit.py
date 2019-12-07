@@ -1,6 +1,10 @@
 from enum import Enum
+from typing import List
 
-import tkapi
+from tkapi.core import TKItem
+from tkapi.filter import SoortFilter
+from tkapi.filter import ZaakRelationFilter
+from tkapi.zaak import Zaak
 
 
 class ActiviteitSoort(Enum):
@@ -58,13 +62,13 @@ class DatumSoort(Enum):
     WEEKNUMMER = 'Weeknummer'
 
 
-class ActiviteitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
+class ActiviteitFilter(SoortFilter, ZaakRelationFilter):
 
     def __init__(self):
         super().__init__()
 
 
-class Activiteit(tkapi.TKItem):
+class Activiteit(TKItem):
     type = 'Activiteit'
 
     @staticmethod
@@ -85,8 +89,7 @@ class Activiteit(tkapi.TKItem):
         return self.related_items(Document)
 
     @property
-    def zaken(self):
-        from tkapi.zaak import Zaak
+    def zaken(self) -> List[Zaak]:
         return self.related_items(Zaak)
 
     @property

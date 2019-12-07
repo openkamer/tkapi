@@ -1,9 +1,8 @@
-import urllib.parse
+from tkapi.core import TKItem
+from tkapi.filter import Filter
 
-import tkapi
 
-
-class PersoonFilter(tkapi.Filter):
+class PersoonFilter(Filter):
 
     def filter_has_fractiezetel(self):
         filter_str = 'FractieZetelPersoon/any(z:z ne null)'
@@ -18,7 +17,7 @@ class PersoonFilter(tkapi.Filter):
         self.add_filter_str(filter_str)
 
 
-class Persoon(tkapi.TKItem):
+class Persoon(TKItem):
     type = 'Persoon'
     orderby_param = 'Achternaam'
     filter_param = 'Achternaam ne null'
@@ -128,7 +127,7 @@ class Persoon(tkapi.TKItem):
         return pretty_print
 
 
-class PersoonEntityFilter(tkapi.Filter):
+class PersoonEntityFilter(Filter):
 
     def filter_ids(self, persoon_ids):
         assert len(persoon_ids) <= 25, 'too many ids to filter for, filter params is too long'
@@ -136,7 +135,7 @@ class PersoonEntityFilter(tkapi.Filter):
         self.add_filter_str(filter_str)
 
 
-class PersoonEntity(tkapi.TKItem):
+class PersoonEntity(TKItem):
     expand_params = ['Persoon']
 
     @staticmethod
@@ -312,7 +311,7 @@ class PersoonNevenfunctie(PersoonEntity):
         return self.get_property_or_empty_string('VergoedingToelichting')
 
 
-class PersoonNevenfunctieInkomsten(tkapi.TKItem):
+class PersoonNevenfunctieInkomsten(TKItem):
     type = 'PersoonNevenfunctieInkomsten'
 
     @property

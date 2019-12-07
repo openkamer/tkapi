@@ -1,6 +1,8 @@
 from enum import Enum
 
-import tkapi
+from tkapi.core import TKItem
+from tkapi.filter import Filter
+from tkapi.filter import SoortFilter
 
 
 class CommissieFunctie(Enum):
@@ -13,14 +15,14 @@ class CommissieFunctie(Enum):
     EERSTE_ONDERVOORZITTER_TK = 'Eerste ondervoorzitter Tweede Kamer'
 
 
-class CommissieFilter(tkapi.SoortFilter):
+class CommissieFilter(SoortFilter):
 
     def filter_naam(self, naam):
         filter_str = "NaamNL eq " + "'" + naam.replace("'", "''") + "'"
         self._filters.append(filter_str)
 
 
-class CommissieZetelFilter(tkapi.Filter):
+class CommissieZetelFilter(Filter):
 
     def filter_commissie(self, commissie):
         filter_str = "Commissie_Id eq {}".format(commissie.id)
@@ -32,7 +34,7 @@ class CommissieZetelFilter(tkapi.Filter):
         self._filters.append(filter_str)
 
 
-class CommissieZetelPersoonFilter(tkapi.Filter):
+class CommissieZetelPersoonFilter(Filter):
 
     def filter_active(self):
         filter_str = "{} eq null".format(CommissieZetelPersoon.end_date_key())
@@ -47,7 +49,7 @@ class CommissieZetelPersoonFilter(tkapi.Filter):
         self._filters.append(filter_str)
 
 
-class Commissie(tkapi.TKItem):
+class Commissie(TKItem):
     type = 'Commissie'
 
     @staticmethod
@@ -90,7 +92,7 @@ class VoortouwCommissie(Commissie):
     type = 'Voortouwcommissie'
 
 
-class CommissieZetel(tkapi.TKItem):
+class CommissieZetel(TKItem):
     type = 'CommissieZetel'
 
     @staticmethod
@@ -103,7 +105,7 @@ class CommissieZetel(tkapi.TKItem):
 
     @property
     def personen_vast_active(self):
-        filter = tkapi.Filter()
+        filter = Filter()
         filter.add_filter_str('{} eq null'.format(CommissieZetelPersoon.end_date_key()))
         return self.related_items(CommissieZetelVastPersoon, filter=filter)
 
@@ -113,7 +115,7 @@ class CommissieZetel(tkapi.TKItem):
 
     @property
     def personen_vervangend_active(self):
-        filter = tkapi.Filter()
+        filter = Filter()
         filter.add_filter_str('{} eq null'.format(CommissieZetelPersoon.end_date_key()))
         return self.related_items(CommissieZetelVervangerPersoon, filter=filter)
 
@@ -122,7 +124,7 @@ class CommissieZetel(tkapi.TKItem):
         return self.related_item(Commissie)
 
 
-class CommissieZetelPersoon(tkapi.TKItem):
+class CommissieZetelPersoon(TKItem):
     expand_params = ['Persoon']
 
     @staticmethod

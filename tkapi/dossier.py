@@ -1,8 +1,12 @@
-import tkapi
+from typing import List
+
+from tkapi.core import TKItem
+from tkapi.filter import ZaakRelationFilter
+from tkapi.zaak import Zaak
 from tkapi.zaak import ZaakSoort
 
 
-class DossierFilter(tkapi.ZaakRelationFilter):
+class DossierFilter(ZaakRelationFilter):
 
     def filter_nummer(self, nummer):
         filter_str = "Nummer eq {}".format(nummer)
@@ -22,7 +26,7 @@ class DossierFilter(tkapi.ZaakRelationFilter):
         self._filters.append(filter_str)
 
 
-class Dossier(tkapi.TKItem):
+class Dossier(TKItem):
     type = 'Kamerstukdossier'
 
     @staticmethod
@@ -30,8 +34,7 @@ class Dossier(tkapi.TKItem):
         return DossierFilter()
 
     @property
-    def zaken(self):
-        from tkapi.zaak import Zaak
+    def zaken(self) -> List[Zaak]:
         return self.related_items(Zaak)
 
     @property

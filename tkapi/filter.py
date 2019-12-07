@@ -70,21 +70,6 @@ class RelationsFilter(Filter):
         self._filters.append(filter_str)
 
 
-class RelationFilter(Filter):
-
-    @property
-    def related_url(self):
-        raise NotImplementedError
-
-    def filter_non_empty(self):
-        filter_str = self.related_url + ' ne null'
-        self._filters.append(filter_str)
-
-    def filter_empty(self):
-        filter_str = self.related_url + 'eq null'
-        self._filters.append(filter_str)
-
-
 class ZaakRelationFilter(RelationsFilter):
 
     @property

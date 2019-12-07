@@ -79,22 +79,22 @@ class TKItem:
             return str(self.json[property_key]).strip()
         return ''
 
-    def get_date_from_datetime_or_none(self, property_key) -> datetime.date:
+    def get_date_from_datetime_or_none(self, property_key) -> datetime.date or None:
         if property_key in self.json and self.json[property_key]:
             return util.odatedatetime_to_datetime(self.json[property_key]).date()
         return None
 
-    def get_date_or_none(self, property_key) -> datetime.date:
+    def get_date_or_none(self, property_key) -> datetime.date or None:
         if property_key in self.json and self.json[property_key]:
             return util.odatedate_to_date(self.json[property_key]).date()
         return None
 
-    def get_year_or_none(self, property_key) -> datetime.date:
+    def get_year_or_none(self, property_key) -> datetime.date or None:
         if property_key in self.json and self.json[property_key]:
             return util.odateyear_to_date(self.json[property_key]).date()
         return None
 
-    def get_datetime_or_none(self, property_key) -> datetime.datetime:
+    def get_datetime_or_none(self, property_key) -> datetime.datetime or None:
         if property_key in self.json and self.json[property_key]:
             return util.odatedatetime_to_datetime(self.json[property_key])
         return None

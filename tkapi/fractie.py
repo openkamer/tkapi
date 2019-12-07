@@ -1,7 +1,8 @@
-import tkapi
+from tkapi.core import TKItem
+from tkapi.filter import Filter
 
 
-class Fractie(tkapi.TKItem):
+class Fractie(TKItem):
     type = 'Fractie'
 
     @staticmethod
@@ -68,7 +69,7 @@ class Fractie(tkapi.TKItem):
         return '{} ({}) ({} zetels)'.format(self.naam, self.afkorting, self.zetels_aantal)
 
 
-class Lid(tkapi.TKItem):
+class Lid(TKItem):
     type = 'Lid'
     expand_params = ['Persoon']
 
@@ -102,14 +103,14 @@ class Lid(tkapi.TKItem):
         return 'TotEnMet'
 
 
-class LidFilter(tkapi.Filter):
+class LidFilter(Filter):
 
     def filter_actief(self):
         self._filters.append("TotEnMet eq null")
         self._filters.append("Verwijderd eq false")
 
 
-class FractieFilter(tkapi.Filter):
+class FractieFilter(Filter):
 
     def filter_fractie(self, naam):
         self._filters.append("NaamNL eq '{}'".format(naam))
@@ -135,7 +136,7 @@ class FractieZetelPersoonFilter(LidFilter):
         self._filters.append("Verwijderd eq false")
 
 
-class FractieZetelFilter(tkapi.Filter):
+class FractieZetelFilter(Filter):
 
     def filter_fractie(self, naam):
         self._filters.append("Fractie/NaamNL eq '{}'".format(naam))
@@ -144,7 +145,7 @@ class FractieZetelFilter(tkapi.Filter):
         self._filters.append("Fractie/Id eq {}".format(uid))
 
 
-class FractieZetel(tkapi.TKItem):
+class FractieZetel(TKItem):
     type = 'FractieZetel'
 
     @staticmethod

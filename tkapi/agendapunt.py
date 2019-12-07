@@ -1,14 +1,17 @@
-import tkapi
+from tkapi.core import TKItem
+from tkapi.filter import RelationsFilter
+from tkapi.filter import SoortFilter
+from tkapi.filter import ZaakRelationFilter
 
 
-class AgendapuntRelationFilter(tkapi.RelationsFilter):
+class AgendapuntRelationFilter(RelationsFilter):
 
     @property
     def related_url(self):
         return Agendapunt.type
 
 
-class AgendapuntFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
+class AgendapuntFilter(SoortFilter, ZaakRelationFilter):
 
     def __init__(self):
         super().__init__()
@@ -18,7 +21,7 @@ class AgendapuntFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
         self._filters.append(filter_str)
 
 
-class Agendapunt(tkapi.TKItem):
+class Agendapunt(TKItem):
     type = 'Agendapunt'
     expand_params = ['Activiteit', 'Besluit', 'Document']
 

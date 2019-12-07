@@ -1,6 +1,9 @@
 from enum import Enum
 
-import tkapi
+from tkapi.core import TKItem
+from tkapi.filter import SoortFilter
+from tkapi.filter import RelationsFilter
+from tkapi.filter import ZaakRelationFilter
 
 
 class BesluitStatus(Enum):
@@ -10,20 +13,20 @@ class BesluitStatus(Enum):
     TE_VERWERKEN = 'Nog te verwerken besluit'
 
 
-class BesluitRelationFilter(tkapi.RelationsFilter):
+class BesluitRelationFilter(RelationsFilter):
 
     @property
     def related_url(self):
         return Besluit.type
 
 
-class BesluitFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
+class BesluitFilter(SoortFilter, ZaakRelationFilter):
 
     def __init__(self):
         super().__init__()
 
 
-class Besluit(tkapi.TKItem):
+class Besluit(TKItem):
     type = 'Besluit'
     expand_params = ['Stemming']
 

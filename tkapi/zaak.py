@@ -1,6 +1,8 @@
 from enum import Enum
 
-import tkapi
+from tkapi.core import TKItem
+from tkapi.filter import Filter
+from tkapi.filter import SoortFilter
 from tkapi.util import util
 
 
@@ -52,7 +54,7 @@ class KabinetsAppreciatie(Enum):
     NOG_TE_ONTVANGEN = 'Nog te ontvangen'
 
 
-class ZaakFilter(tkapi.SoortFilter):
+class ZaakFilter(SoortFilter):
 
     def filter_date_range(self, start_datetime, end_datetime):
         filter_str = "GestartOp ge " + util.datetime_to_odata(start_datetime)
@@ -119,7 +121,7 @@ class ZaakFilter(tkapi.SoortFilter):
         self._filters.append(filter_str)
 
 
-class Zaak(tkapi.TKItem):
+class Zaak(TKItem):
     type = 'Zaak'
     orderby_param = 'GestartOp'
 
@@ -127,7 +129,7 @@ class Zaak(tkapi.TKItem):
         return 'Zaak: ' + str(self.nummer) + ', soort: ' + self.soort.value + ', onderwerp: ' + self.onderwerp + ', afgedaan: ' + str(self.afgedaan)
 
     @staticmethod
-    def create_filter():
+    def create_filter() -> ZaakFilter:
         return ZaakFilter()
 
     @property
@@ -200,11 +202,11 @@ class Zaak(tkapi.TKItem):
         return 'GestartOp'
 
 
-class ZaakActorFilter(tkapi.Filter):
+class ZaakActorFilter(Filter):
     pass
 
 
-class ZaakActor(tkapi.TKItem):
+class ZaakActor(TKItem):
     type = 'ZaakActor'
 
     @staticmethod
@@ -233,7 +235,7 @@ class ZaakActor(tkapi.TKItem):
         return self.related_item(Persoon)
 
     @property
-    def zaak(self):
+    def zaak(self) -> Zaak:
         return self.related_item(Zaak)
 
     @property

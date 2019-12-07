@@ -1,6 +1,7 @@
 from enum import Enum
 
-import tkapi
+from tkapi.core import TKItem
+from tkapi.filter import SoortFilter
 
 
 class VerslagStatus(Enum):
@@ -16,7 +17,7 @@ class VerslagSoort(Enum):
     VOORPUBLICATIE = 'Voorpublicatie'
 
 
-class VerslagFilter(tkapi.SoortFilter):
+class VerslagFilter(SoortFilter):
 
     def __init__(self):
         super().__init__()
@@ -25,7 +26,7 @@ class VerslagFilter(tkapi.SoortFilter):
         self.filter_property(property_name='Status', value=status)
 
 
-class Verslag(tkapi.TKItem):
+class Verslag(TKItem):
     type = 'Verslag'
     expand_params = ['Vergadering']
 
@@ -39,9 +40,9 @@ class Verslag(tkapi.TKItem):
         return self.related_item(Vergadering)
 
     @property
-    def soort(self):
+    def soort(self) -> VerslagSoort:
         return self.get_property_enum_or_none('Soort', VerslagSoort)
 
     @property
-    def status(self):
+    def status(self) -> VerslagStatus:
         return self.get_property_enum_or_none('Status', VerslagStatus)

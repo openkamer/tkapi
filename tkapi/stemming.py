@@ -1,7 +1,8 @@
-import tkapi
+from tkapi.core import TKItem
+from tkapi.filter import ZaakRelationFilter
 
 
-class StemmingFilter(tkapi.ZaakRelationFilter):
+class StemmingFilter(ZaakRelationFilter):
 
     @property
     def zaak_related_url(self):
@@ -24,7 +25,7 @@ class StemmingFilter(tkapi.ZaakRelationFilter):
         self._filters.append(filter_str)
 
 
-class Stemming(tkapi.TKItem):
+class Stemming(TKItem):
     type = 'Stemming'
 
     @staticmethod

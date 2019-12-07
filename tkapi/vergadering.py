@@ -1,6 +1,7 @@
 from enum import Enum
 
-import tkapi
+from tkapi.core import TKItem
+from tkapi.filter import SoortFilter
 from tkapi.util import util
 
 
@@ -9,7 +10,7 @@ class VergaderingSoort(Enum):
     PLENAIR = 'Plenair'
 
 
-class VergaderingFilter(tkapi.SoortFilter):
+class VergaderingFilter(SoortFilter):
 
     def __init__(self):
         super().__init__()
@@ -21,7 +22,7 @@ class VergaderingFilter(tkapi.SoortFilter):
         self._filters.append(filter_str)
 
 
-class Vergadering(tkapi.TKItem):
+class Vergadering(TKItem):
     type = 'Vergadering'
     expand_params = ['Verslag']
 
@@ -35,7 +36,7 @@ class Vergadering(tkapi.TKItem):
         return self.related_item(Verslag)
 
     @property
-    def soort(self):
+    def soort(self) -> VergaderingSoort:
         return self.get_property_enum_or_none('Soort', VergaderingSoort)
 
     @property

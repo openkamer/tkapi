@@ -1,7 +1,10 @@
 from enum import Enum
 import requests
 
-import tkapi
+from tkapi.core import TKItem
+from tkapi.filter import Filter
+from tkapi.filter import SoortFilter
+from tkapi.filter import ZaakRelationFilter
 from tkapi.util import util
 
 
@@ -103,7 +106,7 @@ class DocumentSoort(Enum):
     WIJZIGINGEN_VOORGESTELD_DOOR_DE_REGERING = 'Wijzigingen voorgesteld door de regering'
 
 
-class DocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
+class DocumentFilter(SoortFilter, ZaakRelationFilter):
 
     def filter_date_range(self, start_datetime, end_datetime):
         filter_str = "Datum ge " + util.datetime_to_odata(start_datetime)
@@ -135,7 +138,7 @@ class DocumentFilter(tkapi.SoortFilter, tkapi.ZaakRelationFilter):
             self.add_filter_str(filter_str)
 
 
-class Document(tkapi.TKItem):
+class Document(TKItem):
     type = 'Document'
     orderby_param = 'Datum'
 
@@ -222,13 +225,13 @@ class Document(tkapi.TKItem):
         return [dossier.nummer for dossier in self.dossiers]
 
 
-class DocumentActorFilter(tkapi.Filter):
+class DocumentActorFilter(Filter):
 
     def filter_document_id(self, document_id):
         self.add_filter_str('Document_Id eq {}'.format(document_id))
 
 
-class DocumentActor(tkapi.TKItem):
+class DocumentActor(TKItem):
     type = 'DocumentActor'
 
     @staticmethod
