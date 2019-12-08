@@ -4,8 +4,7 @@ from tkapi.kamervraag import Kamervraag
 from tkapi.document import Document
 from tkapi.document import DocumentSoort
 from tkapi.zaak import ZaakSoort
-from tkapi.util.document import get_kamervraag_overheidnl_url
-from tkapi.util.document import get_kamerantwoord_overheidnl_url
+from tkapi.util.document import get_overheidnl_url
 
 from .core import TKApiTestCase
 
@@ -49,9 +48,9 @@ class TestKamervragen(TKApiTestCase):
             self.assertEqual(DocumentSoort.ANTWOORD_SCHRIFTELIJKE_VRAGEN, kamervraag.antwoord.soort)
             if kamervraag.mededeling_uitstel:
                 self.assertEqual(DocumentSoort.MEDEDELING_UITSTEL_ANTWOORD, kamervraag.mededeling_uitstel.soort)
-        content_html_url = get_kamervraag_overheidnl_url(kamervragen[0])
+        content_html_url = get_overheidnl_url(kamervragen[0])
         self.assertTrue(content_html_url)
-        content_html_url = get_kamerantwoord_overheidnl_url(kamervragen[0].antwoord)
+        content_html_url = get_overheidnl_url(kamervragen[0].antwoord)
         self.assertTrue(content_html_url)
 
 

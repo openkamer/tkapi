@@ -293,6 +293,6 @@ class VerslagAlgemeenOverleg(Document):
         dossier_nr += '-' + str(self.volgnummer)
         url = 'https://zoek.officielebekendmakingen.nl/kst-' + dossier_nr
         response = requests.get(url, timeout=60)
-        if response.status_code != 200 or'404: Pagina niet gevonden' in response.text:
+        if response.status_code != 200 or '404: Pagina niet gevonden' in response.text:
             return ''
         return url
