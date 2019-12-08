@@ -130,6 +130,26 @@ class DocumentFilter(SoortFilter, ZaakRelationFilter):
         filter_str = 'Titel eq ' + "'" + titel.replace("'", "''") + "'"
         self.add_filter_str(filter_str)
 
+    def filter_aanhangselnummer(self, aanhangselnummer):
+        filter_str = "Aanhangselnummer eq '{}'".format(aanhangselnummer)
+        self.add_filter_str(filter_str)
+
+    def filter_nummer(self, documentnummer):
+        filter_str = "DocumentNummer eq '{}'".format(documentnummer)
+        self.add_filter_str(filter_str)
+
+    def filter_volgnummer(self, volgnummer):
+        filter_str = 'Volgnummer eq {}'.format(volgnummer)
+        self.add_filter_str(filter_str)
+
+    def filter_alias(self, alias):
+        filter_str = "Alias eq '{}'".format(alias)
+        self.add_filter_str(filter_str)
+
+    def filter_vergaderjaar(self, vergaderjaar):
+        filter_str = "Vergaderjaar eq '{}'".format(vergaderjaar)
+        self.add_filter_str(filter_str)
+
     def filter_dossier(self, nummer, toevoeging=None):
         filter_str = "Kamerstukdossier/any(d: d/Nummer eq {})".format(nummer)
         self.add_filter_str(filter_str)
@@ -198,7 +218,7 @@ class Document(TKItem):
 
     @property
     def volgnummer(self):
-        return self.get_property_or_empty_string('Volgnummer')
+        return self.get_property_or_none('Volgnummer')
 
     @property
     def soort(self):

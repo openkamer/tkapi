@@ -96,6 +96,50 @@ class TestDocumentFilter(TKApiTestCase):
         print(len(pds))
         self.assertEqual(4, len(pds))
 
+    def test_filter_aanghangselnummer(self):
+        aanhangselnummer = '171800824'
+        filter = Document.create_filter()
+        filter.filter_aanhangselnummer(aanhangselnummer)
+        docs = self.api.get_documenten(filter=filter, max_items=10)
+        self.assertEqual(1, len(docs))
+        self.assertEqual(aanhangselnummer, docs[0].aanhangselnummer)
+
+    def test_filter_nummer(self):
+        documentnummer = '2017D38932'
+        filter = Document.create_filter()
+        filter.filter_nummer(documentnummer)
+        docs = self.api.get_documenten(filter=filter, max_items=10)
+        self.assertEqual(1, len(docs))
+        self.assertEqual(documentnummer, docs[0].nummer)
+
+    def test_filter_alias(self):
+        alias = '2060719420'
+        filter = Document.create_filter()
+        filter.filter_alias(alias)
+        docs = self.api.get_documenten(filter=filter, max_items=10)
+        self.assertEqual(1, len(docs))
+        self.assertEqual(alias, docs[0].alias)
+
+    def test_filter_vergaderjaar(self):
+        vergaderjaar = '2006-2007'
+        filter = Document.create_filter()
+        filter.filter_vergaderjaar(vergaderjaar)
+        max_items = 10
+        docs = self.api.get_documenten(filter=filter, max_items=max_items)
+        self.assertEqual(max_items, len(docs))
+        for doc in docs:
+            self.assertEqual(vergaderjaar, doc.vergaderjaar)
+
+    def test_filter_volgnummer(self):
+        volgnummer = -1
+        filter = Document.create_filter()
+        filter.filter_volgnummer(volgnummer)
+        max_items = 10
+        docs = self.api.get_documenten(filter=filter, max_items=max_items)
+        self.assertEqual(max_items, len(docs))
+        for doc in docs:
+            self.assertEqual(volgnummer, doc.volgnummer)
+
 
 class TestDocumentSoorten(TKApiTestCase):
 
