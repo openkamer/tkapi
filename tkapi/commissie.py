@@ -61,6 +61,10 @@ class Commissie(TKItem):
         return self.related_items(CommissieZetel)
 
     @property
+    def contact_informaties(self):
+        return self.related_items(CommissieContactinformatie)
+
+    @property
     def afkorting(self):
         return self.get_property_or_empty_string('Afkorting')
 
@@ -90,6 +94,26 @@ class Commissie(TKItem):
 
 class VoortouwCommissie(Commissie):
     type = 'Voortouwcommissie'
+
+
+class CommissieContactinformatie(TKItem):
+    type = 'CommissieContactinformatie'
+
+    @staticmethod
+    def create_filter():
+        return Filter()
+
+    @property
+    def commissie(self):
+        return self.related_item(Commissie)
+
+    @property
+    def soort(self):
+        return self.get_property_or_empty_string('Soort')
+
+    @property
+    def waarde(self):
+        return self.get_property_or_empty_string('Waarde')
 
 
 class CommissieZetel(TKItem):

@@ -5,6 +5,7 @@ from tkapi.commissie import CommissieZetelVervangerPersoon
 from tkapi.commissie import CommissieFunctie
 from tkapi.commissie import CommissieZetelVastVacature
 from tkapi.commissie import CommissieZetelVervangerVacature
+from tkapi.commissie import CommissieContactinformatie
 from tkapi.info import get_commissie_namen
 from tkapi.info import get_commissie_soorten
 
@@ -242,3 +243,16 @@ class TestCommissieZetelVervangerVacature(TKApiTestCase):
             self.assertIsNotNone(vac.fractie)
             self.assertIsNotNone(vac.zetel)
             self.assertTrue(vac.van)
+
+
+class TestCommissieContactinformatie(TKApiTestCase):
+
+    def test_get_items(self):
+        max_items = 5
+        infos = self.api.get_items(CommissieContactinformatie, max_items=max_items)
+        self.assertEqual(max_items, len(infos))
+        for info in infos:
+            self.assertIsNotNone(info.commissie)
+            self.assertTrue(info.soort)
+            self.assertTrue(info.waarde)
+            print(info.commissie.naam, info.soort, info.waarde)
