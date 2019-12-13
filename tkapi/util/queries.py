@@ -1,7 +1,7 @@
 import multiprocessing as mp
 from typing import List
 
-from tkapi import Api
+from tkapi import TKApi
 from tkapi.agendapunt import Agendapunt
 from tkapi.activiteit import Activiteit
 from tkapi.document import Document
@@ -27,7 +27,7 @@ def filter_duplicates(items):
 def get_fractieleden_actief():
     filter = Fractie.create_filter()
     filter.filter_actief()
-    fracties_actief = Api().get_fracties(filter=filter)
+    fracties_actief = TKApi().get_fracties(filter=filter)
     leden_actief = []
     for fractie in fracties_actief:
         leden_actief += fractie.leden_actief
@@ -57,7 +57,7 @@ def get_dossier(nummer, toevoeging=None):
     filter.filter_nummer(nummer)
     if toevoeging:
         filter.filter_toevoeging(toevoeging)
-    dossiers = Api().get_dossiers(filter=filter)
+    dossiers = TKApi().get_dossiers(filter=filter)
     dossier = dossiers[0]
     return dossier
 
@@ -65,27 +65,27 @@ def get_dossier(nummer, toevoeging=None):
 def get_dossier_zaken(nummer, toevoeging=None) -> List[Zaak]:
     zaak_filter = Zaak.create_filter()
     zaak_filter.filter_kamerstukdossier(nummer=nummer, toevoeging=toevoeging)
-    return Api().get_zaken(filter=zaak_filter)
+    return TKApi().get_zaken(filter=zaak_filter)
 
 
 def get_dossier_documenten(nummer, toevoeging=None) -> List[Document]:
     document_filter = Document.create_filter()
     document_filter.filter_dossier(nummer, toevoeging=toevoeging)
-    return Api().get_documenten(document_filter)
+    return TKApi().get_documenten(document_filter)
 
 
 def get_dossier_documenten_with_activiteit(nummer, toevoeging=None) -> List[Document]:
     document_filter = Document.create_filter()
     document_filter.filter_dossier(nummer, toevoeging=toevoeging)
     document_filter.filter_has_activiteit()
-    return Api().get_documenten(document_filter)
+    return TKApi().get_documenten(document_filter)
 
 
 def get_kamerstuk_zaken(nummer, volgnummer, toevoeging=None) -> List[Zaak]:
     zaak_filter = Zaak.create_filter()
     zaak_filter.filter_kamerstukdossier(nummer, toevoeging=toevoeging)
     zaak_filter.filter_document(volgnummer)
-    return Api().get_zaken(zaak_filter)
+    return TKApi().get_zaken(zaak_filter)
 
 
 def get_dossier_besluiten(nummer, toevoeging=None) -> List[Besluit]:
@@ -103,7 +103,7 @@ def get_dossier_besluiten_with_stemmingen(nummer, toevoeging=None) -> List[Beslu
         filter = Besluit.create_filter()
         filter.filter_zaak(zaak.nummer)
         filter.filter_non_empty(Stemming)
-        besluiten += Api().get_besluiten(filter=filter)
+        besluiten += TKApi().get_besluiten(filter=filter)
     return filter_duplicates(besluiten)
 
 
@@ -119,14 +119,14 @@ def get_dossier_zaken_with_activiteit(nummer, toevoeging=None) -> List[Zaak]:
     zaak_filter = Zaak.create_filter()
     zaak_filter.filter_has_activiteit()
     zaak_filter.filter_kamerstukdossier(nummer=nummer, toevoeging=toevoeging)
-    return Api().get_zaken(filter=zaak_filter)
+    return TKApi().get_zaken(filter=zaak_filter)
 
 
 def get_dossier_zaken_with_agendapunt(nummer, toevoeging=None) -> List[Zaak]:
     zaak_filter = Zaak.create_filter()
     zaak_filter.filter_has_agendapunt()
     zaak_filter.filter_kamerstukdossier(nummer=nummer, toevoeging=toevoeging)
-    return Api().get_zaken(filter=zaak_filter)
+    return TKApi().get_zaken(filter=zaak_filter)
 
 
 def get_kamerstuk_activiteiten(nummer, volgnummer, toevoeging=None, include_agendapunten=False) -> List[Activiteit]:

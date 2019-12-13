@@ -22,7 +22,7 @@ A simple first example,
 ```python
 import tkapi
 
-api = tkapi.Api()
+api = tkapi.TKApi()
 personen = api.get_personen(max_items=100)
 for persoon in personen:
     print(persoon.achternaam)

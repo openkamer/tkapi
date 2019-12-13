@@ -1,9 +1,8 @@
 from typing import List
 
 from tkapi.core import TKItem
+from tkapi.document import Document
 from tkapi.filter import ZaakRelationFilter
-from tkapi.zaak import Zaak
-from tkapi.zaak import ZaakSoort
 
 
 class DossierFilter(ZaakRelationFilter):
@@ -34,12 +33,12 @@ class Dossier(TKItem):
         return DossierFilter()
 
     @property
-    def zaken(self) -> List[Zaak]:
+    def zaken(self):
+        from tkapi.zaak import Zaak
         return self.related_items(Zaak)
 
     @property
-    def documenten(self):
-        from tkapi.document import Document
+    def documenten(self) -> List[Document]:
         return self.related_items(Document)
 
     @property
@@ -64,5 +63,6 @@ class Dossier(TKItem):
 
 
 class DossierWetsvoorstel(Dossier):
+    from tkapi.zaak import ZaakSoort
     filter_param = 'Zaak/any(z:z/Soort eq \'{}\') or Zaak/any(z:z/Soort eq \'{}\') or Zaak/any(z:z/Soort eq \'{}\')'\
         .format(ZaakSoort.WETGEVING.value, ZaakSoort.INITIATIEF_WETGEVING.value, ZaakSoort.BEGROTING.value)

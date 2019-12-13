@@ -1,6 +1,9 @@
 from tkapi.core import TKItem
 from tkapi.filter import ZaakRelationFilter
 
+from tkapi.persoon import Persoon
+from tkapi.fractie import Fractie
+
 
 class StemmingFilter(ZaakRelationFilter):
 
@@ -38,13 +41,11 @@ class Stemming(TKItem):
         return self.related_item(Besluit)
 
     @property
-    def fractie(self):
-        from tkapi.fractie import Fractie
+    def fractie(self) -> Fractie:
         return self.related_item(Fractie)
 
     @property
-    def persoon(self):
-        from tkapi.persoon import Persoon
+    def persoon(self) -> Persoon:
         return self.related_item(Persoon)
 
     @property

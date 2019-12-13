@@ -2,6 +2,7 @@ from enum import Enum
 
 from tkapi.core import TKItem
 from tkapi.filter import Filter
+from tkapi.persoon import Persoon
 
 
 class Fractie(TKItem):
@@ -57,7 +58,7 @@ class Fractie(TKItem):
 
     @property
     def organisatie(self):
-        return self.related_item('Organisatie')
+        return self.get_property_or_empty_string('Organisatie')
 
     @staticmethod
     def begin_date_key():
@@ -80,8 +81,7 @@ class Lid(TKItem):
         return LidFilter()
 
     @property
-    def persoon(self):
-        from tkapi.persoon import Persoon
+    def persoon(self) -> Persoon:
         return self.related_item(Persoon)
 
     @property

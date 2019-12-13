@@ -29,6 +29,6 @@ def odateyear_to_date(odate_date):
 
 
 def create_api(verbose=False):
-    from tkapi.api import Api
-    return Api(verbose=verbose)
+    from tkapi.tkapi import TKApi
+    return TKApi(verbose=verbose)
 

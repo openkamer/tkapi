@@ -3,6 +3,8 @@ from enum import Enum
 from tkapi.core import TKItem
 from tkapi.filter import Filter
 from tkapi.filter import SoortFilter
+from tkapi.persoon import Persoon
+from tkapi.fractie import Fractie
 
 
 class CommissieFunctie(Enum):
@@ -168,12 +170,11 @@ class CommissieZetelPersoon(TKItem):
         return CommissieZetelPersoonFilter()
 
     @property
-    def persoon(self):
-        from tkapi.persoon import Persoon
+    def persoon(self) -> Persoon:
         return self.related_item(Persoon)
 
     @property
-    def zetel(self):
+    def zetel(self) -> CommissieZetel:
         return self.related_item(CommissieZetel)
 
     @property
@@ -213,16 +214,15 @@ class CommissieZetelVastVacature(TKItem):
         return Filter()
 
     @property
-    def functie(self):
+    def functie(self) -> CommissieFunctie:
         return self.get_property_enum_or_none('Functie', CommissieFunctie)
 
     @property
-    def zetel(self):
+    def zetel(self) -> CommissieZetel:
         return self.related_item(CommissieZetel)
 
     @property
-    def fractie(self):
-        from tkapi.fractie import Fractie
+    def fractie(self) -> Fractie:
         return self.related_item(Fractie)
 
     @property

@@ -21,7 +21,7 @@ def example_kamerleden_nevenfuncties():
         batch = kamerleden_ids[i * batch_size:(i + 1) * batch_size]
         filter = PersoonNevenfunctie.create_filter()
         filter.filter_ids(batch)
-        nevenfuncties += tkapi.Api.get_items(tkitem=PersoonNevenfunctie, filter=filter)
+        nevenfuncties += tkapi.TKApi.get_items(tkitem=PersoonNevenfunctie, filter=filter)
 
     functies = defaultdict(list)
     for functie in nevenfuncties:

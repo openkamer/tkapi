@@ -7,10 +7,6 @@ import tkapi.util.document
 class Kamervraag(Document):
     filter_param = "Soort eq '{}'".format(DocumentSoort.SCHRIFTELIJKE_VRAGEN.value)
 
-    @staticmethod
-    def nearest(zaken, pivot):
-        return min(zaken, key=lambda zaak: abs(zaak.gestart_op - pivot))
-
     @property
     def antwoord(self):
         return self._related_document_soort(DocumentSoort.ANTWOORD_SCHRIFTELIJKE_VRAGEN)
@@ -30,7 +26,7 @@ class Kamervraag(Document):
 
     @property
     def document_url(self):
-        return tkapi.util.document.get_kamervraag_overheidnl_url(self)
+        return tkapi.util.document.get_kamervraag_overheidnl_id(self)
 
 
 class Antwoord(Document):
@@ -38,4 +34,4 @@ class Antwoord(Document):
 
     @property
     def document_url(self):
-        return tkapi.util.document.get_kamerantwoord_overheidnl_url(self)
+        return tkapi.util.document.get_kamerantwoord_overheidnl_id(self)

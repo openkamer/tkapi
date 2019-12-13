@@ -34,7 +34,7 @@ class Persoon(TKItem):
 
     @property
     def fractieleden(self):
-        from .fractie import FractieZetelPersoon
+        from tkapi.fractie import FractieZetelPersoon
         return self.related_items(FractieZetelPersoon)
 
     @property

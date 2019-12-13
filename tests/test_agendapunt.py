@@ -1,4 +1,4 @@
-from tkapi import Api
+from tkapi import TKApi
 from tkapi.agendapunt import Agendapunt
 
 from .core import TKApiTestCase
@@ -22,7 +22,7 @@ class TestAgendapuntFilter(TKApiTestCase):
         max_items = 5
         agendapunt_filter = Agendapunt.create_filter()
         agendapunt_filter.filter_has_activiteit()
-        agendapunten = Api().get_agendapunten(max_items=max_items)
+        agendapunten = TKApi().get_agendapunten(max_items=max_items)
         for agendapunt in agendapunten:
             self.assertTrue(agendapunt.activiteit)
         self.assertEqual(len(agendapunten), max_items)

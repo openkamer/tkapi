@@ -1,9 +1,12 @@
 from enum import Enum
+from typing import List
 
 from tkapi.core import TKItem
 from tkapi.filter import SoortFilter
 from tkapi.filter import RelationsFilter
 from tkapi.filter import ZaakRelationFilter
+from tkapi.stemming import Stemming
+from tkapi.agendapunt import Agendapunt
 
 
 class BesluitStatus(Enum):
@@ -45,13 +48,11 @@ class Besluit(TKItem):
         return self.related_item(Zaak)
 
     @property
-    def stemmingen(self):
-        from tkapi.stemming import Stemming
+    def stemmingen(self) -> List[Stemming]:
         return self.related_items(Stemming)
 
     @property
-    def agendapunt(self):
-        from tkapi.agendapunt import Agendapunt
+    def agendapunt(self) -> Agendapunt:
         return self.related_item(Agendapunt)
 
     @property

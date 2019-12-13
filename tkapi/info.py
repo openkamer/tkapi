@@ -1,8 +1,8 @@
-from tkapi import Api
+from tkapi import TKApi
 
 
 def get_commissie_namen():
-    commissies = Api().get_commissies()
+    commissies = TKApi().get_commissies()
     namen = []
     for commissie in commissies:
         if commissie.naam:
@@ -19,15 +19,15 @@ def get_soorten(items):
 
 
 def get_commissie_soorten():
-    commissies = Api().get_commissies()
+    commissies = TKApi().get_commissies()
     return get_soorten(commissies)
 
 
 def get_verslag_soorten():
-    verslagen = Api().get_verslagen()
+    verslagen = TKApi().get_verslagen()
     return get_soorten(verslagen)
 
 
 def get_vergadering_soorten():
-    verslagen = Api().get_vergaderingen()
+    verslagen = TKApi().get_vergaderingen()
     return get_soorten(verslagen)

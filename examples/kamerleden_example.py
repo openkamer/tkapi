@@ -1,8 +1,4 @@
-import tkapi
 from tkapi.util import queries
-
-
-api = tkapi.Api()
 
 
 def example_kamerleden_actief():

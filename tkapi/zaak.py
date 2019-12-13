@@ -1,9 +1,18 @@
 from enum import Enum
+from typing import List
 
 from tkapi.core import TKItem
 from tkapi.filter import Filter
 from tkapi.filter import SoortFilter
 from tkapi.util import util
+from tkapi.document import Document
+from tkapi.agendapunt import Agendapunt
+from tkapi.activiteit import Activiteit
+from tkapi.besluit import Besluit
+from tkapi.dossier import Dossier
+from tkapi.persoon import Persoon
+from tkapi.fractie import Fractie
+from tkapi.commissie import Commissie
 
 
 class ZaakSoort(Enum):
@@ -133,23 +142,19 @@ class Zaak(TKItem):
         return ZaakFilter()
 
     @property
-    def documenten(self):
-        from tkapi.document import Document
+    def documenten(self) -> List[Document]:
         return self.related_items(Document)
 
     @property
-    def agendapunten(self):
-        from tkapi.agendapunt import Agendapunt
+    def agendapunten(self) -> List[Agendapunt]:
         return self.related_items(Agendapunt)
 
     @property
-    def activiteiten(self):
-        from tkapi.activiteit import Activiteit
+    def activiteiten(self) -> List[Activiteit]:
         return self.related_items(Activiteit)
 
     @property
-    def besluiten(self):
-        from tkapi.besluit import Besluit
+    def besluiten(self) -> List[Besluit]:
         return self.related_items(Besluit)
 
     @property
@@ -157,8 +162,7 @@ class Zaak(TKItem):
         return self.related_items(ZaakActor)
 
     @property
-    def dossier(self):
-        from tkapi.dossier import Dossier
+    def dossier(self) -> Dossier:
         return self.related_item(Dossier)
 
     @property
@@ -230,8 +234,7 @@ class ZaakActor(TKItem):
         return self.get_property_or_empty_string('Relatie')
 
     @property
-    def persoon(self):
-        from tkapi.persoon import Persoon
+    def persoon(self) -> Persoon:
         return self.related_item(Persoon)
 
     @property
@@ -239,13 +242,11 @@ class ZaakActor(TKItem):
         return self.related_item(Zaak)
 
     @property
-    def fractie(self):
-        from tkapi.fractie import Fractie
+    def fractie(self) -> Fractie:
         return self.related_item(Fractie)
 
     @property
-    def commissie(self):
-        from tkapi.commissie import Commissie
+    def commissie(self) -> Commissie:
         return self.related_item(Commissie)
 
     @property

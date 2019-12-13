@@ -1,11 +1,10 @@
 from enum import Enum
-from typing import List
 
 from tkapi.core import TKItem
 from tkapi.filter import Filter
 from tkapi.filter import SoortFilter
 from tkapi.filter import ZaakRelationFilter
-from tkapi.zaak import Zaak
+from tkapi.persoon import Persoon
 
 
 class ActiviteitSoort(Enum):
@@ -90,7 +89,8 @@ class Activiteit(TKItem):
         return self.related_items(Document)
 
     @property
-    def zaken(self) -> List[Zaak]:
+    def zaken(self):
+        from tkapi.zaak import Zaak
         return self.related_items(Zaak)
 
     @property
@@ -226,8 +226,7 @@ class ActiviteitActor(TKItem):
         return self.related_item(Activiteit)
 
     @property
-    def persoon(self):
-        from tkapi.persoon import Persoon
+    def persoon(self) -> Persoon:
         return self.related_item(Persoon)
 
     @property

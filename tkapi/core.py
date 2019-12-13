@@ -9,7 +9,7 @@ class TKItem:
     orderby_param = None
     filter_param = ''
 
-    def __init__(self, item_json, *args, **kwargs):
+    def __init__(self, item_json):
         self.json = item_json
         self._items_cache = {}
 
@@ -111,9 +111,9 @@ class TKItem:
         return None
 
     def related_items(self, tkitem, filter=None, item_key=None):
-        from tkapi.api import Api
+        from tkapi.tkapi import TKApi
         item_key = item_key if item_key is not None else tkitem.type
-        navigation_key = item_key + '@odata.navigationLink'
+        navigation_key = '{}{}'.format(item_key, '@odata.navigationLink')
         if navigation_key not in self.json:
             return []
         if item_key in self.json and self.json[item_key] is None:
@@ -130,13 +130,13 @@ class TKItem:
         if cache_key in self._items_cache:
             return self._items_cache[cache_key]
         url = self.json[navigation_key]
-        items = Api().get_related(tkitem, related_url=url, filter=filter)
+        items = TKApi().get_related(tkitem, related_url=url, filter=filter)
         self._set_cache(tkitem, filter, items)
         return items
 
     def related_items_deep(self, tkitem, filter):
-        from tkapi.api import Api
-        items = Api().get_related(tkitem, related_url=tkitem.type, filter=filter)
+        from tkapi.tkapi import TKApi
+        items = TKApi().get_related(tkitem, related_url=tkitem.type, filter=filter)
         self._set_cache(tkitem, filter, items)
         return items
 

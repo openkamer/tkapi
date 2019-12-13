@@ -1,8 +1,10 @@
 import urllib
 import requests
 from typing import List
+import logging
 
-from tkapi.fractie import Fractie, FractieZetel
+from tkapi.fractie import Fractie
+from tkapi.fractie import FractieZetel
 from tkapi.persoon import Persoon
 from .activiteit import Activiteit
 from .agendapunt import Agendapunt
@@ -22,16 +24,19 @@ from .zaak import Zaak
 from .filter import VerwijderdFilter
 
 
-class Api:
+logger = logging.getLogger(__name__)
+
+
+class TKApi:
     _verbose = False
     _max_items_per_page = 250
     api_root = 'https://gegevensmagazijn.tweedekamer.nl/OData/v4/2.0/'
 
     def __init__(self, api_root=None, verbose=None):
         if api_root is not None:
-            Api.api_root = api_root
+            TKApi.api_root = api_root
         if verbose is not None:
-            Api._verbose = verbose
+            TKApi._verbose = verbose
 
     @classmethod
     def get_commissies(cls, filter=None, order=None, max_items=None) -> List[Commissie]:
@@ -120,7 +125,7 @@ class Api:
     def add_non_deleted_filter(params):
         non_deleted_filter = VerwijderdFilter()
         non_deleted_filter.filter_verwijderd()
-        return Api.add_filter_to_params(non_deleted_filter, params)
+        return TKApi.add_filter_to_params(non_deleted_filter, params)
 
     @classmethod
     def get_all_items(cls, page, max_items=None):
@@ -130,7 +135,7 @@ class Api:
             if max_items is not None and len(items) >= max_items:
                 return items
         while '@odata.nextLink' in page:
-            page = cls.request_json(page['@odata.nextLink'])
+            page = cls._request_json(page['@odata.nextLink'])
             for item in page['value']:
                 items.append(item)
                 if max_items is not None and len(items) >= max_items:
@@ -138,7 +143,7 @@ class Api:
         return items
 
     @classmethod
-    def request_json(cls, url, params=None, max_items=None):
+    def _request_json(cls, url, params=None, max_items=None):
         url = url.strip()
         if not params:
             params = {}
@@ -159,12 +164,12 @@ class Api:
                 urllib.parse.unquote(response.url))
             )
         if response.status_code in [204, 404, 500]:
-            print('HTTP STATUS CODE', response.status_code)
-            print('### WARNING: requested item does not exist:', url, '###')
+            logger.warning('HTTP STATUS CODE: {}'.format(response.status_code))
+            logger.warning('WARNING: requested item does not exist: {}'.format(url))
             return {}
         elif response.status_code != 200:
-            print('HTTP STATUS CODE', response.status_code)
-            print('ODATA ERROR: ', response.json()['error']['message'])
+            logger.warning('HTTP STATUS CODE: {}'.format(response.status_code))
+            logger.warning('ODATA ERROR: {}'.format(response.json()['error']['message']))
         # assert response.status_code == 200
         return response.json()
 
@@ -172,13 +177,13 @@ class Api:
     def get_item(cls, tkitem, id: str):
         url = '{}({})'.format(tkitem.type, id)
         params = tkitem.get_param_expand()
-        return tkitem(cls.request_json(url, params))
+        return tkitem(cls._request_json(url, params))
 
     @classmethod
     def get_related(cls, tkitem_related, related_url: str, filter=None):
         params = tkitem_related.get_param_expand()
-        params = Api.add_filter_to_params(filter, params)
-        first_page = cls.request_json(related_url, params)
+        params = TKApi.add_filter_to_params(filter, params)
+        first_page = cls._request_json(related_url, params)
         related_items = []
         if 'value' in first_page:
             items_json = cls.get_all_items(first_page)
@@ -193,7 +198,7 @@ class Api:
         items = []
         params = cls.create_query_params(tkitem=tkitem, filter=filter, order=order)
         max_items_request = max_items if max_items is not None and max_items <= cls._max_items_per_page else None
-        first_page = cls.request_json(tkitem.type, params, max_items=max_items_request)
+        first_page = cls._request_json(tkitem.type, params, max_items=max_items_request)
         items_json = cls.get_all_items(first_page, max_items=max_items)
         for item_json in items_json:
             item = tkitem(item_json)
@@ -203,8 +208,8 @@ class Api:
     @staticmethod
     def create_query_params(tkitem, filter=None, order=None):
         params = tkitem.get_params_default()
-        params = Api.add_filter_to_params(filter, params)
-        params = Api.add_non_deleted_filter(params)
+        params = TKApi.add_filter_to_params(filter, params)
+        params = TKApi.add_non_deleted_filter(params)
         if tkitem.filter_param:
             if params['$filter']:
                 params['$filter'] += ' and '

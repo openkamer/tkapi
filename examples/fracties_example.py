@@ -1,7 +1,7 @@
 import tkapi
 from tkapi.fractie import Fractie
 
-api = tkapi.Api(verbose=False)
+api = tkapi.TKApi(verbose=False)
 
 
 def example_fracties_leden_actief():
