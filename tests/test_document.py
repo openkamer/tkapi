@@ -4,6 +4,7 @@ from tkapi.document import Document
 from tkapi.document import DocumentSoort
 from tkapi.document import VerslagAlgemeenOverleg
 from tkapi.document import DocumentActor
+from tkapi.document import DocumentVersie
 
 from .core import TKApiTestCase
 
@@ -16,9 +17,12 @@ class TestSingleDocument(TKApiTestCase):
         pd = pds[0]
         print(pd.bestand_url)
         for agendapunt in pd.agendapunten:
-            print(agendapunt)
+            print(agendapunt.id)
         for dossier in pd.dossiers:
-            print(dossier)
+            print(dossier.id)
+        self.assertGreaterEqual(len(pd.versies), 1)
+        for versie in pd.versies:
+            self.assertIsNotNone(versie.nummer)
 
     def test_document_actors(self):
         max_items = 10
@@ -214,3 +218,13 @@ class TestDocumentActor(TKApiTestCase):
             print(actor.naam, actor.naam_fractie)
             print(actor.persoon.achternaam)
             print(actor.fractie)
+
+
+class TestDocumentVersie(TKApiTestCase):
+
+    def test_get_item(self):
+        max_items = 1
+        versions = self.api.get_items(DocumentVersie, max_items=max_items)
+        self.assertEqual(max_items, len(versions))
+        version = versions[0]
+        print(version.status, version.versienummer, version.bestandsgrootte, version.datum, version.document.onderwerp)

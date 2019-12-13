@@ -244,6 +244,10 @@ class Document(TKItem):
     def dossier_nummers(self):
         return [dossier.nummer for dossier in self.dossiers]
 
+    @property
+    def versies(self):
+        return self.related_items(DocumentVersie)
+
 
 class DocumentActorFilter(Filter):
 
@@ -316,3 +320,39 @@ class VerslagAlgemeenOverleg(Document):
         if response.status_code != 200 or '404: Pagina niet gevonden' in response.text:
             return ''
         return url
+
+
+class DocumentVersie(TKItem):
+    type = 'DocumentVersie'
+
+    @staticmethod
+    def create_filter():
+        return Filter()
+
+    @staticmethod
+    def begin_date_key():
+        return 'Datum'
+
+    @property
+    def document(self) -> Document:
+        return self.related_item(Document)
+
+    @property
+    def datum(self):
+        return self.get_date_from_datetime_or_none('Datum')
+
+    @property
+    def nummer(self) -> int or None:
+        return self.get_property_or_none('Versienummer')
+
+    @property
+    def status(self):
+        return self.get_property_or_empty_string('Status')
+
+    @property
+    def extensie(self):
+        return self.get_property_or_empty_string('Extensie')
+
+    @property
+    def bestandsgrootte(self) -> int or None:
+        return self.get_property_or_none('Bestandsgrootte')
