@@ -227,4 +227,4 @@ class TestDocumentVersie(TKApiTestCase):
         versions = self.api.get_items(DocumentVersie, max_items=max_items)
         self.assertEqual(max_items, len(versions))
         version = versions[0]
-        print(version.status, version.versienummer, version.bestandsgrootte, version.datum, version.document.onderwerp)
+        print(version.status, version.nummer, version.bestandsgrootte, version.datum, version.document.onderwerp)
