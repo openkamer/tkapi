@@ -23,17 +23,11 @@ from .filter import VerwijderdFilter
 
 
 class Api:
-    _user = None
-    _password = None
     _verbose = False
     _max_items_per_page = 250
     api_root = 'https://gegevensmagazijn.tweedekamer.nl/OData/v4/2.0/'
 
-    def __init__(self, user=None, password=None, api_root=None, verbose=None):
-        if user is not None:
-            Api._user = user
-        if password is not None:
-            Api._password = password
+    def __init__(self, api_root=None, verbose=None):
         if api_root is not None:
             Api.api_root = api_root
         if verbose is not None:
@@ -157,7 +151,6 @@ class Api:
         response = requests.get(
             url=url,
             params=params,
-            auth=(str(cls._user), str(cls._password)),
             timeout=60
         )
         if cls._verbose:
