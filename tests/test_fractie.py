@@ -4,6 +4,7 @@ from tkapi.fractie import Fractie, FractieZetel
 from tkapi.fractie import FractieZetelPersoon
 from tkapi.fractie import FractieZetelVacature
 from tkapi.fractie import FractieZetelVacatureSoort
+from tkapi.fractie import FractieAanvullendGegeven
 
 from .core import TKApiTestCase
 
@@ -110,3 +111,13 @@ class TestFractieZetelVacature(TKApiTestCase):
             self.assertIsNotNone(vac.fractie)
             self.assertTrue(vac.van)
             self.assertTrue(vac.tot_en_met)
+
+
+class TestFractieAanvullendGegeven(TKApiTestCase):
+
+    def test_get_items(self):
+        max_items = 10
+        items = self.api.get_items(FractieAanvullendGegeven, max_items=max_items)
+        self.assertEqual(0, len(items))  # TODO BR: enable, this currently returns 0 results
+        for item in items:
+            print(item.fractie, item.soort, item.waarde)

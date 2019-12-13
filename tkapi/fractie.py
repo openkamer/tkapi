@@ -222,3 +222,23 @@ class FractieZetelVacature(TKItem):
 class FractieZetelVacatureSoort(Enum):
     LID = 'Lid'
     FRACTIEVOORZITTER = 'Fractievoorzitter'
+
+
+class FractieAanvullendGegeven(TKItem):
+    type = 'FractieAanvullendGegeven'
+
+    @staticmethod
+    def create_filter():
+        return Filter()
+
+    @property
+    def fractie(self) -> Fractie:
+        return self.related_items(Fractie)
+
+    @property
+    def soort(self):
+        return self.get_property_or_empty_string('Soort')
+
+    @property
+    def waarde(self):
+        return self.get_property_or_empty_string('Waarde')
