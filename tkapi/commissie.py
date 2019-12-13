@@ -100,6 +100,10 @@ class CommissieZetel(TKItem):
         return CommissieZetelFilter()
 
     @property
+    def commissie(self):
+        return self.related_item(Commissie)
+
+    @property
     def personen_vast(self):
         return self.related_items(CommissieZetelVastPersoon)
 
@@ -120,9 +124,8 @@ class CommissieZetel(TKItem):
         return self.related_items(CommissieZetelVervangerPersoon, filter=filter)
 
     @property
-    def commissie(self):
-        return self.related_item(Commissie)
-
+    def vacatures(self):
+        return self.related_items(CommissieZetelVastVacature)
 
 class CommissieZetelPersoon(TKItem):
     expand_params = ['Persoon']
@@ -167,3 +170,40 @@ class CommissieZetelVastPersoon(CommissieZetelPersoon):
 
 class CommissieZetelVervangerPersoon(CommissieZetelPersoon):
     type = 'CommissieZetelVervangerPersoon'
+
+
+class CommissieZetelVastVacature(TKItem):
+    type = 'CommissieZetelVastVacature'
+
+    @staticmethod
+    def create_filter():
+        return Filter()
+
+    @property
+    def functie(self):
+        return self.get_property_enum_or_none('Functie', CommissieFunctie)
+
+    @property
+    def zetel(self):
+        return self.related_item(CommissieZetel)
+
+    @property
+    def fractie(self):
+        from tkapi.fractie import Fractie
+        return self.related_item(Fractie)
+
+    @property
+    def van(self):
+        return self.get_date_from_datetime_or_none('Van')
+
+    @property
+    def tot_en_met(self):
+        return self.get_date_from_datetime_or_none('TotEnMet')
+
+    @staticmethod
+    def begin_date_key():
+        return 'Van'
+
+    @staticmethod
+    def end_date_key():
+        return 'TotEnMet'

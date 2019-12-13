@@ -3,6 +3,7 @@ from tkapi.commissie import CommissieZetel
 from tkapi.commissie import CommissieZetelVastPersoon
 from tkapi.commissie import CommissieZetelVervangerPersoon
 from tkapi.commissie import CommissieFunctie
+from tkapi.commissie import CommissieZetelVastVacature
 from tkapi.info import get_commissie_namen
 from tkapi.info import get_commissie_soorten
 
@@ -214,3 +215,16 @@ class TestCommissieZetelPersoon(TKApiTestCase):
 #             # print(activiteit.json['Voortouwcommissie'])
 #             # print(activiteit.json['Document'])
 #         print(len(activiteiten))
+
+
+class TestCommissieZetelVastVacature(TKApiTestCase):
+
+    def test_get_items(self):
+        max_items = 5
+        vacs = self.api.get_items(CommissieZetelVastVacature, max_items=max_items)
+        self.assertEqual(max_items, len(vacs))
+        for vac in vacs:
+            self.assertIn(vac.functie, CommissieFunctie)
+            self.assertIsNotNone(vac.fractie)
+            self.assertIsNotNone(vac.zetel)
+            self.assertTrue(vac.van)
