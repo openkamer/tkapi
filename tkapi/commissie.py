@@ -125,7 +125,16 @@ class CommissieZetel(TKItem):
 
     @property
     def vacatures(self):
+        return self.vacatures_vast + self.vacatures_vervanger
+
+    @property
+    def vacatures_vast(self):
         return self.related_items(CommissieZetelVastVacature)
+
+    @property
+    def vacatures_vervanger(self):
+        return self.related_items(CommissieZetelVervangerVacature)
+
 
 class CommissieZetelPersoon(TKItem):
     expand_params = ['Persoon']
@@ -207,3 +216,7 @@ class CommissieZetelVastVacature(TKItem):
     @staticmethod
     def end_date_key():
         return 'TotEnMet'
+
+
+class CommissieZetelVervangerVacature(CommissieZetelVastVacature):
+    type = 'CommissieZetelVervangerVacature'
