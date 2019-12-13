@@ -143,8 +143,12 @@ class Reservering(TKItem):
     type = 'Reservering'
 
     @property
-    def activiteit(self):
+    def activiteit(self) -> Activiteit:
         return self.related_item(Activiteit)
+
+    @property
+    def zaal(self):
+        return self.related_item(Zaal)
 
     @property
     def activiteit_nummer(self):
@@ -171,3 +175,19 @@ class StatusCode(Enum):
 class StatusNaam(Enum):
     UsrAdministrativelyCompleted = 'UsrAdministrativelyCompleted'
     UsrMade = 'UsrMade'
+
+
+class Zaal(TKItem):
+    type = 'Zaal'
+
+    @property
+    def reservering(self) -> Reservering:
+        return self.related_item(Reservering)
+
+    @property
+    def activiteit(self) -> Activiteit:
+        return self.reservering.activiteit
+
+    @property
+    def naam(self):
+        return self.get_property_or_empty_string('Naam')

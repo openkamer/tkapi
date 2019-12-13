@@ -4,6 +4,7 @@ from tkapi.activiteit import Activiteit
 from tkapi.activiteit import ActiviteitSoort
 from tkapi.activiteit import ActiviteitStatus
 from tkapi.activiteit import Reservering
+from tkapi.activiteit import Zaal
 from tkapi.util import queries
 
 from .core import TKApiTestCase
@@ -107,3 +108,14 @@ class TestReservering(TKApiTestCase):
         self.assertIsNotNone(res.status_code)
         self.assertIsNotNone(res.status_naam)
         print(res.status_code, res.status_naam, res.activiteit.id, res.activiteit_nummer)
+
+
+class TestZaal(TKApiTestCase):
+
+    def test_get_item(self):
+        zalen = self.api.get_items(Zaal, max_items=1)
+        self.assertEqual(1, len(zalen))
+        zaal = zalen[0]
+        self.assertTrue(zaal.naam)
+        self.assertIsNotNone(zaal.activiteit)
+        self.assertIsNotNone(zaal.reservering)
