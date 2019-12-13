@@ -46,6 +46,16 @@ class TestBesluitFilters(TKApiTestCase):
         for besluit in besluiten:
             self.assertEqual(nummer, besluit.zaken[0].dossier.nummer)
 
+    def test_kamerstuk_filter_35300(self):
+        nummer = 35300
+        toevoeging = 'VIII'
+        volgnummer = 78
+        besluiten = queries.get_kamerstuk_besluiten(nummer=nummer, toevoeging=toevoeging, volgnummer=volgnummer)
+        self.assertEqual(2, len(besluiten))
+        for besluit in besluiten:
+            for stemming in besluit.stemmingen:
+                print(stemming['Verwijderd'])
+
     def check_dossier_besluiten(self, nummer, expected_besluiten, expected_with_stemmen):
         besluiten = queries.get_dossier_besluiten(nummer=nummer)
         besluiten_with_stemmen = queries.get_dossier_besluiten_with_stemmingen(nummer=nummer)

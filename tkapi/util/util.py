@@ -17,7 +17,11 @@ def odatedatetime_to_datetime(odate_datetime):
 
 
 def odatedate_to_date(odate_date):
-    return datetime.datetime.strptime(odate_date, '%Y-%m-%d')
+    try:
+        date = datetime.datetime.strptime(odate_date, '%Y-%m-%d')
+    except ValueError:
+        date = odateyear_to_date(odate_date)
+    return date
 
 
 def odateyear_to_date(odate_date):

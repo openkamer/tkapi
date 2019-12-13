@@ -101,7 +101,7 @@ class TestCommissieInfo(TKApiTestCase):
             print(naam)
 
 
-class TestCommissieZetels(TKApiTestCase):
+class TestCommissieZetel(TKApiTestCase):
 
     def get_commissie_binnenlandse_zaken(self):
         naam = 'Vaste commissie voor Binnenlandse Zaken'
@@ -230,6 +230,7 @@ class TestCommissieZetelVastVacature(TKApiTestCase):
             self.assertIsNotNone(vac.fractie)
             self.assertIsNotNone(vac.zetel)
             self.assertTrue(vac.van)
+            print(vac.tot_en_met, vac.end_date_key)
 
 
 class TestCommissieZetelVervangerVacature(TKApiTestCase):

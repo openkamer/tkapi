@@ -99,6 +99,20 @@ class TestDossierFilter(TKApiTestCase):
         self.assertEqual(nummer, dossier.nummer)
         self.assertEqual(toevoeging, dossier.toevoeging)
 
+    def test_get_document_actors(self):
+        # nummer = 35234
+        nummer = 33885
+        dossier = queries.get_dossier(nummer)
+        for zaak in dossier.zaken:
+            print('==========')
+            print(zaak.soort, zaak.onderwerp, zaak.volgnummer)
+            for actor in zaak.zaak_actors:
+                print(actor.naam, actor.persoon.achternaam if actor.persoon else None, actor.fractie, actor.commissie)
+            for doc in zaak.documenten:
+                print(doc.soort, doc.onderwerp, doc.titel, doc.volgnummer)
+                for actor in doc.actors:
+                    print(actor.naam)
+
 
 class TestWetsvoorstelDossier(TKApiTestCase):
 
@@ -106,6 +120,15 @@ class TestWetsvoorstelDossier(TKApiTestCase):
         max_items = 200
         wetsvoorstellen = self.api.get_items(DossierWetsvoorstel, max_items=max_items)
         self.assertEqual(max_items, len(wetsvoorstellen))
+
+    def test_get_begroting_dossiers(self):
+        filter = Zaak.create_filter()
+        filter.filter_date_range(datetime.date(year=2019, month=6, day=1), datetime.date.today())
+        filter.filter_soort(ZaakSoort.BEGROTING, is_or=True)
+        zaken = self.api.get_zaken(filter=filter)
+        for zaak in zaken:
+            dossier_id = str(zaak.dossier.nummer)
+            print(dossier_id)
 
     def test_get_dossiers_via_documenten(self):
         pd_filter = Document.create_filter()
