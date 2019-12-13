@@ -66,7 +66,7 @@ class TestPersoon(TKApiTestCase):
         self.assertEqual('Tweede Kamer der Staten-Generaal.', reizen[0].betaald_door)
         for reis in reizen:
             self.assertIsNotNone(reis.bestemming)
-            self.assertIsNotNone(reis.end_date_key)
+            self.assertIsNotNone(reis.end_date_key())
 
     def test_get_onderwijs(self):
         persoon = self.get_fred_teeven()
@@ -77,7 +77,7 @@ class TestPersoon(TKApiTestCase):
             self.assertIsNotNone(o.opleiding_nl)
             self.assertTrue(o.opleiding_en)
             print(o.plaats)
-            self.assertIsNotNone(o.end_date_key)
+            self.assertIsNotNone(o.end_date_key())
 
     def test_get_loopbaan(self):
         persoon = self.get_fred_teeven()
@@ -86,7 +86,7 @@ class TestPersoon(TKApiTestCase):
         self.assertEqual('Officier van Justitie', loopbaan[0].functie)
         for o in loopbaan:
             self.assertIsNotNone(o.functie)
-            print(o.omschrijving, o.werkgever, o.omschrijving_en, o.plaats, o.van, o.tot_en_met, o.begin_date_key, o.end_date_key)
+            print(o.omschrijving, o.werkgever, o.omschrijving_en, o.plaats, o.van, o.tot_en_met, o.begin_date_key, o.end_date_key())
 
     def test_get_geschenken(self):
         persoon = self.get_fred_teeven()

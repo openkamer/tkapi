@@ -230,7 +230,7 @@ class TestCommissieZetelVastVacature(TKApiTestCase):
             self.assertIsNotNone(vac.fractie)
             self.assertIsNotNone(vac.zetel)
             self.assertTrue(vac.van)
-            print(vac.tot_en_met, vac.end_date_key)
+            print(vac.tot_en_met, vac.end_date_key())
 
 
 class TestCommissieZetelVervangerVacature(TKApiTestCase):

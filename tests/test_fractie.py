@@ -21,9 +21,10 @@ class TestFractie(TKApiTestCase):
         self.assertEqual(datetime.date(year=1990, month=11, day=24), fractie.datum_actief)
         self.assertEqual(None, fractie.datum_inactief)
         # fractie.print_json()
-        leden = fractie.leden_actief
-        print('fractieleden:', len(leden))
-        self.assertGreaterEqual(len(leden), 14)
+        leden_actief = fractie.leden_actief
+        print('fractieleden:', len(leden_actief))
+        self.assertGreaterEqual(len(leden_actief), 14)
+        self.assertGreaterEqual(48, len(fractie.leden))
 
     def test_get_fracties(self):
         fracties = self.api.get_fracties(max_items=50)
@@ -71,16 +72,13 @@ class TestFractieZetel(TKApiTestCase):
         zetels = self.api.get_items(FractieZetel, filter)
         self.assertEqual(48, len(zetels))
 
-    # TODO BR: move to fractie_zetel_persoon
-    # def test_get_fractie_zetels_actief(self):
-    #     filter = FractieZetel.create_filter()
-    #     filter.filter_actief()
-    #     zetels = self.api.get_fractie_zetels(max_items=10, filter=filter)
-    #     print('fractiezetels:', len(zetels))
-    #     for zetel in zetels:
-    #         # lid.print_json()
-    #         self.assertEqual(zetel.fractie_zetel_persoon.tot_en_met, None)
-    #         self.assertEqual(zetel.fractie_zetel_persoon.is_actief, True)
+    def test_fractie_zetel_attributes(self):
+        filter = FractieZetel.create_filter()
+        zetels = self.api.get_fractie_zetels(max_items=10, filter=filter)
+        for zetel in zetels:
+            self.assertIsNotNone(zetel.persoon)
+            self.assertTrue(zetel.gewicht)
+            print(zetel.fractie_zetel_vacature)
 
 
 class TestFractieZetelPersoon(TKApiTestCase):
@@ -90,6 +88,8 @@ class TestFractieZetelPersoon(TKApiTestCase):
         filter.filter_fractie('GroenLinks')
         zetel_personen = self.api.get_items(FractieZetelPersoon, filter=filter)
         self.assertGreaterEqual(len(zetel_personen), 51)
+        for item in zetel_personen:
+            print(item.is_actief, item.van, item.tot_en_met, item.end_date_key())
 
     def test_filter_fractie_actief(self):
         filter = FractieZetelPersoon.create_filter()
