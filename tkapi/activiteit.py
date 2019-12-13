@@ -120,6 +120,10 @@ class Activiteit(TKItem):
         return self.get_property_enum_or_none('Status', ActiviteitStatus)
 
     @property
+    def actors(self):
+        return self.related_items(ActiviteitActor)
+
+    @property
     def datum(self):
         return self.get_datetime_or_none('Datum')
 
@@ -208,3 +212,64 @@ class Zaal(TKItem):
     @property
     def naam(self):
         return self.get_property_or_empty_string('Naam')
+
+
+class ActiviteitActor(TKItem):
+    type = 'ActiviteitActor'
+
+    @staticmethod
+    def create_filter() -> Filter:
+        return Filter()
+
+    @property
+    def activiteit(self) -> Activiteit:
+        return self.related_item(Activiteit)
+
+    @property
+    def persoon(self):
+        from tkapi.persoon import Persoon
+        return self.related_item(Persoon)
+
+    @property
+    def fractie(self):
+        from tkapi.fractie import Fractie
+        return self.related_item(Fractie)
+
+    @property
+    def commissie(self):
+        from tkapi.commissie import Commissie
+        return self.related_item(Commissie)
+
+    @property
+    def naam(self):
+        return self.get_property_or_empty_string('ActorNaam')
+
+    @property
+    def fractie_naam(self):
+        return self.get_property_or_empty_string('ActorFractie')
+
+    @property
+    def functie(self):
+        return self.get_property_or_empty_string('Functie')
+
+    @property
+    def spreektijd(self):
+        return self.get_property_or_empty_string('Spreektijd')
+
+    @property
+    def volgorde(self):
+        return self.get_property_or_none('Volgorde')
+
+    @property
+    def relatie(self):
+        return self.get_property_enum_or_none('Relatie', RelatieSoort)
+
+
+class RelatieSoort(Enum):
+    AFGEMELD = 'Afgemeld'
+    BEWINDSPERSOON = 'Bewindspersoon c.a.'
+    DEELNEMER = 'Deelnemer'
+    INITIATIEFNEMER = 'Initiatiefnemer'
+    INTERPELLANT = 'Interpellant'
+    VOLGCOMMISSIE = 'Volgcommissie'
+

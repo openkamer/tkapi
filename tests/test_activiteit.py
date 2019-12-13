@@ -1,7 +1,9 @@
 import datetime
 
 from tkapi.activiteit import Activiteit
+from tkapi.activiteit import ActiviteitActor
 from tkapi.activiteit import ActiviteitSoort
+from tkapi.activiteit import RelatieSoort
 from tkapi.activiteit import ActiviteitStatus
 from tkapi.activiteit import Reservering
 from tkapi.activiteit import Zaal
@@ -119,3 +121,16 @@ class TestZaal(TKApiTestCase):
         self.assertTrue(zaal.naam)
         self.assertIsNotNone(zaal.activiteit)
         self.assertIsNotNone(zaal.reservering)
+
+
+class TestActiviteitActor(TKApiTestCase):
+
+    def test_get_item(self):
+        actors = self.api.get_items(ActiviteitActor, max_items=1)
+        self.assertEqual(1, len(actors))
+        actor = actors[0]
+        self.assertTrue(actor.spreektijd)
+        self.assertIsNotNone(actor.volgorde)
+        self.assertIn(actor.relatie, RelatieSoort)
+        print(actor.activiteit.id, actor.persoon, actor.fractie, actor.commissie, actor.fractie_naam, actor.naam)
+
