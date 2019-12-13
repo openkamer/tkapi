@@ -2,6 +2,8 @@ import datetime
 
 from tkapi.fractie import Fractie, FractieZetel
 from tkapi.fractie import FractieZetelPersoon
+from tkapi.fractie import FractieZetelVacature
+from tkapi.fractie import FractieZetelVacatureSoort
 
 from .core import TKApiTestCase
 
@@ -94,3 +96,17 @@ class TestFractieZetelPersoon(TKApiTestCase):
         filter.filter_actief()
         zetel_personen = self.api.get_items(FractieZetelPersoon, filter=filter)
         self.assertGreaterEqual(len(zetel_personen), 14)
+
+
+class TestFractieZetelVacature(TKApiTestCase):
+
+    def test_get_items(self):
+        max_items = 10
+        vacatures = self.api.get_items(FractieZetelVacature, max_items=max_items)
+        self.assertEqual(max_items, len(vacatures))
+        for vac in vacatures:
+            print(vac.fractie, vac.functie, vac.van, vac.tot_en_met)
+            self.assertIn(vac.functie, FractieZetelVacatureSoort)
+            self.assertIsNotNone(vac.fractie)
+            self.assertTrue(vac.van)
+            self.assertTrue(vac.tot_en_met)

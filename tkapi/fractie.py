@@ -1,3 +1,5 @@
+from enum import Enum
+
 from tkapi.core import TKItem
 from tkapi.filter import Filter
 
@@ -161,6 +163,10 @@ class FractieZetel(TKItem):
         return self.related_item(FractieZetelPersoon)
 
     @property
+    def fractie_zetel_vacature(self):
+        return self.related_items(FractieZetelVacature)
+
+    @property
     def persoon(self):
         return self.fractie_zetel_persoon.persoon
 
@@ -183,3 +189,36 @@ class FractieZetelPersoon(Lid):
     @property
     def fractie(self):
         return self.fractie_zetel.fractie
+
+
+class FractieZetelVacature(TKItem):
+    type = 'FractieZetelVacature'
+
+    @staticmethod
+    def create_filter():
+        return Filter()
+
+    @property
+    def fractie_zetel(self):
+        return self.related_item(FractieZetel)
+
+    @property
+    def fractie(self):
+        return self.fractie_zetel.fractie
+
+    @property
+    def functie(self):
+        return self.get_property_enum_or_none('Functie', FractieZetelVacatureSoort)
+
+    @property
+    def van(self):
+        return self.get_datetime_or_none('Van')
+
+    @property
+    def tot_en_met(self):
+        return self.get_datetime_or_none('TotEnMet')
+
+
+class FractieZetelVacatureSoort(Enum):
+    LID = 'Lid'
+    FRACTIEVOORZITTER = 'Fractievoorzitter'
