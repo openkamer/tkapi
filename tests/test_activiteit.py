@@ -3,6 +3,7 @@ import datetime
 from tkapi.activiteit import Activiteit
 from tkapi.activiteit import ActiviteitSoort
 from tkapi.activiteit import ActiviteitStatus
+from tkapi.activiteit import Reservering
 from tkapi.util import queries
 
 from .core import TKApiTestCase
@@ -93,3 +94,16 @@ class TestActiviteitFilters(TKApiTestCase):
                 continue
             self.assertEqual(max_items, len(activiteiten))
             self.assertEqual(soort, activiteiten[0].soort)
+
+
+class TestReservering(TKApiTestCase):
+
+    def test_get_item(self):
+        res = self.api.get_items(Reservering, max_items=1)
+        self.assertEqual(1, len(res))
+        res = res[0]
+        self.assertIsNotNone(res.activiteit)
+        self.assertEqual(res.activiteit_nummer, res.activiteit.nummer)
+        self.assertIsNotNone(res.status_code)
+        self.assertIsNotNone(res.status_naam)
+        print(res.status_code, res.status_naam, res.activiteit.id, res.activiteit_nummer)

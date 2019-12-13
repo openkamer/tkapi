@@ -137,3 +137,37 @@ class Activiteit(TKItem):
     @property
     def vergaderjaar(self):
         return self.get_property_or_empty_string('Vergaderjaar')
+
+
+class Reservering(TKItem):
+    type = 'Reservering'
+
+    @property
+    def activiteit(self):
+        return self.related_item(Activiteit)
+
+    @property
+    def activiteit_nummer(self):
+        return self.get_property_or_empty_string('ActiviteitNummer')
+
+    @property
+    def nummer(self):
+        return self.get_property_or_empty_string('Nummer')
+
+    @property
+    def status_code(self):
+        return self.get_property_enum_or_none('StatusCode', StatusCode)
+
+    @property
+    def status_naam(self):
+        return self.get_property_enum_or_none('StatusNaam', StatusNaam)
+
+
+class StatusCode(Enum):
+    R2 = 'R2'
+    R3 = 'R3'
+
+
+class StatusNaam(Enum):
+    UsrAdministrativelyCompleted = 'UsrAdministrativelyCompleted'
+    UsrMade = 'UsrMade'
