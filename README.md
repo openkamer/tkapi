@@ -15,7 +15,7 @@ pip install tkapi
 You need to whitelist your IP by registering at https://opendata.tweedekamer.nl.
 
 ## Data model
-See https://opendata.tweedekamer.nl/documentatie/informatiemodel-20 for the data model that is mapped to Python classes.
+See [Open Kamer Data Model documentation](https://opendata.tweedekamer.nl/documentatie/informatiemodel-20) for the data model that is mapped to Python classes.
 
 ## Usage
 A simple first example,
@@ -31,33 +31,31 @@ for persoon in personen:
 For more examples see the `examples` directory and the tests.
 
 ## Entities
-Implemented:
+
+See Tweede Kamer [documentation](https://opendata.tweedekamer.nl/documentatie/informatiemodel-20) for details.
 
 | Algemeen                   | Commissie                  | Persoon                      |
 |----------------------------|----------------------------|------------------------------|
 | **Activiteit**             | **Commissie**              | **Persoon**                  |
 | **Zaak**                   | **CommissieZetel**         | **PersoonGeschenk**          |
-| **Kamerstukdossier**       | **CommissieVastPersoon**   | **PersoonLoopbaan**          |
-| **Fractie**                | **CommissieVervangerPersoon** | **PersoonNevenfunctie**      |
-| **FractieZetel**           |                            | **PersoonNevenfunctieInkomsten** |
-| **Stemming**               |                            | **PersoonOnderwijs**         |
-| **Vergadering**            |                            | **PersoonReis**              |
+| **Kamerstukdossier**       | **CommissieZetelVastPersoon**   | **PersoonLoopbaan**          |
+| **Fractie**                | **CommissieZetelVervangerPersoon** | **PersoonNevenfunctie**      |
+| **FractieZetel**           | **CommissieZetelVastVacature** | **PersoonNevenfunctieInkomsten** |
+| **Stemming**               | **CommissieZetelVervangerVacature** | **PersoonOnderwijs**         |
+| **Vergadering**            | **CommissieContactinformatie** | **PersoonReis**              |
 | **Document**               |                            | **PersoonFunctie**           |
-| **DocumentActor**          |                            |                              |
+| **DocumentActor**          |                            | **PersoonContactinformatie** |
+| **DocumentVersie**         |                            |                            |
 | **Agendapunt**             |                            |                              |
 | **Besluit**                |                            |                              |
 | **Verslag**                |                            |                              |
-
-TODO:
-
-| Algemeen                   | Commissie                  | Persoon                      |
-|----------------------------|----------------------------|------------------------------|
-| ActiviteitActor            | CommissieVastVacature      | PersoonAdres                 |
-| ZaakActor                  | CommissieVervangerVacature | PersoonContactinformatie     |
-| FractieAanvullendGegeven   |                            |                              |
-| Zaal                       |                            |                              |
-| Reservering                |                            |                              |
-| DocumentVersie             |                            |                              |
+| **FractieZetelPersoon**    |                            |                              |
+| **ZaakActor**              |                            |                              |
+| **Reservering**            |                            |                              |
+| **Zaal**                   |                            |                              |
+| **ActiviteitActor**        |                            |                              |
+| **FractieZetelVacature**   |                            |                              |
+| **FractieAanvullendGegeven** |                            |                              |
 
 ## Development
 
