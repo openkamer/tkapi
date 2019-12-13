@@ -3,6 +3,8 @@ import datetime
 from tkapi.persoon import Persoon
 from tkapi.persoon import PersoonReis
 from tkapi.persoon import PersoonOnderwijs
+from tkapi.persoon import PersoonContactinformatie
+from tkapi.persoon import PersoonContactinformatieSoort
 
 from .core import TKApiTestCase
 
@@ -40,7 +42,6 @@ class TestPersoon(TKApiTestCase):
 
     def test_get_attributes(self):
         persoon = self.get_fred_teeven()
-        persoon.print_json()
         self.assertEqual('Teeven', persoon.achternaam)
         self.assertEqual('F.', persoon.initialen)
         self.assertEqual('Fred', persoon.roepnaam)
@@ -234,3 +235,15 @@ class TestPersoonOnderwijs(TKApiTestCase):
         self.assertTrue(onderwijs.instelling)
         self.assertGreaterEqual(onderwijs.tot_en_met, onderwijs.van)
         self.assertTrue(onderwijs.persoon.id)
+
+
+class TestPersoonContactinformatie(TKApiTestCase):
+
+    def test_get_items(self):
+        max_items = 50
+        contact_infos = self.api.get_items(PersoonContactinformatie, max_items=max_items)
+        for info in contact_infos:
+            self.assertIn(info.soort, PersoonContactinformatieSoort)
+            self.assertIsNotNone(info.persoon)
+            self.assertTrue(info.waarde)
+            print(info.soort, info.persoon, info.waarde)

@@ -1,3 +1,5 @@
+from enum import Enum
+
 from tkapi.core import TKItem
 from tkapi.filter import Filter
 
@@ -114,6 +116,10 @@ class Persoon(TKItem):
     @property
     def nevenfuncties(self):
         return self.related_items(PersoonNevenfunctie)
+
+    @property
+    def contact_informaties(self):
+        return self.related_items(PersoonContactinformatie)
 
     def __str__(self):
         pretty_print = ''
@@ -314,6 +320,10 @@ class PersoonNevenfunctie(PersoonEntity):
 class PersoonNevenfunctieInkomsten(TKItem):
     type = 'PersoonNevenfunctieInkomsten'
 
+    @staticmethod
+    def create_filter():
+        return Filter()
+
     @property
     def nevenfunctie(self):
         return self.related_item(PersoonNevenfunctie)
@@ -329,3 +339,32 @@ class PersoonNevenfunctieInkomsten(TKItem):
     @staticmethod
     def begin_date_key():
         return 'Datum'
+
+
+class PersoonContactinformatie(TKItem):
+    type = 'PersoonContactinformatie'
+
+    @staticmethod
+    def create_filter():
+        return Filter()
+
+    @property
+    def soort(self):
+        return self.get_property_enum_or_none('Soort', PersoonContactinformatieSoort)
+
+    @property
+    def persoon(self) -> Persoon:
+        return self.related_item(Persoon)
+
+    @property
+    def waarde(self):
+        return self.get_property_or_empty_string('Waarde')
+
+
+class PersoonContactinformatieSoort(Enum):
+    EMAIL = 'E-mail'
+    FACEBOOK = 'Facebook'
+    INSTAGRAM = 'Instagram'
+    LINKEDIN = 'Linkedin'
+    TWITTER = 'Twitter'
+    WEBSITE = 'Website'

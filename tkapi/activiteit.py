@@ -2,6 +2,7 @@ from enum import Enum
 from typing import List
 
 from tkapi.core import TKItem
+from tkapi.filter import Filter
 from tkapi.filter import SoortFilter
 from tkapi.filter import ZaakRelationFilter
 from tkapi.zaak import Zaak
@@ -103,6 +104,14 @@ class Activiteit(TKItem):
         return self.related_items(VoortouwCommissie)
 
     @property
+    def reservering(self):
+        return self.related_item(Reservering)
+
+    @property
+    def zaal(self):
+        return self.reservering.zaal
+
+    @property
     def onderwerp(self):
         return self.get_property_or_empty_string('Onderwerp')
 
@@ -142,6 +151,10 @@ class Activiteit(TKItem):
 class Reservering(TKItem):
     type = 'Reservering'
 
+    @staticmethod
+    def create_filter() -> Filter:
+        return Filter()
+
     @property
     def activiteit(self) -> Activiteit:
         return self.related_item(Activiteit)
@@ -173,12 +186,16 @@ class StatusCode(Enum):
 
 
 class StatusNaam(Enum):
-    UsrAdministrativelyCompleted = 'UsrAdministrativelyCompleted'
-    UsrMade = 'UsrMade'
+    USR_ADMINISTRATIVELY_COMPLETED = 'UsrAdministrativelyCompleted'
+    USR_MADE = 'UsrMade'
 
 
 class Zaal(TKItem):
     type = 'Zaal'
+
+    @staticmethod
+    def create_filter() -> Filter:
+        return Filter()
 
     @property
     def reservering(self) -> Reservering:
