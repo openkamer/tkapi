@@ -129,8 +129,7 @@ class TestActiviteitActor(TKApiTestCase):
         actors = self.api.get_items(ActiviteitActor, max_items=1)
         self.assertEqual(1, len(actors))
         actor = actors[0]
-        self.assertTrue(actor.spreektijd)
         self.assertIsNotNone(actor.volgorde)
         self.assertIn(actor.relatie, RelatieSoort)
-        print(actor.activiteit.id, actor.persoon, actor.fractie, actor.commissie, actor.fractie_naam, actor.naam)
+        print(actor.activiteit.id, actor.persoon, actor.fractie, actor.commissie, actor.fractie_naam, actor.naam, actor.spreektijd)
 

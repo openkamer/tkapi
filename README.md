@@ -2,9 +2,11 @@
 [![PyPI version](https://badge.fury.io/py/tkapi.svg)](https://badge.fury.io/py/tkapi)  
 Python ORM and bindings for the [Tweede Kamer](https://tweedekamer.nl) [Open Data Portaal](https://opendata.tweedekamer.nl) OData API.
 
-Requires Python 3.5+
+A pure Python interface for the Tweede Kamer API with type annotations for easy data model discovery.
 
-You are welcome to open an issue if you have any problems, questions or suggestions.
+Requires Python 3.5+.
+
+Please create an issue if you have any problems, questions or suggestions.
 
 ## Installation
 ```
@@ -28,23 +30,29 @@ for persoon in personen:
     print(persoon.achternaam)
 ```
 
-For more examples see the `examples` directory and the tests.
+For more examples see the [examples](./examples) and [tests](./tests).
 
 ## Entities
 
 See Tweede Kamer [documentation](https://opendata.tweedekamer.nl/documentatie/informatiemodel-20) for details.
 
-| Algemeen                    | Persoon                       | Fractie                  | Commissie                       | Activiteit      |
-|-----------------------------|-------------------------------|--------------------------|---------------------------------|-----------------|
-| Zaak                        | Persoon                       | Fractie                  | Commissie                       | Activiteit      |
-| ZaakActor                   | PersoonGeschenk               | FractieZetel             | CommissieZetel                  | ActiviteitActor |
-| Kamerstukdossier            | PersoonLoopbaan               | FractieZetelPersoon      | CommissieZetelVastPersoon       | Agendapunt      |
-| Besluit                     | PersoonNevenfunctie           | FractieZetelVacature     | CommissieZetelVervangerPersoon  | Vergadering     |
-| Stemming                    | PersoonNevenfunctieInkomsten  | FractieAanvullendGegeven | CommissieZetelVastVacature      | Verslag         |
-| Document                    | PersoonOnderwijs              |                          | CommissieZetelVervangerVacature | Reservering     |
-| DocumentActor               | PersoonReis                   |                          | CommissieContactinformatie      | Zaal            |
-| DocumentVersie              | PersoonFunctie                |                          |                                 |                 |
-|                             | PersoonContactinformatie      |                          |                                 |                 |
+| Algemeen                    | Persoon                       | Fractie                  | Commissie                       |
+|-----------------------------|-------------------------------|--------------------------|---------------------------------|
+| Activiteit                  | Persoon                       | Fractie                  | Commissie                       |
+| ActiviteitActor             | PersoonContactinformatie      | FractieAanvullendGegeven | CommissieContactinformatie      |
+| Agendapunt                  | PersoonFunctie                | FractieZetel             | CommissieZetel                  |
+| Besluit                     | PersoonGeschenk               | FractieZetelPersoon      | CommissieZetelVastPersoon       |
+| Document                    | PersoonLoopbaan               | FractieZetelVacature     | CommissieZetelVastVacature      |
+| DocumentActor               | PersoonNevenfunctie           |                          | CommissieZetelVervangerPersoon  |
+| DocumentVersie              | PersoonNevenfunctieInkomsten  |                          | CommissieZetelVervangerVacature |
+| Kamerstukdossier            | PersoonOnderwijs              |                          |                                 |
+| Reservering                 | PersoonReis                   |                          |                                 |
+| Stemming                    |                               |                          |                                 |
+| Vergadering                 |                               |                          |                                 |
+| Verslag                     |                               |                          |                                 |
+| Zaak                        |                               |                          |                                 |
+| ZaakActor                   |                               |                          |                                 |
+| Zaal                        |                               |                          |                                 |
 
 ## Development
 

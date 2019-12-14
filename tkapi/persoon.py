@@ -149,7 +149,7 @@ class PersoonEntity(TKItem):
         return PersoonEntityFilter()
 
     @property
-    def persoon(self):
+    def persoon(self) -> Persoon:
         return self.related_item(Persoon)
 
 
@@ -325,7 +325,7 @@ class PersoonNevenfunctieInkomsten(TKItem):
         return Filter()
 
     @property
-    def nevenfunctie(self):
+    def nevenfunctie(self) -> PersoonNevenfunctie:
         return self.related_item(PersoonNevenfunctie)
 
     @property
@@ -350,20 +350,12 @@ class PersoonContactinformatieSoort(Enum):
     WEBSITE = 'Website'
 
 
-class PersoonContactinformatie(TKItem):
+class PersoonContactinformatie(PersoonEntity):
     type = 'PersoonContactinformatie'
-
-    @staticmethod
-    def create_filter():
-        return Filter()
 
     @property
     def soort(self) -> PersoonContactinformatieSoort:
         return self.get_property_enum_or_none('Soort', PersoonContactinformatieSoort)
-
-    @property
-    def persoon(self) -> Persoon:
-        return self.related_item(Persoon)
 
     @property
     def waarde(self):

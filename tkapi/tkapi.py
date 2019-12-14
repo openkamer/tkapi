@@ -1,25 +1,26 @@
-import urllib
+import logging
+import urllib.parse
 import requests
 from typing import List
-import logging
 
+from tkapi.activiteit import Activiteit
+from tkapi.agendapunt import Agendapunt
+from tkapi.besluit import Besluit
+from tkapi.commissie import Commissie
+from tkapi.document import Document
+from tkapi.document import VerslagAlgemeenOverleg
+from tkapi.dossier import Dossier
 from tkapi.fractie import Fractie
 from tkapi.fractie import FractieZetel
+from tkapi.kamervraag import Kamervraag
+from tkapi.kamervraag import Antwoord
 from tkapi.persoon import Persoon
-from .activiteit import Activiteit
-from .agendapunt import Agendapunt
-from .besluit import Besluit
-from .commissie import Commissie
-from .document import Document
-from .document import VerslagAlgemeenOverleg
-from .dossier import Dossier
-from .kamervraag import Kamervraag, Antwoord
-from .persoon import PersoonGeschenk
-from .persoon import PersoonReis
-from .stemming import Stemming
-from .vergadering import Vergadering
-from .verslag import Verslag
-from .zaak import Zaak
+from tkapi.persoon import PersoonGeschenk
+from tkapi.persoon import PersoonReis
+from tkapi.stemming import Stemming
+from tkapi.vergadering import Vergadering
+from tkapi.verslag import Verslag
+from tkapi.zaak import Zaak
 
 from .filter import VerwijderdFilter
 
@@ -79,7 +80,7 @@ class TKApi:
         return cls.get_items(Zaak, filter, order, max_items)
 
     @classmethod
-    def get_activiteiten(cls, filter, order=None, max_items=None) -> List[Commissie]:
+    def get_activiteiten(cls, filter, order=None, max_items=None) -> List[Activiteit]:
         return cls.get_items(Activiteit, filter, order, max_items)
 
     @classmethod

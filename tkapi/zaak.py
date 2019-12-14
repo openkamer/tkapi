@@ -206,16 +206,12 @@ class Zaak(TKItem):
         return 'GestartOp'
 
 
-class ZaakActorFilter(Filter):
-    pass
-
-
 class ZaakActor(TKItem):
     type = 'ZaakActor'
 
     @staticmethod
     def create_filter():
-        return ZaakActorFilter()
+        return Filter()
 
     @property
     def naam(self):

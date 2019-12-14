@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import List
 
 from tkapi.core import TKItem
 from tkapi.filter import Filter
@@ -7,6 +8,7 @@ from tkapi.filter import ZaakRelationFilter
 from tkapi.persoon import Persoon
 from tkapi.fractie import Fractie
 from tkapi.commissie import Commissie
+from tkapi.document import Document
 from tkapi.commissie import VoortouwCommissie
 
 
@@ -87,8 +89,7 @@ class Activiteit(TKItem):
         return 'Eindtijd'
 
     @property
-    def documenten(self):
-        from tkapi.document import Document
+    def documenten(self) -> List[Document]:
         return self.related_items(Document)
 
     @property

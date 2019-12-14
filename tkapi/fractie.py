@@ -155,7 +155,7 @@ class FractieZetel(TKItem):
         return FractieZetelFilter()
 
     @property
-    def fractie(self):
+    def fractie(self) -> Fractie:
         return self.related_item(Fractie)
 
     @property
@@ -183,11 +183,11 @@ class FractieZetelPersoon(Lid):
         return FractieZetelPersoonFilter()
 
     @property
-    def fractie_zetel(self):
+    def fractie_zetel(self) -> FractieZetel:
         return self.related_item(FractieZetel)
 
     @property
-    def fractie(self):
+    def fractie(self) -> Fractie:
         return self.fractie_zetel.fractie
 
 
@@ -204,11 +204,11 @@ class FractieZetelVacature(TKItem):
         return Filter()
 
     @property
-    def fractie_zetel(self):
+    def fractie_zetel(self) -> FractieZetel:
         return self.related_item(FractieZetel)
 
     @property
-    def fractie(self):
+    def fractie(self) -> Fractie:
         return self.fractie_zetel.fractie
 
     @property
