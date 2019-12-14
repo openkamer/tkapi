@@ -1,7 +1,10 @@
+from typing import List
 from tkapi.core import TKItem
 from tkapi.filter import RelationsFilter
 from tkapi.filter import SoortFilter
 from tkapi.filter import ZaakRelationFilter
+from tkapi.activiteit import Activiteit
+from tkapi.document import Document
 
 
 class AgendapuntRelationFilter(RelationsFilter):
@@ -35,8 +38,7 @@ class Agendapunt(TKItem):
         return self.related_items(Zaak)
 
     @property
-    def activiteit(self):
-        from tkapi.activiteit import Activiteit
+    def activiteit(self) -> Activiteit:
         return self.related_item(Activiteit)
 
     @property
@@ -45,6 +47,5 @@ class Agendapunt(TKItem):
         return self.related_item(Besluit)
 
     @property
-    def documenten(self):
-        from tkapi.document import Document
+    def documenten(self) -> List[Document]:
         return self.related_items(Document)

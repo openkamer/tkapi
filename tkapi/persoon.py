@@ -341,6 +341,15 @@ class PersoonNevenfunctieInkomsten(TKItem):
         return 'Datum'
 
 
+class PersoonContactinformatieSoort(Enum):
+    EMAIL = 'E-mail'
+    FACEBOOK = 'Facebook'
+    INSTAGRAM = 'Instagram'
+    LINKEDIN = 'Linkedin'
+    TWITTER = 'Twitter'
+    WEBSITE = 'Website'
+
+
 class PersoonContactinformatie(TKItem):
     type = 'PersoonContactinformatie'
 
@@ -349,7 +358,7 @@ class PersoonContactinformatie(TKItem):
         return Filter()
 
     @property
-    def soort(self):
+    def soort(self) -> PersoonContactinformatieSoort:
         return self.get_property_enum_or_none('Soort', PersoonContactinformatieSoort)
 
     @property
@@ -359,12 +368,3 @@ class PersoonContactinformatie(TKItem):
     @property
     def waarde(self):
         return self.get_property_or_empty_string('Waarde')
-
-
-class PersoonContactinformatieSoort(Enum):
-    EMAIL = 'E-mail'
-    FACEBOOK = 'Facebook'
-    INSTAGRAM = 'Instagram'
-    LINKEDIN = 'Linkedin'
-    TWITTER = 'Twitter'
-    WEBSITE = 'Website'

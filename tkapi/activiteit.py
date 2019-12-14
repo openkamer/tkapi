@@ -5,6 +5,9 @@ from tkapi.filter import Filter
 from tkapi.filter import SoortFilter
 from tkapi.filter import ZaakRelationFilter
 from tkapi.persoon import Persoon
+from tkapi.fractie import Fractie
+from tkapi.commissie import Commissie
+from tkapi.commissie import VoortouwCommissie
 
 
 class ActiviteitSoort(Enum):
@@ -99,8 +102,7 @@ class Activiteit(TKItem):
         return self.related_items(Agendapunt)
 
     @property
-    def voortouwcommissies(self):
-        from tkapi.commissie import VoortouwCommissie
+    def voortouwcommissies(self) -> VoortouwCommissie:
         return self.related_items(VoortouwCommissie)
 
     @property
@@ -152,6 +154,16 @@ class Activiteit(TKItem):
         return self.get_property_or_empty_string('Vergaderjaar')
 
 
+class StatusCode(Enum):
+    R2 = 'R2'
+    R3 = 'R3'
+
+
+class StatusNaam(Enum):
+    USR_ADMINISTRATIVELY_COMPLETED = 'UsrAdministrativelyCompleted'
+    USR_MADE = 'UsrMade'
+
+
 class Reservering(TKItem):
     type = 'Reservering'
 
@@ -176,22 +188,12 @@ class Reservering(TKItem):
         return self.get_property_or_empty_string('Nummer')
 
     @property
-    def status_code(self):
+    def status_code(self) -> StatusCode:
         return self.get_property_enum_or_none('StatusCode', StatusCode)
 
     @property
-    def status_naam(self):
+    def status_naam(self) -> StatusNaam:
         return self.get_property_enum_or_none('StatusNaam', StatusNaam)
-
-
-class StatusCode(Enum):
-    R2 = 'R2'
-    R3 = 'R3'
-
-
-class StatusNaam(Enum):
-    USR_ADMINISTRATIVELY_COMPLETED = 'UsrAdministrativelyCompleted'
-    USR_MADE = 'UsrMade'
 
 
 class Zaal(TKItem):
@@ -214,6 +216,15 @@ class Zaal(TKItem):
         return self.get_property_or_empty_string('Naam')
 
 
+class RelatieSoort(Enum):
+    AFGEMELD = 'Afgemeld'
+    BEWINDSPERSOON = 'Bewindspersoon c.a.'
+    DEELNEMER = 'Deelnemer'
+    INITIATIEFNEMER = 'Initiatiefnemer'
+    INTERPELLANT = 'Interpellant'
+    VOLGCOMMISSIE = 'Volgcommissie'
+
+
 class ActiviteitActor(TKItem):
     type = 'ActiviteitActor'
 
@@ -230,13 +241,11 @@ class ActiviteitActor(TKItem):
         return self.related_item(Persoon)
 
     @property
-    def fractie(self):
-        from tkapi.fractie import Fractie
+    def fractie(self) -> Fractie:
         return self.related_item(Fractie)
 
     @property
-    def commissie(self):
-        from tkapi.commissie import Commissie
+    def commissie(self) -> Commissie:
         return self.related_item(Commissie)
 
     @property
@@ -260,15 +269,5 @@ class ActiviteitActor(TKItem):
         return self.get_property_or_none('Volgorde')
 
     @property
-    def relatie(self):
+    def relatie(self) -> RelatieSoort:
         return self.get_property_enum_or_none('Relatie', RelatieSoort)
-
-
-class RelatieSoort(Enum):
-    AFGEMELD = 'Afgemeld'
-    BEWINDSPERSOON = 'Bewindspersoon c.a.'
-    DEELNEMER = 'Deelnemer'
-    INITIATIEFNEMER = 'Initiatiefnemer'
-    INTERPELLANT = 'Interpellant'
-    VOLGCOMMISSIE = 'Volgcommissie'
-

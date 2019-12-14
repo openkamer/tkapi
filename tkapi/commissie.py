@@ -106,7 +106,7 @@ class CommissieContactinformatie(TKItem):
         return Filter()
 
     @property
-    def commissie(self):
+    def commissie(self) -> Commissie:
         return self.related_item(Commissie)
 
     @property
@@ -126,7 +126,7 @@ class CommissieZetel(TKItem):
         return CommissieZetelFilter()
 
     @property
-    def commissie(self):
+    def commissie(self) -> Commissie:
         return self.related_item(Commissie)
 
     @property

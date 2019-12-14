@@ -221,7 +221,7 @@ class Document(TKItem):
         return self.get_property_or_none('Volgnummer')
 
     @property
-    def soort(self):
+    def soort(self) -> DocumentSoort:
         return self.get_property_enum_or_none('Soort', DocumentSoort)
 
     @property

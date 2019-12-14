@@ -191,6 +191,11 @@ class FractieZetelPersoon(Lid):
         return self.fractie_zetel.fractie
 
 
+class FractieZetelVacatureSoort(Enum):
+    LID = 'Lid'
+    FRACTIEVOORZITTER = 'Fractievoorzitter'
+
+
 class FractieZetelVacature(TKItem):
     type = 'FractieZetelVacature'
 
@@ -207,7 +212,7 @@ class FractieZetelVacature(TKItem):
         return self.fractie_zetel.fractie
 
     @property
-    def functie(self):
+    def functie(self) -> FractieZetelVacatureSoort:
         return self.get_property_enum_or_none('Functie', FractieZetelVacatureSoort)
 
     @property
@@ -217,11 +222,6 @@ class FractieZetelVacature(TKItem):
     @property
     def tot_en_met(self):
         return self.get_datetime_or_none('TotEnMet')
-
-
-class FractieZetelVacatureSoort(Enum):
-    LID = 'Lid'
-    FRACTIEVOORZITTER = 'Fractievoorzitter'
 
 
 class FractieAanvullendGegeven(TKItem):
