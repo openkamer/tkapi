@@ -34,28 +34,17 @@ For more examples see the `examples` directory and the tests.
 
 See Tweede Kamer [documentation](https://opendata.tweedekamer.nl/documentatie/informatiemodel-20) for details.
 
-| Algemeen                   | Commissie                  | Persoon                      |
-|----------------------------|----------------------------|------------------------------|
-| **Activiteit**             | **Commissie**              | **Persoon**                  |
-| **Zaak**                   | **CommissieZetel**         | **PersoonGeschenk**          |
-| **Kamerstukdossier**       | **CommissieZetelVastPersoon**   | **PersoonLoopbaan**          |
-| **Fractie**                | **CommissieZetelVervangerPersoon** | **PersoonNevenfunctie**      |
-| **FractieZetel**           | **CommissieZetelVastVacature** | **PersoonNevenfunctieInkomsten** |
-| **Stemming**               | **CommissieZetelVervangerVacature** | **PersoonOnderwijs**         |
-| **Vergadering**            | **CommissieContactinformatie** | **PersoonReis**              |
-| **Document**               |                            | **PersoonFunctie**           |
-| **DocumentActor**          |                            | **PersoonContactinformatie** |
-| **DocumentVersie**         |                            |                            |
-| **Agendapunt**             |                            |                              |
-| **Besluit**                |                            |                              |
-| **Verslag**                |                            |                              |
-| **FractieZetelPersoon**    |                            |                              |
-| **ZaakActor**              |                            |                              |
-| **Reservering**            |                            |                              |
-| **Zaal**                   |                            |                              |
-| **ActiviteitActor**        |                            |                              |
-| **FractieZetelVacature**   |                            |                              |
-| **FractieAanvullendGegeven** |                            |                              |
+| Algemeen                    | Persoon                       | Fractie                  | Commissie                       | Activiteit      |
+|-----------------------------|-------------------------------|--------------------------|---------------------------------|-----------------|
+| Zaak                        | Persoon                       | Fractie                  | Commissie                       | Activiteit      |
+| ZaakActor                   | PersoonGeschenk               | FractieZetel             | CommissieZetel                  | ActiviteitActor |
+| Kamerstukdossier            | PersoonLoopbaan               | FractieZetelPersoon      | CommissieZetelVastPersoon       | Agendapunt      |
+| Besluit                     | PersoonNevenfunctie           | FractieZetelVacature     | CommissieZetelVervangerPersoon  | Vergadering     |
+| Stemming                    | PersoonNevenfunctieInkomsten  | FractieAanvullendGegeven | CommissieZetelVastVacature      | Verslag         |
+| Document                    | PersoonOnderwijs              |                          | CommissieZetelVervangerVacature | Reservering     |
+| DocumentActor               | PersoonReis                   |                          | CommissieContactinformatie      | Zaal            |
+| DocumentVersie              | PersoonFunctie                |                          |                                 |                 |
+|                             | PersoonContactinformatie      |                          |                                 |                 |
 
 ## Development
 
