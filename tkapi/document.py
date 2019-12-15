@@ -264,7 +264,7 @@ class DocumentActor(TKItem):
 
     @property
     def document(self) -> Document:
-        return self.related_items(Document)
+        return self.related_item(Document)
 
     @property
     def naam(self):
