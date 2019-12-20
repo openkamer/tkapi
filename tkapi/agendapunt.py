@@ -49,3 +49,27 @@ class Agendapunt(TKItem):
     @property
     def documenten(self) -> List[Document]:
         return self.related_items(Document)
+
+    @property
+    def onderwerp(self):
+        return self.get_property_or_empty_string('Onderwerp')
+
+    @property
+    def volgorde(self):
+        return self.get_property_or_none('Volgorde')
+
+    @property
+    def begin(self):
+        return self.get_datetime_or_none('Aanvangstijd')
+
+    @property
+    def einde(self):
+        return self.get_datetime_or_none('Eindtijd')
+
+    @property
+    def rubriek(self):
+        return self.get_property_or_empty_string('Rubriek')
+
+    @property
+    def noot(self):
+        return self.get_property_or_empty_string('Noot')
