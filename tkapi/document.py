@@ -123,11 +123,11 @@ class DocumentFilter(SoortFilter, ZaakRelationFilter):
         self.add_filter_str(filter_str)
 
     def filter_onderwerp(self, onderwerp: str):
-        filter_str = 'Onderwerp eq ' + "'" + onderwerp.replace("'", "''") + "'"
+        filter_str = "Onderwerp eq '{}'".format(self.escape(onderwerp))
         self.add_filter_str(filter_str)
 
     def filter_titel(self, titel: str):
-        filter_str = 'Titel eq ' + "'" + titel.replace("'", "''") + "'"
+        filter_str = "Titel eq '{}'".format(self.escape(titel))
         self.add_filter_str(filter_str)
 
     def filter_aanhangselnummer(self, aanhangselnummer):

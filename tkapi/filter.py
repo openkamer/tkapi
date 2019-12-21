@@ -27,13 +27,18 @@ class Filter:
             filter_str += sep.join(self._filters_or)
         return filter_str
 
+    @staticmethod
+    def escape(value: str) -> str:
+        return value.replace("'", "''")
+
 
 class PropertyFilter(Filter):
 
     def filter_property(self, property_name, value, is_or=False):
         if isinstance(value, Enum):
             value = value.value
-        filter_str = "{} eq '{}'".format(property_name, value.replace("'", "''"))
+        value = self.escape(value)
+        filter_str = "{} eq '{}'".format(property_name, value)
         self.add_filter_str(filter_str, is_or)
 
 

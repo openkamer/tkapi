@@ -108,7 +108,7 @@ class ZaakFilter(SoortFilter):
         self._filters.append(filter_str)
 
     def filter_onderwerp(self, onderwerp):
-        filter_str = "Onderwerp eq '{}'".format(onderwerp)
+        filter_str = "Onderwerp eq '{}'".format(self.escape(onderwerp))
         self._filters.append(filter_str)
 
     def filter_has_besluit(self):

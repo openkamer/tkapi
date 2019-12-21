@@ -115,7 +115,7 @@ class LidFilter(Filter):
 class FractieFilter(Filter):
 
     def filter_fractie(self, naam):
-        self._filters.append("NaamNL eq '{}'".format(naam))
+        self._filters.append("NaamNL eq '{}'".format(self.escape(naam)))
 
     def filter_fractie_id(self, uid):
         self._filters.append("Id eq {}".format(uid))
@@ -128,6 +128,7 @@ class FractieFilter(Filter):
 class FractieZetelPersoonFilter(LidFilter):
 
     def filter_fractie(self, naam):
+        naam = self.escape(naam)
         self._filters.append("FractieZetel/Fractie/NaamNL eq '{}'".format(naam))
 
     def filter_fractie_id(self, uid):
@@ -141,6 +142,7 @@ class FractieZetelPersoonFilter(LidFilter):
 class FractieZetelFilter(Filter):
 
     def filter_fractie(self, naam):
+        naam = self.escape(naam)
         self._filters.append("Fractie/NaamNL eq '{}'".format(naam))
 
     def filter_fractie_id(self, uid):

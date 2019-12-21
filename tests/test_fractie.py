@@ -43,6 +43,11 @@ class TestFractie(TKApiTestCase):
         # TODO: this will change if current fracties change
         self.assertEqual(15, len(fracties))
 
+    def test_filter_fracties_name_escape(self):
+        filter = Fractie.create_filter()
+        filter.filter_fractie(naam="Democratisch Socialisten '70")
+        self.api.get_fracties(max_items=50, filter=filter)
+
     def test_filter_actieve_leden(self):
         filter = Fractie.create_filter()
         filter.filter_fractie('GroenLinks')

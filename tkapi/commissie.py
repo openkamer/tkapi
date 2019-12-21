@@ -20,7 +20,7 @@ class CommissieFunctie(Enum):
 class CommissieFilter(SoortFilter):
 
     def filter_naam(self, naam):
-        filter_str = "NaamNL eq " + "'" + naam.replace("'", "''") + "'"
+        filter_str = "NaamNL eq '{}'".format(self.escape(naam))
         self._filters.append(filter_str)
 
 
