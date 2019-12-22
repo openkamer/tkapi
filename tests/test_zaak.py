@@ -48,7 +48,7 @@ class TestZaak(TKApiTestCase):
         zaak = zaken[0]
         self.assertEqual(zaak.onderwerp, onderwerp)
         self.assertGreaterEqual(len(zaak.documenten), 3)
-        self.assertTrue(zaak.zaak_actors)
+        self.assertTrue(zaak.actors)
         self.assertEqual('', zaak.alias)
         self.assertIsNone(zaak.vervangen_door)
 

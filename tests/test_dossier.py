@@ -106,7 +106,7 @@ class TestDossierFilter(TKApiTestCase):
         for zaak in dossier.zaken:
             print('==========')
             print(zaak.soort, zaak.onderwerp, zaak.volgnummer)
-            for actor in zaak.zaak_actors:
+            for actor in zaak.actors:
                 print(actor.naam, actor.persoon.achternaam if actor.persoon else None, actor.fractie, actor.commissie)
             for doc in zaak.documenten:
                 print(doc.soort, doc.onderwerp, doc.titel, doc.volgnummer)

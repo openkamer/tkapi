@@ -158,7 +158,7 @@ class Zaak(TKItem):
         return self.related_items(Besluit)
 
     @property
-    def zaak_actors(self):
+    def actors(self):
         return self.related_items(ZaakActor)
 
     @property

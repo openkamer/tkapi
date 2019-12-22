@@ -301,7 +301,7 @@ class VerslagAlgemeenOverleg(Document):
     def voortouwcommissie_namen(self):
         names = []
         for zaak in self.zaken:
-            for zaak_actor in zaak.zaak_actors:
+            for zaak_actor in zaak.actors:
                 if zaak_actor.is_voortouwcommissie:
                     names.append(zaak_actor.naam)
         return names
