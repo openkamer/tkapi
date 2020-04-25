@@ -206,6 +206,15 @@ class Zaak(TKItem):
         return 'GestartOp'
 
 
+class ZaakActorRelatieSoort(Enum):
+    GERICHT_AAN = 'Gericht aan'
+    INDIENER = 'Indiener'
+    MEDEINDIENER = 'Medeindiener'
+    RAPPORTEUR = 'Rapporteur'
+    VOLGCOMMISSIE = 'Volgcommissie'
+    VOORTOUWCOMMISSIE = 'Voortouwcommissie'
+
+
 class ZaakActor(TKItem):
     type = 'ZaakActor'
 
@@ -227,7 +236,7 @@ class ZaakActor(TKItem):
 
     @property
     def relatie(self):
-        return self.get_property_or_empty_string('Relatie')
+        return self.get_property_enum_or_none('Relatie', ZaakActorRelatieSoort)
 
     @property
     def persoon(self) -> Persoon:
@@ -247,7 +256,7 @@ class ZaakActor(TKItem):
 
     @property
     def is_voortouwcommissie(self):
-        return self.relatie == 'Voortouwcommissie'
+        return self.relatie == ZaakActorRelatieSoort.VOORTOUWCOMMISSIE
 
 
 class ZaakMetBesluitBase(Zaak):

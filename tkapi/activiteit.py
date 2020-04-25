@@ -217,7 +217,7 @@ class Zaal(TKItem):
         return self.get_property_or_empty_string('Naam')
 
 
-class RelatieSoort(Enum):
+class ActiviteitRelatieSoort(Enum):
     AFGEMELD = 'Afgemeld'
     BEWINDSPERSOON = 'Bewindspersoon c.a.'
     DEELNEMER = 'Deelnemer'
@@ -270,5 +270,5 @@ class ActiviteitActor(TKItem):
         return self.get_property_or_none('Volgorde')
 
     @property
-    def relatie(self) -> RelatieSoort:
-        return self.get_property_enum_or_none('Relatie', RelatieSoort)
+    def relatie(self) -> ActiviteitRelatieSoort:
+        return self.get_property_enum_or_none('Relatie', ActiviteitRelatieSoort)

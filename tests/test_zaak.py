@@ -2,6 +2,7 @@ import datetime
 
 from tkapi.zaak import Zaak
 from tkapi.zaak import ZaakActor
+from tkapi.zaak import ZaakActorRelatieSoort
 from tkapi.zaak import ZaakSoort
 from tkapi.zaak import ZaakMotie
 from tkapi.zaak import ZaakAmendement
@@ -140,7 +141,8 @@ class TestZaakActor(TKApiTestCase):
         actor = actors[0]
         self.assertEqual(max_items, len(actors))
         for actor in actors:
-            print(' | '.join([actor.naam, actor.afkorting, actor.relatie]))
+            self.assertIn(actor.relatie, ZaakActorRelatieSoort)
+            print(' | '.join([actor.naam, actor.afkorting, str(actor.relatie)]))
 
 
 class TestZaakSoort(TKApiTestCase):

@@ -3,7 +3,7 @@ import datetime
 from tkapi.activiteit import Activiteit
 from tkapi.activiteit import ActiviteitActor
 from tkapi.activiteit import ActiviteitSoort
-from tkapi.activiteit import RelatieSoort
+from tkapi.activiteit import ActiviteitRelatieSoort
 from tkapi.activiteit import ActiviteitStatus
 from tkapi.activiteit import Reservering
 from tkapi.activiteit import Zaal
@@ -130,6 +130,6 @@ class TestActiviteitActor(TKApiTestCase):
         self.assertEqual(1, len(actors))
         actor = actors[0]
         self.assertIsNotNone(actor.volgorde)
-        self.assertIn(actor.relatie, RelatieSoort)
+        self.assertIn(actor.relatie, ActiviteitRelatieSoort)
         print(actor.activiteit.id, actor.persoon, actor.fractie, actor.commissie, actor.fractie_naam, actor.naam, actor.spreektijd)
 

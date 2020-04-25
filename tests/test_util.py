@@ -136,6 +136,6 @@ class TestUtilQueries(TKApiTestCase):
         nummer = 35300
         toevoeging = 'XVI'
         documenten = queries.get_dossier_documenten_with_activiteit(nummer)
-        self.assertEqual(13, len(documenten))
+        self.assertEqual(23, len(documenten))
         documenten = queries.get_dossier_documenten_with_activiteit(nummer, toevoeging=toevoeging)
-        self.assertEqual(1, len(documenten))
+        self.assertEqual(2, len(documenten))

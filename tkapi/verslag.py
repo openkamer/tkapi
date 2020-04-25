@@ -35,7 +35,7 @@ class Verslag(TKItem):
         return VerslagFilter()
 
     @property
-    def vergadering(self):
+    def vergadering(self) -> "Vergadering":
         from tkapi.vergadering import Vergadering
         return self.related_item(Vergadering)
 
