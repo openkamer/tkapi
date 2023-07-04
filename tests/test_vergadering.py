@@ -1,3 +1,5 @@
+import datetime
+
 from tkapi.vergadering import Vergadering
 from tkapi.vergadering import VergaderingSoort
 
@@ -33,5 +35,18 @@ class TestVergaderingFilter(TKApiTestCase):
         max_items = 10
         filter = Vergadering.create_filter()
         filter.filter_soort(soort=VergaderingSoort.COMMISSIE)
-        verslagen = self.api.get_vergaderingen(filter=filter, max_items=max_items)
-        self.assertEqual(max_items, len(verslagen))
+        vergaderingen = self.api.get_vergaderingen(filter=filter, max_items=max_items)
+        self.assertEqual(max_items, len(vergaderingen))
+        self.assertTrue(
+            all([VergaderingSoort.COMMISSIE == vergadering.soort for vergadering in vergaderingen])
+        )
+
+    def test_veradering_changed_since_filter(self):
+        max_items = 10
+        filter_dt = datetime.datetime(2023, 1, 1, 00, 00, tzinfo=datetime.timezone.utc)
+        filter = Vergadering.create_filter()
+        filter.filter_changed_since(filter_dt)
+        vergaderingen = self.api.get_vergaderingen(filter=filter, max_items=max_items)
+        self.assertTrue(
+            all([vergadering.gewijzigd_op >= filter_dt for vergadering in vergaderingen])
+        )
