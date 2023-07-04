@@ -22,12 +22,11 @@ class TestCommissie(TKApiTestCase):
         commissies_without_name = []
         commissies_with_name = []
         for commissie in commissies:
-            # commissie.print_json()
-            if commissie.soort is not '':
+            if commissie.soort != '':
                 soorten.add(commissie.soort)
             else:
                 commissies_without_soort.append(commissie)
-            if commissie.naam is not '':
+            if commissie.naam != '':
                 commissies_with_name.append(commissie)
             else:
                 commissies_without_name.append(commissie)
