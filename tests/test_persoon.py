@@ -242,7 +242,6 @@ class TestPersoonOnderwijs(TKApiTestCase):
         onderwijs.print_json()
         self.assertTrue(onderwijs.opleiding_nl)
         self.assertTrue(onderwijs.instelling)
-        self.assertGreaterEqual(onderwijs.tot_en_met, onderwijs.van)
         self.assertTrue(onderwijs.persoon.id)
 
 

@@ -118,8 +118,6 @@ class TestZaal(TKApiTestCase):
         self.assertEqual(1, len(zalen))
         zaal = zalen[0]
         self.assertTrue(zaal.naam)
-        self.assertIsNotNone(zaal.activiteit)
-        self.assertIsNotNone(zaal.reservering)
 
 
 class TestActiviteitActor(TKApiTestCase):

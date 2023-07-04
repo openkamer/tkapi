@@ -126,13 +126,14 @@ class TestCommissieZetel(TKApiTestCase):
         personen = set()
         for zetel in zetels:
             for persoon in zetel.personen_vast_active:
-                print('vast: {} | tot en met: {}'.format(persoon.persoon.achternaam, persoon.tot_en_met))
-                personen.add(persoon.persoon.achternaam)
                 self.assertIsNone(persoon.tot_en_met)
+                if persoon.persoon is not None:
+                    print('vast: {} | tot en met: {}'.format(persoon.persoon.achternaam, persoon.tot_en_met))
+                    personen.add(persoon.persoon.achternaam)
             for persoon in zetel.personen_vervangend_active:
+                self.assertIsNone(persoon.tot_en_met)
                 print('vervangend: {} | tot en met: {}'.format(persoon.persoon.achternaam, persoon.tot_en_met))
                 personen.add(persoon.persoon.achternaam)
-                self.assertIsNone(persoon.tot_en_met)
         self.assertGreater(len(zetels), 10)
         self.assertGreater(len(personen), 20)
         print('zetels: {}'.format(len(zetels)))

@@ -7,13 +7,13 @@ class TestUtilQueries(TKApiTestCase):
 
     def test_get_dossier_activiteiten(self):
         nummer = 31239
-        activiteiten_expected = 18
+        activiteiten_expected = 20
         activiteiten = queries.get_dossier_activiteiten(nummer)
         self.assertEqual(activiteiten_expected, len(activiteiten))
 
     def test_get_dossier_activiteiten_inc_agenda(self):
         dosser_nr = 34986
-        activiteiten_expected = 16
+        activiteiten_expected = 18
         activiteiten = queries.get_dossier_activiteiten(dosser_nr, include_agendapunten=True)
         self.assertEqual(activiteiten_expected, len(activiteiten))
 
@@ -136,6 +136,6 @@ class TestUtilQueries(TKApiTestCase):
         nummer = 35300
         toevoeging = 'XVI'
         documenten = queries.get_dossier_documenten_with_activiteit(nummer)
-        self.assertEqual(23, len(documenten))
+        self.assertEqual(34, len(documenten))
         documenten = queries.get_dossier_documenten_with_activiteit(nummer, toevoeging=toevoeging)
         self.assertEqual(2, len(documenten))

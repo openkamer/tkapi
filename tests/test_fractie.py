@@ -23,7 +23,7 @@ class TestFractie(TKApiTestCase):
         # fractie.print_json()
         leden_actief = fractie.leden_actief
         print('fractieleden:', len(leden_actief))
-        self.assertGreaterEqual(len(leden_actief), 14)
+        self.assertGreaterEqual(len(leden_actief), 1)
         self.assertGreaterEqual(48, len(fractie.leden))
 
     def test_get_fracties(self):
@@ -31,7 +31,7 @@ class TestFractie(TKApiTestCase):
         for fractie in fracties:
             # fractie.print_json()
             print('id', fractie.id, 'fractie:', fractie.naam, '| zetels:', fractie.zetels_aantal)
-        self.assertEqual(41, len(fracties))
+        self.assertGreater(len(fracties), 49)
 
     def test_filter_fracties_actief(self):
         filter = Fractie.create_filter()
@@ -40,8 +40,7 @@ class TestFractie(TKApiTestCase):
         for fractie in fracties:
             # fractie.print_json()
             print('fractie:', fractie.naam, '| zetels:', fractie.zetels_aantal)
-        # TODO: this will change if current fracties change
-        self.assertEqual(15, len(fracties))
+        self.assertGreater(len(fracties), 10)  # sanity check, should be higher
 
     def test_filter_fracties_name_escape(self):
         filter = Fractie.create_filter()

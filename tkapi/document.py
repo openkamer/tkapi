@@ -21,6 +21,7 @@ class DocumentSoort(Enum):
     AGENDA_PLENAIRE_VERGADERING = 'Agenda plenaire vergadering'
     AGENDA_PROCEDUREVERGADERING = 'Agenda procedurevergadering'
     AMENDEMENT = 'Amendement'
+    AMENDEMENT_GEWIJZIGD = 'Amendement (gewijzigd/nader/vervangend)'
     ANTWOORD_SCHRIFTELIJKE_VRAGEN = 'Antwoord schriftelijke vragen'
     ANTWOORD_SCHRIFTELIJKE_VRAGEN_NADER = 'Antwoord schriftelijke vragen (nader)'
     BEGROTINGSTOELICHTING = 'Begrotingstoelichting'

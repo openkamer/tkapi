@@ -345,7 +345,7 @@ class PersoonContactinformatieSoort(Enum):
     EMAIL = 'E-mail'
     FACEBOOK = 'Facebook'
     INSTAGRAM = 'Instagram'
-    LINKEDIN = 'Linkedin'
+    LINKEDIN = 'LinkedIn'
     TWITTER = 'Twitter'
     WEBSITE = 'Website'
 

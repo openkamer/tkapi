@@ -32,7 +32,7 @@ class ZaakSoort(Enum):
     MOTIE = 'Motie'
     NATIONALE_OMBUDSMAN = 'Nationale ombudsman'
     NETWERKVERKENNING = 'Netwerkverkenning'
-    NOTA_VAN_VERSLAG = 'Nota naar aanleiding van het (nader) verslag'
+    NOTA_VAN_VERSLAG = 'Nota n.a.v. het (nader/tweede nader/enz.) verslag'
     NOTA_VAN_WIJZIGING = 'Nota van wijziging'
     OVERIG = 'Overig'
     PARLEMENTAIR_ONDERZOEKSRAPPORT = 'Parlementair onderzoeksrapport'
