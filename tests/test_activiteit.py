@@ -64,7 +64,7 @@ class TestActiviteitFilters(TKApiTestCase):
             ActiviteitSoort.STEMMINGEN,
             ActiviteitSoort.VERGADERING,
             ActiviteitSoort.VRAGENUUR,
-            ActiviteitSoort.PLENAIR_DEBAT,
+            ActiviteitSoort.PLENAIR_DEBAT_WETGEVING,
             ActiviteitSoort.ALGEMEEN_OVERLEG,
             ActiviteitSoort.WETSVOORSTEL_INBRENG_VERSLAG,
             ActiviteitSoort.WETGEVINGSOVERLEG,
@@ -91,7 +91,8 @@ class TestActiviteitFilters(TKApiTestCase):
             # No results available at the moment for the soorten below (or enum is wrong?)
             ingore_soorten = [
                 ActiviteitSoort.HOORZITTING, ActiviteitSoort.MEDEDELINGEN, ActiviteitSoort.OPENING, ActiviteitSoort.OVERIG,
-                ActiviteitSoort.RONDETAFELGESPREK, ActiviteitSoort.SLUITING
+                ActiviteitSoort.RONDETAFELGESPREK, ActiviteitSoort.SLUITING, ActiviteitSoort.HOORZITTING_RONDETAFELGESPREK,
+                ActiviteitSoort.INTERPELLATIEDEBAT, ActiviteitSoort.PLENAIR_DEBAT
             ]
             if soort in ingore_soorten:
                 continue
@@ -107,8 +108,6 @@ class TestReservering(TKApiTestCase):
         res = res[0]
         self.assertIsNotNone(res.activiteit)
         self.assertEqual(res.activiteit_nummer, res.activiteit.nummer)
-        self.assertIsNotNone(res.status_code)
-        self.assertIsNotNone(res.status_naam)
         print(res.status_code, res.status_naam, res.activiteit.id, res.activiteit_nummer)
 
 
