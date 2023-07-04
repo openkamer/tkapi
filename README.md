@@ -13,11 +13,8 @@ Please create an issue if you have any problems, questions or suggestions.
 pip install tkapi
 ```
 
-## Authentication
-You need to whitelist your IP by registering at https://opendata.tweedekamer.nl.
-
 ## Data model
-See [Open Kamer Data Model documentation](https://opendata.tweedekamer.nl/documentatie/informatiemodel-20) for the data model that is mapped to Python classes.
+See [Open Kamer Data Model documentation](https://opendata.tweedekamer.nl/documentatie/informatiemodel) for the data model that is mapped to Python classes.
 
 ## Usage
 A simple first example,
