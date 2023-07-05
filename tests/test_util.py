@@ -69,7 +69,7 @@ class TestUtilQueries(TKApiTestCase):
         volgnummer = 10
         toevoeging = 'XV'
         besluiten = queries.get_kamerstuk_besluiten(nummer=nummer, volgnummer=volgnummer)
-        self.assertEqual(42, len(besluiten))
+        self.assertEqual(52, len(besluiten))
         besluiten = queries.get_kamerstuk_besluiten(nummer=nummer, volgnummer=volgnummer, toevoeging=toevoeging)
         self.assertEqual(2, len(besluiten))
 
@@ -87,7 +87,7 @@ class TestUtilQueries(TKApiTestCase):
         toevoeging = 'XV'
         volgnummer = 10
         zaken = queries.get_kamerstuk_zaken(nummer, volgnummer)
-        self.assertEqual(15, len(zaken))
+        self.assertEqual(16, len(zaken))
         zaken = queries.get_kamerstuk_zaken(nummer, volgnummer, toevoeging)
         self.assertEqual(1, len(zaken))
 

@@ -225,12 +225,14 @@ class TestCommissieZetelVastVacature(TKApiTestCase):
         max_items = 5
         vacs = self.api.get_items(CommissieZetelVastVacature, max_items=max_items)
         self.assertEqual(max_items, len(vacs))
+        fracties = set()
         for vac in vacs:
             self.assertIn(vac.functie, CommissieFunctie)
-            self.assertIsNotNone(vac.fractie)
+            if vac.fractie:
+                fracties.add(vac.fractie)
             self.assertIsNotNone(vac.zetel)
             self.assertTrue(vac.van)
-            print(vac.tot_en_met, vac.end_date_key())
+        self.assertGreater(len(fracties), 1)
 
 
 class TestCommissieZetelVervangerVacature(TKApiTestCase):

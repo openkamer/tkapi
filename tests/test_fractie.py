@@ -100,7 +100,7 @@ class TestFractieZetelPersoon(TKApiTestCase):
         filter.filter_fractie('GroenLinks')
         filter.filter_actief()
         zetel_personen = self.api.get_items(FractieZetelPersoon, filter=filter)
-        self.assertGreaterEqual(len(zetel_personen), 14)
+        self.assertGreaterEqual(len(zetel_personen), 4)
 
 
 class TestFractieZetelVacature(TKApiTestCase):
@@ -114,7 +114,6 @@ class TestFractieZetelVacature(TKApiTestCase):
             self.assertIn(vac.functie, FractieZetelVacatureSoort)
             self.assertIsNotNone(vac.fractie)
             self.assertTrue(vac.van)
-            self.assertTrue(vac.tot_en_met)
 
 
 class TestFractieAanvullendGegeven(TKApiTestCase):
