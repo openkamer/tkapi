@@ -1,5 +1,5 @@
 # tkapi
-[![PyPI version](https://badge.fury.io/py/tkapi.svg)](https://badge.fury.io/py/tkapi)  
+[![PyPI version](https://badge.fury.io/py/tkapi.svg)](https://badge.fury.io/py/tkapi) ![CI/CD status](https://github.com/openkamer/tkapi/actions/workflows/main.yml/badge.svg)  
 Python ORM and bindings for the [Tweede Kamer](https://tweedekamer.nl) [Open Data Portaal](https://opendata.tweedekamer.nl) OData API.
 
 A pure Python interface for the Tweede Kamer API with type annotations for easy data model discovery.
