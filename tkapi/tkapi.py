@@ -164,14 +164,13 @@ class TKApi:
                 int(response.elapsed.total_seconds() * 1000),
                 urllib.parse.unquote(response.url))
             )
-        if response.status_code in [204, 404, 500]:
-            logger.warning('HTTP STATUS CODE: {}'.format(response.status_code))
-            logger.warning('WARNING: requested item does not exist: {}'.format(url))
+        if response.status_code in [204, 404]:
+            logger.info('HTTP STATUS CODE: {}'.format(response.status_code))
+            logger.info('Requested item does not exist: {}'.format(url))
             return {}
         elif response.status_code != 200:
-            logger.warning('HTTP STATUS CODE: {}'.format(response.status_code))
-            logger.warning('ODATA ERROR: {}'.format(response.json()['error']['message']))
-        # assert response.status_code == 200
+            logger.error('HTTP STATUS CODE: {}'.format(response.status_code))
+            logger.error('ODATA ERROR: {}'.format(response.json()['error']['message']))
         return response.json()
 
     @classmethod
