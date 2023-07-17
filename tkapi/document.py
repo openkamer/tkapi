@@ -296,7 +296,7 @@ class DocumentActor(TKItem):
 
 
 class VerslagAlgemeenOverleg(Document):
-    filter_param = "Soort eq 'Verslag van een algemeen overleg'"
+    filter_param = "Soort eq '{}'".format(DocumentSoort.VERSLAG_VAN_EEN_ALGEMEEN_OVERLEG.value)
 
     @property
     def voortouwcommissie_namen(self):
