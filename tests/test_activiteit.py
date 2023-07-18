@@ -7,6 +7,7 @@ from tkapi.activiteit import ActiviteitRelatieSoort
 from tkapi.activiteit import ActiviteitStatus
 from tkapi.activiteit import Reservering
 from tkapi.activiteit import Zaal
+from tkapi.filter import PropertyFilter
 from tkapi.util import queries
 
 from .core import TKApiTestCase
@@ -129,4 +130,21 @@ class TestActiviteitActor(TKApiTestCase):
         self.assertIsNotNone(actor.volgorde)
         self.assertIn(actor.relatie, ActiviteitRelatieSoort)
         print(actor.activiteit.id, actor.persoon, actor.fractie, actor.commissie, actor.fractie_naam, actor.naam, actor.spreektijd)
+
+
+class TestActiviteitActorRelatieSoort(TKApiTestCase):
+
+    def test_activiteit_actor_relatie_soort_enum(self):
+        max_items = 1
+        for soort in ActiviteitRelatieSoort:
+            filter = PropertyFilter()
+            filter.filter_property(property_name='relatie', value=soort, is_or=False)
+            actors = self.api.get_items(ActiviteitActor, filter=filter, max_items=max_items)
+            self.assertEqual(max_items, len(actors))
+            self.assertEqual(soort, actors[0].relatie)
+
+    def test_get_items(self):
+        actors = self.api.get_items(ActiviteitActor, max_items=500)
+        for actor in actors:
+            self.assertIn(actor.relatie, ActiviteitRelatieSoort)
 

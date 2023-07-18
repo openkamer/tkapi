@@ -222,8 +222,10 @@ class Zaal(TKItem):
 
 
 class ActiviteitRelatieSoort(Enum):
+    AANVRAGER = 'Aanvrager'
     AFGEMELD = 'Afgemeld'
     BEWINDSPERSOON = 'Bewindspersoon c.a.'
+    DEELNEMENDE_FRACTIE = 'Deelnemende fractie'
     DEELNEMER = 'Deelnemer'
     INITIATIEFNEMER = 'Initiatiefnemer'
     INTERPELLANT = 'Interpellant'
