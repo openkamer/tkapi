@@ -72,3 +72,39 @@ Create coverage report,
 coverage html
 ```
 Then visit htmlcov/index.html in your browser.
+
+### Publishing
+
+This project uses Python packaging with `pyproject.toml`. To publish a new version to PyPI:
+
+1. **Install build tools** (if not already installed):
+   ```bash
+   pip install build twine
+   ```
+
+2. **Update the version** in `pyproject.toml`:
+   ```toml
+   version = "X.Y.Z"
+   ```
+
+3. **Build the package**:
+   ```bash
+   python -m build
+   ```
+   This will create distribution files in the `dist/` directory.
+
+4. **Test the build locally** (optional but recommended):
+   ```bash
+   pip install dist/tkapi-X.Y.Z-py3-none-any.whl
+   ```
+
+5. **Upload to Test PyPI** (optional, for testing):
+   ```bash
+   twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+   ```
+
+6. **Upload to PyPI**:
+   ```bash
+   twine upload dist/*
+   ```
+   You'll need PyPI credentials (username and password/token). You can create an API token at https://pypi.org/manage/account/token/

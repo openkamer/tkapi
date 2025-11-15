@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tkapi"
+version = "0.9.8"
+description = "Python bindings and ORM for the Tweede Kamer OData API"
+readme = "README.md"
+requires-python = ">=3.5"
+license = {text = "MIT"}
+authors = [
+    {name = "Open Kamer", email = "info@openkamer.org"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
+dependencies = [
+    "requests>=2.13.0",
+    "python-dateutil>=2.0"
+]
+urls = {Homepage = "https://github.com/openkamer/tkapi"}
+
+[tool.setuptools]
+packages = ["tkapi", "tkapi.util"]
+
+[tool.setuptools.package-data]
+"*" = ["*.md"]
+
