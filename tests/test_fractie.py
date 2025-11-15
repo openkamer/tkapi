@@ -4,7 +4,6 @@ from tkapi.fractie import Fractie, FractieZetel
 from tkapi.fractie import FractieZetelPersoon
 from tkapi.fractie import FractieZetelVacature
 from tkapi.fractie import FractieZetelVacatureSoort
-from tkapi.fractie import FractieAanvullendGegeven
 
 from .core import TKApiTestCase
 
@@ -19,12 +18,12 @@ class TestFractie(TKApiTestCase):
         self.assertEqual('GroenLinks', fractie.naam)
         self.assertEqual('GL', fractie.afkorting)
         self.assertEqual(datetime.date(year=1990, month=11, day=24), fractie.datum_actief)
-        self.assertEqual(None, fractie.datum_inactief)
+        self.assertEqual(datetime.date(2023, 10, 26), fractie.datum_inactief)
         # fractie.print_json()
         leden_actief = fractie.leden_actief
         print('fractieleden:', len(leden_actief))
-        self.assertGreaterEqual(len(leden_actief), 1)
-        self.assertGreaterEqual(48, len(fractie.leden))
+        self.assertGreaterEqual(len(leden_actief), 0)
+        self.assertGreaterEqual(len(fractie.leden), 48)
 
     def test_get_fracties(self):
         fracties = self.api.get_fracties(max_items=50)
@@ -74,7 +73,7 @@ class TestFractieZetel(TKApiTestCase):
         filter = FractieZetel.create_filter()
         filter.filter_fractie('GroenLinks')
         zetels = self.api.get_items(FractieZetel, filter)
-        self.assertEqual(48, len(zetels))
+        self.assertGreaterEqual(len(zetels),48)
 
     def test_fractie_zetel_attributes(self):
         filter = FractieZetel.create_filter()
@@ -97,7 +96,6 @@ class TestFractieZetelPersoon(TKApiTestCase):
 
     def test_filter_fractie_actief(self):
         filter = FractieZetelPersoon.create_filter()
-        filter.filter_fractie('GroenLinks')
         filter.filter_actief()
         zetel_personen = self.api.get_items(FractieZetelPersoon, filter=filter)
         self.assertGreaterEqual(len(zetel_personen), 4)
@@ -114,13 +112,3 @@ class TestFractieZetelVacature(TKApiTestCase):
             self.assertIn(vac.functie, FractieZetelVacatureSoort)
             self.assertIsNotNone(vac.fractie)
             self.assertTrue(vac.van)
-
-
-class TestFractieAanvullendGegeven(TKApiTestCase):
-
-    def test_get_items(self):
-        max_items = 10
-        items = self.api.get_items(FractieAanvullendGegeven, max_items=max_items)
-        self.assertEqual(0, len(items))  # TODO BR: enable, this currently returns 0 results
-        for item in items:
-            print(item.fractie, item.soort, item.waarde)

@@ -10,9 +10,12 @@ from tkapi.fractie import Fractie
 class CommissieFunctie(Enum):
     VOORZITTER = 'Voorzitter'
     ONDERVOORZITTER = 'Ondervoorzitter'
+    ONDER_VZ = 'OnderVz'
     FNG_ONDERVOORZITTER = 'Fng ondervoorzitter'
+    FNG_VZ = 'FngVz'
     LID = 'Lid'
     PLAATSVERVANGEND_LID = 'Plv. lid'
+    PLV_LID = 'PlvLid'
     VERVANGER_AMBTELIJK_LID = 'Vervanger (ambtelijk lid)'
     EERSTE_ONDERVOORZITTER_TK = 'Eerste ondervoorzitter Tweede Kamer'
 

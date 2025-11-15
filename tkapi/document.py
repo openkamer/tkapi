@@ -75,6 +75,7 @@ class DocumentSoort(Enum):
     ONDERZOEKSVOORSTEL = 'Onderzoeksvoorstel'
     OORSPRONKELIJKE_TEKST = 'Oorspronkelijke tekst'
     OVERIG = 'Overig'
+    OVERIG_OPENBAAR = 'Overig (openbaar)'
     POSITION_PAPER = 'Position paper'
     RAMING_VAN_DE_UITGAVEN = 'Raming van de uitgaven'
     RAPPORT = 'Rapport'

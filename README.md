@@ -36,9 +36,9 @@ See Tweede Kamer [documentation](https://opendata.tweedekamer.nl/documentatie/in
 | Algemeen                    | Persoon                       | Fractie                  | Commissie                       |
 |-----------------------------|-------------------------------|--------------------------|---------------------------------|
 | Activiteit                  | Persoon                       | Fractie                  | Commissie                       |
-| ActiviteitActor             | PersoonContactinformatie      | FractieAanvullendGegeven | CommissieContactinformatie      |
-| Agendapunt                  | PersoonFunctie                | FractieZetel             | CommissieZetel                  |
-| Besluit                     | PersoonGeschenk               | FractieZetelPersoon      | CommissieZetelVastPersoon       |
+| ActiviteitActor             | PersoonContactinformatie      | FractieZetel             | CommissieContactinformatie      |
+| Agendapunt                  | PersoonFunctie                | FractieZetelPersoon      | CommissieZetel                  |
+| Besluit                     | PersoonGeschenk               | FractieZetelVacature     | CommissieZetelVastPersoon       |
 | Document                    | PersoonLoopbaan               | FractieZetelVacature     | CommissieZetelVastVacature      |
 | DocumentActor               | PersoonNevenfunctie           |                          | CommissieZetelVervangerPersoon  |
 | DocumentVersie              | PersoonNevenfunctieInkomsten  |                          | CommissieZetelVervangerVacature |
@@ -57,7 +57,7 @@ See Tweede Kamer [documentation](https://opendata.tweedekamer.nl/documentatie/in
 
 Run all tests,
 ```bash
-python -m unittest discover
+pytest
 ```
 
 #### Coverage report

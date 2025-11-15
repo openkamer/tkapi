@@ -224,23 +224,3 @@ class FractieZetelVacature(TKItem):
     @property
     def tot_en_met(self):
         return self.get_datetime_or_none('TotEnMet')
-
-
-class FractieAanvullendGegeven(TKItem):
-    type = 'FractieAanvullendGegeven'
-
-    @staticmethod
-    def create_filter():
-        return Filter()
-
-    @property
-    def fractie(self) -> Fractie:
-        return self.related_items(Fractie)
-
-    @property
-    def soort(self):
-        return self.get_property_or_empty_string('Soort')
-
-    @property
-    def waarde(self):
-        return self.get_property_or_empty_string('Waarde')

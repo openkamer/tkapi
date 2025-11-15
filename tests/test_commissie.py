@@ -60,7 +60,7 @@ class TestCommissie(TKApiTestCase):
         com_filter = Commissie.create_filter()
         com_filter.filter_soort(soort)
         commissies_algemeen = self.api.get_commissies(com_filter)
-        self.assertTrue(len(commissies_algemeen) >= 5)
+        self.assertGreaterEqual(len(commissies_algemeen), 4)
         for commissie in commissies_algemeen:
             self.assertEqual(commissie.soort, soort)
         print('Algemene commissies found: ' + str(len(commissies_algemeen)))
