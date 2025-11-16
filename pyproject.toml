@@ -7,7 +7,7 @@ name = "tkapi"
 version = "0.9.8"
 description = "Python bindings and ORM for the Tweede Kamer OData API"
 readme = "README.md"
-requires-python = ">=3.5"
+requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
     {name = "Open Kamer", email = "info@openkamer.org"}
