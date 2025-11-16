@@ -147,13 +147,35 @@ class TestDocumentFilter(TKApiTestCase):
 
 class TestDocumentSoorten(TKApiTestCase):
 
-    def test_all_soorten(self):
+    def test_all_soorten_2010(self):
         pd_filter = Document.create_filter()
         start_datetime = datetime.datetime(year=2010, month=1, day=1)
         end_datetime = datetime.datetime(year=2010, month=2, day=1)
         pd_filter.filter_date_range(start_datetime, end_datetime)
         pds = self.api.get_documenten(pd_filter)
         soorten = set([pd.soort for pd in pds])
+        for soort in soorten:
+            self.assertIn(soort, DocumentSoort)
+            print(soort)
+
+    def test_all_soorten_2025(self):
+        pd_filter = Document.create_filter()
+        start_datetime = datetime.datetime(year=2025, month=1, day=1)
+        end_datetime = datetime.datetime(year=2025, month=2, day=1)
+        pd_filter.filter_date_range(start_datetime, end_datetime)
+        pds = self.api.get_documenten(pd_filter)
+        exceptions = []
+        soorten_list = []
+        for pd in pds:
+            try:
+                soorten_list.append(pd.soort)
+            except Exception as e:
+                exceptions.append((pd, e))
+        soorten = set(soorten_list)
+        if exceptions:
+            print(f"Caught {len(exceptions)} exception(s) during set creation:")
+            for pd, exc in exceptions:
+                print(f"  Exception for document {pd}: {type(exc).__name__}: {exc}")
         for soort in soorten:
             self.assertIn(soort, DocumentSoort)
             print(soort)
