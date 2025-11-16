@@ -50,3 +50,17 @@ class TestVergaderingFilter(TKApiTestCase):
         self.assertTrue(
             all([vergadering.gewijzigd_op >= filter_dt for vergadering in vergaderingen])
         )
+
+    def test_vergadering_date_range_filter(self):
+        max_items = 10
+        begin_datetime = datetime.datetime(2023, 1, 1, 00, 00, tzinfo=datetime.timezone.utc)
+        end_datetime = datetime.datetime(2023, 12, 31, 23, 59, tzinfo=datetime.timezone.utc)
+        filter = Vergadering.create_filter()
+        filter.filter_date_range(begin_datetime, end_datetime)
+        vergaderingen = self.api.get_vergaderingen(filter=filter, max_items=max_items)
+        self.assertTrue(
+            all([vergadering.begin >= begin_datetime for vergadering in vergaderingen if vergadering.begin])
+        )
+        self.assertTrue(
+            all([vergadering.einde < end_datetime for vergadering in vergaderingen if vergadering.einde])
+        )

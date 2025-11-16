@@ -17,11 +17,11 @@ class VergaderingFilter(SoortFilter):
         super().__init__()
 
     def filter_date_range(self, begin_datetime, end_datetime=None):
-        filter_str = "Begin ge {}".format(util.datetime_to_odata(begin_datetime))
+        filter_str = "Datum ge {}".format(util.datetime_to_odata(begin_datetime))
         self._filters.append(filter_str)
 
         if end_datetime:
-            filter_str = "Einde lt {}".format(util.datetime_to_odata(end_datetime))
+            filter_str = "Datum lt {}".format(util.datetime_to_odata(end_datetime))
             self._filters.append(filter_str)
 
     def filter_changed_since(self, since_datetime):
